@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: September 20, 2018                          Akamai Technologies
+Expires: September 21, 2018                          Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          March 19, 2018
+                                                          March 20, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 20, 2018.
+   This Internet-Draft will expire on September 21, 2018.
 
 
 
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 1]
+Krasic, et al.         Expires September 21, 2018               [Page 1]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 2]
+Krasic, et al.         Expires September 21, 2018               [Page 2]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 3]
+Krasic, et al.         Expires September 21, 2018               [Page 3]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 4]
+Krasic, et al.         Expires September 21, 2018               [Page 4]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 5]
+Krasic, et al.         Expires September 21, 2018               [Page 5]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 6]
+Krasic, et al.         Expires September 21, 2018               [Page 6]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -360,17 +360,17 @@ Internet-Draft                    QPACK                       March 2018
 
        0 1 2 3 4 5 6 7
       +-+-+-+-+-+-+-+-+
-      |1|Index(7+)    |
+      |1|  Index (7+) |
       +-+-+-+---------+
 
               Figure 3: Indexed Header Field with Duplication
 
-   _Indexed-Duplicates_ insert a new entry into the dynamic table which
+   _Indexed-Duplicate_ inserts a new entry into the dynamic table which
    duplicates an existing entry.  [RFC7541] allows duplicate HPACK table
    entries, that is entries that have the same name and value.
 
    This repurposes the HPACK instruction for Indexed Header Field (see
-   Section 6.1 of [RFC7541].
+   Section 6.1 of [RFC7541] in the context of the control stream.
 
 3.  Performance considerations
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 7]
+Krasic, et al.         Expires September 21, 2018               [Page 7]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 8]
+Krasic, et al.         Expires September 21, 2018               [Page 8]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 9]
+Krasic, et al.         Expires September 21, 2018               [Page 9]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.         Expires September 20, 2018              [Page 10]
+Krasic, et al.         Expires September 21, 2018              [Page 10]
