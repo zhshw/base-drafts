@@ -1063,8 +1063,6 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kDefaultMss (default 1460 bytes):</dt>
-<dd style="margin-left: 8">The default max packet size used for calculating default and minimum congestion windows.</dd>
 <dt>kInitialWindow (default 14600 bytes):</dt>
 <dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
 <dt>kMinimumWindow (default 2 * kDefaultMss):</dt>
@@ -1079,6 +1077,9 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
+<dt>sender_mss:</dt>
+<dd style="margin-left: 8">The sender&#8217;s maximum payload size.  Does not include UDP or IP overhead. Similar to SMSS defined for TCP in <a href="#RFC5681" class="xref">[RFC5681]</a>
+</dd>
 <dt>bytes_in_flight:</dt>
 <dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable frame, and have not been acked or declared lost. The size does not include IP or UDP overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
 <dt>congestion_window:</dt>
