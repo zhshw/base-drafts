@@ -1065,8 +1065,6 @@ DetectLostPackets(largest_acked):
 <dl>
 <dt>kInitialWindow (default 14600 bytes):</dt>
 <dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
-<dt>kMinimumWindow (default 2 * kDefaultMss):</dt>
-<dd style="margin-left: 8">Default minimum congestion window.</dd>
 <dt>kLossReductionFactor (default 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
 </dl>
@@ -1080,6 +1078,8 @@ DetectLostPackets(largest_acked):
 <dt>sender_mss:</dt>
 <dd style="margin-left: 8">The sender&#8217;s maximum payload size.  Does not include UDP or IP overhead. Similar to SMSS defined for TCP in <a href="#RFC5681" class="xref">[RFC5681]</a>
 </dd>
+<dt>minimum_window :</dt>
+<dd style="margin-left: 8">Minimum congestion window.  Set to 2 * sender_mss.</dd>
 <dt>bytes_in_flight:</dt>
 <dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable frame, and have not been acked or declared lost. The size does not include IP or UDP overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
 <dt>congestion_window:</dt>
@@ -1095,6 +1095,7 @@ DetectLostPackets(largest_acked):
 <p id="rfc.section.4.7.3.p.1">At the beginning of the connection, initialize the congestion control variables as follows:</p>
 <pre>
    congestion_window = kInitialWindow
+   minimum_window = 2 * sender_mss
    bytes_in_flight = 0
    end_of_recovery = 0
    ssthresh = infinite
@@ -1127,7 +1128,7 @@ DetectLostPackets(largest_acked):
      else:
        // Congestion avoidance.
        congestion_window +=
-         kDefaultMss * acked_packet.bytes / congestion_window
+         sender_mss * acked_packet.bytes / congestion_window
 </pre>
 <h3 id="rfc.section.4.7.6">
 <a href="#rfc.section.4.7.6">4.7.6.</a> <a href="#on-packets-lost" id="on-packets-lost">On Packets Lost</a>
@@ -1144,7 +1145,7 @@ DetectLostPackets(largest_acked):
      if (!InRecovery(largest_lost_packet.packet_number)):
        end_of_recovery = largest_sent_packet
        congestion_window *= kLossReductionFactor
-       congestion_window = max(congestion_window, kMinimumWindow)
+       congestion_window = max(congestion_window, minimum_window)
        ssthresh = congestion_window
 </pre>
 <h3 id="rfc.section.4.7.7">
@@ -1153,7 +1154,7 @@ DetectLostPackets(largest_acked):
 <p id="rfc.section.4.7.7.p.1">QUIC decreases the congestion window to the minimum value once the retransmission timeout has been verified.</p>
 <pre>
    OnRetransmissionTimeoutVerified()
-     congestion_window = kMinimumWindow
+     congestion_window = minimum_window
 </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
