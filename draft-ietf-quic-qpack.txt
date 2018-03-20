@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: September 20, 2018                          Akamai Technologies
+Expires: September 21, 2018                          Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          March 19, 2018
+                                                          March 20, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 20, 2018.
+   This Internet-Draft will expire on September 21, 2018.
 
 
 
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 1]
+Krasic, et al.         Expires September 21, 2018               [Page 1]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -87,7 +87,7 @@ Table of Contents
      2.5.  Refreshing Entries with Duplication . . . . . . . . . . .   7
    3.  Performance considerations  . . . . . . . . . . . . . . . . .   7
      3.1.  Speculative table updates . . . . . . . . . . . . . . . .   7
-     3.2.  Additional state beyond HPACK.  . . . . . . . . . . . . .   8
+     3.2.  Additional state beyond HPACK . . . . . . . . . . . . . .   8
        3.2.1.  Vulnerable Entries  . . . . . . . . . . . . . . . . .   8
        3.2.2.  Safe evictions  . . . . . . . . . . . . . . . . . . .   8
        3.2.3.  Decoder Blocking  . . . . . . . . . . . . . . . . . .   8
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 2]
+Krasic, et al.         Expires September 21, 2018               [Page 2]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 3]
+Krasic, et al.         Expires September 21, 2018               [Page 3]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 4]
+Krasic, et al.         Expires September 21, 2018               [Page 4]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 5]
+Krasic, et al.         Expires September 21, 2018               [Page 5]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 6]
+Krasic, et al.         Expires September 21, 2018               [Page 6]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -389,12 +389,12 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 7]
+Krasic, et al.         Expires September 21, 2018               [Page 7]
 
 Internet-Draft                    QPACK                       March 2018
 
 
-3.2.  Additional state beyond HPACK.
+3.2.  Additional state beyond HPACK
 
 3.2.1.  Vulnerable Entries
 
@@ -410,16 +410,18 @@ Internet-Draft                    QPACK                       March 2018
 3.2.2.  Safe evictions
 
    Section Section 2.4 describes how QPACK avoids invalid references
-   that might result from out-of-order delivery.  When the encoder
-   processes a HEADER_ACK, it dereferences table entries that were
-   indexed in the acknowledged header.  To track which entries must be
-   dereferenced, it can maintain a map from unacknowledged headers to
-   lists of (absolute) indices.  The simplest place to store the actual
-   reference count might be the table entries.  In practice the number
-   of entries in the table with a non-zero reference count is likely to
-   stay quite small.  A data structure tracking only entries with non-
-   zero reference counts, separate from the main header table, could be
-   more space efficient.
+   that might result from out-of-order delivery.  One possible mechanism
+   for tracking this is as follows: while encoding a block, the encoder
+   maintains a reference set, which is the set of absolute indexes of
+   dynamic entries that are referenced at least once in the block.  Each
+   time a new entry is added to the reference set, its reference count
+   is incremented.  When encoding is complete, the reference set is
+   appended to a queue associated with the stream.  When a HEADER_ACK
+   for a stream is received, the encoder dequeues the first reference
+   set from the stream's queue and decrements the associated reference
+   counts.  If a stream is reset, the encoder processes all queued
+   reference sets for that stream as if all header blocks had been
+   acknowledged.
 
 3.2.3.  Decoder Blocking
 
@@ -440,16 +442,16 @@ Internet-Draft                    QPACK                       March 2018
 
    To track blocked streams, an ordered map (e.g. multi-map) from
    "Depends Index" values to streams can be used.  Whenever the decoder
-   processes a header block, it can drain any members of the blocked
-   streams map that have "Depends Index <= M" where "[1,M]" is the first
 
 
 
-Krasic, et al.         Expires September 20, 2018               [Page 8]
+Krasic, et al.         Expires September 21, 2018               [Page 8]
 
 Internet-Draft                    QPACK                       March 2018
 
 
+   processes a header block, it can drain any members of the blocked
+   streams map that have "Depends Index <= M" where "[1,M]" is the first
    member of the added- entries sub-ranges set.  Again, the complexity
    of operations would be at most O(log N), N being the number of
    concurrently blocked streams.
@@ -499,9 +501,7 @@ Internet-Draft                    QPACK                       March 2018
 
 
 
-
-
-Krasic, et al.         Expires September 20, 2018               [Page 9]
+Krasic, et al.         Expires September 21, 2018               [Page 9]
 
 Internet-Draft                    QPACK                       March 2018
 
@@ -557,4 +557,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.         Expires September 20, 2018              [Page 10]
+Krasic, et al.         Expires September 21, 2018              [Page 10]
