@@ -128,7 +128,7 @@ Internet-Draft           QUIC Transport Protocol              March 2018
        6.8.1.  Probing a New Path  . . . . . . . . . . . . . . . . .  38
        6.8.2.  Initiating Connection Migration . . . . . . . . . . .  38
        6.8.3.  Responding to Connection Migration  . . . . . . . . .  39
-       6.8.4.  Loss Detection and Congestion Control . . . . . . . .  41
+       6.8.4.  Loss Detection and Congestion Control . . . . . . . .  40
        6.8.5.  Privacy Implications of Connection Migration  . . . .  41
      6.9.  Server Connection Migration . . . . . . . . . . . . . . .  43
        6.9.1.  Initiating Connection Migration . . . . . . . . . . .  43
@@ -1102,10 +1102,10 @@ Internet-Draft           QUIC Transport Protocol              March 2018
                       Figure 5: Generic Frame Layout
 
    Frame types are listed in Table 3.  Note that the Frame Type byte in
-   STREAM and ACK frames is used to carry other frame-specific flags.
-   For all other frames, the Frame Type byte simply identifies the
-   frame.  These frames are explained in more detail as they are
-   referenced later in the document.
+   STREAM frames is used to carry other frame-specific flags.  For all
+   other frames, the Frame Type byte simply identifies the frame.  These
+   frames are explained in more detail as they are referenced later in
+   the document.
 
 
 
@@ -1989,8 +1989,7 @@ Internet-Draft           QUIC Transport Protocol              March 2018
 6.7.1.  Initiation
 
    To initiate path validation, an endpoint sends a PATH_CHALLENGE frame
-   containing a random payload that is hard to guess on the path to be
-   validated.
+   containing a random payload on the path to be validated.
 
    An endpoint MAY send additional PATH_CHALLENGE frames to handle
    packet loss.  An endpoint SHOULD NOT send a PATH_CHALLENGE more
@@ -2009,7 +2008,8 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    in a PATH_RESPONSE frame, with the following stipulation.  Since a
    PATH_CHALLENGE might be sent from a spoofed address, an endpoint MAY
    limit the rate at which it sends PATH_RESPONSE frames and MAY
-
+   silently discard PATH_CHALLENGE frames that would cause it to respond
+   at a higher rate.
 
 
 
@@ -2017,9 +2017,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 36]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   silently discard PATH_CHALLENGE frames that would cause it to respond
-   at a higher rate.
 
    To ensure that packets can be both sent to and received from the
    peer, the PATH_RESPONSE MUST be sent on the same path as the
@@ -2033,7 +2030,7 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    received containing data that was sent in a previous PATH_CHALLENGE.
    Receipt of an acknowledgment for a packet containing a PATH_CHALLENGE
    frame is not adequate validation, since the acknowledgment can be
-   spoofed by a malicious client.
+   spoofed by a malicious peer.
 
    For path validation to be successful, a PATH_RESPONSE frame MUST be
    received from the same remote address to which the corresponding
@@ -2065,6 +2062,9 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    If path validation fails, the path is deemed unusable.  This does not
    necessarily imply a failure of the connection - endpoints can
    continue sending packets over other paths as appropriate.  If no
+   paths are available, an endpoint can wait for a new path to become
+   available or close the connection.
+
 
 
 
@@ -2073,9 +2073,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 37]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   paths are available, an endpoint can wait for a new path to become
-   available or close the connection.
 
    A path validation might be abandoned for other reasons besides
    failure.  Primarily, this happens if a connection migration to a new
@@ -2122,6 +2119,9 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    Each endpoint validates its peer's address during connection
    establishment.  Therefore, a migrating endpoint can send to its peer
    knowing that the peer is willing to receive at the peer's current
+   address.  Thus an endpoint can migrate to a new local address without
+   first validating the peer's address.
+
 
 
 
@@ -2129,9 +2129,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 38]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   address.  Thus an endpoint can migrate to a new local address without
-   first validating the peer's address.
 
    When migrating, the new path might not support the endpoint's current
    sending rate.  Therefore, the endpoint resets its congestion
@@ -2178,6 +2175,9 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    It is possible that a peer is spoofing its source address to cause an
    endpoint to send excessive amounts of data to an unwilling host.  If
    the endpoint sends significantly more data than the spoofing peer,
+   connection migration might be used to amplify the volume of data that
+   an attacker can generate toward a victim.
+
 
 
 
@@ -2185,9 +2185,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 39]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   connection migration might be used to amplify the volume of data that
-   an attacker can generate toward a victim.
 
    As described in Section 6.8.3, an endpoint is required to validate a
    peer's new address to confirm the peer's possession of the new
@@ -2231,8 +2228,11 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    This will cause the validation of the address of the spurious
    migration to be abandoned.
 
+6.8.4.  Loss Detection and Congestion Control
 
-
+   The capacity available on the new path might not be the same as the
+   old path.  Packets sent on the old path SHOULD NOT contribute to
+   congestion control or RTT estimation for the new path.
 
 
 
@@ -2242,18 +2242,9 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 40]
 Internet-Draft           QUIC Transport Protocol              March 2018
 
 
-6.8.4.  Loss Detection and Congestion Control
-
-   The capacity available on the new path might not be the same as the
-   old path.  Packets sent on the old path SHOULD NOT contribute to the
-   state of the congestion control and RTT estimation on the new path.
-   If it is using a single congestion controller and round-trip time
-   estimator, the client SHOULD reset them prior to sending any non-
-   probing packets from a new local address.
-
-   After successful validation of the client's new address, the server
-   SHOULD reset its congestion controller and round-trip time estimator
-   prior to sending any further non-probing packets.
+   On confirming a peer's ownership of its new address, an endpoint
+   SHOULD immediately reset the congestion controller and round-trip
+   time estimator for the new path.
 
    An endpoint MUST NOT return to the send rate used for the previous
    path unless it is reasonably sure that the previous send rate is
@@ -2271,14 +2262,15 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    times.  A receiver of packets on multiple paths will still send ACK
    frames covering all received packets.
 
-   An endpoint MAY use a single congestion control context and a single
-   loss recovery context, as described in [QUIC-RECOVERY].  A sender MAY
-   make exceptions for probe packets so that their loss detection is
+   While multiple paths might be used during connection migration, a
+   single congestion control context and a single loss recovery context
+   (as described in [QUIC-RECOVERY]) may be adequate.  A sender can make
+   exceptions for probe packets so that their loss detection is
    independent and does not unduly cause the congestion controller to
-   reduce its sending rate.  For instance, an endpoint may run a
-   separate alarm when a PATH_CHALLENGE is sent, which is disarmed when
-   the corresponding PATH_RESPONSE is received.  If the alarm fires
-   before the PATH_RESPONSE is received, the endpoint might send a new
+   reduce its sending rate.  An endpoint might arm a separate alarm when
+   a PATH_CHALLENGE is sent, which is disarmed when the corresponding
+   PATH_RESPONSE is received.  If the alarm fires before the
+   PATH_RESPONSE is received, the endpoint might send a new
    PATH_CHALLENGE, and restart the alarm for a longer period of time.
 
 6.8.5.  Privacy Implications of Connection Migration
@@ -2291,13 +2283,6 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    unlinkable connection ID for use in case a peer wishes to explicitly
    break linkability between two points of network attachment.
 
-
-
-Iyengar & Thomson      Expires September 28, 2018              [Page 41]
-
-Internet-Draft           QUIC Transport Protocol              March 2018
-
-
    An endpoint might need to send packets on multiple networks without
    receiving any response from its peer.  To ensure that the endpoint is
    not linkable across each of these changes, a new connection ID and
@@ -2305,6 +2290,13 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    endpoint sends multiple NEW_CONNECTION_ID messages.  Each
    NEW_CONNECTION_ID is marked with a sequence number.  Connection IDs
    MUST be used in the order in which they are numbered.
+
+
+
+Iyengar & Thomson      Expires September 28, 2018              [Page 41]
+
+Internet-Draft           QUIC Transport Protocol              March 2018
+
 
    An endpoint that does not require the use of a connection ID should
    not request that its peer use a connection ID.  Such an endpoint does
@@ -2346,6 +2338,14 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    In order to avoid linkage, the packet number gap MUST be externally
    indistinguishable from random.  The packet number gap for a
    connection ID with sequence number is computed by encoding the
+   sequence number as a 32-bit integer in big-endian format, and then
+   computing:
+
+   Gap = HKDF-Expand-Label(packet_number_secret,
+                           "QUIC packet sequence gap", sequence, 4)
+
+
+
 
 
 
@@ -2353,12 +2353,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 42]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   sequence number as a 32-bit integer in big-endian format, and then
-   computing:
-
-   Gap = HKDF-Expand-Label(packet_number_secret,
-                           "QUIC packet sequence gap", sequence, 4)
 
    The output of HKDF-Expand-Label is interpreted as a big-endian
    number. "packet_number_secret" is derived from the TLS key exchange,
@@ -2402,6 +2396,12 @@ Internet-Draft           QUIC Transport Protocol              March 2018
 
    Once the server has received a non-probing packet on its preferred
    address which is the largest packet number seen so far, the server
+   begins sending to the client exclusively from its preferred IP
+   address.
+
+
+
+
 
 
 
@@ -2409,9 +2409,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 43]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   begins sending to the client exclusively from its preferred IP
-   address.
 
 6.10.  Interaction of Client and Server Migration
 
@@ -2459,6 +2456,9 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    packets unless they contain a CONNECTION_CLOSE or APPLICATION_CLOSE
    frame (see Section 6.11.3 for details).
 
+   In the closing state, only a packet containing a closing frame can be
+   sent.  An endpoint retains only enough information to generate a
+
 
 
 Iyengar & Thomson      Expires September 28, 2018              [Page 44]
@@ -2466,8 +2466,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 44]
 Internet-Draft           QUIC Transport Protocol              March 2018
 
 
-   In the closing state, only a packet containing a closing frame can be
-   sent.  An endpoint retains only enough information to generate a
    packet containing a closing frame and to identify packets as
    belonging to the connection.  The connection ID and QUIC version is
    sufficient information to identify packets for a closing connection;
@@ -2513,6 +2511,8 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    indicating a client connection migration (Section 6.8}), while in the
    closing period.  An endpoint in the closing state MUST strictly limit
    the number of packets it sends to this new address until the address
+   is validated (see Section 6.7).  A server in the closing state MAY
+   instead choose to discard packets received from a new source address.
 
 
 
@@ -2521,9 +2521,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 45]
 
 Internet-Draft           QUIC Transport Protocol              March 2018
 
-
-   is validated (see Section 6.7).  A server in the closing state MAY
-   instead choose to discard packets received from a new source address.
 
 6.11.2.  Idle Timeout
 
@@ -2569,7 +2566,10 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    constant exchange of closing frames until the closing period on
    either peer ended.
 
-
+   An immediate close can be used after an application protocol has
+   arranged to close a connection.  This might be after the application
+   protocols negotiates a graceful shutdown.  The application protocol
+   exchanges whatever messages that are needed to cause both endpoints
 
 
 
@@ -2578,10 +2578,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 46]
 Internet-Draft           QUIC Transport Protocol              March 2018
 
 
-   An immediate close can be used after an application protocol has
-   arranged to close a connection.  This might be after the application
-   protocols negotiates a graceful shutdown.  The application protocol
-   exchanges whatever messages that are needed to cause both endpoints
    to agree to close the connection, after which the application
    requests that the connection be closed.  The application protocol can
    use an APPLICATION_CLOSE message with an appropriate error code to
@@ -2627,6 +2623,10 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    This design ensures that a stateless reset packet is - to the extent
    possible - indistinguishable from a regular packet.
 
+   A server generates a random 18-octet Destination Connection ID field.
+   For a client that depends on the server including a connection ID,
+
+
 
 
 Iyengar & Thomson      Expires September 28, 2018              [Page 47]
@@ -2634,8 +2634,6 @@ Iyengar & Thomson      Expires September 28, 2018              [Page 47]
 Internet-Draft           QUIC Transport Protocol              March 2018
 
 
-   A server generates a random 18-octet Destination Connection ID field.
-   For a client that depends on the server including a connection ID,
    this will mean that this value differs from previous packets.  Ths
    results in two problems:
 
@@ -2679,6 +2677,8 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    state).  Designers of new versions of QUIC need to be aware of this
    and either reuse this design, or use a portion of the packet other
    than the last 16 octets for carrying data.
+
+
 
 
 
@@ -4563,7 +4563,7 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    retransmission of the second flight of client handshake messages,
    that is, the TLS Finished and any client authentication messages.
 
-   STREAM frames that are determined to be lost SHOULD be retransmitted
+   STREAM data in frames determined to be lost SHOULD be retransmitted
    before sending new data, unless application priorities indicate
    otherwise.  Retransmitting lost stream data can fill in gaps, which
    allows the peer to consume already received data and free up flow

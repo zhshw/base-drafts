@@ -1150,7 +1150,7 @@ address {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 5: Generic Frame Layout</p>
-<p id="rfc.section.5.p.4">Frame types are listed in <a href="#frame-types" class="xref">Table 3</a>. Note that the Frame Type byte in STREAM and ACK frames is used to carry other frame-specific flags.  For all other frames, the Frame Type byte simply identifies the frame.  These frames are explained in more detail as they are referenced later in the document.</p>
+<p id="rfc.section.5.p.4">Frame types are listed in <a href="#frame-types" class="xref">Table 3</a>. Note that the Frame Type byte in STREAM frames is used to carry other frame-specific flags.  For all other frames, the Frame Type byte simply identifies the frame.  These frames are explained in more detail as they are referenced later in the document.</p>
 <div id="rfc.table.3"></div>
 <div id="frame-types"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -1490,7 +1490,7 @@ address {
 <h3 id="rfc.section.6.7.1">
 <a href="#rfc.section.6.7.1">6.7.1.</a> <a href="#initiation" id="initiation">Initiation</a>
 </h3>
-<p id="rfc.section.6.7.1.p.1">To initiate path validation, an endpoint sends a PATH_CHALLENGE frame containing a random payload that is hard to guess on the path to be validated.</p>
+<p id="rfc.section.6.7.1.p.1">To initiate path validation, an endpoint sends a PATH_CHALLENGE frame containing a random payload on the path to be validated.</p>
 <p id="rfc.section.6.7.1.p.2">An endpoint MAY send additional PATH_CHALLENGE frames to handle packet loss.  An endpoint SHOULD NOT send a PATH_CHALLENGE more frequently than it would an Initial packet, ensuring that connection migration is no more load on a new path than establishing a new connection.</p>
 <p id="rfc.section.6.7.1.p.3">The endpoint MUST use fresh random data in every PATH_CHALLENGE frame so that it can associate the peer&#8217;s response with the causative PATH_CHALLENGE.</p>
 <h3 id="rfc.section.6.7.2">
@@ -1501,7 +1501,7 @@ address {
 <h3 id="rfc.section.6.7.3">
 <a href="#rfc.section.6.7.3">6.7.3.</a> <a href="#completion" id="completion">Completion</a>
 </h3>
-<p id="rfc.section.6.7.3.p.1">A new address is considered valid when a PATH_RESPONSE frame is received containing data that was sent in a previous PATH_CHALLENGE. Receipt of an acknowledgment for a packet containing a PATH_CHALLENGE frame is not adequate validation, since the acknowledgment can be spoofed by a malicious client.</p>
+<p id="rfc.section.6.7.3.p.1">A new address is considered valid when a PATH_RESPONSE frame is received containing data that was sent in a previous PATH_CHALLENGE. Receipt of an acknowledgment for a packet containing a PATH_CHALLENGE frame is not adequate validation, since the acknowledgment can be spoofed by a malicious peer.</p>
 <p id="rfc.section.6.7.3.p.2">For path validation to be successful, a PATH_RESPONSE frame MUST be received from the same remote address to which the corresponding PATH_CHALLENGE was sent. If a PATH_RESPONSE frame is received from a different remote address than the one to which the PATH_CHALLENGE was sent, path validation is considered to have failed, even if the data matches that sent in the PATH_CHALLENGE.</p>
 <p id="rfc.section.6.7.3.p.3">Additionally, the PATH_RESPONSE frame MUST be received on the same local address from which the corresponding PATH_CHALLENGE was sent.  If a PATH_RESPONSE frame is received on a different local address than the one from which the PATH_CHALLENGE was sent, path validation is considered to have failed, even if the data matches that sent in the PATH_CHALLENGE.  Thus, the endpoint considers the path to be valid when a PATH_RESPONSE frame is received on the same path with the same payload as the PATH_CHALLENGE frame.</p>
 <h3 id="rfc.section.6.7.4">
@@ -1556,11 +1556,11 @@ address {
 <h3 id="rfc.section.6.8.4">
 <a href="#rfc.section.6.8.4">6.8.4.</a> <a href="#migration-cc" id="migration-cc">Loss Detection and Congestion Control</a>
 </h3>
-<p id="rfc.section.6.8.4.p.1">The capacity available on the new path might not be the same as the old path.  Packets sent on the old path SHOULD NOT contribute to the state of the congestion control and RTT estimation on the new path. If it is using a single congestion controller and round-trip time estimator, the client SHOULD reset them prior to sending any non-probing packets from a new local address.</p>
-<p id="rfc.section.6.8.4.p.2">After successful validation of the client&#8217;s new address, the server SHOULD reset its congestion controller and round-trip time estimator prior to sending any further non-probing packets.</p>
+<p id="rfc.section.6.8.4.p.1">The capacity available on the new path might not be the same as the old path.  Packets sent on the old path SHOULD NOT contribute to congestion control or RTT estimation for the new path.</p>
+<p id="rfc.section.6.8.4.p.2">On confirming a peer&#8217;s ownership of its new address, an endpoint SHOULD immediately reset the congestion controller and round-trip time estimator for the new path.</p>
 <p id="rfc.section.6.8.4.p.3">An endpoint MUST NOT return to the send rate used for the previous path unless it is reasonably sure that the previous send rate is valid for the new path.  For instance, a change in the client&#8217;s port number is likely indicative of a rebinding in a middlebox and not a complete change in path.  This determination likely depends on heuristics, which could be imperfect; if the new path capacity is significantly reduced, ultimately this relies on the congestion controller responding to congestion signals and reducing send rates appropriately.</p>
 <p id="rfc.section.6.8.4.p.4">There may be apparent reordering at the receiver when an endpoint sends data and probes from/to multiple addresses during the migration period, since the two resulting paths may have different round-trip times.  A receiver of packets on multiple paths will still send ACK frames covering all received packets.</p>
-<p id="rfc.section.6.8.4.p.5">An endpoint MAY use a single congestion control context and a single loss recovery context, as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.  A sender MAY make exceptions for probe packets so that their loss detection is independent and does not unduly cause the congestion controller to reduce its sending rate.  For instance, an endpoint may run a separate alarm when a PATH_CHALLENGE is sent, which is disarmed when the corresponding PATH_RESPONSE is received.  If the alarm fires before the PATH_RESPONSE is received, the endpoint might send a new PATH_CHALLENGE, and restart the alarm for a longer period of time.</p>
+<p id="rfc.section.6.8.4.p.5">While multiple paths might be used during connection migration, a single congestion control context and a single loss recovery context (as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>) may be adequate.  A sender can make exceptions for probe packets so that their loss detection is independent and does not unduly cause the congestion controller to reduce its sending rate.  An endpoint might arm a separate alarm when a PATH_CHALLENGE is sent, which is disarmed when the corresponding PATH_RESPONSE is received.  If the alarm fires before the PATH_RESPONSE is received, the endpoint might send a new PATH_CHALLENGE, and restart the alarm for a longer period of time.</p>
 <h3 id="rfc.section.6.8.5">
 <a href="#rfc.section.6.8.5">6.8.5.</a> <a href="#migration-linkability" id="migration-linkability">Privacy Implications of Connection Migration</a>
 </h3>
@@ -2529,7 +2529,7 @@ Gap = HKDF-Expand-Label(packet_number_secret,
 <p id="rfc.section.9.6.p.4">Stream priority is most relevant when deciding which stream data will be transmitted.  Often, there will be limits on what can be transmitted as a result of connection flow control or the current congestion controller state.</p>
 <p id="rfc.section.9.6.p.5">Giving preference to the transmission of its own management frames ensures that the protocol functions efficiently.  That is, prioritizing frames other than STREAM frames ensures that loss recovery, congestion control, and flow control operate effectively.</p>
 <p id="rfc.section.9.6.p.6">Stream 0 MUST be prioritized over other streams prior to the completion of the cryptographic handshake.  This includes the retransmission of the second flight of client handshake messages, that is, the TLS Finished and any client authentication messages.</p>
-<p id="rfc.section.9.6.p.7">STREAM frames that are determined to be lost SHOULD be retransmitted before sending new data, unless application priorities indicate otherwise.  Retransmitting lost stream data can fill in gaps, which allows the peer to consume already received data and free up flow control window.</p>
+<p id="rfc.section.9.6.p.7">STREAM data in frames determined to be lost SHOULD be retransmitted before sending new data, unless application priorities indicate otherwise.  Retransmitting lost stream data can fill in gaps, which allows the peer to consume already received data and free up flow control window.</p>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#flow-control" id="flow-control">Flow Control</a>
 </h1>
