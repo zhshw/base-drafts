@@ -974,7 +974,7 @@ Internet-Draft           QUIC Transport Protocol              March 2018
    IDs selected by the client, swapped to ensure correct routing toward
    the client.
 
-   The connection ID could change over the lifetime of a connection,
+   The connection ID can change over the lifetime of a connection,
    especially in response to connection migration (Section 6.8).
    NEW_CONNECTION_ID frames (Section 7.13) are used to provide new
    connection ID values.
