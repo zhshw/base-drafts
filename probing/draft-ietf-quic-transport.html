@@ -1491,7 +1491,7 @@ address {
 </h2>
 <p id="rfc.section.6.8.p.1">QUIC allows connections to survive changes to endpoint addresses (that is, IP address and/or port), such as those caused by a endpoint migrating to a new network.  This section describes the process by which an endpoint migrates to a new address.</p>
 <p id="rfc.section.6.8.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.</p>
-<p id="rfc.section.6.8.p.3">This document limits migration of connections to new client addresses.  Migrating a connection to a new server address is left for future work. If a client receives packets from a new server address, the client MAY discard these packets.</p>
+<p id="rfc.section.6.8.p.3">This document limits migration of connections to new client addresses.  Migrating a connection to a new server address is left for future work. If a client receives packets from an unknown server address, the client MAY discard these packets.</p>
 <h3 id="rfc.section.6.8.1">
 <a href="#rfc.section.6.8.1">6.8.1.</a> <a href="#probing-a-new-path" id="probing-a-new-path">Probing a New Path</a>
 </h3>
@@ -1499,7 +1499,7 @@ address {
 <p id="rfc.section.6.8.1.p.2">An endpoint uses a new connection ID for probes sent from a new local address, see <a href="#migration-linkability" class="xref">Section 6.8.5</a> for further discussion.</p>
 <p id="rfc.section.6.8.1.p.3">Receiving a PATH_CHALLENGE frame from a peer indicates that the peer is probing for reachability on a path. An endpoint sends a PATH_RESPONSE in response as per <a href="#migrate-validate" class="xref">Section 6.7</a>.</p>
 <p id="rfc.section.6.8.1.p.4">PATH_CHALLENGE, PATH_RESPONSE, and PADDING frames are &#8220;probing frames&#8221;, and all other frames are &#8220;non-probing frames&#8221;.  A packet containing only probing frames is a &#8220;probing packet&#8221;, and a packet containing any other frame is a &#8220;non-probing packet&#8221;.</p>
-<p id="rfc.section.6.8.1.p.5">An endpoint MUST NOT send non-probing frames to a peer address until it receives a non-probing packet from that address.</p>
+<p id="rfc.section.6.8.1.p.5">A server MUST NOT send non-probing frames to a client&#8217;s address until the server receives a non-probing packet from that address.</p>
 <h3 id="rfc.section.6.8.2">
 <a href="#rfc.section.6.8.2">6.8.2.</a> <a href="#initiating-migration" id="initiating-migration">Initiating Connection Migration</a>
 </h3>
