@@ -1088,7 +1088,7 @@ address {
 <p id="rfc.section.4.6.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
 <p id="rfc.section.4.6.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.5</a>).  This randomized value is used to determine the handshake packet protection keys (see Section 5.2.2 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
 <p id="rfc.section.4.6.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
-<p id="rfc.section.4.6.p.8">The connection ID could change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.8</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
+<p id="rfc.section.4.6.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.8</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
 <h2 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
 </h2>
@@ -1491,14 +1491,15 @@ address {
 </h2>
 <p id="rfc.section.6.8.p.1">QUIC allows connections to survive changes to endpoint addresses (that is, IP address and/or port), such as those caused by a endpoint migrating to a new network.  This section describes the process by which an endpoint migrates to a new address.</p>
 <p id="rfc.section.6.8.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.</p>
-<p id="rfc.section.6.8.p.3">This document limits migration of connections to new client addresses.  Migrating a connection to a new server address is left for future work. If a client receives packets from a new server address, the client MAY discard these packets.</p>
+<p id="rfc.section.6.8.p.3">This document limits migration of connections to new client addresses.  Migrating a connection to a new server address is left for future work. If a client receives packets from an unknown server address, the client MAY discard these packets.</p>
 <h3 id="rfc.section.6.8.1">
 <a href="#rfc.section.6.8.1">6.8.1.</a> <a href="#probing-a-new-path" id="probing-a-new-path">Probing a New Path</a>
 </h3>
 <p id="rfc.section.6.8.1.p.1">An endpoint MAY probe for peer reachability from a new local address using path validation <a href="#migrate-validate" class="xref">Section 6.7</a> prior to migrating the connection to the new local address.  Failure of path validation simply means that the new path is not usable for this connection.  Failure to validate a path does not cause the connection to end unless there are no valid alternative paths available.</p>
 <p id="rfc.section.6.8.1.p.2">An endpoint uses a new connection ID for probes sent from a new local address, see <a href="#migration-linkability" class="xref">Section 6.8.5</a> for further discussion.</p>
 <p id="rfc.section.6.8.1.p.3">Receiving a PATH_CHALLENGE frame from a peer indicates that the peer is probing for reachability on a path. An endpoint sends a PATH_RESPONSE in response as per <a href="#migrate-validate" class="xref">Section 6.7</a>.</p>
-<p id="rfc.section.6.8.1.p.4">PATH_CHALLENGE, PATH_RESPONSE, and PADDING frames are &#8220;probing&#8221; frames. Until an endpoint receives packets containing other frames from a given peer address, it MUST NOT send other types of frames to that address.</p>
+<p id="rfc.section.6.8.1.p.4">PATH_CHALLENGE, PATH_RESPONSE, and PADDING frames are &#8220;probing frames&#8221;, and all other frames are &#8220;non-probing frames&#8221;.  A packet containing only probing frames is a &#8220;probing packet&#8221;, and a packet containing any other frame is a &#8220;non-probing packet&#8221;.</p>
+<p id="rfc.section.6.8.1.p.5">A server MUST NOT send non-probing frames to a client&#8217;s address until the server receives a non-probing packet from that address.</p>
 <h3 id="rfc.section.6.8.2">
 <a href="#rfc.section.6.8.2">6.8.2.</a> <a href="#initiating-migration" id="initiating-migration">Initiating Connection Migration</a>
 </h3>
