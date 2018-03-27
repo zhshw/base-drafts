@@ -427,7 +427,7 @@ address {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-03-26" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-03-27" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -451,12 +451,12 @@ address {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: September 27, 2018</td>
+<td class="left">Expires: September 28, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 26, 2018</td>
+<td class="right">March 27, 2018</td>
 </tr>
 
     	
@@ -475,7 +475,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 27, 2018.</p>
+<p>This Internet-Draft will expire on September 28, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1498,14 +1498,14 @@ address {
 <p id="rfc.section.6.8.1.p.1">An endpoint MAY probe for peer reachability from a new local address using path validation <a href="#migrate-validate" class="xref">Section 6.7</a> prior to migrating the connection to the new local address.  Failure of path validation simply means that the new path is not usable for this connection.  Failure to validate a path does not cause the connection to end unless there are no valid alternative paths available.</p>
 <p id="rfc.section.6.8.1.p.2">An endpoint uses a new connection ID for probes sent from a new local address, see <a href="#migration-linkability" class="xref">Section 6.8.5</a> for further discussion.</p>
 <p id="rfc.section.6.8.1.p.3">Receiving a PATH_CHALLENGE frame from a peer indicates that the peer is probing for reachability on a path. An endpoint sends a PATH_RESPONSE in response as per <a href="#migrate-validate" class="xref">Section 6.7</a>.</p>
-<p id="rfc.section.6.8.1.p.4">PATH_CHALLENGE, PATH_RESPONSE, and PADDING frames are &#8220;probing&#8221; frames. If an endpoint has received packets containing only these frames from a given peer address, it MUST NOT send other types of frames to that address.</p>
+<p id="rfc.section.6.8.1.p.4">PATH_CHALLENGE, PATH_RESPONSE, and PADDING frames are &#8220;probing&#8221; frames. Until an endpoint receives packets containing other frames from a given peer address, it MUST NOT send other types of frames to that address.</p>
 <h3 id="rfc.section.6.8.2">
 <a href="#rfc.section.6.8.2">6.8.2.</a> <a href="#initiating-migration" id="initiating-migration">Initiating Connection Migration</a>
 </h3>
 <p id="rfc.section.6.8.2.p.1">A endpoint can migrate a connection to a new local address by sending packets containing frames other than probing frames from that address.</p>
 <p id="rfc.section.6.8.2.p.2">Each endpoint validates its peer&#8217;s address during connection establishment.  Therefore, a migrating endpoint can send to its peer knowing that the peer is willing to receive at the peer&#8217;s current address. Thus an endpoint can migrate to a new local address without first validating the peer&#8217;s address.</p>
-<p id="rfc.section.6.8.2.p.3">However, the new path might not support the endpoint&#8217;s current sending rate. Therefore, the endpoint resets its congestion controller, as described in <a href="#migration-cc" class="xref">Section 6.8.4</a>.</p>
-<p id="rfc.section.6.8.2.p.4">Receiving acknowledgments for this data serves as proof of the peer&#8217;s reachability from the new address.  Note that since acknowledgments may be received on any path, return reachability on the new path is not established. To establish return reachability on the new path, an endpoint MAY concurrently initiate path validation <a href="#migrate-validate" class="xref">Section 6.7</a> on the new path.</p>
+<p id="rfc.section.6.8.2.p.3">When migrating, the new path might not support the endpoint&#8217;s current sending rate. Therefore, the endpoint resets its congestion controller, as described in <a href="#migration-cc" class="xref">Section 6.8.4</a>.</p>
+<p id="rfc.section.6.8.2.p.4">Receiving acknowledgments for data sent on the new path serves as proof of the peer&#8217;s reachability from the new address.  Note that since acknowledgments may be received on any path, return reachability on the new path is not established. To establish return reachability on the new path, an endpoint MAY concurrently initiate path validation <a href="#migrate-validate" class="xref">Section 6.7</a> on the new path.</p>
 <h3 id="rfc.section.6.8.3">
 <a href="#rfc.section.6.8.3">6.8.3.</a> <a href="#migration-response" id="migration-response">Responding to Connection Migration</a>
 </h3>
@@ -1520,12 +1520,12 @@ address {
 <a href="#rfc.section.6.8.3.1">6.8.3.1.</a> <a href="#address-spoofing" id="address-spoofing">Handling Address Spoofing by a Peer</a>
 </h4>
 <p id="rfc.section.6.8.3.1.p.1">It is possible that a peer is spoofing its source address to cause an endpoint to send excessive amounts of data to an unwilling host.  If the endpoint sends significantly more data than the spoofing peer, connection migration might be used to amplify the volume of data that an attacker can generate toward a victim.</p>
-<p id="rfc.section.6.8.3.1.p.2">As described in <a href="#migration-response" class="xref">Section 6.8.3</a>, an endpoint is required to validate a peer&#8217;s new address to confirm the peer&#8217;s possession of the new address.  Until a peer&#8217;s address is deemed valid, an endpoint MUST limit the rate at which it sends data to this address.  The endpoint MUST NOT send more than a minimum congestion window&#8217;s worth of data per estimated round-trip time (as defined in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>).  In the absence of this limit, an endpoint risks being used for a denial of service attack against an unsuspecting victim.  Note that since the endpoint will not have any round-trip time measurements to this address, the estimate SHOULD be the default initial value (see <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>).</p>
-<p id="rfc.section.6.8.3.1.p.3">An endpoint SHOULD NOT apply this rate limit when the endpoint skips validation of the peer&#8217;s address, as described in <a href="#migration-response" class="xref">Section 6.8.3</a>.</p>
+<p id="rfc.section.6.8.3.1.p.2">As described in <a href="#migration-response" class="xref">Section 6.8.3</a>, an endpoint is required to validate a peer&#8217;s new address to confirm the peer&#8217;s possession of the new address.  Until a peer&#8217;s address is deemed valid, an endpoint MUST limit the rate at which it sends data to this address.  The endpoint MUST NOT send more than a minimum congestion window&#8217;s worth of data per estimated round-trip time (kMinimumWindow, as defined in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>).  In the absence of this limit, an endpoint risks being used for a denial of service attack against an unsuspecting victim.  Note that since the endpoint will not have any round-trip time measurements to this address, the estimate SHOULD be the default initial value (see <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>).</p>
+<p id="rfc.section.6.8.3.1.p.3">If an endpoint skips validation of a peer address as described in <a href="#migration-response" class="xref">Section 6.8.3</a>, it does not need to limit its sending rate.</p>
 <h4 id="rfc.section.6.8.3.2">
 <a href="#rfc.section.6.8.3.2">6.8.3.2.</a> <a href="#on-path-spoofing" id="on-path-spoofing">Handling Address Spoofing by an On-path Attacker</a>
 </h4>
-<p id="rfc.section.6.8.3.2.p.1">An on-path attacker could cause a spurious connection migration by capturing and forwarding a packet such that it arrives before the legitimate copy of that packet.  Such a packet will appear to be a legitimate connection migration and the legitimate copy will be dropped as a duplicate. After a spurious migration, validation of the source address will fail because the entity at the source address does not have the necessary cryptographic keys to read or respond to the PATH_CHALLENGE frame that is sent to it, even if it wanted to.</p>
+<p id="rfc.section.6.8.3.2.p.1">An on-path attacker could cause a spurious connection migration by copying and forwarding a packet with a spoofed address such that it arrives before the original packet.  The packet with the spoofed address will be seen to come from a migrating connection, and the original packet will be seen as a duplicate and dropped. After a spurious migration, validation of the source address will fail because the entity at the source address does not have the necessary cryptographic keys to read or respond to the PATH_CHALLENGE frame that is sent to it even if it wanted to.</p>
 <p id="rfc.section.6.8.3.2.p.2">To protect the connection from failing due to such a spurious migration, an endpoint MUST revert to using the last validated peer address when validation of a new peer address fails.</p>
 <p id="rfc.section.6.8.3.2.p.3">If an endpoint has no state about the last validated peer address, it MUST close the connection silently by discarding all connection state. This results in new packets on the connection being handled generically. For instance, an endpoint MAY send a stateless reset in response to any further incoming packets.</p>
 <p id="rfc.section.6.8.3.2.p.4">Note that receipt of packets with higher packet numbers from the legitimate peer address will trigger another connection migration.  This will cause the validation of the address of the spurious migration to be abandoned.</p>
