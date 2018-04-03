@@ -300,7 +300,7 @@ address {
 <link href="#rfc.section.2.5" rel="Chapter" title="2.5 Refreshing Entries with Duplication">
 <link href="#rfc.section.3" rel="Chapter" title="3 Performance considerations">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Speculative table updates">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Additional state beyond HPACK.">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Additional state beyond HPACK">
 <link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Vulnerable Entries">
 <link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 Safe evictions">
 <link href="#rfc.section.3.2.3" rel="Chapter" title="3.2.3 Decoder Blocking">
@@ -318,7 +318,7 @@ address {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-03-18" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-04-03" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -342,7 +342,7 @@ address {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: September 19, 2018</td>
+<td class="left">Expires: October 5, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -355,7 +355,7 @@ address {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 18, 2018</td>
+<td class="right">April 03, 2018</td>
 </tr>
 
     	
@@ -374,7 +374,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 19, 2018.</p>
+<p>This Internet-Draft will expire on October 5, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -408,7 +408,7 @@ address {
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">Speculative table updates</a>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Additional state beyond HPACK.</a>
+<li>3.2.   <a href="#rfc.section.3.2">Additional state beyond HPACK</a>
 </li>
 <ul><li>3.2.1.   <a href="#rfc.section.3.2.1">Vulnerable Entries</a>
 </li>
@@ -536,7 +536,7 @@ address {
 </h2>
 <p id="rfc.section.3.1.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Indexed-Duplicate representations for popular header fields (<a href="#absolute-index" class="xref">Section 2.2</a>), ensuring they have small indices and hence minimal size on the wire.</p>
 <h2 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#additional-state-beyond-hpack" id="additional-state-beyond-hpack">Additional state beyond HPACK.</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#additional-state-beyond-hpack" id="additional-state-beyond-hpack">Additional state beyond HPACK</a>
 </h2>
 <h3 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#vulnerable-entries" id="vulnerable-entries">Vulnerable Entries</a>
@@ -545,7 +545,7 @@ address {
 <h3 id="rfc.section.3.2.2">
 <a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#safe-evictions" id="safe-evictions">Safe evictions</a>
 </h3>
-<p id="rfc.section.3.2.2.p.1">Section <a href="#evictions" class="xref">Section 2.4</a> describes how QPACK avoids invalid references that might result from out-of-order delivery.  When the encoder processes a HEADER_ACK, it dereferences table entries that were indexed in the acknowledged header.  To track which entries must be dereferenced, it can maintain a map from unacknowledged headers to lists of (absolute) indices.  The simplest place to store the actual reference count might be the table entries.  In practice the number of entries in the table with a non-zero reference count is likely to stay quite small.  A data structure tracking only entries with non-zero reference counts, separate from the main header table, could be more space efficient.</p>
+<p id="rfc.section.3.2.2.p.1">Section <a href="#evictions" class="xref">Section 2.4</a> describes how QPACK avoids invalid references that might result from out-of-order delivery.  One possible mechanism for tracking this is as follows: while encoding a block, the encoder maintains a reference set, which is the set of absolute indexes of dynamic entries that are referenced at least once in the block.  Each time a new entry is added to the reference set, its reference count is incremented.  When encoding is complete, the reference set is appended to a queue associated with the stream.  When a HEADER_ACK for a stream is received, the encoder dequeues the first reference set from the stream&#8217;s queue and decrements the associated reference counts.  If a stream is reset, the encoder processes all queued reference sets for that stream as if all header blocks had been acknowledged.</p>
 <h3 id="rfc.section.3.2.3">
 <a href="#rfc.section.3.2.3">3.2.3.</a> <a href="#decoder-blocking" id="decoder-blocking">Decoder Blocking</a>
 </h3>
