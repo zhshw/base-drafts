@@ -2530,7 +2530,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    from the closing state to draining, but it otherwise has no impact.
 
    An endpoint could receive packets from a new source address,
-   indicating a client connection migration (Section 6.8}), while in the
+   indicating a client connection migration (Section 6.8), while in the
    closing period.  An endpoint in the closing state MUST strictly limit
    the number of packets it sends to this new address until the address
    is validated (see Section 6.7).  A server in the closing state MAY
