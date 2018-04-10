@@ -881,15 +881,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    on implementation choices.
 
    The payload of this packet contains STREAM frames and could contain
-   PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.
+   PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.  Handshake
+   packets MAY contain CONNECTION_CLOSE frames if the handshake is
+   unsuccessful.
 
 4.5.  Protected Packets
 
    Packets that are protected with 0-RTT keys are sent with long
    headers; all packets protected with 1-RTT keys are sent with short
    headers.  The different packet types explicitly indicate the
-   encryption level and therefore the keys that are used to remove
-   packet protection.
 
 
 
@@ -897,6 +897,9 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 16]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   encryption level and therefore the keys that are used to remove
+   packet protection.
 
    Packets protected with 0-RTT keys use a type value of 0x7C.  The
    connection ID fields for a 0-RTT packet MUST match the values used in
@@ -943,9 +946,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    Any additional changes are not permitted; if subsequent packets of
    those types include a different Source Connection ID, they MUST be
    discarded.  This avoids problems that might arise from stateless
-   processing of multiple Initial packets producing different connection
-   IDs.
-
 
 
 
@@ -953,6 +953,9 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 17]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   processing of multiple Initial packets producing different connection
+   IDs.
 
    Short headers only include the Destination Connection ID and omit the
    explicit length.  The length of the Destination Connection ID field
@@ -998,9 +1001,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    For the packet header, the number of bits required to represent the
    packet number are reduced by including only the least significant
    bits of the packet number.  The actual packet number for each packet
-   is reconstructed at the receiver based on the largest packet number
-   received on a successfully authenticated packet.
-
 
 
 
@@ -1009,6 +1009,9 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 18]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   is reconstructed at the receiver based on the largest packet number
+   received on a successfully authenticated packet.
 
    A packet number is decoded by finding the packet number value that is
    closest to the next expected packet.  The next expected packet is the
@@ -1055,9 +1058,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    cannot be 2^32 or greater or the recipient will incorrectly assume a
    packet number that is 2^32 values lower and discard the packet.
 
-   Use of a secure random number generator [RFC4086] is not necessary
-   for generating the initial packet number, nor is it necessary that
-   the value be uniformly distributed.
 
 
 
@@ -1065,6 +1065,10 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 19]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Use of a secure random number generator [RFC4086] is not necessary
+   for generating the initial packet number, nor is it necessary that
+   the value be uniformly distributed.
 
 5.  Frames and Frame Types
 
@@ -1106,10 +1110,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    other frames, the Frame Type byte simply identifies the frame.  These
    frames are explained in more detail as they are referenced later in
    the document.
-
-
-
-
 
 
 
@@ -2299,7 +2299,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
    A client might wish to reduce linkability by employing a new
-   connection ID when sending traffic after a period of inactivity.
+   connection ID and source UDP port when sending traffic after a period
+   of inactivity.  Changing the UDP port from which it sends packets at
+   the same time might cause the packet to appear as a connection
+   migration.  This ensures that the mechanisms that support migration
+   are exercised even for clients that don't experience NAT rebindings
+   or genuine migrations.  Changing port number can cause a peer to
+   reset its congestion state (see Section 6.8.4), so the port SHOULD
+   only be changed infrequently.
 
    An endpoint that receives a successfully authenticated packet with a
    previously unused connection ID MUST use the next available
@@ -2340,19 +2347,16 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    o  idle timeout (Section 6.9.2)
 
-   o  immediate close (Section 6.9.3)
-
-   o  stateless reset (Section 6.9.4)
-
-
-
-
 
 
 Iyengar & Thomson       Expires October 12, 2018               [Page 42]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   o  immediate close (Section 6.9.3)
+
+   o  stateless reset (Section 6.9.4)
 
 6.9.1.  Closing and Draining Connection States
 
@@ -2398,10 +2402,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    recovery.  Servers that retain an open socket for accepting new
    connections SHOULD NOT exit the closing or draining period early.
 
-   Once the closing or draining period has ended, an endpoint SHOULD
-   discard all connection state.  This results in new packets on the
-   connection being handled generically.  For instance, an endpoint MAY
-   send a stateless reset in response to any further incoming packets.
 
 
 
@@ -2409,6 +2409,11 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 43]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Once the closing or draining period has ended, an endpoint SHOULD
+   discard all connection state.  This results in new packets on the
+   connection being handled generically.  For instance, an endpoint MAY
+   send a stateless reset in response to any further incoming packets.
 
    The draining and closing periods do not apply when a stateless reset
    (Section 6.9.4) is sent.
@@ -2453,11 +2458,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    packets that it receives before sending additional packets or
    increase the time between packets.
 
-   Note:  Allowing retransmission of a packet contradicts other advice
-      in this document that recommends the creation of new packet
-      numbers for every packet.  Sending new packet numbers is primarily
-      of advantage to loss recovery and congestion control, which are
-
 
 
 
@@ -2466,6 +2466,10 @@ Iyengar & Thomson       Expires October 12, 2018               [Page 44]
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
+   Note:  Allowing retransmission of a packet contradicts other advice
+      in this document that recommends the creation of new packet
+      numbers for every packet.  Sending new packet numbers is primarily
+      of advantage to loss recovery and congestion control, which are
       not expected to be relevant for a closed connection.
       Retransmitting the final packet requires less state.
 
@@ -2502,10 +2506,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    A server that receives packets that it cannot process sends a packet
    in the following layout:
-
-
-
-
 
 
 
