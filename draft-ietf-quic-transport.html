@@ -289,9 +289,10 @@ ul.toc li {
 <link href="#rfc.section.4.4.2" rel="Chapter" title="4.4.2 Retry Packet">
 <link href="#rfc.section.4.4.3" rel="Chapter" title="4.4.3 Handshake Packet">
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 Protected Packets">
-<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Connection ID">
-<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Packet Numbers">
-<link href="#rfc.section.4.7.1" rel="Chapter" title="4.7.1 Initial Packet Number">
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Compound Packets">
+<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Connection ID">
+<link href="#rfc.section.4.8" rel="Chapter" title="4.8 Packet Numbers">
+<link href="#rfc.section.4.8.1" rel="Chapter" title="4.8.1 Initial Packet Number">
 <link href="#rfc.section.5" rel="Chapter" title="5 Frames and Frame Types">
 <link href="#rfc.section.6" rel="Chapter" title="6 Life of a Connection">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Matching Packets to Connections">
@@ -499,11 +500,13 @@ ul.toc li {
 </li>
 </ul><li>4.5.   <a href="#rfc.section.4.5">Protected Packets</a>
 </li>
-<li>4.6.   <a href="#rfc.section.4.6">Connection ID</a>
+<li>4.6.   <a href="#rfc.section.4.6">Compound Packets</a>
 </li>
-<li>4.7.   <a href="#rfc.section.4.7">Packet Numbers</a>
+<li>4.7.   <a href="#rfc.section.4.7">Connection ID</a>
 </li>
-<ul><li>4.7.1.   <a href="#rfc.section.4.7.1">Initial Packet Number</a>
+<li>4.8.   <a href="#rfc.section.4.8">Packet Numbers</a>
+</li>
+<ul><li>4.8.1.   <a href="#rfc.section.4.8.1">Initial Packet Number</a>
 </li>
 </ul></ul><li>5.   <a href="#rfc.section.5">Frames and Frame Types</a>
 </li>
@@ -841,6 +844,8 @@ ul.toc li {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                       Packet Number (32)                      |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                       Payload Length (i)                    ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                          Payload (*)                        ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
@@ -858,13 +863,15 @@ ul.toc li {
 <dt>DCIL and SCIL:</dt>
 <dd style="margin-left: 8">Octet 1 contains the lengths of the two connection ID fields that follow it.  These lengths are encoded as two 4-bit unsigned integers. The Destination Connection ID Length (DCIL) field occupies the 4 high bits of the octet and the Source Connection ID Length (SCIL) field occupies the 4 low bits of the octet.  An encoded length of 0 indicates that the connection ID is also 0 octets in length.  Non-zero encoded lengths are increased by 3 to get the full length of the connection ID, producing a length between 4 and 18 octets inclusive.  For example, an octet with the value 0x50 describes an 8-octet Destination Connection ID and a zero-length Source Connection ID.</dd>
 <dt>Destination Connection ID:</dt>
-<dd style="margin-left: 8">The Destination Connection ID field follows the connection ID lengths and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.6</a> describes the use of this field in more detail.</dd>
+<dd style="margin-left: 8">The Destination Connection ID field follows the connection ID lengths and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
 <dt>Source Connection ID:</dt>
-<dd style="margin-left: 8">The Source Connection ID field follows the Destination Connection ID and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.6</a> describes the use of this field in more detail.</dd>
+<dd style="margin-left: 8">The Source Connection ID field follows the Destination Connection ID and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
 <dt>Packet Number:</dt>
-<dd style="margin-left: 8">The Packet Number is a 32-bit field that follows the two connection IDs.  <a href="#packet-numbers" class="xref">Section 4.7</a> describes the use of packet numbers.</dd>
+<dd style="margin-left: 8">The Packet Number is a 32-bit field that follows the two connection IDs.  <a href="#packet-numbers" class="xref">Section 4.8</a> describes the use of packet numbers.</dd>
+<dt>Payload Length:</dt>
+<dd style="margin-left: 8">The length of the Payload field in octets, encoded as a variable-length integer (<a href="#integer-encoding" class="xref">Section 7.1</a>).</dd>
 <dt>Payload:</dt>
-<dd style="margin-left: 8">All remaining octets in the packet are the payload of the packet.</dd>
+<dd style="margin-left: 8">The payload of the packet.</dd>
 </dl>
 <p id="rfc.section.4.1.p.3">The following packet types are defined:</p>
 <div id="rfc.table.1"></div>
@@ -901,6 +908,7 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
+<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can combine multiple long header packets into one UDP datagram.  See <a href="#packet-compound" class="xref">Section 4.6</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
@@ -954,7 +962,7 @@ ul.toc li {
 <dt>Short Packet Type:</dt>
 <dd style="margin-left: 8">The remaining 2 bits of octet 0 include one of 4 packet types.  <a href="#short-packet-types" class="xref">Table 2</a> lists the types that are defined for short packets.</dd>
 <dt>Destination Connection ID:</dt>
-<dd style="margin-left: 8">The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 4.6</a> for more details.</dd>
+<dd style="margin-left: 8">The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 4.7</a> for more details.</dd>
 <dt>Packet Number:</dt>
 <dd style="margin-left: 8">The length of the packet number field depends on the packet type.  This field can be 1, 2 or 4 octets long depending on the short packet type.</dd>
 <dt>Protected Payload:</dt>
@@ -1036,9 +1044,10 @@ ul.toc li {
 <p id="rfc.section.4.4.1.p.2">If the client has not previously received a Retry packet from the server, it populates the Destination Connection ID field with a randomly selected value.  This MUST be at least 8 octets in length.  Until a packet is received from the server, the client MUST use the same random value unless it also changes the Source Connection ID (which effectively starts a new connection attempt).  The randomized Destination Connection ID is used to determine packet protection keys, but is not included in server packets.</p>
 <p id="rfc.section.4.4.1.p.3">If the client received a Retry packet and is sending a second Initial packet, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet.  Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet.</p>
 <p id="rfc.section.4.4.1.p.4">The client populates the Source Connection ID field with a value of its choosing and sets the low bits of the ConnID Len field to match.</p>
-<p id="rfc.section.4.4.1.p.5">The first Initial packet that is sent by a client contains a randomized packet number.  All subsequent packets contain a packet number that is incremented by one, see (<a href="#packet-numbers" class="xref">Section 4.7</a>).</p>
-<p id="rfc.section.4.4.1.p.6">The payload of an Initial packet consists of a STREAM frame (or frames) for stream 0 containing a cryptographic handshake message, with enough PADDING frames that the packet is at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>).  The stream in this packet always starts at an offset of 0 (see <a href="#stateless-retry" class="xref">Section 6.5</a>) and the complete cryptographic handshake message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.3</a>).</p>
-<p id="rfc.section.4.4.1.p.7">The client uses the Initial packet type for any packet that contains an initial cryptographic handshake message.  This includes all cases where a new packet containing the initial cryptographic message needs to be created, this includes the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).</p>
+<p id="rfc.section.4.4.1.p.5">The first Initial packet that is sent by a client contains a randomized packet number.  All subsequent packets contain a packet number that is incremented by one, see (<a href="#packet-numbers" class="xref">Section 4.8</a>).</p>
+<p id="rfc.section.4.4.1.p.6">The payload of an Initial packet conveys a STREAM frame (or frames) for stream 0 containing a cryptographic handshake message.  The stream in this packet always starts at an offset of 0 (see <a href="#stateless-retry" class="xref">Section 6.5</a>) and the complete cryptographic handshake message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.3</a>).</p>
+<p id="rfc.section.4.4.1.p.7">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-compound" class="xref">Section 4.6</a>).</p>
+<p id="rfc.section.4.4.1.p.8">The client uses the Initial packet type for any packet that contains an initial cryptographic handshake message.  This includes all cases where a new packet containing the initial cryptographic message needs to be created, this includes the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).</p>
 <h3 id="rfc.section.4.4.2">
 <a href="#rfc.section.4.4.2">4.4.2.</a> <a href="#packet-retry" id="packet-retry">Retry Packet</a>
 </h3>
@@ -1054,8 +1063,8 @@ ul.toc li {
 <a href="#rfc.section.4.4.3">4.4.3.</a> <a href="#packet-handshake" id="packet-handshake">Handshake Packet</a>
 </h3>
 <p id="rfc.section.4.4.3.p.1">A Handshake packet uses long headers with a type value of 0x7D.  It is used to carry acknowledgments and cryptographic handshake messages from the server and client.</p>
-<p id="rfc.section.4.4.3.p.2">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id" class="xref">Section 4.6</a>).</p>
-<p id="rfc.section.4.4.3.p.3">The first Handshake packet sent by a server contains a randomized packet number.  This value is increased for each subsequent packet sent by the server as described in <a href="#packet-numbers" class="xref">Section 4.7</a>.  The client increments the packet number from its previous packet by one for each Handshake packet that it sends (which might be an Initial, 0-RTT Protected, or Handshake packet).</p>
+<p id="rfc.section.4.4.3.p.2">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id" class="xref">Section 4.7</a>).</p>
+<p id="rfc.section.4.4.3.p.3">The first Handshake packet sent by a server contains a randomized packet number.  This value is increased for each subsequent packet sent by the server as described in <a href="#packet-numbers" class="xref">Section 4.8</a>.  The client increments the packet number from its previous packet by one for each Handshake packet that it sends (which might be an Initial, 0-RTT Protected, or Handshake packet).</p>
 <p id="rfc.section.4.4.3.p.4">Servers MUST NOT send more than three Handshake packets without receiving a packet from a verified source address.  Source addresses can be verified through an address validation token, receipt of the final cryptographic message from the client, or by receiving a valid PATH_RESPONSE frame from the client.</p>
 <p id="rfc.section.4.4.3.p.5">If the server expects to generate more than three Handshake packets in response to an Initial packet, it SHOULD include a PATH_CHALLENGE frame in each Handshake packet that it sends.  After receiving at least one valid PATH_RESPONSE frame, the server can send its remaining Handshake packets. Servers can instead perform address validation using a Retry packet; this requires less state on the server, but could involve additional computational effort depending on implementation choices.</p>
 <p id="rfc.section.4.4.3.p.6">The payload of this packet contains STREAM frames and could contain PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.  Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
@@ -1064,38 +1073,44 @@ ul.toc li {
 </h2>
 <p id="rfc.section.4.5.p.1">Packets that are protected with 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.</p>
 <p id="rfc.section.4.5.p.2">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
-<p id="rfc.section.4.5.p.3">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.6</a>.</p>
+<p id="rfc.section.4.5.p.3">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.7</a>.</p>
 <p id="rfc.section.4.5.p.4">The version field for protected packets is the current QUIC version.</p>
-<p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.7</a> for details.</p>
+<p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
 <p id="rfc.section.4.5.p.6">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
 <h2 id="rfc.section.4.6">
-<a href="#rfc.section.4.6">4.6.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
+<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-compound" id="packet-compound">Compound Packets</a>
 </h2>
-<p id="rfc.section.4.6.p.1">A connection ID is used to ensure consistent routing of packets.  The long header contains two connection IDs: the Destination Connection ID is chosen by the recipient of the packet and is used to provide consistent routing; the Source Connection ID is used to set the Destination Connection ID used by the peer.</p>
-<p id="rfc.section.4.6.p.2">During the handshake, packets with the long header are used to establish the connection ID that each endpoint uses.  Each endpoint uses the Source Connection ID field to specify the connection ID that is used in the Destination Connection ID field of packets being sent to them.  Upon receiving a packet, each endpoint sets the Destination Connection ID it sends to match the value of the Source Connection ID that they receive.</p>
-<p id="rfc.section.4.6.p.3">During the handshake, an endpoint might receive multiple packets with the long header, and thus be given multiple opportunities to update the Destination Connection ID it sends.  A client MUST only change the value it sends in the Destination Connection ID in response to the first packet of each type it receives from the server (Retry or Handshake); a server MUST set its value based on the Initial packet.  Any additional changes are not permitted; if subsequent packets of those types include a different Source Connection ID, they MUST be discarded.  This avoids problems that might arise from stateless processing of multiple Initial packets producing different connection IDs.</p>
-<p id="rfc.section.4.6.p.4">Short headers only include the Destination Connection ID and omit the explicit length.  The length of the Destination Connection ID field is expected to be known to endpoints.</p>
-<p id="rfc.section.4.6.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
-<p id="rfc.section.4.6.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.5</a>).  This randomized value is used to determine the handshake packet protection keys (see Section 5.3.2 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
-<p id="rfc.section.4.6.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
-<p id="rfc.section.4.6.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.8</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
+<p id="rfc.section.4.6.p.1">A sender can combine multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams required to be emitted when application data can be sent during the handshake.  A packet with a short header does not include a length, so it has to be the last packet included in a UDP datagram.</p>
+<p id="rfc.section.4.6.p.2">The sender MUST NOT combine QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
+<p id="rfc.section.4.6.p.3">Every QUIC packet that is being conveyed in a compound UDP datagram is a complete QUIC packet.  No fields in the packet header are omitted.  The receiver of a compound UDP datagram MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.</p>
 <h2 id="rfc.section.4.7">
-<a href="#rfc.section.4.7">4.7.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
+<a href="#rfc.section.4.7">4.7.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
 </h2>
-<p id="rfc.section.4.7.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.  The packet number for sending MUST increase by at least one after sending any packet, unless otherwise specified (see <a href="#initial-packet-number" class="xref">Section 4.7.1</a>).</p>
-<p id="rfc.section.4.7.p.2">A QUIC endpoint MUST NOT reuse a packet number within the same connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; a server MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.9.4</a>) in response to further packets that it receives.</p>
-<p id="rfc.section.4.7.p.3">For the packet header, the number of bits required to represent the packet number are reduced by including only the least significant bits of the packet number.  The actual packet number for each packet is reconstructed at the receiver based on the largest packet number received on a successfully authenticated packet.</p>
-<p id="rfc.section.4.7.p.4">A packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 16-bit value of 0x1f94 will be decoded as 0xaa831f94.</p>
-<p id="rfc.section.4.7.p.5">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
-<p id="rfc.section.4.7.p.6">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
-<p id="rfc.section.4.7.p.7">For example, if an endpoint has received an acknowledgment for packet 0x6afa2f, sending a packet with a number of 0x6b4264 requires a 16-bit or larger packet number encoding; whereas a 32-bit packet number is needed to send a packet with a number of 0x6bc107.</p>
-<p id="rfc.section.4.7.p.8">A Version Negotiation packet (<a href="#packet-version" class="xref">Section 4.3</a>) does not include a packet number.  The Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>) has special rules for populating the packet number field.</p>
-<h3 id="rfc.section.4.7.1">
-<a href="#rfc.section.4.7.1">4.7.1.</a> <a href="#initial-packet-number" id="initial-packet-number">Initial Packet Number</a>
+<p id="rfc.section.4.7.p.1">A connection ID is used to ensure consistent routing of packets.  The long header contains two connection IDs: the Destination Connection ID is chosen by the recipient of the packet and is used to provide consistent routing; the Source Connection ID is used to set the Destination Connection ID used by the peer.</p>
+<p id="rfc.section.4.7.p.2">During the handshake, packets with the long header are used to establish the connection ID that each endpoint uses.  Each endpoint uses the Source Connection ID field to specify the connection ID that is used in the Destination Connection ID field of packets being sent to them.  Upon receiving a packet, each endpoint sets the Destination Connection ID it sends to match the value of the Source Connection ID that they receive.</p>
+<p id="rfc.section.4.7.p.3">During the handshake, an endpoint might receive multiple packets with the long header, and thus be given multiple opportunities to update the Destination Connection ID it sends.  A client MUST only change the value it sends in the Destination Connection ID in response to the first packet of each type it receives from the server (Retry or Handshake); a server MUST set its value based on the Initial packet.  Any additional changes are not permitted; if subsequent packets of those types include a different Source Connection ID, they MUST be discarded.  This avoids problems that might arise from stateless processing of multiple Initial packets producing different connection IDs.</p>
+<p id="rfc.section.4.7.p.4">Short headers only include the Destination Connection ID and omit the explicit length.  The length of the Destination Connection ID field is expected to be known to endpoints.</p>
+<p id="rfc.section.4.7.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
+<p id="rfc.section.4.7.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.5</a>).  This randomized value is used to determine the handshake packet protection keys (see Section 5.3.2 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
+<p id="rfc.section.4.7.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
+<p id="rfc.section.4.7.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.8</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
+<h2 id="rfc.section.4.8">
+<a href="#rfc.section.4.8">4.8.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
+</h2>
+<p id="rfc.section.4.8.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.  The packet number for sending MUST increase by at least one after sending any packet, unless otherwise specified (see <a href="#initial-packet-number" class="xref">Section 4.8.1</a>).</p>
+<p id="rfc.section.4.8.p.2">A QUIC endpoint MUST NOT reuse a packet number within the same connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; a server MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.9.4</a>) in response to further packets that it receives.</p>
+<p id="rfc.section.4.8.p.3">For the packet header, the number of bits required to represent the packet number are reduced by including only the least significant bits of the packet number.  The actual packet number for each packet is reconstructed at the receiver based on the largest packet number received on a successfully authenticated packet.</p>
+<p id="rfc.section.4.8.p.4">A packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 16-bit value of 0x1f94 will be decoded as 0xaa831f94.</p>
+<p id="rfc.section.4.8.p.5">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
+<p id="rfc.section.4.8.p.6">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
+<p id="rfc.section.4.8.p.7">For example, if an endpoint has received an acknowledgment for packet 0x6afa2f, sending a packet with a number of 0x6b4264 requires a 16-bit or larger packet number encoding; whereas a 32-bit packet number is needed to send a packet with a number of 0x6bc107.</p>
+<p id="rfc.section.4.8.p.8">A Version Negotiation packet (<a href="#packet-version" class="xref">Section 4.3</a>) does not include a packet number.  The Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>) has special rules for populating the packet number field.</p>
+<h3 id="rfc.section.4.8.1">
+<a href="#rfc.section.4.8.1">4.8.1.</a> <a href="#initial-packet-number" id="initial-packet-number">Initial Packet Number</a>
 </h3>
-<p id="rfc.section.4.7.1.p.1">The initial value for packet number MUST be selected randomly from a range between 0 and 2^32 - 1025 (inclusive).  This value is selected so that Initial and Handshake packets exercise as many possible values for the Packet Number field as possible.</p>
-<p id="rfc.section.4.7.1.p.2">Limiting the range allows both for loss of packets and for any stateless exchanges.  Packet numbers are incremented for subsequent packets, but packet loss and stateless handling can both mean that the first packet sent by an endpoint isn&#8217;t necessarily the first packet received by its peer.  The first packet received by a peer cannot be 2^32 or greater or the recipient will incorrectly assume a packet number that is 2^32 values lower and discard the packet.</p>
-<p id="rfc.section.4.7.1.p.3">Use of a secure random number generator <a href="#RFC4086" class="xref">[RFC4086]</a> is not necessary for generating the initial packet number, nor is it necessary that the value be uniformly distributed.</p>
+<p id="rfc.section.4.8.1.p.1">The initial value for packet number MUST be selected randomly from a range between 0 and 2^32 - 1025 (inclusive).  This value is selected so that Initial and Handshake packets exercise as many possible values for the Packet Number field as possible.</p>
+<p id="rfc.section.4.8.1.p.2">Limiting the range allows both for loss of packets and for any stateless exchanges.  Packet numbers are incremented for subsequent packets, but packet loss and stateless handling can both mean that the first packet sent by an endpoint isn&#8217;t necessarily the first packet received by its peer.  The first packet received by a peer cannot be 2^32 or greater or the recipient will incorrectly assume a packet number that is 2^32 values lower and discard the packet.</p>
+<p id="rfc.section.4.8.1.p.3">Use of a secure random number generator <a href="#RFC4086" class="xref">[RFC4086]</a> is not necessary for generating the initial packet number, nor is it necessary that the value be uniformly distributed.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#frames" id="frames">Frames and Frame Types</a>
 </h1>
@@ -1638,7 +1653,7 @@ Gap = HKDF-Expand-Label(packet_number_secret,
 <a href="#rfc.section.6.9.4.2">6.9.4.2.</a> <a href="#calculating-a-stateless-reset-token" id="calculating-a-stateless-reset-token">Calculating a Stateless Reset Token</a>
 </h4>
 <p id="rfc.section.6.9.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, a server could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple servers in a cluster or a storage problem for a server that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
-<p id="rfc.section.6.9.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the server&#8217;s connection ID (see <a href="#connection-id" class="xref">Section 4.6</a>), and an identifier for the server instance.  A server could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, server_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with server and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
+<p id="rfc.section.6.9.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the server&#8217;s connection ID (see <a href="#connection-id" class="xref">Section 4.7</a>), and an identifier for the server instance.  A server could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, server_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with server and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
 <p id="rfc.section.6.9.4.2.p.3">A server that loses state can use the same method to generate a valid Stateless Reset Secret.  The connection ID comes from the packet that the server receives.</p>
 <p id="rfc.section.6.9.4.2.p.4">This design relies on the client always sending a connection ID in its packets so that the server can use the connection ID from a packet to reset the connection.  A server that uses this design cannot allow clients to use a zero-length connection ID.</p>
 <p id="rfc.section.6.9.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of server instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same server without first changing to use a different static key or server identifier.</p>
