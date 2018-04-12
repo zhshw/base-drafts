@@ -908,7 +908,7 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
-<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can coalesce multiple long header packets into one UDP datagram.  See <a href="#packet-compound" class="xref">Section 4.6</a> for more details.</p>
+<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can coalesce multiple long header packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
@@ -1047,7 +1047,7 @@ ul.toc li {
 <p id="rfc.section.4.4.1.p.4">The client populates the Source Connection ID field with a value of its choosing and sets the low bits of the ConnID Len field to match.</p>
 <p id="rfc.section.4.4.1.p.5">The first Initial packet that is sent by a client contains a randomized packet number.  All subsequent packets contain a packet number that is incremented by one, see (<a href="#packet-numbers" class="xref">Section 4.8</a>).</p>
 <p id="rfc.section.4.4.1.p.6">The payload of an Initial packet conveys a STREAM frame (or frames) for stream 0 containing a cryptographic handshake message.  The stream in this packet always starts at an offset of 0 (see <a href="#stateless-retry" class="xref">Section 6.5</a>) and the complete cryptographic handshake message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.3</a>).</p>
-<p id="rfc.section.4.4.1.p.7">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-compound" class="xref">Section 4.6</a>).</p>
+<p id="rfc.section.4.4.1.p.7">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-coalesce" class="xref">Section 4.6</a>).</p>
 <p id="rfc.section.4.4.1.p.8">The client uses the Initial packet type for any packet that contains an initial cryptographic handshake message.  This includes all cases where a new packet containing the initial cryptographic message needs to be created, this includes the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).</p>
 <h3 id="rfc.section.4.4.2">
 <a href="#rfc.section.4.4.2">4.4.2.</a> <a href="#packet-retry" id="packet-retry">Retry Packet</a>
@@ -1079,7 +1079,7 @@ ul.toc li {
 <p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
 <p id="rfc.section.4.5.p.6">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
 <h2 id="rfc.section.4.6">
-<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-compound" id="packet-compound">Coaslescing Packets</a>
+<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coaslescing Packets</a>
 </h2>
 <p id="rfc.section.4.6.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards.  A packet with a short header does not include a length, so it has to be the last packet included in a UDP datagram.</p>
 <p id="rfc.section.4.6.p.2">The sender MUST NOT coalesce QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
