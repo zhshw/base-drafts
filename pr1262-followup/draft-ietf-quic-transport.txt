@@ -533,7 +533,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    End of the Payload field (which is also the end of the long header
    packet) is determined by the value of the Payload Length field.
-   Senders can combine multiple long header packets into one UDP
+   Senders can coalesce multiple long header packets into one UDP
    datagram.  See Section 4.6 for more details.
 
 4.2.  Short Header
@@ -938,7 +938,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    packet with a short header does not include a length, so it has to be
    the last packet included in a UDP datagram.
 
-   The sender MUST NOT combine QUIC packets belonging to different QUIC
+   The sender MUST NOT coalesce QUIC packets belonging to different QUIC
    connections into a single UDP datagram.
 
    Every QUIC packet that is coalesced into a single UDP datagram is

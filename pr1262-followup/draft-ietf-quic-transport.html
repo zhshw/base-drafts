@@ -908,7 +908,7 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
-<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can combine multiple long header packets into one UDP datagram.  See <a href="#packet-compound" class="xref">Section 4.6</a> for more details.</p>
+<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can coalesce multiple long header packets into one UDP datagram.  See <a href="#packet-compound" class="xref">Section 4.6</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
@@ -1082,7 +1082,7 @@ ul.toc li {
 <a href="#rfc.section.4.6">4.6.</a> <a href="#packet-compound" id="packet-compound">Coaslescing Packets</a>
 </h2>
 <p id="rfc.section.4.6.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards.  A packet with a short header does not include a length, so it has to be the last packet included in a UDP datagram.</p>
-<p id="rfc.section.4.6.p.2">The sender MUST NOT combine QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
+<p id="rfc.section.4.6.p.2">The sender MUST NOT coalesce QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
 <p id="rfc.section.4.6.p.3">Every QUIC packet that is coalesced into a single UDP datagram is separate and complete.  Though the values of some fields in the packet header might be redundant, no fields are omitted.  The receiver of coalesced QUIC packets MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.</p>
 <h2 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
