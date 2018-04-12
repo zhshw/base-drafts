@@ -88,7 +88,7 @@ Table of Contents
        4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  15
        4.4.3.  Handshake Packet  . . . . . . . . . . . . . . . . . .  16
      4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  17
-     4.6.  Compound Packets  . . . . . . . . . . . . . . . . . . . .  17
+     4.6.  Coaslescing Packets . . . . . . . . . . . . . . . . . . .  17
      4.7.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  18
      4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  19
        4.8.1.  Initial Packet Number . . . . . . . . . . . . . . . .  20
@@ -533,7 +533,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    End of the Payload field (which is also the end of the long header
    packet) is determined by the value of the Payload Length field.
-   Senders can combine multiple long header packets into one UDP
+   Senders can coalesce multiple long header packets into one UDP
    datagram.  See Section 4.6 for more details.
 
 4.2.  Short Header
@@ -719,8 +719,8 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    ACK frame by a client.  Receiving another Initial packet implicitly
    acknowledges a Version Negotiation packet.
 
-   See Section 6.2 for a description of the version negotiation process.
-
+   The Version Negotiation packet does not include the Packet Number and
+   Length fields present in other packets that use the long header form.
 
 
 
@@ -729,6 +729,11 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 13]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Consequently, a Version Negotiation packet consumes an entire UDP
+   datagram.
+
+   See Section 6.2 for a description of the version negotiation process.
 
 4.4.  Cryptographic Handshake Packets
 
@@ -773,11 +778,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    randomized packet number.  All subsequent packets contain a packet
    number that is incremented by one, see (Section 4.8).
 
-   The payload of an Initial packet conveys a STREAM frame (or frames)
-   for stream 0 containing a cryptographic handshake message.  The
-   stream in this packet always starts at an offset of 0 (see
-   Section 6.5) and the complete cryptographic handshake message MUST
-   fit in a single packet (see Section 6.3).
 
 
 
@@ -785,6 +785,12 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 14]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   The payload of an Initial packet conveys a STREAM frame (or frames)
+   for stream 0 containing a cryptographic handshake message.  The
+   stream in this packet always starts at an offset of 0 (see
+   Section 6.5) and the complete cryptographic handshake message MUST
+   fit in a single packet (see Section 6.3).
 
    The payload of a UDP datagram carrying the Initial packet MUST be
    expanded to at least 1200 octets (see Section 8), by adding PADDING
@@ -828,12 +834,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    Continuing the cryptographic handshake is necessary to ensure that an
    attacker cannot force a downgrade of any cryptographic parameters.
-   In addition to continuing the cryptographic handshake, the client
-   MUST remember the results of any version negotiation that occurred
-   (see Section 6.2).  The client MAY also retain any observed RTT or
-   congestion state that it has accumulated for the flow, but other
-   transport state MUST be discarded.
-
 
 
 
@@ -841,6 +841,12 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 15]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   In addition to continuing the cryptographic handshake, the client
+   MUST remember the results of any version negotiation that occurred
+   (see Section 6.2).  The client MAY also retain any observed RTT or
+   congestion state that it has accumulated for the flow, but other
+   transport state MUST be discarded.
 
    The payload of the Retry packet contains at least two frames.  It
    MUST include a STREAM frame on stream 0 with offset 0 containing the
@@ -884,12 +890,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    The payload of this packet contains STREAM frames and could contain
    PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.  Handshake
-   packets MAY contain CONNECTION_CLOSE frames if the handshake is
-   unsuccessful.
-
-
-
-
 
 
 
@@ -897,6 +897,9 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 16]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   packets MAY contain CONNECTION_CLOSE frames if the handshake is
+   unsuccessful.
 
 4.5.  Protected Packets
 
@@ -926,25 +929,22 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    plaintext consists of a sequence of frames, as described in
    Section 5.
 
-4.6.  Compound Packets
+4.6.  Coaslescing Packets
 
-   A sender can combine multiple QUIC packets (typically a Cryptographic
-   Handshake packet and a Protected packet) into one UDP datagram.  This
-   can reduce the number of UDP datagrams required to be emitted when
-   application data can be sent during the handshake.  A packet with a
-   short header does not include a length, so it has to be the last
-   packet included in a UDP datagram.
+   A sender can coalesce multiple QUIC packets (typically a
+   Cryptographic Handshake packet and a Protected packet) into one UDP
+   datagram.  This can reduce the number of UDP datagrams needed to send
+   application data during the handshake and immediately afterwards.  A
+   packet with a short header does not include a length, so it has to be
+   the last packet included in a UDP datagram.
 
-   The sender MUST NOT combine QUIC packets belonging to different QUIC
+   The sender MUST NOT coalesce QUIC packets belonging to different QUIC
    connections into a single UDP datagram.
 
-   Every QUIC packet that is being conveyed in a compound UDP datagram
-   is a complete QUIC packet.  No fields in the packet header are
-   omitted.  The receiver of a compound UDP datagram MUST individually
-   process each QUIC packet and separately acknowledge them, as if they
-   were received as the payload of different UDP datagrams.
-
-
+   Every QUIC packet that is coalesced into a single UDP datagram is
+   separate and complete.  Though the values of some fields in the
+   packet header might be redundant, no fields are omitted.  The
+   receiver of coalesced QUIC packets MUST individually process each
 
 
 
@@ -953,6 +953,9 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 17]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   QUIC packet and separately acknowledge them, as if they were received
+   as the payload of different UDP datagrams.
 
 4.7.  Connection ID
 
@@ -998,9 +1001,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    is used to determine the handshake packet protection keys (see
    Section 5.3.2 of [QUIC-TLS]).
 
-   A Version Negotiation (Section 4.3) packet MUST use both connection
-   IDs selected by the client, swapped to ensure correct routing toward
-   the client.
 
 
 
@@ -1009,6 +1009,10 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 18]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   A Version Negotiation (Section 4.3) packet MUST use both connection
+   IDs selected by the client, swapped to ensure correct routing toward
+   the client.
 
    The connection ID can change over the lifetime of a connection,
    especially in response to connection migration (Section 6.8).
@@ -1054,10 +1058,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    recovered even if the packet arrives after packets that are sent
    afterwards.
 
-   As a result, the size of the packet number encoding is at least one
-   more than the base 2 logarithm of the number of contiguous
-   unacknowledged packet numbers, including the new packet.
-
 
 
 
@@ -1065,6 +1065,10 @@ Iyengar & Thomson       Expires October 14, 2018               [Page 19]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   As a result, the size of the packet number encoding is at least one
+   more than the base 2 logarithm of the number of contiguous
+   unacknowledged packet numbers, including the new packet.
 
    For example, if an endpoint has received an acknowledgment for packet
    0x6afa2f, sending a packet with a number of 0x6b4264 requires a
@@ -1100,6 +1104,24 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    consists of a sequence of frames, as shown in Figure 4.  Version
    Negotiation and Stateless Reset do not contain frames.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires October 14, 2018               [Page 20]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1113,14 +1135,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                   Figure 4: Contents of Protected Payload
-
-
-
-
-Iyengar & Thomson       Expires October 14, 2018               [Page 20]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
    Protected payloads MUST contain at least one frame, and MAY contain
    multiple frames and multiple frame types.
@@ -1142,20 +1156,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    other frames, the Frame Type byte simply identifies the frame.  These
    frames are explained in more detail as they are referenced later in
    the document.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -2599,7 +2599,8 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
    This design ensures that a stateless reset packet is - to the extent
-   possible - indistinguishable from a regular packet.
+   possible - indistinguishable from a regular packet with a short
+   header.
 
    A server generates a random 18-octet Destination Connection ID field.
    For a client that depends on the server including a connection ID,
@@ -2625,7 +2626,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    minimizes the perceived gap between the last packet that the server
    sent and this packet.  A server MAY use a different short header
    type, indicating a different packet number length, but a longer
-
 
 
 
