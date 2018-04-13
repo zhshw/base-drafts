@@ -285,7 +285,9 @@ ul.toc li {
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations">
 <link href="#rfc.section.5" rel="Chapter" title="5 Security and Privacy Considerations">
 <link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgments">
-<link href="#rfc.references" rel="Chapter" title="7 Informative References">
+<link href="#rfc.references" rel="Chapter" title="7 References">
+<link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -374,9 +376,13 @@ ul.toc li {
 </li>
 <li>6.   <a href="#rfc.section.6">Acknowledgments</a>
 </li>
-<li>7.   <a href="#rfc.references">Informative References</a>
+<li>7.   <a href="#rfc.references">References</a>
 </li>
-<li><a href="#rfc.authors">Authors' Addresses</a>
+<ul><li>7.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>7.2.   <a href="#rfc.references.2">Informative References</a>
+</li>
+</ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
 
@@ -385,16 +391,16 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">The QUIC transport protocol <a href="#QUIC-TRANS" class="xref">[QUIC-TRANS]</a> uses Transport Layer Security (TLS) <a href="#TLS" class="xref">[TLS]</a> to encrypt most of its protocol internals. In contrast to TCP where the sequence and acknowledgement numbers and timestamps (if the respective option is in use) can be seen by on-path observers and used to estimate end-to-end latency, QUIC&#8217;s wire image (see <a href="#WIRE-IMAGE" class="xref">[WIRE-IMAGE]</a>) currently does not expose any information that can be used for passive latency measurement techniques that rely on this information (e.g. <a href="#CACM-TCP" class="xref">[CACM-TCP]</a>, <a href="#TMA-QOF" class="xref">[TMA-QOF]</a>).</p>
+<p id="rfc.section.1.p.1">The QUIC transport protocol <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a> uses Transport Layer Security (TLS) <a href="#TLS" class="xref">[TLS]</a> to encrypt most of its protocol internals. In contrast to TCP where the sequence and acknowledgement numbers and timestamps (if the respective option is in use) can be seen by on-path observers and used to estimate end-to-end latency, QUIC&#8217;s wire image (see <a href="#WIRE-IMAGE" class="xref">[WIRE-IMAGE]</a>) currently does not expose any information that can be used for passive latency measurement techniques that rely on this information (e.g. <a href="#CACM-TCP" class="xref">[CACM-TCP]</a>, <a href="#TMA-QOF" class="xref">[TMA-QOF]</a>).</p>
 <p id="rfc.section.1.p.2">This document adds an explicit signal for passive latency measurability to the QUIC short header: a &#8220;spin bit&#8221;.  Passive observation of the spin bit provides one RTT sample per RTT to passive observers of QUIC traffic. This document describes the mechanism, how it can be added to QUIC, and how it can be used by passive measurement facilities to generate RTT samples.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#the-spin-bit-mechanism" id="the-spin-bit-mechanism">The Spin Bit Mechanism</a>
 </h1>
-<p id="rfc.section.2.p.1">The latency spin bit enables latency monitoring from observation points on the network path. Since it is possible to measure handshake RTT without a spin bit, it is sufficient to include the spin bit in the short packet header. The spin bit therefore appears only after version negotiation and connection establishment are completed.</p>
+<p id="rfc.section.2.p.1">The latency spin bit enables latency monitoring from observation points on the network path throughout the duration of a connection. Since it is possible to measure handshake RTT without a spin bit, it is sufficient to include the spin bit in the short packet header. The spin bit therefore appears only after version negotiation and connection establishment are completed.</p>
 <h1 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#proposed-short-header-format-including-spin-bit" id="proposed-short-header-format-including-spin-bit">Proposed Short Header Format Including Spin Bit</a>
 </h1>
-<p id="rfc.section.2.1.p.1">As of the current editor&#8217;s version of <a href="#QUIC-TRANS" class="xref">[QUIC-TRANS]</a>, this proposal specifies using the fifth most significant bit (0x08) of the first octet in the short header for the spin bit.</p>
+<p id="rfc.section.2.1.p.1">As of the current editor&#8217;s version of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>, this proposal specifies using the fifth most significant bit (0x08) of the first octet in the short header for the spin bit.</p>
 <div id="rfc.figure.1"></div>
 <div id="fig-short-header"></div>
 <pre>
@@ -416,27 +422,29 @@ ul.toc li {
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#spinbit" id="spinbit">Setting the Spin Bit on Outgoing Packets</a>
 </h1>
-<p id="rfc.section.2.2.p.1">Each endpoint, client and server, maintains a spin value, 0 or 1, for each QUIC connection, and sets the spin bit in the short header to the currently stored value when a packet with a short header is sent out. The spin value is initialized to 0 on both side, at the client as well as the server at connection start. Each endpoint also remembers the highest packet number seen from its peer on the connection. The spin value is then determined at each endpoint as follows:</p>
+<p id="rfc.section.2.2.p.1">Each endpoint, client and server, maintains a spin value, 0 or 1, for each QUIC connection, and sets the spin bit in the short header to the currently stored value when a packet with a short header is sent out. The spin value is initialized to 0 at each endpoint, client and server, at connection start.  Each endpoint also remembers the highest packet number seen from its peer on the connection.</p>
+<p id="rfc.section.2.2.p.2">The spin value is then determined at each endpoint within a single connection as follows:</p>
 <p></p>
 
 <ul>
-<li>When it receives a packet from the client, if that packet has a short header and if it increments the highest packet number seen by the server from the client, it sets the spin value to the value observed in the spin bit in the received packet.</li>
-<li>When it receives a packet from the server, if the packet has a short header and if it increments the highest packet number seen by the client from the server, it sets the spin value to the opposite of the spin bit in the received packet.</li>
+<li>When the server receives a packet from the client, if that packet has a short header and if it increments the highest packet number seen by the server from the client, the server sets the spin value to the value observed in the spin bit in the received packet.</li>
+<li>When the client receives a packet from the server, if the packet has a short header and if it increments the highest packet number seen by the client from the server, it sets the spin value to the opposite of the spin bit in the received packet.</li>
 </ul>
-<p id="rfc.section.2.2.p.3">This procedure will cause the spin bit to change value in each direction once per round trip. Observation points can estimate the network latency by observing these changes in the latency spin bit, as described in <a href="#usage" class="xref">Section 3</a>.  See <a href="#SPIN-BIT" class="xref">[SPIN-BIT]</a> for further illustration of this mechanism in action.</p>
+<p id="rfc.section.2.2.p.4">This procedure will cause the spin bit to change value in each direction once per round trip. Observation points can estimate the network latency by observing these changes in the latency spin bit, as described in <a href="#usage" class="xref">Section 3</a>.  See <a href="#QUIC-SPIN" class="xref">[QUIC-SPIN]</a> for further illustration of this mechanism in action.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#resetting-spin-value-state" id="resetting-spin-value-state">Resetting Spin Value State</a>
 </h1>
-<p id="rfc.section.2.3.p.1">Each client and server resets it spin value to zero when sending the first packet in a given with a new Connection ID. This reduces the risk that transient spin bit state can be used to link flows across connection migration or ID change.</p>
+<p id="rfc.section.2.3.p.1">Each client and server resets it spin value to zero when sending the first packet of a given connection with a new connection ID. This reduces the risk that transient spin bit state can be used to link flows across connection migration or ID change.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#usage" id="usage">Using the Spin Bit for Passive RTT Measurement</a>
 </h1>
 <p id="rfc.section.3.p.1">When a QUIC flow sends data continuously, the latency spin bit in each direction changes value once per round-trip time (RTT). An on-path observer can observe the time difference between edges (changes from 1 to 0 or 0 to 1) in the spin bit signal in a single direction to measure one sample of end-to-end RTT.</p>
-<p id="rfc.section.3.p.2">An observer can keep the largest observed packet number per flow, and reject edges that do not have a packet number that is larger than the last largest observed packet number.  This will detect spurious edges caused by reordering across an edge, which would lead to low RTT estimates, if not ignored.</p>
-<p id="rfc.section.3.p.3">The packet number can be used to filter out high RTT estimates due to loss of an actual edge in a burst of lost packets. If the spin bit edge occurs after a long packet number gap, it should be rejected.</p>
+<p id="rfc.section.3.p.2">An observer can store the largest observed packet number per flow, and reject edges that do not have a monotonically increasing packet number (greater than the largest observed packet number).  This will avoid detecting spurious edges caused by reordering events that include an edge, which would lead to very low RTT estimates if not ignored.</p>
+<p id="rfc.section.3.p.3">If the spin bit edge occurs after a long packet number gap, it should be ignored: this filters out high RTT estimates due to loss of an actual edge in a burst of lost packets.</p>
 <p id="rfc.section.3.p.4">Note that this measurement, as with passive RTT measurement for TCP, includes any transport protocol delay (e.g., delayed sending of acknowledgements) and/or application layer delay (e.g., waiting for a request to complete). It therefore provides devices on path a good instantaneous estimate of the RTT as experienced by the application. A simple linear smoothing or moving minimum filter can be applied to the stream of RTT information to get a more stable estimate.</p>
-<p id="rfc.section.3.p.5">However, application-limited and flow-control-limited senders can have application and transport layer delay, respectively, that are much greater than network RTT. When the sender is application-limited and e.g. only sends small amount of periodic application traffic, where that period is longer than the RTT, measuring the spin bit provides information about the application period, not the network RTT. Simple heuristics based on the observed data rate per flow or changes in the RTT series can be used to reject bad RTT samples due to application or flow control limitation.</p>
-<p id="rfc.section.3.p.6">An on-path observer that can see traffic in both directions (from client to server and from server to client) can also use the spin bit to measure &#8220;upstream&#8221; and &#8220;downstream&#8221; component RTT; i.e, the component of the end-to-end RTT attributable to the paths between the observer and the server and the observer and the client, respectively. It does this by measuring the delay between a spin edge observed in the upstream direction and that observed in the downstream direction, and vice versa.</p>
+<p id="rfc.section.3.p.5">However, application-limited and flow-control-limited senders can have application and transport layer delay, respectively, that are much greater than network RTT. When the sender is application-limited and e.g. only sends small amount of periodic application traffic, where that period is longer than the RTT, measuring the spin bit provides information about the application period, not the network RTT.</p>
+<p id="rfc.section.3.p.6">Simple heuristics based on the observed data rate per flow or changes in the RTT series can be used to reject bad RTT samples due to application or flow control limitation; for example, QoF <a href="#TMA-QOF" class="xref">[TMA-QOF]</a> rejects component RTTs significantly higher than RTTs over the history of the flow. These heuristics may use the handshake RTT as an initial RTT estimate for a given flow.</p>
+<p id="rfc.section.3.p.7">An on-path observer that can see traffic in both directions (from client to server and from server to client) can also use the spin bit to measure &#8220;upstream&#8221; and &#8220;downstream&#8221; component RTT; i.e, the component of the end-to-end RTT attributable to the paths between the observer and the server and the observer and the client, respectively. It does this by measuring the delay between a spin edge observed in the upstream direction and that observed in the downstream direction, and vice versa.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -444,7 +452,7 @@ ul.toc li {
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#security-and-privacy-considerations" id="security-and-privacy-considerations">Security and Privacy Considerations</a>
 </h1>
-<p id="rfc.section.5.p.1">The spin bit is intended to expose end-to-end RTT to observers along the path, so the privacy considerations for the latency spin bit are essentially the same as those for passive RTT measurement in general. However, it has been shown that these kind of RTT estimates do not provide a sufficiently high enough accuracy for geo-locating, therefore the privacy risk of exposing these information is considered low.</p>
+<p id="rfc.section.5.p.1">The spin bit is intended to expose end-to-end RTT to observers along the path, so the privacy considerations for the latency spin bit are essentially the same as those for passive RTT measurement in general. It has been shown <a href="#PAM-RTT" class="xref">[PAM-RTT]</a> that RTT measurements do not provide more information for geolocation than is available in the most basic, freely-available IP address based location databases. The risk of exposure of per-flow network RTT to on-path devices is therefore negligible.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
 </h1>
@@ -463,7 +471,16 @@ ul.toc li {
 <p id="rfc.section.6.p.3">The QUIC Spin Bit was originally specified in a slightly different form by Christian Huitema.</p>
 <p id="rfc.section.6.p.4">This work is partially supported by the European Commission under Horizon 2020 grant agreement no. 688421 Measurement and Architecture for a Middleboxed Internet (MAMI), and by the Swiss State Secretariat for Education, Research, and Innovation under contract no. 15.0268. This support does not imply endorsement.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">7.</a> Informative References</h1>
+<a href="#rfc.references">7.</a> References</h1>
+<h1 id="rfc.references.1">
+<a href="#rfc.references.1">7.1.</a> Normative References</h1>
+<table><tbody><tr>
+<td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
+<td class="top">
+<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, April 2018.</td>
+</tr></tbody></table>
+<h1 id="rfc.references.2">
+<a href="#rfc.references.2">7.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="CACM-TCP">[CACM-TCP]</b></td>
@@ -476,12 +493,12 @@ ul.toc li {
 <a>Trammell, B.</a>, <a>Vaere, P.</a>, <a>Even, R.</a>, <a>Fioccola, G.</a>, <a>Fossati, T.</a>, <a>Ihlar, M.</a>, <a>Morton, A.</a> and <a>S. Emile</a>, "<a href="https://tools.ietf.org/html/draft-trammell-quic-spin-02">Adding Explicit Passive Measurability of Two-Way Latency to the QUIC Transport Protocol</a>", Internet-Draft draft-trammell-quic-spin-02, April 2018.</td>
 </tr>
 <tr>
-<td class="reference"><b id="QUIC-TRANS">[QUIC-TRANS]</b></td>
+<td class="reference"><b id="PAM-RTT">[PAM-RTT]</b></td>
 <td class="top">
-<a>Iyengar, J.</a> and <a>M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-10">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport-10, March 2018.</td>
+<a>Trammell, B.</a> and <a>M. Kuehlewind</a>, "<a>Revisiting the Privacy Implications of Two-Way Internet Latency Data (in Proc. PAM 2018)</a>", March 2018.</td>
 </tr>
 <tr>
-<td class="reference"><b id="SPIN-BIT">[SPIN-BIT]</b></td>
+<td class="reference"><b id="QUIC-SPIN">[QUIC-SPIN]</b></td>
 <td class="top">
 <a>Trammell, B.</a>, <a>Vaere, P.</a>, <a>Even, R.</a>, <a>Fioccola, G.</a>, <a>Fossati, T.</a>, <a>Ihlar, M.</a>, <a>Morton, A.</a> and <a>S. Emile</a>, "<a href="https://tools.ietf.org/html/draft-trammell-quic-spin-02">Adding Explicit Passive Measurability of Two-Way Latency to the QUIC Transport Protocol</a>", Internet-Draft draft-trammell-quic-spin-02, April 2018.</td>
 </tr>

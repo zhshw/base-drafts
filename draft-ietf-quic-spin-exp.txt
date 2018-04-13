@@ -95,17 +95,17 @@ Table of Contents
    5.  Security and Privacy Considerations . . . . . . . . . . . . .   5
    6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     7.1.  Informative References  . . . . . . . . . . . . . . . . .   6
-     7.2.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+     7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
 
 1.  Introduction
 
-   The QUIC transport protocol [QUIC-TRANS] uses Transport Layer
+   The QUIC transport protocol [QUIC-TRANSPORT] uses Transport Layer
    Security (TLS) [TLS] to encrypt most of its protocol internals.  In
    contrast to TCP where the sequence and acknowledgement numbers and
    timestamps (if the respective option is in use) can be seen by on-
-   path observers and used to estimate end-to-end latency, QUIC's wire
 
 
 
@@ -114,6 +114,7 @@ Trammell & Kuehlewind   Expires October 15, 2018                [Page 2]
 Internet-Draft                QUIC Spin Bit                   April 2018
 
 
+   path observers and used to estimate end-to-end latency, QUIC's wire
    image (see [WIRE-IMAGE]) currently does not expose any information
    that can be used for passive latency measurement techniques that rely
    on this information (e.g.  [CACM-TCP], [TMA-QOF]).
@@ -128,15 +129,15 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 2.  The Spin Bit Mechanism
 
    The latency spin bit enables latency monitoring from observation
-   points on the network path.  Since it is possible to measure
-   handshake RTT without a spin bit, it is sufficient to include the
-   spin bit in the short packet header.  The spin bit therefore appears
-   only after version negotiation and connection establishment are
-   completed.
+   points on the network path throughout the duration of a connection.
+   Since it is possible to measure handshake RTT without a spin bit, it
+   is sufficient to include the spin bit in the short packet header.
+   The spin bit therefore appears only after version negotiation and
+   connection establishment are completed.
 
 2.1.  Proposed Short Header Format Including Spin Bit
 
-   As of the current editor's version of [QUIC-TRANS], this proposal
+   As of the current editor's version of [QUIC-TRANSPORT], this proposal
    specifies using the fifth most significant bit (0x08) of the first
    octet in the short header for the spin bit.
 
@@ -164,7 +165,6 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-
 Trammell & Kuehlewind   Expires October 15, 2018                [Page 3]
 
 Internet-Draft                QUIC Spin Bit                   April 2018
@@ -175,34 +175,35 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    Each endpoint, client and server, maintains a spin value, 0 or 1, for
    each QUIC connection, and sets the spin bit in the short header to
    the currently stored value when a packet with a short header is sent
-   out.  The spin value is initialized to 0 on both side, at the client
-   as well as the server at connection start.  Each endpoint also
-   remembers the highest packet number seen from its peer on the
-   connection.  The spin value is then determined at each endpoint as
-   follows:
+   out.  The spin value is initialized to 0 at each endpoint, client and
+   server, at connection start.  Each endpoint also remembers the
+   highest packet number seen from its peer on the connection.
 
-   o  When it receives a packet from the client, if that packet has a
-      short header and if it increments the highest packet number seen
-      by the server from the client, it sets the spin value to the value
-      observed in the spin bit in the received packet.
+   The spin value is then determined at each endpoint within a single
+   connection as follows:
 
-   o  When it receives a packet from the server, if the packet has a
-      short header and if it increments the highest packet number seen
-      by the client from the server, it sets the spin value to the
+   o  When the server receives a packet from the client, if that packet
+      has a short header and if it increments the highest packet number
+      seen by the server from the client, the server sets the spin value
+      to the value observed in the spin bit in the received packet.
+
+   o  When the client receives a packet from the server, if the packet
+      has a short header and if it increments the highest packet number
+      seen by the client from the server, it sets the spin value to the
       opposite of the spin bit in the received packet.
 
    This procedure will cause the spin bit to change value in each
    direction once per round trip.  Observation points can estimate the
    network latency by observing these changes in the latency spin bit,
-   as described in Section 3.  See [SPIN-BIT] for further illustration
+   as described in Section 3.  See [QUIC-SPIN] for further illustration
    of this mechanism in action.
 
 2.3.  Resetting Spin Value State
 
    Each client and server resets it spin value to zero when sending the
-   first packet in a given with a new Connection ID.  This reduces the
-   risk that transient spin bit state can be used to link flows across
-   connection migration or ID change.
+   first packet of a given connection with a new connection ID.  This
+   reduces the risk that transient spin bit state can be used to link
+   flows across connection migration or ID change.
 
 3.  Using the Spin Bit for Passive RTT Measurement
 
@@ -212,11 +213,10 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    from 1 to 0 or 0 to 1) in the spin bit signal in a single direction
    to measure one sample of end-to-end RTT.
 
-   An observer can keep the largest observed packet number per flow, and
-   reject edges that do not have a packet number that is larger than the
-   last largest observed packet number.  This will detect spurious edges
-   caused by reordering across an edge, which would lead to low RTT
-   estimates, if not ignored.
+   An observer can store the largest observed packet number per flow,
+   and reject edges that do not have a monotonically increasing packet
+   number (greater than the largest observed packet number).  This will
+   avoid detecting spurious edges caused by reordering events that
 
 
 
@@ -226,9 +226,12 @@ Trammell & Kuehlewind   Expires October 15, 2018                [Page 4]
 Internet-Draft                QUIC Spin Bit                   April 2018
 
 
-   The packet number can be used to filter out high RTT estimates due to
-   loss of an actual edge in a burst of lost packets.  If the spin bit
-   edge occurs after a long packet number gap, it should be rejected.
+   include an edge, which would lead to very low RTT estimates if not
+   ignored.
+
+   If the spin bit edge occurs after a long packet number gap, it should
+   be ignored: this filters out high RTT estimates due to loss of an
+   actual edge in a burst of lost packets.
 
    Note that this measurement, as with passive RTT measurement for TCP,
    includes any transport protocol delay (e.g., delayed sending of
@@ -244,9 +247,14 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    limited and e.g. only sends small amount of periodic application
    traffic, where that period is longer than the RTT, measuring the spin
    bit provides information about the application period, not the
-   network RTT.  Simple heuristics based on the observed data rate per
-   flow or changes in the RTT series can be used to reject bad RTT
-   samples due to application or flow control limitation.
+   network RTT.
+
+   Simple heuristics based on the observed data rate per flow or changes
+   in the RTT series can be used to reject bad RTT samples due to
+   application or flow control limitation; for example, QoF [TMA-QOF]
+   rejects component RTTs significantly higher than RTTs over the
+   history of the flow.  These heuristics may use the handshake RTT as
+   an initial RTT estimate for a given flow.
 
    An on-path observer that can see traffic in both directions (from
    client to server and from server to client) can also use the spin bit
@@ -266,14 +274,6 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    The spin bit is intended to expose end-to-end RTT to observers along
    the path, so the privacy considerations for the latency spin bit are
    essentially the same as those for passive RTT measurement in general.
-   However, it has been shown that these kind of RTT estimates do not
-   provide a sufficiently high enough accuracy for geo-locating,
-   therefore the privacy risk of exposing these information is
-   considered low.
-
-
-
-
 
 
 
@@ -281,6 +281,12 @@ Trammell & Kuehlewind   Expires October 15, 2018                [Page 5]
 
 Internet-Draft                QUIC Spin Bit                   April 2018
 
+
+   It has been shown [PAM-RTT] that RTT measurements do not provide more
+   information for geolocation than is available in the most basic,
+   freely-available IP address based location databases.  The risk of
+   exposure of per-flow network RTT to on-path devices is therefore
+   negligible.
 
 6.  Acknowledgments
 
@@ -313,7 +319,26 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 7.  References
 
-7.1.  Informative References
+7.1.  Normative References
+
+   [QUIC-TRANSPORT]
+              Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
+              Multiplexed and Secure Transport", draft-ietf-quic-
+              transport (work in progress), April 2018.
+
+
+
+
+
+
+
+
+Trammell & Kuehlewind   Expires October 15, 2018                [Page 6]
+
+Internet-Draft                QUIC Spin Bit                   April 2018
+
+
+7.2.  Informative References
 
    [CACM-TCP]
               Strowes, S., "Passively Measuring TCP Round-Trip Times (in
@@ -326,19 +351,11 @@ Internet-Draft                QUIC Spin Bit                   April 2018
               Transport Protocol", draft-trammell-quic-spin-02 (work in
               progress), April 2018.
 
-   [QUIC-TRANS]
-              Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
-              and Secure Transport", draft-ietf-quic-transport-10 (work
-              in progress), March 2018.
+   [PAM-RTT]  Trammell, B. and M. Kuehlewind, "Revisiting the Privacy
+              Implications of Two-Way Internet Latency Data (in Proc.
+              PAM 2018)", March 2018.
 
-
-
-Trammell & Kuehlewind   Expires October 15, 2018                [Page 6]
-
-Internet-Draft                QUIC Spin Bit                   April 2018
-
-
-   [SPIN-BIT]
+   [QUIC-SPIN]
               Trammell, B., Vaere, P., Even, R., Fioccola, G., Fossati,
               T., Ihlar, M., Morton, A., and S. Emile, "Adding Explicit
               Passive Measurability of Two-Way Latency to the QUIC
@@ -358,13 +375,24 @@ Internet-Draft                QUIC Spin Bit                   April 2018
               Network Protocol", draft-trammell-wire-image-04 (work in
               progress), April 2018.
 
-7.2.  URIs
+7.3.  URIs
 
    [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
 
    [2] https://github.com/quicwg
 
    [3] https://github.com/quicwg/base-drafts/labels/-spin
+
+
+
+
+
+
+
+Trammell & Kuehlewind   Expires October 15, 2018                [Page 7]
+
+Internet-Draft                QUIC Spin Bit                   April 2018
+
 
 Authors' Addresses
 
@@ -389,4 +417,32 @@ Authors' Addresses
 
 
 
-Trammell & Kuehlewind   Expires October 15, 2018                [Page 7]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Trammell & Kuehlewind   Expires October 15, 2018                [Page 8]
