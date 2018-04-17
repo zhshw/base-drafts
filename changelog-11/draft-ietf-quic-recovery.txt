@@ -136,14 +136,14 @@ Internet-Draft             QUIC Loss Detection                April 2018
      B.3.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  28
      B.4.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  28
      B.5.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  28
-     B.6.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  28
-     B.7.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  28
+     B.6.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  29
+     B.7.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  29
      B.8.  Since draft-ietf-quic-recovery-03 . . . . . . . . . . . .  29
      B.9.  Since draft-ietf-quic-recovery-02 . . . . . . . . . . . .  29
      B.10. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  29
      B.11. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  29
      B.12. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  29
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  29
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
 
 1.  Introduction
 
@@ -1525,6 +1525,12 @@ Appendix B.  Change Log
 
 B.1.  Since draft-ietf-quic-recovery-10
 
+   o  Improved text on ack generation (#1139, #1159)
+
+   o  Make references to TCP recovery mechanisms informational (#1195)
+
+   o  Define time_of_last_sent_handshake_packet (#1171)
+
    o  Added signal from TLS the data it includes needs to be sent in a
       Retry packet (#1061, #1199)
 
@@ -1553,13 +1559,7 @@ B.5.  Since draft-ietf-quic-recovery-06
 
    No significant changes.
 
-B.6.  Since draft-ietf-quic-recovery-05
 
-   o  Add more congestion control text (#776)
-
-B.7.  Since draft-ietf-quic-recovery-04
-
-   No significant changes.
 
 
 
@@ -1569,6 +1569,14 @@ Iyengar & Swett         Expires October 19, 2018               [Page 28]
 
 Internet-Draft             QUIC Loss Detection                April 2018
 
+
+B.6.  Since draft-ietf-quic-recovery-05
+
+   o  Add more congestion control text (#776)
+
+B.7.  Since draft-ietf-quic-recovery-04
+
+   No significant changes.
 
 B.8.  Since draft-ietf-quic-recovery-03
 
@@ -1609,14 +1617,6 @@ B.12.  Since draft-iyengar-quic-loss-recovery-01
 
    o  Added table of contents
 
-Authors' Addresses
-
-   Jana Iyengar (editor)
-   Fastly
-
-   Email: jri.ietf@gmail.com
-
-
 
 
 
@@ -1626,18 +1626,18 @@ Iyengar & Swett         Expires October 19, 2018               [Page 29]
 Internet-Draft             QUIC Loss Detection                April 2018
 
 
+Authors' Addresses
+
+   Jana Iyengar (editor)
+   Fastly
+
+   Email: jri.ietf@gmail.com
+
+
    Ian Swett (editor)
    Google
 
    Email: ianswett@google.com
-
-
-
-
-
-
-
-
 
 
 
