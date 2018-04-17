@@ -5,8 +5,8 @@
 QUIC                                                     J. Iyengar, Ed.
 Internet-Draft                                                    Fastly
 Intended status: Standards Track                         M. Thomson, Ed.
-Expires: October 7, 2018                                         Mozilla
-                                                          April 05, 2018
+Expires: October 19, 2018                                        Mozilla
+                                                          April 17, 2018
 
 
            QUIC: A UDP-Based Multiplexed and Secure Transport
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 7, 2018.
+   This Internet-Draft will expire on October 19, 2018.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Iyengar & Thomson        Expires October 7, 2018                [Page 1]
+Iyengar & Thomson       Expires October 19, 2018                [Page 1]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -87,156 +87,158 @@ Table of Contents
        4.4.1.  Initial Packet  . . . . . . . . . . . . . . . . . . .  14
        4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  15
        4.4.3.  Handshake Packet  . . . . . . . . . . . . . . . . . .  16
-     4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  16
-     4.6.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  17
-     4.7.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  18
-       4.7.1.  Initial Packet Number . . . . . . . . . . . . . . . .  19
+     4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  17
+     4.6.  Coaslescing Packets . . . . . . . . . . . . . . . . . . .  17
+     4.7.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  18
+     4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  19
+       4.8.1.  Initial Packet Number . . . . . . . . . . . . . . . .  20
    5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  20
-   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  21
-     6.1.  Matching Packets to Connections . . . . . . . . . . . . .  22
-       6.1.1.  Client Packet Handling  . . . . . . . . . . . . . . .  22
-       6.1.2.  Server Packet Handling  . . . . . . . . . . . . . . .  22
-     6.2.  Version Negotiation . . . . . . . . . . . . . . . . . . .  23
-       6.2.1.  Sending Version Negotiation Packets . . . . . . . . .  24
-       6.2.2.  Handling Version Negotiation Packets  . . . . . . . .  24
-       6.2.3.  Using Reserved Versions . . . . . . . . . . . . . . .  25
-     6.3.  Cryptographic and Transport Handshake . . . . . . . . . .  25
-     6.4.  Transport Parameters  . . . . . . . . . . . . . . . . . .  26
-       6.4.1.  Transport Parameter Definitions . . . . . . . . . . .  28
-       6.4.2.  Values of Transport Parameters for 0-RTT  . . . . . .  30
-       6.4.3.  New Transport Parameters  . . . . . . . . . . . . . .  30
-       6.4.4.  Version Negotiation Validation  . . . . . . . . . . .  31
+   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  22
+     6.1.  Matching Packets to Connections . . . . . . . . . . . . .  23
+       6.1.1.  Client Packet Handling  . . . . . . . . . . . . . . .  23
+       6.1.2.  Server Packet Handling  . . . . . . . . . . . . . . .  23
+     6.2.  Version Negotiation . . . . . . . . . . . . . . . . . . .  24
+       6.2.1.  Sending Version Negotiation Packets . . . . . . . . .  25
+       6.2.2.  Handling Version Negotiation Packets  . . . . . . . .  25
+       6.2.3.  Using Reserved Versions . . . . . . . . . . . . . . .  26
+     6.3.  Cryptographic and Transport Handshake . . . . . . . . . .  26
+     6.4.  Transport Parameters  . . . . . . . . . . . . . . . . . .  27
+       6.4.1.  Transport Parameter Definitions . . . . . . . . . . .  29
+       6.4.2.  Values of Transport Parameters for 0-RTT  . . . . . .  31
+       6.4.3.  New Transport Parameters  . . . . . . . . . . . . . .  31
 
 
 
-Iyengar & Thomson        Expires October 7, 2018                [Page 2]
+Iyengar & Thomson       Expires October 19, 2018                [Page 2]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
-     6.5.  Stateless Retries . . . . . . . . . . . . . . . . . . . .  32
-     6.6.  Proof of Source Address Ownership . . . . . . . . . . . .  33
-       6.6.1.  Client Address Validation Procedure . . . . . . . . .  33
-       6.6.2.  Address Validation on Session Resumption  . . . . . .  34
-       6.6.3.  Address Validation Token Integrity  . . . . . . . . .  35
-     6.7.  Path Validation . . . . . . . . . . . . . . . . . . . . .  35
-       6.7.1.  Initiation  . . . . . . . . . . . . . . . . . . . . .  36
-       6.7.2.  Response  . . . . . . . . . . . . . . . . . . . . . .  36
-       6.7.3.  Completion  . . . . . . . . . . . . . . . . . . . . .  37
-       6.7.4.  Abandonment . . . . . . . . . . . . . . . . . . . . .  37
-     6.8.  Connection Migration  . . . . . . . . . . . . . . . . . .  38
-       6.8.1.  Probing a New Path  . . . . . . . . . . . . . . . . .  38
-       6.8.2.  Initiating Connection Migration . . . . . . . . . . .  38
-       6.8.3.  Responding to Connection Migration  . . . . . . . . .  39
-       6.8.4.  Loss Detection and Congestion Control . . . . . . . .  41
-       6.8.5.  Privacy Implications of Connection Migration  . . . .  41
-     6.9.  Server's Preferred Address  . . . . . . . . . . . . . . .  43
-       6.9.1.  Communicating A Preferred Address . . . . . . . . . .  43
-       6.9.2.  Responding to Connection Migration  . . . . . . . . .  43
-       6.9.3.  Interaction of Client Migration and Preferred Address  44
-     6.10. Connection Termination  . . . . . . . . . . . . . . . . .  44
-       6.10.1.  Closing and Draining Connection States . . . . . . .  45
-       6.10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . .  46
-       6.10.3.  Immediate Close  . . . . . . . . . . . . . . . . . .  46
-       6.10.4.  Stateless Reset  . . . . . . . . . . . . . . . . . .  47
-   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  50
-     7.1.  Variable-Length Integer Encoding  . . . . . . . . . . . .  50
-     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  51
-     7.3.  RST_STREAM Frame  . . . . . . . . . . . . . . . . . . . .  51
-     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  52
-     7.5.  APPLICATION_CLOSE frame . . . . . . . . . . . . . . . . .  53
-     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  53
-     7.7.  MAX_STREAM_DATA Frame . . . . . . . . . . . . . . . . . .  54
-     7.8.  MAX_STREAM_ID Frame . . . . . . . . . . . . . . . . . . .  55
-     7.9.  PING Frame  . . . . . . . . . . . . . . . . . . . . . . .  55
-     7.10. BLOCKED Frame . . . . . . . . . . . . . . . . . . . . . .  56
-     7.11. STREAM_BLOCKED Frame  . . . . . . . . . . . . . . . . . .  56
-     7.12. STREAM_ID_BLOCKED Frame . . . . . . . . . . . . . . . . .  57
-     7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  57
-     7.14. STOP_SENDING Frame  . . . . . . . . . . . . . . . . . . .  59
-     7.15. ACK Frame . . . . . . . . . . . . . . . . . . . . . . . .  59
-       7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  61
-       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  62
-       7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  63
-     7.16. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  64
-     7.17. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  64
-     7.18. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  65
-   8.  Packetization and Reliability . . . . . . . . . . . . . . . .  66
+       6.4.4.  Version Negotiation Validation  . . . . . . . . . . .  32
+     6.5.  Stateless Retries . . . . . . . . . . . . . . . . . . . .  33
+     6.6.  Proof of Source Address Ownership . . . . . . . . . . . .  34
+       6.6.1.  Client Address Validation Procedure . . . . . . . . .  34
+       6.6.2.  Address Validation on Session Resumption  . . . . . .  35
+       6.6.3.  Address Validation Token Integrity  . . . . . . . . .  36
+     6.7.  Path Validation . . . . . . . . . . . . . . . . . . . . .  36
+       6.7.1.  Initiation  . . . . . . . . . . . . . . . . . . . . .  37
+       6.7.2.  Response  . . . . . . . . . . . . . . . . . . . . . .  37
+       6.7.3.  Completion  . . . . . . . . . . . . . . . . . . . . .  38
+       6.7.4.  Abandonment . . . . . . . . . . . . . . . . . . . . .  38
+     6.8.  Connection Migration  . . . . . . . . . . . . . . . . . .  39
+       6.8.1.  Probing a New Path  . . . . . . . . . . . . . . . . .  39
+       6.8.2.  Initiating Connection Migration . . . . . . . . . . .  39
+       6.8.3.  Responding to Connection Migration  . . . . . . . . .  40
+       6.8.4.  Loss Detection and Congestion Control . . . . . . . .  42
+       6.8.5.  Privacy Implications of Connection Migration  . . . .  42
+     6.9.  Server's Preferred Address  . . . . . . . . . . . . . . .  44
+       6.9.1.  Communicating A Preferred Address . . . . . . . . . .  44
+       6.9.2.  Responding to Connection Migration  . . . . . . . . .  45
+       6.9.3.  Interaction of Client Migration and Preferred Address  45
+     6.10. Connection Termination  . . . . . . . . . . . . . . . . .  46
+       6.10.1.  Closing and Draining Connection States . . . . . . .  46
+       6.10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . .  47
+       6.10.3.  Immediate Close  . . . . . . . . . . . . . . . . . .  47
+       6.10.4.  Stateless Reset  . . . . . . . . . . . . . . . . . .  48
+   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  51
+     7.1.  Variable-Length Integer Encoding  . . . . . . . . . . . .  51
+     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  52
+     7.3.  RST_STREAM Frame  . . . . . . . . . . . . . . . . . . . .  52
+     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  53
+     7.5.  APPLICATION_CLOSE frame . . . . . . . . . . . . . . . . .  54
+     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  54
+     7.7.  MAX_STREAM_DATA Frame . . . . . . . . . . . . . . . . . .  55
+     7.8.  MAX_STREAM_ID Frame . . . . . . . . . . . . . . . . . . .  56
+     7.9.  PING Frame  . . . . . . . . . . . . . . . . . . . . . . .  56
+     7.10. BLOCKED Frame . . . . . . . . . . . . . . . . . . . . . .  57
+     7.11. STREAM_BLOCKED Frame  . . . . . . . . . . . . . . . . . .  57
+     7.12. STREAM_ID_BLOCKED Frame . . . . . . . . . . . . . . . . .  58
+     7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  58
+     7.14. STOP_SENDING Frame  . . . . . . . . . . . . . . . . . . .  60
+     7.15. ACK Frame . . . . . . . . . . . . . . . . . . . . . . . .  60
+       7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  62
+       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  63
+       7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  64
+     7.16. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  65
+     7.17. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  65
+     7.18. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  66
 
 
 
-Iyengar & Thomson        Expires October 7, 2018                [Page 3]
+Iyengar & Thomson       Expires October 19, 2018                [Page 3]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
-     8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  67
-     8.2.  Retransmission of Information . . . . . . . . . . . . . .  67
-     8.3.  Packet Size . . . . . . . . . . . . . . . . . . . . . . .  69
-     8.4.  Path Maximum Transmission Unit  . . . . . . . . . . . . .  69
-       8.4.1.  Special Considerations for PMTU Discovery . . . . . .  70
+   8.  Packetization and Reliability . . . . . . . . . . . . . . . .  67
+     8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  68
+     8.2.  Retransmission of Information . . . . . . . . . . . . . .  68
+     8.3.  Packet Size . . . . . . . . . . . . . . . . . . . . . . .  70
+     8.4.  Path Maximum Transmission Unit  . . . . . . . . . . . . .  70
+       8.4.1.  Special Considerations for PMTU Discovery . . . . . .  71
        8.4.2.  Special Considerations for Packetization Layer PMTU
-               Discovery . . . . . . . . . . . . . . . . . . . . . .  71
-   9.  Streams: QUIC's Data Structuring Abstraction  . . . . . . . .  71
-     9.1.  Stream Identifiers  . . . . . . . . . . . . . . . . . . .  72
-     9.2.  Stream States . . . . . . . . . . . . . . . . . . . . . .  73
-       9.2.1.  Send Stream States  . . . . . . . . . . . . . . . . .  74
-       9.2.2.  Receive Stream States . . . . . . . . . . . . . . . .  76
-       9.2.3.  Permitted Frame Types . . . . . . . . . . . . . . . .  78
-       9.2.4.  Bidirectional Stream States . . . . . . . . . . . . .  78
-     9.3.  Solicited State Transitions . . . . . . . . . . . . . . .  79
-     9.4.  Stream Concurrency  . . . . . . . . . . . . . . . . . . .  80
-     9.5.  Sending and Receiving Data  . . . . . . . . . . . . . . .  81
-     9.6.  Stream Prioritization . . . . . . . . . . . . . . . . . .  81
-   10. Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  82
-     10.1.  Edge Cases and Other Considerations  . . . . . . . . . .  84
-       10.1.1.  Response to a RST_STREAM . . . . . . . . . . . . . .  84
-       10.1.2.  Data Limit Increments  . . . . . . . . . . . . . . .  84
-       10.1.3.  Handshake Exemption  . . . . . . . . . . . . . . . .  85
-     10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . .  85
-       10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . .  85
-     10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . .  86
-   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  86
-     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  87
-     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  88
-     11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . .  88
-     11.4.  Application Protocol Error Codes . . . . . . . . . . . .  89
-   12. Security and Privacy Considerations . . . . . . . . . . . . .  90
-     12.1.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . .  90
-     12.2.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . .  90
-     12.3.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . .  91
-     12.4.  Stream Fragmentation and Reassembly Attacks  . . . . . .  91
-     12.5.  Stream Commitment Attack . . . . . . . . . . . . . . . .  91
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  92
-     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . .  92
-     13.2.  QUIC Transport Error Codes Registry  . . . . . . . . . .  93
-   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  95
-     14.1.  Normative References . . . . . . . . . . . . . . . . . .  95
-     14.2.  Informative References . . . . . . . . . . . . . . . . .  96
-     14.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  97
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  97
-   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  98
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  98
-     C.1.  Since draft-ietf-quic-transport-09  . . . . . . . . . . .  98
+               Discovery . . . . . . . . . . . . . . . . . . . . . .  72
+   9.  Streams: QUIC's Data Structuring Abstraction  . . . . . . . .  72
+     9.1.  Stream Identifiers  . . . . . . . . . . . . . . . . . . .  73
+     9.2.  Stream States . . . . . . . . . . . . . . . . . . . . . .  74
+       9.2.1.  Send Stream States  . . . . . . . . . . . . . . . . .  75
+       9.2.2.  Receive Stream States . . . . . . . . . . . . . . . .  77
+       9.2.3.  Permitted Frame Types . . . . . . . . . . . . . . . .  79
+       9.2.4.  Bidirectional Stream States . . . . . . . . . . . . .  79
+     9.3.  Solicited State Transitions . . . . . . . . . . . . . . .  80
+     9.4.  Stream Concurrency  . . . . . . . . . . . . . . . . . . .  81
+     9.5.  Sending and Receiving Data  . . . . . . . . . . . . . . .  82
+     9.6.  Stream Prioritization . . . . . . . . . . . . . . . . . .  82
+   10. Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  83
+     10.1.  Edge Cases and Other Considerations  . . . . . . . . . .  85
+       10.1.1.  Response to a RST_STREAM . . . . . . . . . . . . . .  85
+       10.1.2.  Data Limit Increments  . . . . . . . . . . . . . . .  85
+       10.1.3.  Handshake Exemption  . . . . . . . . . . . . . . . .  86
+     10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . .  86
+       10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . .  86
+     10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . .  87
+   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  87
+     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  88
+     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  89
+     11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . .  89
+     11.4.  Application Protocol Error Codes . . . . . . . . . . . .  90
+   12. Security and Privacy Considerations . . . . . . . . . . . . .  91
+     12.1.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . .  91
+     12.2.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . .  91
+     12.3.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . .  92
+     12.4.  Stream Fragmentation and Reassembly Attacks  . . . . . .  92
+     12.5.  Stream Commitment Attack . . . . . . . . . . . . . . . .  92
+   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  93
+     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . .  93
+     13.2.  QUIC Transport Error Codes Registry  . . . . . . . . . .  94
+   14. References  . . . . . . . . . . . . . . . . . . . . . . . . .  96
+     14.1.  Normative References . . . . . . . . . . . . . . . . . .  96
+     14.2.  Informative References . . . . . . . . . . . . . . . . .  97
+     14.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  98
+   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  98
+   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  99
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  99
 
 
 
-Iyengar & Thomson        Expires October 7, 2018                [Page 4]
+Iyengar & Thomson       Expires October 19, 2018                [Page 4]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
-     C.2.  Since draft-ietf-quic-transport-08  . . . . . . . . . . .  99
-     C.3.  Since draft-ietf-quic-transport-07  . . . . . . . . . . .  99
-     C.4.  Since draft-ietf-quic-transport-06  . . . . . . . . . . . 100
-     C.5.  Since draft-ietf-quic-transport-05  . . . . . . . . . . . 100
-     C.6.  Since draft-ietf-quic-transport-04  . . . . . . . . . . . 101
-     C.7.  Since draft-ietf-quic-transport-03  . . . . . . . . . . . 101
-     C.8.  Since draft-ietf-quic-transport-02  . . . . . . . . . . . 102
-     C.9.  Since draft-ietf-quic-transport-01  . . . . . . . . . . . 103
-     C.10. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 105
-     C.11. Since draft-hamilton-quic-transport-protocol-01 . . . . . 105
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 105
+     C.1.  Since draft-ietf-quic-transport-10  . . . . . . . . . . .  99
+     C.2.  Since draft-ietf-quic-transport-09  . . . . . . . . . . . 100
+     C.3.  Since draft-ietf-quic-transport-08  . . . . . . . . . . . 100
+     C.4.  Since draft-ietf-quic-transport-07  . . . . . . . . . . . 101
+     C.5.  Since draft-ietf-quic-transport-06  . . . . . . . . . . . 102
+     C.6.  Since draft-ietf-quic-transport-05  . . . . . . . . . . . 102
+     C.7.  Since draft-ietf-quic-transport-04  . . . . . . . . . . . 102
+     C.8.  Since draft-ietf-quic-transport-03  . . . . . . . . . . . 103
+     C.9.  Since draft-ietf-quic-transport-02  . . . . . . . . . . . 103
+     C.10. Since draft-ietf-quic-transport-01  . . . . . . . . . . . 104
+     C.11. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 106
+     C.12. Since draft-hamilton-quic-transport-protocol-01 . . . . . 106
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 107
 
 1.  Introduction
 
@@ -275,9 +277,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-
-
-Iyengar & Thomson        Expires October 7, 2018                [Page 5]
+Iyengar & Thomson       Expires October 19, 2018                [Page 5]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -314,6 +314,8 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    QUIC packet:  A well-formed UDP payload that can be parsed by a QUIC
       receiver.
 
+   QUIC is a name, not an acronym.
+
 2.1.  Notational Conventions
 
    Packet and frame diagrams use the format described in Section 3.1 of
@@ -328,15 +330,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    x (i) ...  Indicates that x uses the variable-length encoding in
       Section 7.1
 
-   x (*) ...  Indicates that x is variable-length
 
 
 
-
-Iyengar & Thomson        Expires October 7, 2018                [Page 6]
+Iyengar & Thomson       Expires October 19, 2018                [Page 6]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   x (*) ...  Indicates that x is variable-length
 
 3.  Versions
 
@@ -387,9 +389,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-
-
-Iyengar & Thomson        Expires October 7, 2018                [Page 7]
+Iyengar & Thomson       Expires October 19, 2018                [Page 7]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -425,6 +425,8 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                 Source Connection ID (0/32..144)            ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                       Payload Length (i)                    ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                       Packet Number (32)                      |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Payload (*)                        ...
@@ -440,15 +442,16 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    represented in this uniform fixed-length packet format.  A long
    header contains the following fields:
 
-   Header Form:  The most significant bit (0x80) of octet 0 (the first
-      octet) is set to 1 for long headers.
 
 
 
-Iyengar & Thomson        Expires October 7, 2018                [Page 8]
+Iyengar & Thomson       Expires October 19, 2018                [Page 8]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Header Form:  The most significant bit (0x80) of octet 0 (the first
+      octet) is set to 1 for long headers.
 
    Long Packet Type:  The remaining seven bits of octet 0 contain the
       packet type.  This field can indicate one of 128 packet types.
@@ -472,20 +475,22 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    Destination Connection ID:  The Destination Connection ID field
       follows the connection ID lengths and is either 0 octets in length
-      or between 4 and 18 octets.  Section 4.6 describes the use of this
+      or between 4 and 18 octets.  Section 4.7 describes the use of this
       field in more detail.
 
    Source Connection ID:  The Source Connection ID field follows the
       Destination Connection ID and is either 0 octets in length or
-      between 4 and 18 octets.  Section 4.6 describes the use of this
+      between 4 and 18 octets.  Section 4.7 describes the use of this
       field in more detail.
 
+   Payload Length:  The length of the Payload field in octets, encoded
+      as a variable-length integer (Section 7.1).
+
    Packet Number:  The Packet Number is a 32-bit field that follows the
-      two connection IDs.  Section 4.7 describes the use of packet
+      two connection IDs.  Section 4.8 describes the use of packet
       numbers.
 
-   Payload:  All remaining octets in the packet are the payload of the
-      packet.
+   Payload:  The payload of the packet.
 
    The following packet types are defined:
 
@@ -496,12 +501,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018                [Page 9]
+Iyengar & Thomson       Expires October 19, 2018                [Page 9]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -531,12 +531,17 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    version and packet type.  Type-specific semantics for this version
    are described in the following sections.
 
+   End of the Payload field (which is also the end of the long header
+   packet) is determined by the value of the Payload Length field.
+   Senders can coalesce multiple long header packets into one UDP
+   datagram.  See Section 4.6 for more details.
+
 4.2.  Short Header
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+
-   |0|K|1|1|0|T T T|
+   |0|K|1|1|0|R|T T|
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                Destination Connection ID (0..144)           ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -550,17 +555,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    The short header can be used after the version and 1-RTT keys are
    negotiated.  This header form has the following fields:
 
-   Header Form:  The most significant bit (0x80) of octet 0 is set to 0
-      for the short header.
 
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 10]
+Iyengar & Thomson       Expires October 19, 2018               [Page 10]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Header Form:  The most significant bit (0x80) of octet 0 is set to 0
+      for the short header.
 
    Key Phase Bit:  The second bit (0x40) of octet 0 indicates the key
       phase, which allows a recipient of a packet to identify the packet
@@ -570,7 +573,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    [[Editor's Note: this section should be removed and the bit
    definitions changed before this draft goes to the IESG.]]
 
-   Third Bit:  The third bit (0x10) of octet 0 is set to 1.
+   Third Bit:  The third bit (0x20) of octet 0 is set to 1.
 
    [[Editor's Note: this section should be removed and the bit
    definitions changed before this draft goes to the IESG.]]
@@ -588,13 +591,16 @@ Internet-Draft           QUIC Transport Protocol              April 2018
       from this specification when Google QUIC has finished
       transitioning to the new header format.
 
-   Short Packet Type:  The remaining 3 bits of octet 0 include one of 8
+   Reserved:  The sixth bit (0x4) of octet 0 is reserved for
+      experimentation.
+
+   Short Packet Type:  The remaining 2 bits of octet 0 include one of 4
       packet types.  Table 2 lists the types that are defined for short
       packets.
 
    Destination Connection ID:  The Destination Connection ID is a
       connection ID that is chosen by the intended recipient of the
-      packet.  See Section 4.6 for more details.
+      packet.  See Section 4.7 for more details.
 
    Packet Number:  The length of the packet number field depends on the
       packet type.  This field can be 1, 2 or 4 octets long depending on
@@ -603,20 +609,18 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    Protected Payload:  Packets with a short header always include a
       1-RTT protected payload.
 
-   The packet type in a short header currently determines only the size
-   of the packet number field.  Additional types can be used to signal
-   the presence of other fields.
 
 
 
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 11]
+Iyengar & Thomson       Expires October 19, 2018               [Page 11]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   The packet type in a short header currently determines only the size
+   of the packet number field.  Additional types can be used to signal
+   the presence of other fields.
 
                        +------+--------------------+
                        | Type | Packet Number Size |
@@ -665,11 +669,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 12]
+Iyengar & Thomson       Expires October 19, 2018               [Page 12]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -719,16 +719,21 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    ACK frame by a client.  Receiving another Initial packet implicitly
    acknowledges a Version Negotiation packet.
 
-   See Section 6.2 for a description of the version negotiation process.
+   The Version Negotiation packet does not include the Packet Number and
+   Length fields present in other packets that use the long header form.
 
 
 
 
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 13]
+Iyengar & Thomson       Expires October 19, 2018               [Page 13]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   Consequently, a Version Negotiation packet consumes an entire UDP
+   datagram.
+
+   See Section 6.2 for a description of the version negotiation process.
 
 4.4.  Cryptographic Handshake Packets
 
@@ -771,23 +776,26 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    The first Initial packet that is sent by a client contains a
    randomized packet number.  All subsequent packets contain a packet
-   number that is incremented by one, see (Section 4.7).
-
-   The payload of an Initial packet consists of a STREAM frame (or
-   frames) for stream 0 containing a cryptographic handshake message,
-   with enough PADDING frames that the packet is at least 1200 octets
-   (see Section 8).  The stream in this packet always starts at an
+   number that is incremented by one, see (Section 4.8).
 
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 14]
+Iyengar & Thomson       Expires October 19, 2018               [Page 14]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
-   offset of 0 (see Section 6.5) and the complete cryptographic
-   handshake message MUST fit in a single packet (see Section 6.3).
+   The payload of an Initial packet conveys a STREAM frame (or frames)
+   for stream 0 containing a cryptographic handshake message.  The
+   stream in this packet always starts at an offset of 0 (see
+   Section 6.5) and the complete cryptographic handshake message MUST
+   fit in a single packet (see Section 6.3).
+
+   The payload of a UDP datagram carrying the Initial packet MUST be
+   expanded to at least 1200 octets (see Section 8), by adding PADDING
+   frames to the Initial packet and/or by combining the Initial packet
+   with a 0-RTT packet (see Section 4.6).
 
    The client uses the Initial packet type for any packet that contains
    an initial cryptographic handshake message.  This includes all cases
@@ -826,6 +834,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    Continuing the cryptographic handshake is necessary to ensure that an
    attacker cannot force a downgrade of any cryptographic parameters.
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 15]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    In addition to continuing the cryptographic handshake, the client
    MUST remember the results of any version negotiation that occurred
    (see Section 6.2).  The client MAY also retain any observed RTT or
@@ -834,14 +850,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    The payload of the Retry packet contains at least two frames.  It
    MUST include a STREAM frame on stream 0 with offset 0 containing the
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 15]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    server's cryptographic stateless retry material.  It MUST also
    include an ACK frame to acknowledge the client's Initial packet.  It
    MAY additionally include PADDING frames.  The next STREAM frame sent
@@ -856,11 +864,11 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    The Destination Connection ID field in a Handshake packet contains a
    connection ID that is chosen by the recipient of the packet; the
    Source Connection ID includes the connection ID that the sender of
-   the packet wishes to use (see Section 4.6).
+   the packet wishes to use (see Section 4.7).
 
    The first Handshake packet sent by a server contains a randomized
    packet number.  This value is increased for each subsequent packet
-   sent by the server as described in Section 4.7.  The client
+   sent by the server as described in Section 4.8.  The client
    increments the packet number from its previous packet by one for each
    Handshake packet that it sends (which might be an Initial, 0-RTT
    Protected, or Handshake packet).
@@ -881,7 +889,17 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    on implementation choices.
 
    The payload of this packet contains STREAM frames and could contain
-   PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.
+   PADDING, ACK, PATH_CHALLENGE, or PATH_RESPONSE frames.  Handshake
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 16]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
+   packets MAY contain CONNECTION_CLOSE frames if the handshake is
+   unsuccessful.
 
 4.5.  Protected Packets
 
@@ -891,13 +909,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    encryption level and therefore the keys that are used to remove
    packet protection.
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 16]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    Packets protected with 0-RTT keys use a type value of 0x7C.  The
    connection ID fields for a 0-RTT packet MUST match the values used in
    the Initial packet (Section 4.4.1).
@@ -906,19 +917,47 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    (Section 4.4.3), if that packet does not complete the handshake.
    Even if the client receives a different connection ID in the
    Handshake packet, it MUST continue to use the same Destination
-   Connection ID for 0-RTT packets, see Section 4.6.
+   Connection ID for 0-RTT packets, see Section 4.7.
 
    The version field for protected packets is the current QUIC version.
 
    The packet number field contains a packet number, which increases
-   with each packet sent, see Section 4.7 for details.
+   with each packet sent, see Section 4.8 for details.
 
    The payload is protected using authenticated encryption.  [QUIC-TLS]
    describes packet protection in detail.  After decryption, the
    plaintext consists of a sequence of frames, as described in
    Section 5.
 
-4.6.  Connection ID
+4.6.  Coaslescing Packets
+
+   A sender can coalesce multiple QUIC packets (typically a
+   Cryptographic Handshake packet and a Protected packet) into one UDP
+   datagram.  This can reduce the number of UDP datagrams needed to send
+   application data during the handshake and immediately afterwards.  A
+   packet with a short header does not include a length, so it has to be
+   the last packet included in a UDP datagram.
+
+   The sender MUST NOT coalesce QUIC packets belonging to different QUIC
+   connections into a single UDP datagram.
+
+   Every QUIC packet that is coalesced into a single UDP datagram is
+   separate and complete.  Though the values of some fields in the
+   packet header might be redundant, no fields are omitted.  The
+   receiver of coalesced QUIC packets MUST individually process each
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 17]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
+   QUIC packet and separately acknowledge them, as if they were received
+   as the payload of different UDP datagrams.
+
+4.7.  Connection ID
 
    A connection ID is used to ensure consistent routing of packets.  The
    long header contains two connection IDs: the Destination Connection
@@ -946,14 +985,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    processing of multiple Initial packets producing different connection
    IDs.
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 17]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    Short headers only include the Destination Connection ID and omit the
    explicit length.  The length of the Destination Connection ID field
    is expected to be known to endpoints.
@@ -968,7 +999,16 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    Destination Connection ID.  The same value MUST be used for all 0-RTT
    packets sent on that connection (Section 4.5).  This randomized value
    is used to determine the handshake packet protection keys (see
-   Section 5.2.2 of [QUIC-TLS]).
+   Section 5.3.2 of [QUIC-TLS]).
+
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 18]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    A Version Negotiation (Section 4.3) packet MUST use both connection
    IDs selected by the client, swapped to ensure correct routing toward
@@ -979,14 +1019,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    NEW_CONNECTION_ID frames (Section 7.13) are used to provide new
    connection ID values.
 
-4.7.  Packet Numbers
+4.8.  Packet Numbers
 
    The packet number is an integer in the range 0 to 2^62-1.  The value
    is used in determining the cryptographic nonce for packet encryption.
    Each endpoint maintains a separate packet number for sending and
    receiving.  The packet number for sending MUST increase by at least
    one after sending any packet, unless otherwise specified (see
-   Section 4.7.1).
+   Section 4.8.1).
 
    A QUIC endpoint MUST NOT reuse a packet number within the same
    connection (that is, under the same cryptographic keys).  If the
@@ -1000,15 +1040,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    bits of the packet number.  The actual packet number for each packet
    is reconstructed at the receiver based on the largest packet number
    received on a successfully authenticated packet.
-
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 18]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
    A packet number is decoded by finding the packet number value that is
    closest to the next expected packet.  The next expected packet is the
@@ -1027,6 +1058,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    recovered even if the packet arrives after packets that are sent
    afterwards.
 
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 19]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    As a result, the size of the packet number encoding is at least one
    more than the base 2 logarithm of the number of contiguous
    unacknowledged packet numbers, including the new packet.
@@ -1040,7 +1079,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    number.  The Retry packet (Section 4.4.2) has special rules for
    populating the packet number field.
 
-4.7.1.  Initial Packet Number
+4.8.1.  Initial Packet Number
 
    The initial value for packet number MUST be selected randomly from a
    range between 0 and 2^32 - 1025 (inclusive).  This value is selected
@@ -1059,18 +1098,29 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    for generating the initial packet number, nor is it necessary that
    the value be uniformly distributed.
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 19]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
 5.  Frames and Frame Types
 
    The payload of all packets, after removing packet protection,
    consists of a sequence of frames, as shown in Figure 4.  Version
    Negotiation and Stateless Reset do not contain frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 20]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1117,7 +1167,13 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 20]
+
+
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 21]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1173,7 +1229,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 21]
+Iyengar & Thomson       Expires October 19, 2018               [Page 22]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1229,7 +1285,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 22]
+Iyengar & Thomson       Expires October 19, 2018               [Page 23]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1285,7 +1341,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 23]
+Iyengar & Thomson       Expires October 19, 2018               [Page 24]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1341,7 +1397,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 24]
+Iyengar & Thomson       Expires October 19, 2018               [Page 25]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1397,7 +1453,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 25]
+Iyengar & Thomson       Expires October 19, 2018               [Page 26]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1453,7 +1509,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 26]
+Iyengar & Thomson       Expires October 19, 2018               [Page 27]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1509,7 +1565,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 27]
+Iyengar & Thomson       Expires October 19, 2018               [Page 28]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1565,7 +1621,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 28]
+Iyengar & Thomson       Expires October 19, 2018               [Page 29]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1621,7 +1677,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 29]
+Iyengar & Thomson       Expires October 19, 2018               [Page 30]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1677,7 +1733,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 30]
+Iyengar & Thomson       Expires October 19, 2018               [Page 31]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1733,7 +1789,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 31]
+Iyengar & Thomson       Expires October 19, 2018               [Page 32]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1789,7 +1845,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 32]
+Iyengar & Thomson       Expires October 19, 2018               [Page 33]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1845,7 +1901,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 33]
+Iyengar & Thomson       Expires October 19, 2018               [Page 34]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1901,7 +1957,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 34]
+Iyengar & Thomson       Expires October 19, 2018               [Page 35]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1957,7 +2013,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 35]
+Iyengar & Thomson       Expires October 19, 2018               [Page 36]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -1978,13 +2034,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    endpoint may pad a packet carrying a PATH_CHALLENGE for PMTU
    discovery, or an endpoint may bundle a PATH_RESPONSE with its own
    PATH_CHALLENGE.
-
-   Differences in routing on the Internet might cause the same
-   destination address and connection ID to reach a different server
-   instance which does not posses the necessary connection state.
-   Receiving a Stateless Reset in response to a probing packet SHOULD
-   NOT terminate the connection, but MUST cause the endpoint to consider
-   path validation to have failed.
 
 6.7.1.  Initiation
 
@@ -2011,18 +2060,19 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    silently discard PATH_CHALLENGE frames that would cause it to respond
    at a higher rate.
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 36]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    To ensure that packets can be both sent to and received from the
    peer, the PATH_RESPONSE MUST be sent on the same path as the
    triggering PATH_CHALLENGE: from the same local address on which the
    PATH_CHALLENGE was received, to the same remote address from which
    the PATH_CHALLENGE was received.
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 37]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
 6.7.3.  Completion
 
@@ -2065,19 +2115,20 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    paths are available, an endpoint can wait for a new path to become
    available or close the connection.
 
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 37]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    A path validation might be abandoned for other reasons besides
    failure.  Primarily, this happens if a connection migration to a new
    path is initiated while a path validation on the old path is in
    progress.
+
+
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 38]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
 6.8.  Connection Migration
 
@@ -2088,6 +2139,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    An endpoint MUST NOT initiate connection migration before the
    handshake is finished and the endpoint has 1-RTT keys.
+
+   This document limits migration of connections to new client
+   addresses, except as described in Section 6.9.  Clients are
+   responsible for initiating all migrations.  Servers do not send non-
+   probing packets (see Section 6.8.1) toward a client address until it
+   sees a non-probing packet from that address.  If a client receives
+   packets from an unknown server address, the client MAY discard these
+   packets.
 
 6.8.1.  Probing a New Path
 
@@ -2110,9 +2169,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    containing only probing frames is a "probing packet", and a packet
    containing any other frame is a "non-probing packet".
 
-   A server MUST NOT send non-probing frames to a client's address until
-   the server receives a non-probing packet from that address.
-
 6.8.2.  Initiating Connection Migration
 
    A endpoint can migrate a connection to a new local address by sending
@@ -2125,7 +2181,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 38]
+Iyengar & Thomson       Expires October 19, 2018               [Page 39]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -2181,7 +2237,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 39]
+Iyengar & Thomson       Expires October 19, 2018               [Page 40]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -2237,7 +2293,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 40]
+Iyengar & Thomson       Expires October 19, 2018               [Page 41]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -2293,7 +2349,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 41]
+Iyengar & Thomson       Expires October 19, 2018               [Page 42]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -2325,6 +2381,20 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    packet number gap to its expected packet number.  An endpoint MUST
    discard packets that contain a smaller gap than it advertised.
 
+   Clients MAY change connection ID at any time based on implementation-
+   specific concerns.  For example, after a period of network inactivity
+   NAT rebinding might occur when the client begins sending data again.
+
+   A client might wish to reduce linkability by employing a new
+   connection ID and source UDP port when sending traffic after a period
+   of inactivity.  Changing the UDP port from which it sends packets at
+   the same time might cause the packet to appear as a connection
+   migration.  This ensures that the mechanisms that support migration
+   are exercised even for clients that don't experience NAT rebindings
+   or genuine migrations.  Changing port number can cause a peer to
+   reset its congestion state (see Section 6.8.4), so the port SHOULD
+   only be changed infrequently.
+
    An endpoint that receives a successfully authenticated packet with a
    previously unused connection ID MUST use the next available
    connection ID for any packets it sends to that address.  To avoid
@@ -2332,6 +2402,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    order, endpoints MUST change only in response to a packet that
    increases the largest received packet number.  Failing to do this
    could allow for use of that connection ID to link activity on new
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 43]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    paths.  There is no need to move to a new connection ID if the
    address of a peer changes without also changing the connection ID.
 
@@ -2346,14 +2424,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    In order to avoid linkage, the packet number gap MUST be externally
    indistinguishable from random.  The packet number gap for a
    connection ID with sequence number is computed by encoding the
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 42]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    sequence number as a 32-bit integer in big-endian format, and then
    computing:
 
@@ -2389,6 +2459,13 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    the connection ID provided in the preferred_address transport
    parameter.
 
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 44]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    If path validation succeeds, the client SHOULD immediately begin
    sending all future packets to the new server address using the new
    connection ID and discontinue use of the old server address.  If path
@@ -2402,13 +2479,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    contains a PATH_CHALLENGE frame, the server sends a PATH_RESPONSE
    frame as per Section 6.7, but the server MUST continue sending all
    other packets from its original IP address.
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 43]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
    The server SHOULD also initiate path validation of the client using
    its preferred address and the address from which it received the
@@ -2443,6 +2513,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    because the client's access network used a different NAT binding for
    the server's preferred address.
 
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 45]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
 6.10.  Connection Termination
 
    Connections should remain open until they become idle for a pre-
@@ -2454,17 +2533,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    o  immediate close (Section 6.10.3)
 
    o  stateless reset (Section 6.10.4)
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 44]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
 6.10.1.  Closing and Draining Connection States
 
@@ -2501,6 +2569,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    period would have ended.  In other words, the endpoint can use the
    same end time, but cease retransmission of the closing packet.
 
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 46]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    Disposing of connection state prior to the end of the closing or
    draining period could cause delayed or reordered packets to be
    handled poorly.  Endpoints that have some alternative means to ensure
@@ -2514,13 +2591,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    discard all connection state.  This results in new packets on the
    connection being handled generically.  For instance, an endpoint MAY
    send a stateless reset in response to any further incoming packets.
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 45]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
    The draining and closing periods do not apply when a stateless reset
    (Section 6.10.4) is sent.
@@ -2556,6 +2626,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    After sending a closing frame, endpoints immediately enter the
    closing state.  During the closing period, an endpoint that sends a
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 47]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    closing frame SHOULD respond to any packet that it receives with
    another packet containing a closing frame.  To minimize the state
    that an endpoint maintains for a closing connection, endpoints MAY
@@ -2569,15 +2647,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
       in this document that recommends the creation of new packet
       numbers for every packet.  Sending new packet numbers is primarily
       of advantage to loss recovery and congestion control, which are
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 46]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
       not expected to be relevant for a closed connection.
       Retransmitting the final packet requires less state.
 
@@ -2612,27 +2681,17 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    is protected by encryption, so only client and server know this
    value.
 
-   A server that receives packets that it cannot process sends a packet
-   in the following layout:
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 47]
+Iyengar & Thomson       Expires October 19, 2018               [Page 48]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   A server that receives packets that it cannot process sends a packet
+   in the following layout:
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -2655,7 +2714,8 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
    This design ensures that a stateless reset packet is - to the extent
-   possible - indistinguishable from a regular packet.
+   possible - indistinguishable from a regular packet with a short
+   header.
 
    A server generates a random 18-octet Destination Connection ID field.
    For a client that depends on the server including a connection ID,
@@ -2678,18 +2738,17 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    The Packet Number field is set to a randomized value.  The server
    SHOULD send a packet with a short header and a type of 0x1F.  This
    produces the shortest possible packet number encoding, which
-   minimizes the perceived gap between the last packet that the server
-   sent and this packet.  A server MAY use a different short header
-   type, indicating a different packet number length, but a longer
 
 
 
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 48]
+Iyengar & Thomson       Expires October 19, 2018               [Page 49]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
+   minimizes the perceived gap between the last packet that the server
+   sent and this packet.  A server MAY use a different short header
+   type, indicating a different packet number length, but a longer
    packet number encoding might allow this message to be identified as a
    stateless reset more easily using heuristics.
 
@@ -2735,17 +2794,17 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    A single static key can be used across all connections to the same
    endpoint by generating the proof using a second iteration of a
    preimage-resistant function that takes three inputs: the static key,
-   the server's connection ID (see Section 4.6), and an identifier for
-   the server instance.  A server could use HMAC [RFC2104] (for example,
-   HMAC(static_key, server_id || connection_id)) or HKDF [RFC5869] (for
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 49]
+Iyengar & Thomson       Expires October 19, 2018               [Page 50]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
+   the server's connection ID (see Section 4.7), and an identifier for
+   the server instance.  A server could use HMAC [RFC2104] (for example,
+   HMAC(static_key, server_id || connection_id)) or HKDF [RFC5869] (for
    example, using the static key as input keying material, with server
    and connection identifiers as salt).  The output of this function is
    truncated to 16 octets to produce the Stateless Reset Token for that
@@ -2789,18 +2848,19 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    the integer encoding length in octets.  The integer value is encoded
    on the remaining bits, in network byte order.
 
-   This means that integers are encoded on 1, 2, 4, or 8 octets and can
-   encode 6, 14, 30, or 62 bit values respectively.  Table 4 summarizes
-   the encoding properties.
 
 
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 50]
+Iyengar & Thomson       Expires October 19, 2018               [Page 51]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   This means that integers are encoded on 1, 2, 4, or 8 octets and can
+   encode 6, 14, 30, or 62 bit values respectively.  Table 4 summarizes
+   the encoding properties.
 
           +------+--------+-------------+-----------------------+
           | 2Bit | Length | Usable Bits | Range                 |
@@ -2845,18 +2905,19 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    of RST_STREAM can discard any data that it already received on that
    stream.
 
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 52]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    An endpoint that receives a RST_STREAM frame for a send-only stream
    MUST terminate the connection with error PROTOCOL_VIOLATION.
 
    The RST_STREAM frame is as follows:
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 51]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -2901,19 +2962,18 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    |                        Reason Phrase (*)                    ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-   The fields of a CONNECTION_CLOSE frame are as follows:
-
-   Error Code:  A 16-bit error code which indicates the reason for
-      closing this connection.  CONNECTION_CLOSE uses codes from the
 
 
 
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 52]
+Iyengar & Thomson       Expires October 19, 2018               [Page 53]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
+   The fields of a CONNECTION_CLOSE frame are as follows:
+
+   Error Code:  A 16-bit error code which indicates the reason for
+      closing this connection.  CONNECTION_CLOSE uses codes from the
       space defined in Section 11.3 (APPLICATION_CLOSE uses codes from
       the application protocol error code space, see Section 11.4).
 
@@ -2958,18 +3018,18 @@ Internet-Draft           QUIC Transport Protocol              April 2018
       amount of data that can be sent on the entire connection, in units
       of octets.
 
-   All data sent in STREAM frames counts toward this limit, with the
-   exception of data on stream 0.  The sum of the largest received
-   offsets on all streams - including streams in terminal states, but
-   excluding stream 0 - MUST NOT exceed the value advertised by a
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 53]
+Iyengar & Thomson       Expires October 19, 2018               [Page 54]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
 
+   All data sent in STREAM frames counts toward this limit, with the
+   exception of data on stream 0.  The sum of the largest received
+   offsets on all streams - including streams in terminal states, but
+   excluding stream 0 - MUST NOT exceed the value advertised by a
    receiver.  An endpoint MUST terminate a connection with a
    QUIC_FLOW_CONTROL_RECEIVED_TOO_MUCH_DATA error if it receives more
    data than the maximum data value that it has sent, unless this is a
@@ -3014,17 +3074,16 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    largest received offset of data that is sent or received on the
    stream.  Loss or reordering can mean that the largest received offset
    on a stream can be greater than the total size of data received on
-   that stream.  Receiving STREAM frames might not increase the largest
-   received offset.
 
 
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 54]
+Iyengar & Thomson       Expires October 19, 2018               [Page 55]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   that stream.  Receiving STREAM frames might not increase the largest
+   received offset.
 
    The data sent on a stream MUST NOT exceed the largest maximum stream
    data value advertised by the receiver.  An endpoint MUST terminate a
@@ -3072,15 +3131,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    are still alive or to check reachability to the peer.  The PING frame
    contains no additional fields.
 
-   The receiver of a PING frame simply needs to acknowledge the packet
-   containing this frame.
 
 
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 55]
+Iyengar & Thomson       Expires October 19, 2018               [Page 56]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   The receiver of a PING frame simply needs to acknowledge the packet
+   containing this frame.
 
    The PING frame can be used to keep a connection alive when an
    application or application protocol wishes to prevent the connection
@@ -3128,15 +3187,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    An endpoint that receives a STREAM_BLOCKED frame for a send-only
    stream MUST terminate the connection with error PROTOCOL_VIOLATION.
 
-   The STREAM_BLOCKED frame is as follows:
 
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 56]
+Iyengar & Thomson       Expires October 19, 2018               [Page 57]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   The STREAM_BLOCKED frame is as follows:
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -3187,9 +3245,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 57]
+Iyengar & Thomson       Expires October 19, 2018               [Page 58]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3245,7 +3301,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 58]
+Iyengar & Thomson       Expires October 19, 2018               [Page 59]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3301,7 +3357,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 59]
+Iyengar & Thomson       Expires October 19, 2018               [Page 60]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3357,7 +3413,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 60]
+Iyengar & Thomson       Expires October 19, 2018               [Page 61]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3413,7 +3469,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 61]
+Iyengar & Thomson       Expires October 19, 2018               [Page 62]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3461,15 +3517,15 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    frames in response to packets which only contain ACK frames.
    However, they MUST acknowledge packets containing only ACK frames
    when sending ACK frames in response to other packets.
-   Implementations MUST NOT send more than one ACK frame per received
-   packet that contains frames other than ACK frames.  Packets
-   containing non-ACK frames MUST be acknowledged immediately or when a
-   delayed ack timer expires.
+   Implementations MUST NOT send more than one packet containing only
+   ACK frames per received packet that contains frames other than ACK
+   frames.  Packets containing non-ACK frames MUST be acknowledged
+   immediately or when a delayed ack timer expires.
 
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 62]
+Iyengar & Thomson       Expires October 19, 2018               [Page 63]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3479,11 +3535,11 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    acknowledged by its peer.  Once an ACK frame has been acknowledged,
    the packets it acknowledges SHOULD NOT be acknowledged again.
 
-   A receiver that is only sending ACK frames will not receive
-   acknowledgments for its packets.  Sending an occasional MAX_DATA or
-   MAX_STREAM_DATA frame as data is received will ensure that
-   acknowledgements are generated by a peer.  Otherwise, an endpoint MAY
-   send a PING frame once per RTT to solicit an acknowledgment.
+   Because ACK frames are not sent in response to ACK-only packets, a
+   receiver that is only sending ACK frames will only receive
+   acknowledgements for its packets if the sender includes them in
+   packets with non-ACK frames.  A sender SHOULD bundle ACK frames with
+   other frames when possible.
 
    To limit receiver state or the size of ACK frames, a receiver MAY
    limit the number of ACK blocks it sends.  A receiver can do this even
@@ -3525,7 +3581,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 63]
+Iyengar & Thomson       Expires October 19, 2018               [Page 64]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3581,7 +3637,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 64]
+Iyengar & Thomson       Expires October 19, 2018               [Page 65]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3637,7 +3693,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 65]
+Iyengar & Thomson       Expires October 19, 2018               [Page 66]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3693,7 +3749,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 66]
+Iyengar & Thomson       Expires October 19, 2018               [Page 67]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3749,7 +3805,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 67]
+Iyengar & Thomson       Expires October 19, 2018               [Page 68]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3805,7 +3861,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 68]
+Iyengar & Thomson       Expires October 19, 2018               [Page 69]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3861,7 +3917,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 69]
+Iyengar & Thomson       Expires October 19, 2018               [Page 70]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3917,7 +3973,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 70]
+Iyengar & Thomson       Expires October 19, 2018               [Page 71]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -3973,7 +4029,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 71]
+Iyengar & Thomson       Expires October 19, 2018               [Page 72]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4029,7 +4085,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 72]
+Iyengar & Thomson       Expires October 19, 2018               [Page 73]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4085,7 +4141,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 73]
+Iyengar & Thomson       Expires October 19, 2018               [Page 74]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4141,7 +4197,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 74]
+Iyengar & Thomson       Expires October 19, 2018               [Page 75]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4197,7 +4253,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 75]
+Iyengar & Thomson       Expires October 19, 2018               [Page 76]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4253,7 +4309,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 76]
+Iyengar & Thomson       Expires October 19, 2018               [Page 77]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4309,7 +4365,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 77]
+Iyengar & Thomson       Expires October 19, 2018               [Page 78]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4365,7 +4421,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 78]
+Iyengar & Thomson       Expires October 19, 2018               [Page 79]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4421,7 +4477,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 79]
+Iyengar & Thomson       Expires October 19, 2018               [Page 80]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4477,7 +4533,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 80]
+Iyengar & Thomson       Expires October 19, 2018               [Page 81]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4533,7 +4589,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 81]
+Iyengar & Thomson       Expires October 19, 2018               [Page 82]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4589,7 +4645,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 82]
+Iyengar & Thomson       Expires October 19, 2018               [Page 83]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4645,7 +4701,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 83]
+Iyengar & Thomson       Expires October 19, 2018               [Page 84]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4701,7 +4757,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 84]
+Iyengar & Thomson       Expires October 19, 2018               [Page 85]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4757,7 +4813,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 85]
+Iyengar & Thomson       Expires October 19, 2018               [Page 86]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4813,7 +4869,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 86]
+Iyengar & Thomson       Expires October 19, 2018               [Page 87]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4869,7 +4925,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 87]
+Iyengar & Thomson       Expires October 19, 2018               [Page 88]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4925,7 +4981,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 88]
+Iyengar & Thomson       Expires October 19, 2018               [Page 89]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -4981,7 +5037,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 89]
+Iyengar & Thomson       Expires October 19, 2018               [Page 90]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5037,7 +5093,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 90]
+Iyengar & Thomson       Expires October 19, 2018               [Page 91]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5093,7 +5149,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 91]
+Iyengar & Thomson       Expires October 19, 2018               [Page 92]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5149,7 +5205,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 92]
+Iyengar & Thomson       Expires October 19, 2018               [Page 93]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5205,7 +5261,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 93]
+Iyengar & Thomson       Expires October 19, 2018               [Page 94]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5261,7 +5317,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 94]
+Iyengar & Thomson       Expires October 19, 2018               [Page 95]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5317,7 +5373,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 95]
+Iyengar & Thomson       Expires October 19, 2018               [Page 96]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5373,7 +5429,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 96]
+Iyengar & Thomson       Expires October 19, 2018               [Page 97]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5429,7 +5485,7 @@ Appendix A.  Contributors
 
 
 
-Iyengar & Thomson        Expires October 7, 2018               [Page 97]
+Iyengar & Thomson       Expires October 19, 2018               [Page 98]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
@@ -5455,11 +5511,54 @@ Appendix C.  Change Log
 
    Issue and pull request numbers are listed with a leading octothorp.
 
-C.1.  Since draft-ietf-quic-transport-09
+C.1.  Since draft-ietf-quic-transport-10
+
+   o  Swap payload length and packed number fields in long header
+      (#1294)
+
+   o  Clarified that CONNECTION_CLOSE is allowed in Handshake packet
+      (#1274)
+
+   o  Spin bit reserved (#1283)
+
+   o  Coalescing multiple QUIC packets in a UDP datagram (#1262, #1285)
+
+   o  A more complete connection migration (#1249)
+
+   o  Refine opportunistic ACK defense text (#305, #1030, #1185)
+
+   o  A Stateless Reset Token isn't mandatory (#818, #1191)
+
+   o  Removed implicit stream opening (#896, #1193)
+
+   o  An empty STREAM frame can be used to open a stream without sending
+      data (#901, #1194)
+
+   o  Define stream counts in transport parameters rather than a maximum
+      stream ID (#1023, #1065)
+
+   o  STOP_SENDING is now prohibited before streams are used (#1050)
+
+
+
+Iyengar & Thomson       Expires October 19, 2018               [Page 99]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
+   o  Recommend including ACK in Retry packets and allow PADDING (#1067,
+      #882)
+
+   o  Endpoints now become closing after an idle timeout (#1178, #1179)
+
+   o  Remove implication that Version Negotiation is sent when a packet
+      of the wrong version is received (#1197)
+
+C.2.  Since draft-ietf-quic-transport-09
 
    o  Added PATH_CHALLENGE and PATH_RESPONSE frames to replace PING with
       Data and PONG frame.  Changed ACK frame type from 0x0e to 0x0d.
-      (#1091, #1086)
+      (#1091, #725, #1086)
 
    o  A server can now only send 3 packets without validating the client
       address (#38, #1090)
@@ -5470,7 +5569,7 @@ C.1.  Since draft-ietf-quic-transport-09
    o  Rework of packet handling and version negotiation (#1038)
 
    o  Stream 0 is now exempt from flow control until the handshake
-      completes (#1074, #725, #1082)
+      completes (#1074, #725, #825, #1082)
 
    o  Improved retransmission rules for all frame types: information is
       retransmitted, not packets or frames (#463, #765, #1095, #1053)
@@ -5480,17 +5579,9 @@ C.1.  Since draft-ietf-quic-transport-09
    o  Endpoints now set the connection ID that their peer uses.
       Connection IDs are variable length.  Removed the
       omit_connection_id transport parameter and the corresponding short
-      header flag. (#1089, #1052, #1146, #821, #1151)
+      header flag. (#1089, #1052, #1146, #821, #745, #821, #1166, #1151)
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 98]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
-C.2.  Since draft-ietf-quic-transport-08
+C.3.  Since draft-ietf-quic-transport-08
 
    o  Clarified requirements for BLOCKED usage (#65, #924)
 
@@ -5501,7 +5592,15 @@ C.2.  Since draft-ietf-quic-transport-08
 
    o  Improved PMTUD description (#614, #1036)
 
-   o  Clarified stream state machine (#634, #662, #894)
+   o  Clarified stream state machine (#634, #662, #743, #894)
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 100]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  Reserved versions don't need to be generated deterministically
       (#831, #931)
@@ -5518,7 +5617,7 @@ C.2.  Since draft-ietf-quic-transport-08
 
    o  Removed transport parameters from NewSessionTicket (#1015)
 
-C.3.  Since draft-ietf-quic-transport-07
+C.4.  Since draft-ietf-quic-transport-07
 
    o  The long header now has version before packet number (#926, #939)
 
@@ -5539,13 +5638,6 @@ C.3.  Since draft-ietf-quic-transport-07
       *  Stream limit transport parameters are now optional and default
          to 0 (#970, #971)
 
-
-
-Iyengar & Thomson        Expires October 7, 2018               [Page 99]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    o  The stream state machine has been split into read and write (#634,
       #894)
 
@@ -5559,6 +5651,13 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
       *  Clarifications about stateless reset (#889, #890)
 
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 101]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
+
    o  Address validation for connection migration (#161, #732, #878)
 
    o  Clearly defined retransmission rules for BLOCKED (#452, #65, #924)
@@ -5569,7 +5668,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    o  Increased the range over which packet numbers are randomized
       (#864, #850, #964)
 
-C.4.  Since draft-ietf-quic-transport-06
+C.5.  Since draft-ietf-quic-transport-06
 
    o  Replaced FNV-1a with AES-GCM for all "Cleartext" packets (#554)
 
@@ -5587,20 +5686,12 @@ C.4.  Since draft-ietf-quic-transport-06
 
    o  Require transport parameters to only appear once (#792)
 
-C.5.  Since draft-ietf-quic-transport-05
+C.6.  Since draft-ietf-quic-transport-05
 
    o  Stateless token is server-only (#726)
 
    o  Refactor section on connection termination (#733, #748, #328,
       #177)
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018              [Page 100]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
 
    o  Limit size of Version Negotiation packet (#585)
 
@@ -5610,10 +5701,18 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    o  Clarify Keep-alive requirements (#729)
 
-C.6.  Since draft-ietf-quic-transport-04
+C.7.  Since draft-ietf-quic-transport-04
 
    o  Introduce STOP_SENDING frame, RST_STREAM only resets in one
       direction (#165)
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 102]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  Removed GOAWAY; application protocols are responsible for graceful
       shutdown (#696)
@@ -5644,21 +5743,13 @@ C.6.  Since draft-ietf-quic-transport-04
 
    o  Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)
 
-C.7.  Since draft-ietf-quic-transport-03
+C.8.  Since draft-ietf-quic-transport-03
 
    o  Change STREAM and RST_STREAM layout
 
    o  Add MAX_STREAM_ID settings
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018              [Page 101]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
-C.8.  Since draft-ietf-quic-transport-02
+C.9.  Since draft-ietf-quic-transport-02
 
    o  The size of the initial packet payload has a fixed minimum (#267,
       #472)
@@ -5671,6 +5762,13 @@ C.8.  Since draft-ietf-quic-transport-02
 
    o  Rework initial packet types to change how the connection ID is
       chosen (#482, #442, #493)
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 103]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  No timestamps are forbidden in unprotected packets (#542, #429)
 
@@ -5704,17 +5802,7 @@ C.8.  Since draft-ietf-quic-transport-02
 
    o  Expanded security considerations (#440, #444, #445, #448)
 
-
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018              [Page 102]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
-C.9.  Since draft-ietf-quic-transport-01
+C.10.  Since draft-ietf-quic-transport-01
 
    o  Defined short and long packet headers (#40, #148, #361)
 
@@ -5729,6 +5817,14 @@ C.9.  Since draft-ietf-quic-transport-01
       #299, #323, #356)
 
    o  Defined client address validation (#52, #118, #120, #275)
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 104]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  Define transport parameters as a TLS extension (#49, #122)
 
@@ -5762,14 +5858,6 @@ C.9.  Since draft-ietf-quic-transport-01
    o  Don't require retransmission of old timestamps for lost ACK frames
       (#308)
 
-
-
-
-Iyengar & Thomson        Expires October 7, 2018              [Page 103]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
    o  Clarified that frames are not retransmitted, but the information
       in them can be (#157, #298)
 
@@ -5785,6 +5873,14 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    o  Require that stream be entirely delivered or reset, including
       acknowledgment of all STREAM frames or the RST_STREAM, before it
       closes (#381)
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 105]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  Remove stream reservation from state machine (#174, #280)
 
@@ -5817,16 +5913,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    o  Defined priority as the responsibility of the application protocol
       (#104, #303)
 
-
-
-
-
-Iyengar & Thomson        Expires October 7, 2018              [Page 104]
-
-Internet-Draft           QUIC Transport Protocol              April 2018
-
-
-C.10.  Since draft-ietf-quic-transport-00
+C.11.  Since draft-ietf-quic-transport-00
 
    o  Replaced DIVERSIFICATION_NONCE flag with KEY_PHASE flag
 
@@ -5838,11 +5925,18 @@ C.10.  Since draft-ietf-quic-transport-00
 
    o  Use big endian for all numeric values
 
-C.11.  Since draft-hamilton-quic-transport-protocol-01
+C.12.  Since draft-hamilton-quic-transport-protocol-01
 
    o  Adopted as base for draft-ietf-quic-tls
 
    o  Updated authors/editors list
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 106]
+
+Internet-Draft           QUIC Transport Protocol              April 2018
+
 
    o  Added IANA Considerations section
 
@@ -5877,4 +5971,22 @@ Authors' Addresses
 
 
 
-Iyengar & Thomson        Expires October 7, 2018              [Page 105]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires October 19, 2018              [Page 107]
