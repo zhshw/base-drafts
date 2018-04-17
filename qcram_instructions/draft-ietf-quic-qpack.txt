@@ -208,7 +208,7 @@ Internet-Draft                    QPACK                       April 2018
 
 2.  Wire Format
 
-   QCRAM instructions occur in three locations, each of which uses a
+   QPACK instructions occur in three locations, each of which uses a
    separate instruction space:
 
    o  Table updates are carried by HEADERS frames on the control stream,
@@ -231,7 +231,7 @@ Internet-Draft                    QPACK                       April 2018
       encoder.
 
    o  Finally, the contents of HEADERS and PUSH_PROMISE frames on
-      request streams reference the QCRAM table state.
+      request streams reference the QPACK table state.
 
    This section describes the instructions which are possible on each
    stream type.
@@ -252,7 +252,7 @@ Internet-Draft                    QPACK                       April 2018
    coded), followed by the Length encoded as a 7-bit prefix integer, and
    finally Length octets of data.
 
-   QCRAM permits strings to begin other than on a byte boundary.  An
+   QPACK permits strings to begin other than on a byte boundary.  An
    "N-bit prefix string literal" begins with the same Huffman flag,
    followed by the length encoded as an (N-1)-bit prefix integer.  The
    remainder of the string literal is unmodified.
@@ -374,7 +374,7 @@ Internet-Draft                    QPACK                       April 2018
                 Figure 2: Maximum Dynamic Table Size Change
 
    The new maximum size MUST be lower than or equal to the limit
-   determined by the protocol using QCRAM.  A value that exceeds this
+   determined by the protocol using QPACK.  A value that exceeds this
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
    is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see
    [QUIC-HTTP]) received from the decoder.
@@ -398,13 +398,13 @@ Internet-Draft                    QPACK                       April 2018
 
    HEADER_ACK frames on the control stream carry information used to
    ensure consistency of the dynamic table.  Information is sent from
-   the QCRAM decoder to the QCRAM encoder; that is, the server informs
+   the QPACK decoder to the QPACK encoder; that is, the server informs
    the client about the processing of the client's header blocks and
    table updates, and the client informs the server about the processing
    of the server's header blocks and table updates.
 
-   Each frame represents a header block or table update which the QCRAM
-   decoder has fully processed.  It is used by the peer's QCRAM encoder
+   Each frame represents a header block or table update which the QPACK
+   decoder has fully processed.  It is used by the peer's QPACK encoder
    to determine whether subsequent indexed representations that might
    reference impacted entries are vulnerable to head-of-line blocking,
    and to prevent eviction races.
