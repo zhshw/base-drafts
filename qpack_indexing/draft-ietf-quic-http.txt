@@ -735,11 +735,7 @@ Internet-Draft               HTTP over QUIC                   April 2018
    The HEADERS frame (type=0x1) is used to carry a header block,
    compressed using QPACK.  See [QPACK] for more details.
 
-   The HEADERS frame defines a single flag:
-
-   BLOCKING (0x01):  Indicates the stream might need to wait for
-      dependent headers before processing.  If 0, the frame can be
-      processed immediately upon receipt.
+   The HEADERS frame defines no flags.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -750,9 +746,7 @@ Internet-Draft               HTTP over QUIC                   April 2018
                       Figure 4: HEADERS frame payload
 
    HEADERS frames can be sent on the Control Stream as well as on
-   request / push streams.  The value of BLOCKING MUST be 0 for HEADERS
-   frames on the Control Stream, since they can only depend on previous
-   HEADERS on the same stream.
+   request / push streams.
 
 4.2.3.  PRIORITY
 
@@ -777,6 +771,12 @@ Internet-Draft               HTTP over QUIC                   April 2018
 
    E (0x01):  Indicates that the stream dependency is exclusive (see
       [RFC7540], Section 5.3).
+
+
+
+
+
+
 
 
 
@@ -1030,11 +1030,7 @@ Internet-Draft               HTTP over QUIC                   April 2018
 
    The PUSH_PROMISE frame (type=0x05) is used to carry a request header
    set from server to client, as in HTTP/2.  The PUSH_PROMISE frame
-   defines a single flag:
-
-   BLOCKING (0x01):  Indicates the stream might need to wait for
-      dependent headers before processing.  If 0, the frame can be
-      processed immediately upon receipt.
+   defines no flags.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1058,6 +1054,10 @@ Internet-Draft               HTTP over QUIC                   April 2018
 
    A server MUST NOT use a Push ID that is larger than the client has
    provided in a MAX_PUSH_ID frame (Section 4.2.9).  A client MUST treat
+   receipt of a PUSH_PROMISE that contains a larger Push ID than the
+   client has advertised as a connection error of type
+   HTTP_MALFORMED_FRAME.
+
 
 
 
@@ -1065,10 +1065,6 @@ Bishop                  Expires October 22, 2018               [Page 19]
 
 Internet-Draft               HTTP over QUIC                   April 2018
 
-
-   receipt of a PUSH_PROMISE that contains a larger Push ID than the
-   client has advertised as a connection error of type
-   HTTP_MALFORMED_FRAME.
 
    A server MAY use the same Push ID in multiple PUSH_PROMISE frames.
    This allows the server to use the same server push in response to
@@ -1115,6 +1111,10 @@ Internet-Draft               HTTP over QUIC                   April 2018
    MUST treat receipt of a GOAWAY frame containing a Stream ID of any
    other type as a connection error of type HTTP_MALFORMED_FRAME.
 
+   Clients do not need to send GOAWAY to initiate a graceful shutdown;
+   they simply stop making new requests.  A server MUST treat receipt of
+
+
 
 
 Bishop                  Expires October 22, 2018               [Page 20]
@@ -1122,8 +1122,6 @@ Bishop                  Expires October 22, 2018               [Page 20]
 Internet-Draft               HTTP over QUIC                   April 2018
 
 
-   Clients do not need to send GOAWAY to initiate a graceful shutdown;
-   they simply stop making new requests.  A server MUST treat receipt of
    a GOAWAY frame as a connection error (Section 6) of type
    HTTP_UNEXPECTED_GOAWAY.
 
@@ -1170,6 +1168,8 @@ Internet-Draft               HTTP over QUIC                   April 2018
 
    For unexpected closures caused by error conditions, a QUIC
    CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST be used.  However, a
+   GOAWAY MAY be sent first to provide additional detail to clients and
+   to allow the client to retry requests.  Including the GOAWAY frame in
 
 
 
@@ -1178,8 +1178,6 @@ Bishop                  Expires October 22, 2018               [Page 21]
 Internet-Draft               HTTP over QUIC                   April 2018
 
 
-   GOAWAY MAY be sent first to provide additional detail to clients and
-   to allow the client to retry requests.  Including the GOAWAY frame in
    the same packet as the QUIC CONNECTION_CLOSE or APPLICATION_CLOSE
    frame improves the chances of the frame being received by clients.
 
@@ -1225,7 +1223,9 @@ Internet-Draft               HTTP over QUIC                   April 2018
    sends them to the server to acknowledge processing of the server's
    header blocks.
 
-
+   The HEADER_ACK frame is sent on the Control Stream when the QPACK
+   decoder has fully processed a header block.  It is used by the peer's
+   QPACK encoder to determine whether subsequent indexed representations
 
 
 
@@ -1234,9 +1234,6 @@ Bishop                  Expires October 22, 2018               [Page 22]
 Internet-Draft               HTTP over QUIC                   April 2018
 
 
-   The HEADER_ACK frame is sent on the Control Stream when the QPACK
-   decoder has fully processed a header block.  It is used by the peer's
-   QPACK encoder to determine whether subsequent indexed representations
    that might reference that block are vulnerable to head-of-line
    blocking, and to prevent eviction races.  See [QPACK] for more
    details on the use of this information.
@@ -1283,14 +1280,15 @@ Internet-Draft               HTTP over QUIC                   April 2018
    increase the maximum Push ID by sending a MAX_PUSH_ID frame as the
    server fulfills or cancels server pushes.
 
+   The MAX_PUSH_ID frame has no defined flags.
+
+
 
 
 Bishop                  Expires October 22, 2018               [Page 23]
 
 Internet-Draft               HTTP over QUIC                   April 2018
 
-
-   The MAX_PUSH_ID frame has no defined flags.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1336,6 +1334,8 @@ Internet-Draft               HTTP over QUIC                   April 2018
 
    This section describes HTTP-specific error codes which can be used to
    express the cause of a connection or stream error.
+
+
 
 
 
