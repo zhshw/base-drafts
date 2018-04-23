@@ -289,7 +289,7 @@ ul.toc li {
 <link href="#rfc.section.4.4.2" rel="Chapter" title="4.4.2 Retry Packet">
 <link href="#rfc.section.4.4.3" rel="Chapter" title="4.4.3 Handshake Packet">
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 Protected Packets">
-<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Coaslescing Packets">
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Coalescing Packets">
 <link href="#rfc.section.4.7" rel="Chapter" title="4.7 Connection ID">
 <link href="#rfc.section.4.8" rel="Chapter" title="4.8 Packet Numbers">
 <link href="#rfc.section.4.8.1" rel="Chapter" title="4.8.1 Initial Packet Number">
@@ -417,7 +417,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-04-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-04-23" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -441,12 +441,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: October 22, 2018</td>
+<td class="left">Expires: October 25, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">April 20, 2018</td>
+<td class="right">April 23, 2018</td>
 </tr>
 
     	
@@ -465,7 +465,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 22, 2018.</p>
+<p>This Internet-Draft will expire on October 25, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -501,7 +501,7 @@ ul.toc li {
 </li>
 </ul><li>4.5.   <a href="#rfc.section.4.5">Protected Packets</a>
 </li>
-<li>4.6.   <a href="#rfc.section.4.6">Coaslescing Packets</a>
+<li>4.6.   <a href="#rfc.section.4.6">Coalescing Packets</a>
 </li>
 <li>4.7.   <a href="#rfc.section.4.7">Connection ID</a>
 </li>
@@ -1083,7 +1083,7 @@ ul.toc li {
 <p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
 <p id="rfc.section.4.5.p.6">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
 <h2 id="rfc.section.4.6">
-<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coaslescing Packets</a>
+<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coalescing Packets</a>
 </h2>
 <p id="rfc.section.4.6.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards.  A packet with a short header does not include a length, so it has to be the last packet included in a UDP datagram.</p>
 <p id="rfc.section.4.6.p.2">The sender MUST NOT coalesce QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
