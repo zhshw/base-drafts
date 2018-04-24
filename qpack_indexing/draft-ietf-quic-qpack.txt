@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: October 25, 2018                            Akamai Technologies
+Expires: October 26, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          April 23, 2018
+                                                          April 24, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 25, 2018.
+   This Internet-Draft will expire on October 26, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 1]
+Krasic, et al.          Expires October 26, 2018                [Page 1]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -81,7 +81,7 @@ Table of Contents
    2.  Wire Format . . . . . . . . . . . . . . . . . . . . . . . . .   4
      2.1.  Primitives  . . . . . . . . . . . . . . . . . . . . . . .   5
      2.2.  Indexing  . . . . . . . . . . . . . . . . . . . . . . . .   5
-     2.3.  HEADERS Frames on the Control Stream  . . . . . . . . . .   7
+     2.3.  HEADERS Frames on the Control Stream  . . . . . . . . . .   6
        2.3.1.  Insert With Name Reference  . . . . . . . . . . . . .   7
        2.3.2.  Insert Without Name Reference . . . . . . . . . . . .   7
        2.3.3.  Duplicate . . . . . . . . . . . . . . . . . . . . . .   8
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 2]
+Krasic, et al.          Expires October 26, 2018                [Page 2]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 3]
+Krasic, et al.          Expires October 26, 2018                [Page 3]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 4]
+Krasic, et al.          Expires October 26, 2018                [Page 4]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 5]
+Krasic, et al.          Expires October 26, 2018                [Page 5]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -322,27 +322,22 @@ Internet-Draft                    QPACK                       April 2018
    cannot be referenced by that frame.  If the decoder encounters a
    reference to an entry which has already been dropped from the table,
    this MUST be treated as a stream error of type
-   "HTTP_QPACK_DECOMPRESSION_FAILED" error code.  If this reference
-   occurs on the control stream, this MUST be treated as a session
-   error.
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires October 25, 2018                [Page 6]
-
-Internet-Draft                    QPACK                       April 2018
-
+   "HTTP_QPACK_DECOMPRESSION_FAILED".  If this reference occurs on the
+   control stream, this MUST be treated as a session error.
 
 2.3.  HEADERS Frames on the Control Stream
 
    Table updates can add a table entry, possibly using existing entries
    to avoid transmitting redundant information.  The name can be
    transmitted as a reference to an existing entry in the static or the
+
+
+
+Krasic, et al.          Expires October 26, 2018                [Page 6]
+
+Internet-Draft                    QPACK                       April 2018
+
+
    dynamic table or as a string literal.  For entries which already
    exist in the dynamic table, the full entry can also be used by
    reference, creating a duplicate entry.
@@ -389,7 +384,12 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 7]
+
+
+
+
+
+Krasic, et al.          Expires October 26, 2018                [Page 7]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 8]
+Krasic, et al.          Expires October 26, 2018                [Page 8]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018                [Page 9]
+Krasic, et al.          Expires October 26, 2018                [Page 9]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 10]
+Krasic, et al.          Expires October 26, 2018               [Page 10]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 11]
+Krasic, et al.          Expires October 26, 2018               [Page 11]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 12]
+Krasic, et al.          Expires October 26, 2018               [Page 12]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 13]
+Krasic, et al.          Expires October 26, 2018               [Page 13]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -781,7 +781,7 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 14]
+Krasic, et al.          Expires October 26, 2018               [Page 14]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -837,4 +837,4 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 25, 2018               [Page 15]
+Krasic, et al.          Expires October 26, 2018               [Page 15]
