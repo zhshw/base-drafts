@@ -508,7 +508,7 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Dynamic Table Indexing - Request Stream</p>
-<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index cannot be referenced by that frame.  If the decoder encounters a reference to an entry which has already been dropped from the table, this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
+<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index cannot be referenced by that frame.  If the decoder encounters a reference to an entry which has already been dropped from the table, this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.  If this reference occurs on the control stream, this MUST be treated as a connection error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#headers-frames-on-the-control-stream" id="headers-frames-on-the-control-stream">HEADERS Frames on the Control Stream</a>
 </h2>

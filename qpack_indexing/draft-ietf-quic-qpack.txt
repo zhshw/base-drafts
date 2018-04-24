@@ -323,7 +323,7 @@ Internet-Draft                    QPACK                       April 2018
    reference to an entry which has already been dropped from the table,
    this MUST be treated as a stream error of type
    "HTTP_QPACK_DECOMPRESSION_FAILED".  If this reference occurs on the
-   control stream, this MUST be treated as a session error.
+   control stream, this MUST be treated as a connection error.
 
 2.3.  HEADERS Frames on the Control Stream
 
