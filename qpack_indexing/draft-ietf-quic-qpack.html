@@ -492,7 +492,7 @@ Insertion Point         Dropping Point
 n = count of entries inserted
 d = count of entries dropped
 </pre>
-<p class="figure">Dynamic Table Indexing - Control Stream</p>
+<p class="figure">Example Dynamic Table Indexing - Control Stream</p>
 <p id="rfc.section.2.2.p.5">Because frames from request streams can be delivered out of order with instructions on the control stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 2.5.1</a>). The Base Index is the absolute index of the entry which has the relative index of zero when interpreting the frame.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
 <pre>
              Base Index
@@ -550,7 +550,7 @@ d = count of entries dropped
 <h3 id="rfc.section.2.3.3">
 <a href="#rfc.section.2.3.3">2.3.3.</a> <a href="#indexed-duplicate" id="indexed-duplicate">Duplicate</a>
 </h3>
-<p id="rfc.section.2.3.3.p.1">Duplication of an existing entry in the dynamic table starts with the &#8216;000&#8217; three-bit pattern.  The absolute index of the existing entry is represented as an integer with a 5-bit prefix.</p>
+<p id="rfc.section.2.3.3.p.1">Duplication of an existing entry in the dynamic table starts with the &#8216;000&#8217; three-bit pattern.  The relative index of the existing entry is represented as an integer with a 5-bit prefix.</p>
 <div id="rfc.figure.1"></div>
 <div id="fig-index-with-duplication"></div>
 <pre>

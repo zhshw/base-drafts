@@ -294,7 +294,7 @@ Internet-Draft                    QPACK                       April 2018
    n = count of entries inserted
    d = count of entries dropped
 
-                  Dynamic Table Indexing - Control Stream
+              Example Dynamic Table Indexing - Control Stream
 
    Because frames from request streams can be delivered out of order
    with instructions on the control stream, relative indices are
@@ -410,7 +410,7 @@ Internet-Draft                    QPACK                       April 2018
 2.3.3.  Duplicate
 
    Duplication of an existing entry in the dynamic table starts with the
-   '000' three-bit pattern.  The absolute index of the existing entry is
+   '000' three-bit pattern.  The relative index of the existing entry is
    represented as an integer with a 5-bit prefix.
 
         0   1   2   3   4   5   6   7
