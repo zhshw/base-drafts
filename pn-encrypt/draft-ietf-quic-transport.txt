@@ -488,7 +488,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
 
    Packet Number:  The Packet Number is a 32-bit field that follows the
       two connection IDs.  Section 4.8 describes the use of packet
-      numbers.  Packet numbers are protected separate to the packet
+      numbers.  Packet numbers are protected separately to the packet
       payload.
 
    Payload:  The payload of the packet.
