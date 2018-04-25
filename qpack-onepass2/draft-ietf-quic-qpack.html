@@ -501,7 +501,7 @@ Insertion Point         Dropping Point
 n = count of entries inserted
 d = count of entries dropped
 </pre>
-<p class="figure">Dynamic Table Indexing - Control Stream</p>
+<p class="figure">Example Dynamic Table Indexing - Control Stream</p>
 <p id="rfc.section.2.2.p.5">Because frames from request streams can be delivered out of order with instructions on the control stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 2.5.1</a>). The Base Index is the absolute index of the entry which has the relative index of zero when interpreting the frame.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
 <pre>
              Base Index
@@ -517,16 +517,16 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Example Dynamic Table Indexing - Request Stream</p>
-<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index can be referenced using specific Post-Base instructions.  The relative indices of Post-Base references count in the opposite direction from Base Index.</p>
+<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index can be referenced using specific Post-Base instructions.  The relative indices of Post-Base references count up from Base Index.</p>
 <pre>
+             Base Index
+                 |
+                 V
     +---+-----+-----+-----+-----+
     | n | n-1 | n-2 | ... | d+1 |  Absolute Index
     +---+-----+-----+-----+-----+
     | 1 |  0  |                    Post-Base Index
     +---+-----+
-                 ^
-                 |
-             Base Index
 
 n = count of entries inserted
 d = count of entries dropped
@@ -574,7 +574,7 @@ d = count of entries dropped
 <h3 id="rfc.section.2.3.3">
 <a href="#rfc.section.2.3.3">2.3.3.</a> <a href="#indexed-duplicate" id="indexed-duplicate">Duplicate</a>
 </h3>
-<p id="rfc.section.2.3.3.p.1">Duplication of an existing entry in the dynamic table starts with the &#8216;000&#8217; three-bit pattern.  The absolute index of the existing entry is represented as an integer with a 5-bit prefix.</p>
+<p id="rfc.section.2.3.3.p.1">Duplication of an existing entry in the dynamic table starts with the &#8216;000&#8217; three-bit pattern.  The relative index of the existing entry is represented as an integer with a 5-bit prefix.</p>
 <div id="rfc.figure.1"></div>
 <div id="fig-index-with-duplication"></div>
 <pre>
@@ -648,7 +648,7 @@ baseIndex = largestReference + deltaBaseIndex
 +---+---+-----------------------+
 </pre>
 <p class="figure">Indexed Header Field</p>
-<p id="rfc.section.2.5.2.1.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than Base Index, this representation starts with the &#8216;1&#8217; 1-bit pattern, followed by the <samp>S</samp> bit indicating whether the reference is into the static (S=1) or dynamic (S=0) table. Finally, the relative index of the matching header field is represented as an integer with a 6-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<p id="rfc.section.2.5.2.1.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;1&#8217; 1-bit pattern, followed by the <samp>S</samp> bit indicating whether the reference is into the static (S=1) or dynamic (S=0) table. Finally, the relative index of the matching header field is represented as an integer with a 6-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
@@ -661,7 +661,7 @@ baseIndex = largestReference + deltaBaseIndex
 <a href="#rfc.section.2.5.2.2">2.5.2.2.</a> <a href="#literal-header-field-with-name-reference" id="literal-header-field-with-name-reference">Literal Header Field With Name Reference</a>
 </h4>
 <p id="rfc.section.2.5.2.2.p.1">A literal header field with a name reference represents a header where the header field name matches the header field name of an entry stored in the static table or the dynamic table.</p>
-<p id="rfc.section.2.5.2.2.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than Base Index, this representation starts with the &#8216;00&#8217; two-bit pattern.  If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0101&#8217; four-bit pattern.</p>
+<p id="rfc.section.2.5.2.2.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;00&#8217; two-bit pattern.  If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0101&#8217; four-bit pattern.</p>
 <p id="rfc.section.2.5.2.2.p.3">The following bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
 <pre>
      0   1   2   3   4   5   6   7
@@ -674,7 +674,7 @@ baseIndex = largestReference + deltaBaseIndex
    +-------------------------------+
 </pre>
 <p class="figure">Literal Header Field With Name Reference</p>
-<p id="rfc.section.2.5.2.2.p.4">For entries in the static table or in the dynamic table with an absolute index less than Base Index, the header field name is represented using the relative index of that entry, which is represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>). The <samp>S</samp> bit indicates whether the reference is to the static (S=1) or dynamic (S=0) table.</p>
+<p id="rfc.section.2.5.2.2.p.4">For entries in the static table or in the dynamic table with an absolute index less than or equal to Base Index, the header field name is represented using the relative index of that entry, which is represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>). The <samp>S</samp> bit indicates whether the reference is to the static (S=1) or dynamic (S=0) table.</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -686,7 +686,7 @@ baseIndex = largestReference + deltaBaseIndex
    +-------------------------------+
 </pre>
 <p class="figure">Literal Header Field With Post-Base Name Reference</p>
-<p id="rfc.section.2.5.2.2.p.5">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#indexing" class="xref">Section 2.2</a>).</p>
+<p id="rfc.section.2.5.2.2.p.5">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#indexing" class="xref">Section 2.2</a>) encoded as an integer with a 3-bit prefix.</p>
 <h4 id="rfc.section.2.5.2.3">
 <a href="#rfc.section.2.5.2.3">2.5.2.3.</a> <a href="#literal-header-field-without-name-reference" id="literal-header-field-without-name-reference">Literal Header Field Without Name Reference</a>
 </h4>

@@ -96,7 +96,7 @@ Table of Contents
      3.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  14
        3.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  14
        3.3.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  14
-     3.4.  Speculative table updates . . . . . . . . . . . . . . . .  14
+     3.4.  Speculative table updates . . . . . . . . . . . . . . . .  15
      3.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  15
    4.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
    5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
@@ -294,7 +294,7 @@ Internet-Draft                    QPACK                       April 2018
    n = count of entries inserted
    d = count of entries dropped
 
-                  Dynamic Table Indexing - Control Stream
+              Example Dynamic Table Indexing - Control Stream
 
    Because frames from request streams can be delivered out of order
    with instructions on the control stream, relative indices are
@@ -320,8 +320,8 @@ Internet-Draft                    QPACK                       April 2018
 
    Entries with an absolute index greater than a frame's Base Index can
    be referenced using specific Post-Base instructions.  The relative
-   indices of Post-Base references count in the opposite direction from
-   Base Index.
+   indices of Post-Base references count up from Base Index.
+
 
 
 
@@ -338,14 +338,14 @@ Krasic, et al.          Expires October 27, 2018                [Page 6]
 Internet-Draft                    QPACK                       April 2018
 
 
+                Base Index
+                    |
+                    V
        +---+-----+-----+-----+-----+
        | n | n-1 | n-2 | ... | d+1 |  Absolute Index
        +---+-----+-----+-----+-----+
        | 1 |  0  |                    Post-Base Index
        +---+-----+
-                    ^
-                    |
-                Base Index
 
    n = count of entries inserted
    d = count of entries dropped
@@ -430,7 +430,7 @@ Internet-Draft                    QPACK                       April 2018
 2.3.3.  Duplicate
 
    Duplication of an existing entry in the dynamic table starts with the
-   '000' three-bit pattern.  The absolute index of the existing entry is
+   '000' three-bit pattern.  The relative index of the existing entry is
    represented as an integer with a 5-bit prefix.
 
         0   1   2   3   4   5   6   7
@@ -579,11 +579,12 @@ Internet-Draft                    QPACK                       April 2018
                            Indexed Header Field
 
    If the entry is in the static table, or in the dynamic table with an
-   absolute index less than Base Index, this representation starts with
-   the '1' 1-bit pattern, followed by the "S" bit indicating whether the
-   reference is into the static (S=1) or dynamic (S=0) table.  Finally,
-   the relative index of the matching header field is represented as an
-   integer with a 6-bit prefix (see Section 5.1 of [RFC7541]).
+   absolute index less than or equal to Base Index, this representation
+   starts with the '1' 1-bit pattern, followed by the "S" bit indicating
+   whether the reference is into the static (S=1) or dynamic (S=0)
+   table.  Finally, the relative index of the matching header field is
+   represented as an integer with a 6-bit prefix (see Section 5.1 of
+   [RFC7541]).
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -605,11 +606,10 @@ Internet-Draft                    QPACK                       April 2018
    stored in the static table or the dynamic table.
 
    If the entry is in the static table, or in the dynamic table with an
-   absolute index less than Base Index, this representation starts with
-   the '00' two-bit pattern.  If the entry is in the dynamic table with
-   an absolute index greater than Base Index, the representation starts
-   with the '0101' four-bit pattern.
-
+   absolute index less than or equal to Base Index, this representation
+   starts with the '00' two-bit pattern.  If the entry is in the dynamic
+   table with an absolute index greater than Base Index, the
+   representation starts with the '0101' four-bit pattern.
 
 
 
@@ -640,8 +640,8 @@ Internet-Draft                    QPACK                       April 2018
                  Literal Header Field With Name Reference
 
    For entries in the static table or in the dynamic table with an
-   absolute index less than Base Index, the header field name is
-   represented using the relative index of that entry, which is
+   absolute index less than or equal to Base Index, the header field
+   name is represented using the relative index of that entry, which is
    represented as an integer with a 4-bit prefix (see Section 5.1 of
    [RFC7541]).  The "S" bit indicates whether the reference is to the
    static (S=1) or dynamic (S=0) table.
@@ -659,13 +659,13 @@ Internet-Draft                    QPACK                       April 2018
 
    For entries in the dynamic table with an absolute index greater than
    Base Index, the header field name is represented using the post-base
-   index of that entry (see Section 2.2).
+   index of that entry (see Section 2.2) encoded as an integer with a
+   3-bit prefix.
 
-2.5.2.3.  Literal Header Field Without Name Reference
 
-   An addition to the header table where both the header field name and
-   the header field value are represented as string literals (see
-   Section 2.1) starts with the '011' three-bit pattern.
+
+
+
 
 
 
@@ -673,6 +673,12 @@ Krasic, et al.          Expires October 27, 2018               [Page 12]
 
 Internet-Draft                    QPACK                       April 2018
 
+
+2.5.2.3.  Literal Header Field Without Name Reference
+
+   An addition to the header table where both the header field name and
+   the header field value are represented as string literals (see
+   Section 2.1) starts with the '011' three-bit pattern.
 
    The fourth bit, 'N', indicates whether an intermediary is permitted
    to add this header to the dynamic header table on subsequent hops.
@@ -716,12 +722,6 @@ Internet-Draft                    QPACK                       April 2018
    changes (relative to HPACK) to avoid the possibility that an indexed
    representation is decoded after the referenced entry has already been
    evicted.  QPACK employs a two-phase eviction algorithm, in which the
-   encoder will not evict entries that have outstanding (unacknowledged)
-   references.
-
-
-
-
 
 
 
@@ -729,6 +729,9 @@ Krasic, et al.          Expires October 27, 2018               [Page 13]
 
 Internet-Draft                    QPACK                       April 2018
 
+
+   encoder will not evict entries that have outstanding (unacknowledged)
+   references.
 
 3.3.  Reference Tracking
 
@@ -773,11 +776,8 @@ Internet-Draft                    QPACK                       April 2018
    it can begin decoding any blocked streams that now have their
    dependencies satisfied.
 
-3.4.  Speculative table updates
 
-   Implementations can _speculatively_ send header frames on the HTTP
-   Control Streams which are not needed for any current HTTP request or
-   response.  Such headers could be used strategically to improve
+
 
 
 
@@ -786,6 +786,11 @@ Krasic, et al.          Expires October 27, 2018               [Page 14]
 Internet-Draft                    QPACK                       April 2018
 
 
+3.4.  Speculative table updates
+
+   Implementations can _speculatively_ send header frames on the HTTP
+   Control Streams which are not needed for any current HTTP request or
+   response.  Such headers could be used strategically to improve
    performance.  For instance, the encoder might decide to _refresh_ by
    sending Indexed-Duplicate representations for popular header fields
    (Section 2.3.3), ensuring they have small indices and hence minimal
@@ -795,11 +800,6 @@ Internet-Draft                    QPACK                       April 2018
 
    Pseudo-code for single pass encoding, excluding handling of
    duplicates, non-blocking mode, and reference tracking.
-
-
-
-
-
 
 
 
