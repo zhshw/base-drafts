@@ -531,9 +531,9 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    version and packet type.  Type-specific semantics for this version
    are described in the following sections.
 
-   End of the Payload field (which is also the end of the long header
-   packet) is determined by the value of the Payload Length field.
-   Senders can coalesce multiple long header packets into one UDP
+   The end of the Payload field (which is also the end of the long
+   header packet) is determined by the value of the Payload Length
+   field.  Senders can sometimes coalesce multiple packets into one UDP
    datagram.  See Section 4.6 for more details.
 
 4.2.  Short Header

@@ -912,7 +912,7 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
-<p id="rfc.section.4.1.p.6">End of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can coalesce multiple long header packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
+<p id="rfc.section.4.1.p.6">The end of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can sometimes coalesce multiple packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
