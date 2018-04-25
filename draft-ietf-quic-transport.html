@@ -1979,7 +1979,7 @@ Gap = HKDF-Expand-Label(packet_number_secret,
 <a href="#rfc.section.7.15">7.15.</a> <a href="#frame-ack" id="frame-ack">ACK Frame</a>
 </h2>
 <p id="rfc.section.7.15.p.1">Receivers send ACK frames (type=0x0d) to inform senders which packets they have received and processed. The ACK frame contains any number of ACK blocks.  ACK blocks are ranges of acknowledged packets.</p>
-<p id="rfc.section.7.15.p.2">Unlike TCP SACKs, QUIC acknowledgements are irrevocable.  Once a packet has been acknowledged, even if it does not appear in a future ACK frame, it remains acknowledged.</p>
+<p id="rfc.section.7.15.p.2">QUIC acknowledgements are irrevocable.  Once acknowledged, a packet remains acknowledged, even if it does not appear in a future ACK frame.  This is unlike TCP SACKs (<a href="#RFC2018" class="xref">[RFC2018]</a>).</p>
 <p id="rfc.section.7.15.p.3">A client MUST NOT acknowledge Retry packets.  Retry packets include the packet number from the Initial packet it responds to.  Version Negotiation packets cannot be acknowledged because they do not contain a packet number.  Rather than relying on ACK frames, these packets are implicitly acknowledged by the next Initial packet sent by the client.</p>
 <p id="rfc.section.7.15.p.4">An ACK frame is shown below.</p>
 <div id="rfc.figure.7"></div>
@@ -2898,6 +2898,11 @@ Gap = HKDF-Expand-Label(packet_number_secret,
 <td class="reference"><b id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</b></td>
 <td class="top">
 <a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, April 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2018">[RFC2018]</b></td>
+<td class="top">
+<a>Mathis, M.</a>, <a>Mahdavi, J.</a>, <a>Floyd, S.</a> and <a>A. Romanow</a>, "<a href="https://tools.ietf.org/html/rfc2018">TCP Selective Acknowledgment Options</a>", RFC 2018, DOI 10.17487/RFC2018, October 1996.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2104">[RFC2104]</b></td>

@@ -212,7 +212,7 @@ Internet-Draft           QUIC Transport Protocol              April 2018
      14.2.  Informative References . . . . . . . . . . . . . . . . .  95
    Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  96
    Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  96
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  96
+   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  97
      C.1.  Since draft-ietf-quic-transport-10  . . . . . . . . . . .  97
      C.2.  Since draft-ietf-quic-transport-09  . . . . . . . . . . .  97
      C.3.  Since draft-ietf-quic-transport-08  . . . . . . . . . . .  98
@@ -3233,9 +3233,9 @@ Internet-Draft           QUIC Transport Protocol              April 2018
    they have received and processed.  The ACK frame contains any number
    of ACK blocks.  ACK blocks are ranges of acknowledged packets.
 
-   Unlike TCP SACKs, QUIC acknowledgements are irrevocable.  Once a
-   packet has been acknowledged, even if it does not appear in a future
-   ACK frame, it remains acknowledged.
+   QUIC acknowledgements are irrevocable.  Once acknowledged, a packet
+   remains acknowledged, even if it does not appear in a future ACK
+   frame.  This is unlike TCP SACKs ([RFC2018]).
 
    A client MUST NOT acknowledge Retry packets.  Retry packets include
    the packet number from the Initial packet it responds to.  Version
@@ -5299,6 +5299,11 @@ Internet-Draft           QUIC Transport Protocol              April 2018
               Thomson, M., "Version-Independent Properties of QUIC",
               draft-ietf-quic-invariants (work in progress), April 2018.
 
+   [RFC2018]  Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, "TCP
+              Selective Acknowledgment Options", RFC 2018,
+              DOI 10.17487/RFC2018, October 1996,
+              <https://www.rfc-editor.org/info/rfc2018>.
+
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
               DOI 10.17487/RFC2104, February 1997,
@@ -5308,11 +5313,6 @@ Internet-Draft           QUIC Transport Protocol              April 2018
               RFC 2360, DOI 10.17487/RFC2360, June 1998,
               <https://www.rfc-editor.org/info/rfc2360>.
 
-   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
-              Translation (NAT) Behavioral Requirements for Unicast
-              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
-              2007, <https://www.rfc-editor.org/info/rfc4787>.
-
 
 
 
@@ -5321,6 +5321,11 @@ Iyengar & Thomson       Expires October 27, 2018               [Page 95]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   [RFC4787]  Audet, F., Ed. and C. Jennings, "Network Address
+              Translation (NAT) Behavioral Requirements for Unicast
+              UDP", BCP 127, RFC 4787, DOI 10.17487/RFC4787, January
+              2007, <https://www.rfc-editor.org/info/rfc4787>.
 
    [RFC5869]  Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
               Key Derivation Function (HKDF)", RFC 5869,
@@ -5365,11 +5370,6 @@ Appendix B.  Acknowledgments
    discussions and public ones on the quic@ietf.org and proto-
    quic@chromium.org mailing lists.  Our thanks to all.
 
-Appendix C.  Change Log
-
-      *RFC Editor's Note:* Please remove this section prior to
-      publication of a final version of this document.
-
 
 
 
@@ -5377,6 +5377,11 @@ Iyengar & Thomson       Expires October 27, 2018               [Page 96]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+Appendix C.  Change Log
+
+      *RFC Editor's Note:* Please remove this section prior to
+      publication of a final version of this document.
 
    Issue and pull request numbers are listed with a leading octothorp.
 
@@ -5422,17 +5427,15 @@ C.2.  Since draft-ietf-quic-transport-09
       Data and PONG frame.  Changed ACK frame type from 0x0e to 0x0d.
       (#1091, #725, #1086)
 
-   o  A server can now only send 3 packets without validating the client
-      address (#38, #1090)
-
-
-
 
 
 Iyengar & Thomson       Expires October 27, 2018               [Page 97]
 
 Internet-Draft           QUIC Transport Protocol              April 2018
 
+
+   o  A server can now only send 3 packets without validating the client
+      address (#38, #1090)
 
    o  Delivery order of stream data is no longer strongly specified
       (#252, #1070)
@@ -5479,9 +5482,6 @@ C.3.  Since draft-ietf-quic-transport-08
       #1009)
 
    o  Removed transport parameters from NewSessionTicket (#1015)
-
-
-
 
 
 
