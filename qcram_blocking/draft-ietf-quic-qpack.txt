@@ -83,29 +83,29 @@ Table of Contents
      2.2.  Indexing  . . . . . . . . . . . . . . . . . . . . . . . .   5
      2.3.  HEADERS Frames on the Control Stream  . . . . . . . . . .   7
        2.3.1.  Insert With Name Reference  . . . . . . . . . . . . .   7
-       2.3.2.  Insert Without Name Reference . . . . . . . . . . . .   7
+       2.3.2.  Insert Without Name Reference . . . . . . . . . . . .   8
        2.3.3.  Duplicate . . . . . . . . . . . . . . . . . . . . . .   8
-       2.3.4.  Dynamic Table Size Update . . . . . . . . . . . . . .   8
+       2.3.4.  Dynamic Table Size Update . . . . . . . . . . . . . .   9
      2.4.  HEADER_ACK Frames . . . . . . . . . . . . . . . . . . . .   9
-     2.5.  Request Streams . . . . . . . . . . . . . . . . . . . . .   9
-       2.5.1.  Base Index Encoding . . . . . . . . . . . . . . . . .   9
-       2.5.2.  Instructions  . . . . . . . . . . . . . . . . . . . .  10
-   3.  Encoding Strategies . . . . . . . . . . . . . . . . . . . . .  12
-     3.1.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  12
-       3.1.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  12
-       3.1.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  13
-     3.2.  Speculative table updates . . . . . . . . . . . . . . . .  13
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .  14
-     6.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  14
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  14
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  14
-
-
-
+     2.5.  Request Streams . . . . . . . . . . . . . . . . . . . . .  10
+       2.5.1.  Header Data Prefix  . . . . . . . . . . . . . . . . .  10
+       2.5.2.  Instructions  . . . . . . . . . . . . . . . . . . . .  11
+   3.  Encoding Strategies . . . . . . . . . . . . . . . . . . . . .  13
+     3.1.  Single pass encoding  . . . . . . . . . . . . . . . . . .  13
+     3.2.  Preventing Eviction Races . . . . . . . . . . . . . . . .  13
+     3.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  14
+       3.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  14
+       3.3.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  14
+     3.4.  Speculative table updates . . . . . . . . . . . . . . . .  15
+     3.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  15
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
+   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     6.1.  Normative References  . . . . . . . . . . . . . . . . . .  17
+     6.2.  Informative References  . . . . . . . . . . . . . . . . .  17
+     6.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  17
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  17
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -196,13 +196,14 @@ Internet-Draft                    QPACK                       April 2018
 
    The header block contains a Base Index (see Section 2.5.1) which is
    used to correctly index entries, regardless of reordering in the
-   transport (see Section 2.2).  The stream for a header is considered
-   blocked by the decoder and cannot be processed until the greatest
-   absolute index in the dynamic table is at least the value of the Base
-   Index.  While blocked, header field data MUST remain in the blocked
-   stream's flow control window.  When the Base Index is zero, the frame
-   contains no references to the dynamic table and can always be
-   processed immediately.
+   transport (see Section 2.2), and a Largest Reference which identifies
+   the table state necessary for decoding.  The stream for a header is
+   considered blocked by the decoder and cannot be processed until the
+   greatest absolute index in the dynamic table is at least the value of
+   the Largest Reference.  While blocked, header field data MUST remain
+   in the blocked stream's flow control window.  When the Largest
+   Reference is zero, the frame contains no references to the dynamic
+   table and can always be processed immediately.
 
 2.  Wire Format
 
@@ -217,7 +218,6 @@ Internet-Draft                    QPACK                       April 2018
    o  Acknowledgement of header frame processing is carried by
       HEADER_ACK frames on the control stream, running from decoder to
       encoder.
-
 
 
 
@@ -323,12 +323,12 @@ Internet-Draft                    QPACK                       April 2018
 
               Example Dynamic Table Indexing - Request Stream
 
-   Entries with an absolute index greater than a frame's Base Index
-   cannot be referenced by that frame.  If the decoder encounters a
-   reference to an entry which has already been dropped from the table,
-   this MUST be treated as a stream error of type
-   "HTTP_QPACK_DECOMPRESSION_FAILED".  If this reference occurs on the
-   control stream, this MUST be treated as a connection error.
+   Entries with an absolute index greater than a frame's Base Index can
+   be referenced using specific Post-Base instructions.  The relative
+   indices of Post-Base references count up from Base Index.
+
+
+
 
 
 
@@ -337,6 +337,27 @@ Krasic, et al.          Expires October 28, 2018                [Page 6]
 
 Internet-Draft                    QPACK                       April 2018
 
+
+                Base Index
+                    |
+                    V
+       +---+-----+-----+-----+-----+
+       | n | n-1 | n-2 | ... | d+1 |  Absolute Index
+       +---+-----+-----+-----+-----+
+       | 1 |  0  |                    Post-Base Index
+       +---+-----+
+
+   n = count of entries inserted
+   d = count of entries dropped
+
+               Dynamic Table Indexing - Post-Base References
+
+   If the decoder encounters a reference to an entry which has already
+   been dropped from the table or which is greater than the declared
+   Largest Reference, this MUST be treated as a stream error of type
+   "HTTP_QPACK_DECOMPRESSION_FAILED" error code.  If this reference
+   occurs on the control stream, this MUST be treated as a session
+   error.
 
 2.3.  HEADERS Frames on the Control Stream
 
@@ -360,6 +381,19 @@ Internet-Draft                    QPACK                       April 2018
    The header name reference is followed by the header field value
    represented as a string literal (see Section 5.2 of [RFC7541]).
 
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires October 28, 2018                [Page 7]
+
+Internet-Draft                    QPACK                       April 2018
+
+
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
       | 1 | S |    Name Index (6+)    |
@@ -379,20 +413,6 @@ Internet-Draft                    QPACK                       April 2018
 
    The name is represented as a 6-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
-
-
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 7]
-
-Internet-Draft                    QPACK                       April 2018
-
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
@@ -422,6 +442,14 @@ Internet-Draft                    QPACK                       April 2018
 
    The existing entry is re-inserted into the dynamic table without
    resending either the name or the value.  This is useful to mitigate
+
+
+
+Krasic, et al.          Expires October 28, 2018                [Page 8]
+
+Internet-Draft                    QPACK                       April 2018
+
+
    the eviction of older entries which are frequently referenced, both
    to avoid the need to resend the header and to avoid the entry in the
    table blocking the ability to insert new headers.
@@ -442,21 +470,13 @@ Internet-Draft                    QPACK                       April 2018
 
    The new maximum size MUST be lower than or equal to the limit
    determined by the protocol using QPACK.  A value that exceeds this
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 8]
-
-Internet-Draft                    QPACK                       April 2018
-
-
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
    is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see
    [QUIC-HTTP]) received from the decoder.
 
    Reducing the maximum size of the dynamic table can cause entries to
    be evicted (see Section 4.3 of [RFC7541]).  This MUST NOT cause the
-   eviction of entries with outstanding references (see Section 3.1).
+   eviction of entries with outstanding references (see Section 3.3).
 
 2.4.  HEADER_ACK Frames
 
@@ -478,6 +498,14 @@ Internet-Draft                    QPACK                       April 2018
    header block was processed.  The same Stream ID can be identified in
    multiple frames, as multiple header blocks can be sent on a single
    request or push stream.  (Requests can have trailers; responses can
+
+
+
+Krasic, et al.          Expires October 28, 2018                [Page 9]
+
+Internet-Draft                    QPACK                       April 2018
+
+
    have intermediate status codes and PUSH_PROMISE frames.)  As the
    control stream carries multiple table updates, the control stream can
    also be identified in multiple frames.
@@ -492,31 +520,47 @@ Internet-Draft                    QPACK                       April 2018
    the dynamic table in a particular state without modifying it, but
    emit the headers for an HTTP request or response.
 
-2.5.1.  Base Index Encoding
+2.5.1.  Header Data Prefix
 
-   Header data is prefixed by an 8-bit prefix integer: "Base Index".
-   "Base Index" is used to resolve references in the dynamic table as
-   described in Section 2.2.
-
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 9]
-
-Internet-Draft                    QPACK                       April 2018
-
+   Header data is prefixed with two integers, "Largest Reference" and
+   "Base Index".
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   |        Base Index (8+)        |
-   +-------------------------------+
+   |     Largest Reference (8+)    |
+   +---+---------------------------+
+   | S |   Delta Base Index (7+)   |
+   +---+---------------------------+
    |      Compressed Headers     ...
    +-------------------------------+
 
                           Figure 3: Frame Payload
 
-   Base Index is also used to identify header dependencies (see
-   Section 1.2).
+   "Largest Reference" identifies the largest absolute dynamic index
+   referenced in the block.  Blocking decoders use the Largest Reference
+   to determine when it is safe to process the rest of the block.
+
+   "Base Index" is used to resolve references in the dynamic table as
+   described in Section 2.2.  To save space, Base Index is encoded
+   relative to Largest Reference using a one-bit sign flag.
+
+   baseIndex = largestReference + deltaBaseIndex
+
+   If the encoder inserted entries to the table while the encoding the
+   block, Largest Reference will be greater than Base Index, so
+   deltaBaseIndex will be negative and encoded with S=1.  If the block
+   did not reference the most recent entry in the table and did not
+   insert any new entries, Largest Reference will be less than Base
+   Index, so deltaBaseIndex will be positive and encoded with S=0.  When
+   Largest Reference and Base Index are equal, deltaBaseIndex is 0 and
+   encoded with S=0.
+
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 10]
+
+Internet-Draft                    QPACK                       April 2018
+
 
 2.5.2.  Instructions
 
@@ -534,41 +578,55 @@ Internet-Draft                    QPACK                       April 2018
 
                            Indexed Header Field
 
-   An indexed header field starts with the '1' 1-bit pattern, followed
-   by the "S" bit indicating whether the reference is into the static
-   (S=1) or dynamic (S=0) table.  Finally, the relative index of the
-   matching header field is represented as an integer with a 6-bit
-   prefix (see Section 5.1 of [RFC7541]).
+   If the entry is in the static table, or in the dynamic table with an
+   absolute index less than or equal to Base Index, this representation
+   starts with the '1' 1-bit pattern, followed by the "S" bit indicating
+   whether the reference is into the static (S=1) or dynamic (S=0)
+   table.  Finally, the relative index of the matching header field is
+   represented as an integer with a 6-bit prefix (see Section 5.1 of
+   [RFC7541]).
+
+     0   1   2   3   4   5   6   7
+   +---+---+---+---+---+---+---+---+
+   | 0 | 1 | 0 | 0 |  Index (4+)   |
+   +---+---+-----------------------+
+
+                           Indexed Header Field
+
+   If the entry is in the dynamic table with an absolute index greater
+   than Base Index, the representation starts with the '0100' 4-bit
+   pattern, followed by the post-base index (see Section 2.2) of the
+   matching header field, represented as an integer with a 4-bit prefix
+   (see Section 5.1 of [RFC7541]).
 
 2.5.2.2.  Literal Header Field With Name Reference
 
-   A header where the header field name matches the header field name of
-   an entry stored in the static table or the dynamic table starts with
-   the '00' two-bit pattern.
+   A literal header field with a name reference represents a header
+   where the header field name matches the header field name of an entry
+   stored in the static table or the dynamic table.
 
-   The third bit, 'N', indicates whether an intermediary is permitted to
-   add this header to the dynamic header table on subsequent hops.  When
-   the 'N' bit is set, the encoded header MUST always be encoded with a
-   literal representation.  In particular, when a peer sends a header
-   field that it received represented as a literal header field with the
-   'N' bit set, it MUST use a literal representation to forward this
-   header field.  This bit is intended for protecting header field
+   If the entry is in the static table, or in the dynamic table with an
+   absolute index less than or equal to Base Index, this representation
+   starts with the '00' two-bit pattern.  If the entry is in the dynamic
+   table with an absolute index greater than Base Index, the
+   representation starts with the '0101' four-bit pattern.
 
 
 
-
-Krasic, et al.          Expires October 28, 2018               [Page 10]
+Krasic, et al.          Expires October 28, 2018               [Page 11]
 
 Internet-Draft                    QPACK                       April 2018
 
 
-   values that are not to be put at risk by compressing them (see
-   Section 7.1 of [RFC7541] for more details).
-
-   The header field name is represented using the relative index of that
-   entry, which is represented as an integer with a 4-bit prefix (see
-   Section 5.1 of [RFC7541]).  The "S" bit indicates whether the
-   reference is to the static (S=1) or dynamic (S=0) table.
+   The following bit, 'N', indicates whether an intermediary is
+   permitted to add this header to the dynamic header table on
+   subsequent hops.  When the 'N' bit is set, the encoded header MUST
+   always be encoded with a literal representation.  In particular, when
+   a peer sends a header field that it received represented as a literal
+   header field with the 'N' bit set, it MUST use a literal
+   representation to forward this header field.  This bit is intended
+   for protecting header field values that are not to be put at risk by
+   compressing them (see Section 7.1 of [RFC7541] for more details).
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
@@ -581,30 +639,28 @@ Internet-Draft                    QPACK                       April 2018
 
                  Literal Header Field With Name Reference
 
-2.5.2.3.  Literal Header Field Without Name Reference
+   For entries in the static table or in the dynamic table with an
+   absolute index less than or equal to Base Index, the header field
+   name is represented using the relative index of that entry, which is
+   represented as an integer with a 4-bit prefix (see Section 5.1 of
+   [RFC7541]).  The "S" bit indicates whether the reference is to the
+   static (S=1) or dynamic (S=0) table.
 
-   An addition to the header table where both the header field name and
-   the header field value are represented as string literals (see
-   Section 2.1) starts with the '01' two-bit pattern.
+        0   1   2   3   4   5   6   7
+      +---+---+---+---+---+---+---+---+
+      | 0 | 1 | 0 | 1 | N |NameIdx(3+)|
+      +---+---+-----------------------+
+      | H |     Value Length (7+)     |
+      +---+---------------------------+
+      | Value String (Length octets)  |
+      +-------------------------------+
 
-   The third bit, 'N', indicates whether an intermediary is permitted to
-   add this header to the dynamic header table on subsequent hops.  When
-   the 'N' bit is set, the encoded header MUST always be encoded with a
-   literal representation.  In particular, when a peer sends a header
-   field that it received represented as a literal header field with the
-   'N' bit set, it MUST use a literal representation to forward this
-   header field.  This bit is intended for protecting header field
-   values that are not to be put at risk by compressing them (see
-   Section 7.1 of [RFC7541] for more details).
+            Literal Header Field With Post-Base Name Reference
 
-   The name is represented as a 5-bit prefix string literal, while the
-   value is represented as an 8-bit prefix string literal.
-
-
-
-
-
-
+   For entries in the dynamic table with an absolute index greater than
+   Base Index, the header field name is represented using the post-base
+   index of that entry (see Section 2.2) encoded as an integer with a
+   3-bit prefix.
 
 
 
@@ -613,14 +669,33 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 11]
+Krasic, et al.          Expires October 28, 2018               [Page 12]
 
 Internet-Draft                    QPACK                       April 2018
 
 
+2.5.2.3.  Literal Header Field Without Name Reference
+
+   An addition to the header table where both the header field name and
+   the header field value are represented as string literals (see
+   Section 2.1) starts with the '011' three-bit pattern.
+
+   The fourth bit, 'N', indicates whether an intermediary is permitted
+   to add this header to the dynamic header table on subsequent hops.
+   When the 'N' bit is set, the encoded header MUST always be encoded
+   with a literal representation.  In particular, when a peer sends a
+   header field that it received represented as a literal header field
+   with the 'N' bit set, it MUST use a literal representation to forward
+   this header field.  This bit is intended for protecting header field
+   values that are not to be put at risk by compressing them (see
+   Section 7.1 of [RFC7541] for more details).
+
+   The name is represented as a 4-bit prefix string literal, while the
+   value is represented as an 8-bit prefix string literal.
+
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 1 | N | H |Name Length(4+)|
+      | 0 | 1 | 1 | N | H |NameLen(3+)|
       +---+---+---+-------------------+
       |  Name String (Length octets)  |
       +---+---------------------------+
@@ -633,14 +708,32 @@ Internet-Draft                    QPACK                       April 2018
 
 3.  Encoding Strategies
 
+3.1.  Single pass encoding
+
+   An encoder making a single pass over a list of headers must choose
+   Base Index before knowing Largest Reference.  When trying to
+   reference a header inserted to the table after encoding has begun,
+   the entry is encoded with different instructions that tell the
+   decoder to use an absolute index greater than the Base Index.
+
+3.2.  Preventing Eviction Races
+
    Due to out-of-order arrival, QPACK's eviction algorithm requires
    changes (relative to HPACK) to avoid the possibility that an indexed
    representation is decoded after the referenced entry has already been
    evicted.  QPACK employs a two-phase eviction algorithm, in which the
+
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 13]
+
+Internet-Draft                    QPACK                       April 2018
+
+
    encoder will not evict entries that have outstanding (unacknowledged)
    references.
 
-3.1.  Reference Tracking
+3.3.  Reference Tracking
 
    An encoder MUST ensure that a header block which references a dynamic
    table entry is not received by the decoder after the referenced entry
@@ -654,7 +747,7 @@ Internet-Draft                    QPACK                       April 2018
    (unacknowledged) header blocks and table updates using feedback
    received from the decoder.
 
-3.1.1.  Blocked Eviction
+3.3.1.  Blocked Eviction
 
    The encoder MUST NOT permit an entry to be evicted while a reference
    to that entry remains unacknowledged.  If a new header to be inserted
@@ -666,21 +759,13 @@ Internet-Draft                    QPACK                       April 2018
    order to avoid encoding delays, and MAY insert the header into the
    table later if desired.
 
-
-
-
-Krasic, et al.          Expires October 28, 2018               [Page 12]
-
-Internet-Draft                    QPACK                       April 2018
-
-
    To ensure that the blocked eviction case is rare, references to the
    oldest entries in the dynamic table SHOULD be avoided.  When one of
    the oldest entries in the table is still actively used for
    references, the encoder SHOULD emit an Indexed-Duplicate
    representation instead (see Section 2.3.3).
 
-3.1.2.  Blocked Decoding
+3.3.2.  Blocked Decoding
 
    For header blocks encoded in non-blocking mode, the encoder needs to
    forego indexed representations that refer to table updates which have
@@ -694,7 +779,14 @@ Internet-Draft                    QPACK                       April 2018
    it can begin decoding any blocked streams that now have their
    dependencies satisfied.
 
-3.2.  Speculative table updates
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 14]
+
+Internet-Draft                    QPACK                       April 2018
+
+
+3.4.  Speculative table updates
 
    Implementations can _speculatively_ send header frames on the HTTP
    Control Streams which are not needed for any current HTTP request or
@@ -704,102 +796,10 @@ Internet-Draft                    QPACK                       April 2018
    (Section 2.3.3), ensuring they have small indices and hence minimal
    size on the wire.
 
-4.  Security Considerations
+3.5.  Sample One Pass Encoding Algorithm
 
-   TBD.
-
-5.  IANA Considerations
-
-   None.
-
-6.  References
-
-6.1.  Normative References
-
-   [QUIC-HTTP]
-              Bishop, M., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http-11 (work in progress), April
-              2018.
-
-
-
-
-
-Krasic, et al.          Expires October 28, 2018               [Page 13]
-
-Internet-Draft                    QPACK                       April 2018
-
-
-   [RFC7541]  Peon, R. and H. Ruellan, "HPACK: Header Compression for
-              HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
-              <https://www.rfc-editor.org/info/rfc7541>.
-
-6.2.  Informative References
-
-   [QUIC-TRANSPORT]
-              Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
-              and Secure Transport", draft-ietf-quic-transport-11 (work
-              in progress), April 2018.
-
-   [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
-              Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
-              DOI 10.17487/RFC7540, May 2015,
-              <https://www.rfc-editor.org/info/rfc7540>.
-
-6.3.  URIs
-
-   [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
-
-   [2] https://github.com/quicwg
-
-   [3] https://github.com/quicwg/base-drafts/labels/-qpack
-
-Acknowledgments
-
-   This draft draws heavily on the text of [RFC7541].  The indirect
-   input of those authors is gratefully acknowledged, as well as ideas
-   from:
-
-   o  Ryan Hamilton
-
-   o  Patrick McManus
-
-   o  Kazuho Oku
-
-   o  Biren Roy
-
-   o  Ian Swett
-
-   o  Dmitri Tikhonov
-
-Authors' Addresses
-
-   Charles 'Buck' Krasic
-   Google, Inc
-
-   Email: ckrasic@google.com
-
-
-
-Krasic, et al.          Expires October 28, 2018               [Page 14]
-
-Internet-Draft                    QPACK                       April 2018
-
-
-   Mike Bishop
-   Akamai Technologies
-
-   Email: mbishop@evequefou.be
-
-
-   Alan Frindell (editor)
-   Facebook
-
-   Email: afrind@fb.com
-
-
-
-
+   Pseudo-code for single pass encoding, excluding handling of
+   duplicates, non-blocking mode, and reference tracking.
 
 
 
@@ -838,3 +838,171 @@ Internet-Draft                    QPACK                       April 2018
 
 
 Krasic, et al.          Expires October 28, 2018               [Page 15]
+
+Internet-Draft                    QPACK                       April 2018
+
+
+   baseIndex = dynamicTable.baseIndex
+   largestReference = 0
+   for header in headers:
+     staticIdx = staticTable.getIndex(header)
+     if staticIdx:
+       encodeIndexReference(streamBuffer, staticIdx)
+       continue
+
+     dynamicIdx = dynamicTable.getIndex(header)
+     if !dynamicIdx:
+       # No matching entry.  Either insert+index or encode literal
+       nameIdx = getNameIndex(header)
+       if shouldIndex(header) and dynamicTable.canIndex(header):
+         encodeLiteralWithIncrementalIndex(controlBuffer, nameIdx,
+                                           header)
+         dynamicTable.add(header)
+         dynamicIdx = dynamicTable.baseIndex
+
+     if !dynamicIdx:
+       # Couldn't index it, literal
+       if nameIdx <= staticTable.size:
+         encodeLiteral(streamBuffer, nameIndex, header)
+       else:
+         # encode literal, possibly with nameIdx above baseIndex
+         encodeDynamicLiteral(streamBuffer, nameIndex, baseIndex,
+                              header)
+         largestReference = max(largestReference,
+                                dynamicTable.toAbsolute(nameIdx))
+     else:
+       # Dynamic index reference
+       assert(dynamicIdx)
+       largestReference = max(largestReference, dynamicIdx)
+       # Encode dynamicIdx, possibly with dynamicIdx above baseIndex
+       encodeDynamicIndexReference(streamBuffer, dynamicIdx,
+                                   baseIndex)
+
+   # encode the prefix
+   encodeInteger(prefixBuffer, 0x00, largestReference, 8)
+   delta = largestReference - baseIndex
+   sign = delta > 0 ? 0x80 : 0
+   encodeInteger(prefixBuffer, sign, delta, 7)
+
+   return controlBuffer, prefixBuffer + streamBuffer
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 16]
+
+Internet-Draft                    QPACK                       April 2018
+
+
+4.  Security Considerations
+
+   TBD.
+
+5.  IANA Considerations
+
+   None.
+
+6.  References
+
+6.1.  Normative References
+
+   [QUIC-HTTP]
+              Bishop, M., "Hypertext Transfer Protocol (HTTP) over
+              QUIC", draft-ietf-quic-http-11 (work in progress), April
+              2018.
+
+   [RFC7541]  Peon, R. and H. Ruellan, "HPACK: Header Compression for
+              HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
+              <https://www.rfc-editor.org/info/rfc7541>.
+
+6.2.  Informative References
+
+   [QUIC-TRANSPORT]
+              Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
+              and Secure Transport", draft-ietf-quic-transport-11 (work
+              in progress), April 2018.
+
+   [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
+              Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
+              DOI 10.17487/RFC7540, May 2015,
+              <https://www.rfc-editor.org/info/rfc7540>.
+
+6.3.  URIs
+
+   [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
+
+   [2] https://github.com/quicwg
+
+   [3] https://github.com/quicwg/base-drafts/labels/-qpack
+
+Acknowledgments
+
+   This draft draws heavily on the text of [RFC7541].  The indirect
+   input of those authors is gratefully acknowledged, as well as ideas
+   from:
+
+   o  Ryan Hamilton
+
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 17]
+
+Internet-Draft                    QPACK                       April 2018
+
+
+   o  Patrick McManus
+
+   o  Kazuho Oku
+
+   o  Biren Roy
+
+   o  Ian Swett
+
+   o  Dmitri Tikhonov
+
+Authors' Addresses
+
+   Charles 'Buck' Krasic
+   Google, Inc
+
+   Email: ckrasic@google.com
+
+
+   Mike Bishop
+   Akamai Technologies
+
+   Email: mbishop@evequefou.be
+
+
+   Alan Frindell (editor)
+   Facebook
+
+   Email: afrind@fb.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires October 28, 2018               [Page 18]
