@@ -289,13 +289,16 @@ ul.toc li {
 <link href="#rfc.section.2.3.4" rel="Chapter" title="2.3.4 Dynamic Table Size Update">
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 HEADER_ACK Frames">
 <link href="#rfc.section.2.5" rel="Chapter" title="2.5 Request Streams">
-<link href="#rfc.section.2.5.1" rel="Chapter" title="2.5.1 Base Index Encoding">
+<link href="#rfc.section.2.5.1" rel="Chapter" title="2.5.1 Header Data Prefix">
 <link href="#rfc.section.2.5.2" rel="Chapter" title="2.5.2 Instructions">
 <link href="#rfc.section.3" rel="Chapter" title="3 Encoding Strategies">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Reference Tracking">
-<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Blocked Eviction">
-<link href="#rfc.section.3.1.2" rel="Chapter" title="3.1.2 Blocked Decoding">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Speculative table updates">
+<link href="#rfc.section.3.1" rel="Chapter" title="3.1 Single pass encoding">
+<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Preventing Eviction Races">
+<link href="#rfc.section.3.3" rel="Chapter" title="3.3 Reference Tracking">
+<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Blocked Eviction">
+<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 Blocked Decoding">
+<link href="#rfc.section.3.4" rel="Chapter" title="3.4 Speculative table updates">
+<link href="#rfc.section.3.5" rel="Chapter" title="3.5 Sample One Pass Encoding Algorithm">
 <link href="#rfc.section.4" rel="Chapter" title="4 Security Considerations">
 <link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations">
 <link href="#rfc.references" rel="Chapter" title="6 References">
@@ -402,19 +405,25 @@ ul.toc li {
 </li>
 <li>2.5.   <a href="#rfc.section.2.5">Request Streams</a>
 </li>
-<ul><li>2.5.1.   <a href="#rfc.section.2.5.1">Base Index Encoding</a>
+<ul><li>2.5.1.   <a href="#rfc.section.2.5.1">Header Data Prefix</a>
 </li>
 <li>2.5.2.   <a href="#rfc.section.2.5.2">Instructions</a>
 </li>
 </ul></ul><li>3.   <a href="#rfc.section.3">Encoding Strategies</a>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">Reference Tracking</a>
+<ul><li>3.1.   <a href="#rfc.section.3.1">Single pass encoding</a>
 </li>
-<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Blocked Eviction</a>
+<li>3.2.   <a href="#rfc.section.3.2">Preventing Eviction Races</a>
 </li>
-<li>3.1.2.   <a href="#rfc.section.3.1.2">Blocked Decoding</a>
+<li>3.3.   <a href="#rfc.section.3.3">Reference Tracking</a>
 </li>
-</ul><li>3.2.   <a href="#rfc.section.3.2">Speculative table updates</a>
+<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Blocked Eviction</a>
+</li>
+<li>3.3.2.   <a href="#rfc.section.3.3.2">Blocked Decoding</a>
+</li>
+</ul><li>3.4.   <a href="#rfc.section.3.4">Speculative table updates</a>
+</li>
+<li>3.5.   <a href="#rfc.section.3.5">Sample One Pass Encoding Algorithm</a>
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Security Considerations</a>
 </li>
@@ -437,7 +446,7 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">The QUIC transport protocol was designed from the outset to support HTTP semantics, and its design subsumes many of the features of HTTP/2.  QUIC&#8217;s stream multiplexing comes into some conflict with  header compression.  A key goal of the design of QUIC is to improve stream multiplexing relative to HTTP/2 by eliminating HoL (head of line) blocking, which can occur in HTTP/2.  HoL blocking can happen because all HTTP/2 streams are multiplexed onto a single TCP connection with its in-order semantics.  QUIC can maintain independence between streams because it implements core transport functionality in a fully stream-aware manner.  However, the HTTP/QUIC mapping is still subject to HoL blocking if HPACK is used directly.  HPACK exploits multiplexing for greater compression, shrinking the representation of headers that have appeared earlier on the same connection.  In the context of QUIC, this imposes a vulnerability to HoL blocking (see <a href="#hol-example" class="xref">Section 1.1</a>).</p>
+<p id="rfc.section.1.p.1">The QUIC transport protocol was designed from the outset to support HTTP semantics, and its design subsumes many of the features of HTTP/2.  QUIC&#8217;s stream multiplexing comes into some conflict with header compression.  A key goal of the design of QUIC is to improve stream multiplexing relative to HTTP/2 by eliminating HoL (head of line) blocking, which can occur in HTTP/2.  HoL blocking can happen because all HTTP/2 streams are multiplexed onto a single TCP connection with its in-order semantics.  QUIC can maintain independence between streams because it implements core transport functionality in a fully stream-aware manner.  However, the HTTP/QUIC mapping is still subject to HoL blocking if HPACK is used directly.  HPACK exploits multiplexing for greater compression, shrinking the representation of headers that have appeared earlier on the same connection.  In the context of QUIC, this imposes a vulnerability to HoL blocking (see <a href="#hol-example" class="xref">Section 1.1</a>).</p>
 <p id="rfc.section.1.p.2">QUIC is described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>.  The HTTP/QUIC mapping is described in <a href="#QUIC-HTTP" class="xref">[QUIC-HTTP]</a>. For a full description of HTTP/2, see <a href="#RFC7540" class="xref">[RFC7540]</a>. The description of HPACK is <a href="#RFC7541" class="xref">[RFC7541]</a>, with important terminology in Section 1.3.</p>
 <p id="rfc.section.1.p.3">QPACK modifies HPACK to allow correctness in the presence of out-of-order delivery, with flexibility for implementations to balance between resilience against HoL blocking and optimal compression ratio.  The design goals are to closely approach the compression ratio of HPACK with substantially less head-of-line blocking under the same loss conditions.</p>
 <p id="rfc.section.1.p.4">QPACK is intended to be a relatively non-intrusive extension to HPACK; an implementation should be easily shared within stacks supporting both HTTP/2 over (TLS+)TCP and HTTP/QUIC.</p>
@@ -451,7 +460,7 @@ ul.toc li {
 </h2>
 <p id="rfc.section.1.2.p.1">In the example above, the second stream contained a reference to data which might not yet have been processed by the recipient.  Such references are called &#8220;vulnerable,&#8221; because the loss of a different packet can keep the reference from being usable.</p>
 <p id="rfc.section.1.2.p.2">The encoder can choose on a per-header-block basis whether to favor higher compression ratio (by permitting vulnerable references) or HoL resilience (by avoiding them).</p>
-<p id="rfc.section.1.2.p.3">The header block contains a Base Index (see <a href="#absolute-index" class="xref">Section 2.5.1</a>) which is used to correctly index entries, regardless of reordering in the transport (see <a href="#indexing" class="xref">Section 2.2</a>).  The stream for a header is considered blocked by the decoder and cannot be processed until the greatest absolute index in the dynamic table is at least the value of the Base Index.  While blocked, header field data MUST remain in the blocked stream&#8217;s flow control window.  When the Base Index is zero, the frame contains no references to the dynamic table and can always be processed immediately.</p>
+<p id="rfc.section.1.2.p.3">The header block contains a Base Index (see <a href="#absolute-index" class="xref">Section 2.5.1</a>), which is used to correctly index entries regardless of reordering in the transport (see <a href="#indexing" class="xref">Section 2.2</a>), and a Largest Reference which identifies the table state necessary for decoding. The stream for a header is considered blocked by the decoder and cannot be processed until the greatest absolute index in the dynamic table is at least the value of the Largest Reference.  While blocked, header field data MUST remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#wire-format" id="wire-format">Wire Format</a>
 </h1>
@@ -508,7 +517,22 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Example Dynamic Table Indexing - Request Stream</p>
-<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index cannot be referenced by that frame.  If the decoder encounters a reference to an entry which has already been dropped from the table, this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.  If this reference occurs on the control stream, this MUST be treated as a connection error.</p>
+<p id="rfc.section.2.2.p.6">Entries with an absolute index greater than a frame&#8217;s Base Index can be referenced using specific Post-Base instructions.  The relative indices of Post-Base references count up from Base Index.</p>
+<pre>
+             Base Index
+                 |
+                 V
+    +---+-----+-----+-----+-----+
+    | n | n-1 | n-2 | ... | d+1 |  Absolute Index
+    +---+-----+-----+-----+-----+
+    | 1 |  0  |                    Post-Base Index
+    +---+-----+
+
+n = count of entries inserted
+d = count of entries dropped
+</pre>
+<p class="figure">Dynamic Table Indexing - Post-Base References</p>
+<p id="rfc.section.2.2.p.7">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference, this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#headers-frames-on-the-control-stream" id="headers-frames-on-the-control-stream">HEADERS Frames on the Control Stream</a>
 </h2>
@@ -575,7 +599,7 @@ d = count of entries dropped
 </pre>
 <p class="figure">Figure 2: Maximum Dynamic Table Size Change</p>
 <p id="rfc.section.2.3.4.p.2">The new maximum size MUST be lower than or equal to the limit determined by the protocol using QPACK.  A value that exceeds this limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see <a href="#QUIC-HTTP" class="xref">[QUIC-HTTP]</a>) received from the decoder.</p>
-<p id="rfc.section.2.3.4.p.3">Reducing the maximum size of the dynamic table can cause entries to be evicted (see Section 4.3 of <a href="#RFC7541" class="xref">[RFC7541]</a>).  This MUST NOT cause the eviction of entries with outstanding references (see <a href="#reference-tracking" class="xref">Section 3.1</a>).</p>
+<p id="rfc.section.2.3.4.p.3">Reducing the maximum size of the dynamic table can cause entries to be evicted (see Section 4.3 of <a href="#RFC7541" class="xref">[RFC7541]</a>).  This MUST NOT cause the eviction of entries with outstanding references (see <a href="#reference-tracking" class="xref">Section 3.3</a>).</p>
 <h2 id="rfc.section.2.4">
 <a href="#rfc.section.2.4">2.4.</a> <a href="#feedback" id="feedback">HEADER_ACK Frames</a>
 </h2>
@@ -588,21 +612,28 @@ d = count of entries dropped
 </h2>
 <p id="rfc.section.2.5.p.1">HEADERS and PUSH_PROMISE frames on request and push streams reference the dynamic table in a particular state without modifying it, but emit the headers for an HTTP request or response.</p>
 <h3 id="rfc.section.2.5.1">
-<a href="#rfc.section.2.5.1">2.5.1.</a> <a href="#absolute-index" id="absolute-index">Base Index Encoding</a>
+<a href="#rfc.section.2.5.1">2.5.1.</a> <a href="#absolute-index" id="absolute-index">Header Data Prefix</a>
 </h3>
-<p id="rfc.section.2.5.1.p.1">Header data is prefixed by an 8-bit prefix integer: <samp>Base Index</samp>.  <samp>Base Index</samp> is used to resolve references in the dynamic table as described in <a href="#indexing" class="xref">Section 2.2</a>.</p>
+<p id="rfc.section.2.5.1.p.1">Header data is prefixed with two integers, <samp>Largest Reference</samp> and <samp>Base Index</samp>.</p>
 <div id="rfc.figure.3"></div>
 <div id="fig-base-index"></div>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
-|        Base Index (8+)        |
-+-------------------------------+
+|     Largest Reference (8+)    |
++---+---------------------------+
+| S |   Delta Base Index (7+)   |
++---+---------------------------+
 |      Compressed Headers     ...
 +-------------------------------+
 </pre>
 <p class="figure">Figure 3: Frame Payload</p>
-<p id="rfc.section.2.5.1.p.2">Base Index is also used to identify header dependencies (see <a href="#overview-hol-avoidance" class="xref">Section 1.2</a>).</p>
+<p><samp>Largest Reference</samp> identifies the largest absolute dynamic index referenced in the block.  Blocking decoders use the Largest Reference to determine when it is safe to process the rest of the block.</p>
+<p><samp>Base Index</samp> is used to resolve references in the dynamic table as described in <a href="#indexing" class="xref">Section 2.2</a>.  To save space, Base Index is encoded relative to Largest Reference using a one-bit sign flag.</p>
+<pre>
+baseIndex = largestReference + deltaBaseIndex
+</pre>
+<p id="rfc.section.2.5.1.p.4">If the encoder inserted entries to the table while the encoding the block, Largest Reference will be greater than Base Index, so deltaBaseIndex will be negative and encoded with S=1.  If the block did not reference the most recent entry in the table and did not insert any new entries, Largest Reference will be less than Base Index, so deltaBaseIndex will be positive and encoded with S=0.  When Largest Reference and Base Index are equal, deltaBaseIndex is 0 and encoded with S=0.</p>
 <h3 id="rfc.section.2.5.2">
 <a href="#rfc.section.2.5.2">2.5.2.</a> <a href="#instructions" id="instructions">Instructions</a>
 </h3>
@@ -617,13 +648,21 @@ d = count of entries dropped
 +---+---+-----------------------+
 </pre>
 <p class="figure">Indexed Header Field</p>
-<p id="rfc.section.2.5.2.1.p.2">An indexed header field starts with the &#8216;1&#8217; 1-bit pattern, followed by the <samp>S</samp> bit indicating whether the reference is into the static (S=1) or dynamic (S=0) table. Finally, the relative index of the matching header field is represented as an integer with a 6-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<p id="rfc.section.2.5.2.1.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;1&#8217; 1-bit pattern, followed by the <samp>S</samp> bit indicating whether the reference is into the static (S=1) or dynamic (S=0) table. Finally, the relative index of the matching header field is represented as an integer with a 6-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<pre>
+  0   1   2   3   4   5   6   7
++---+---+---+---+---+---+---+---+
+| 0 | 1 | 0 | 0 |  Index (4+)   |
++---+---+-----------------------+
+</pre>
+<p class="figure">Indexed Header Field</p>
+<p id="rfc.section.2.5.2.1.p.3">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0100&#8217; 4-bit pattern, followed by the post-base index (see <a href="#indexing" class="xref">Section 2.2</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
 <h4 id="rfc.section.2.5.2.2">
 <a href="#rfc.section.2.5.2.2">2.5.2.2.</a> <a href="#literal-header-field-with-name-reference" id="literal-header-field-with-name-reference">Literal Header Field With Name Reference</a>
 </h4>
-<p id="rfc.section.2.5.2.2.p.1">A header where the header field name matches the header field name of an entry stored in the static table or the dynamic table starts with the &#8216;00&#8217; two-bit pattern.</p>
-<p id="rfc.section.2.5.2.2.p.2">The third bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
-<p id="rfc.section.2.5.2.2.p.3">The header field name is represented using the relative index of that entry, which is represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>). The <samp>S</samp> bit indicates whether the reference is to the static (S=1) or dynamic (S=0) table.</p>
+<p id="rfc.section.2.5.2.2.p.1">A literal header field with a name reference represents a header where the header field name matches the header field name of an entry stored in the static table or the dynamic table.</p>
+<p id="rfc.section.2.5.2.2.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;00&#8217; two-bit pattern.  If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0101&#8217; four-bit pattern.</p>
+<p id="rfc.section.2.5.2.2.p.3">The following bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -635,16 +674,29 @@ d = count of entries dropped
    +-------------------------------+
 </pre>
 <p class="figure">Literal Header Field With Name Reference</p>
-<h4 id="rfc.section.2.5.2.3">
-<a href="#rfc.section.2.5.2.3">2.5.2.3.</a> <a href="#literal-header-field-without-name-reference" id="literal-header-field-without-name-reference">Literal Header Field Without Name Reference</a>
-</h4>
-<p id="rfc.section.2.5.2.3.p.1">An addition to the header table where both the header field name and the header field value are represented as string literals (see <a href="#primitives" class="xref">Section 2.1</a>) starts with the &#8216;01&#8217; two-bit pattern.</p>
-<p id="rfc.section.2.5.2.3.p.2">The third bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
-<p id="rfc.section.2.5.2.3.p.3">The name is represented as a 5-bit prefix string literal, while the value is represented as an 8-bit prefix string literal.</p>
+<p id="rfc.section.2.5.2.2.p.4">For entries in the static table or in the dynamic table with an absolute index less than or equal to Base Index, the header field name is represented using the relative index of that entry, which is represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>). The <samp>S</samp> bit indicates whether the reference is to the static (S=1) or dynamic (S=0) table.</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 1 | N | H |Name Length(4+)|
+   | 0 | 1 | 0 | 1 | N |NameIdx(3+)|
+   +---+---+-----------------------+
+   | H |     Value Length (7+)     |
+   +---+---------------------------+
+   | Value String (Length octets)  |
+   +-------------------------------+
+</pre>
+<p class="figure">Literal Header Field With Post-Base Name Reference</p>
+<p id="rfc.section.2.5.2.2.p.5">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#indexing" class="xref">Section 2.2</a>) encoded as an integer with a 3-bit prefix.</p>
+<h4 id="rfc.section.2.5.2.3">
+<a href="#rfc.section.2.5.2.3">2.5.2.3.</a> <a href="#literal-header-field-without-name-reference" id="literal-header-field-without-name-reference">Literal Header Field Without Name Reference</a>
+</h4>
+<p id="rfc.section.2.5.2.3.p.1">An addition to the header table where both the header field name and the header field value are represented as string literals (see <a href="#primitives" class="xref">Section 2.1</a>) starts with the &#8216;011&#8217; three-bit pattern.</p>
+<p id="rfc.section.2.5.2.3.p.2">The fourth bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
+<p id="rfc.section.2.5.2.3.p.3">The name is represented as a 4-bit prefix string literal, while the value is represented as an 8-bit prefix string literal.</p>
+<pre>
+     0   1   2   3   4   5   6   7
+   +---+---+---+---+---+---+---+---+
+   | 0 | 1 | 1 | N | H |NameLen(3+)|
    +---+---+---+-------------------+
    |  Name String (Length octets)  |
    +---+---------------------------+
@@ -657,27 +709,83 @@ d = count of entries dropped
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#encoding-strategies" id="encoding-strategies">Encoding Strategies</a>
 </h1>
-<p id="rfc.section.3.p.1">Due to out-of-order arrival, QPACK&#8217;s eviction algorithm requires changes (relative to HPACK) to avoid the possibility that an indexed representation is decoded after the referenced entry has already been evicted.  QPACK employs a two-phase eviction algorithm, in which the encoder will not evict entries that have outstanding (unacknowledged) references.</p>
 <h2 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#reference-tracking" id="reference-tracking">Reference Tracking</a>
+<a href="#rfc.section.3.1">3.1.</a> <a href="#single-pass-encoding" id="single-pass-encoding">Single pass encoding</a>
 </h2>
-<p id="rfc.section.3.1.p.1">An encoder MUST ensure that a header block which references a dynamic table entry is not received by the decoder after the referenced entry has already been evicted, and MUST ensure that the decoder will not suffer head-of-line blocking if the decoder has not opted to receive blocking references. Even if the decoder is willing to process blocking references, the encoder might choose to avoid them in certain cases.</p>
-<p id="rfc.section.3.1.p.2">In order to enable this, the encoder will need to track outstanding (unacknowledged) header blocks and table updates using feedback received from the decoder.</p>
-<h3 id="rfc.section.3.1.1">
-<a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#blocked-eviction" id="blocked-eviction">Blocked Eviction</a>
-</h3>
-<p id="rfc.section.3.1.1.p.1">The encoder MUST NOT permit an entry to be evicted while a reference to that entry remains unacknowledged.  If a new header to be inserted into the dynamic table would cause the eviction of such an entry, the encoder MUST NOT emit the insert instruction until the reference has been processed by the decoder and acknowledged.</p>
-<p id="rfc.section.3.1.1.p.2">The encoder can emit a literal representation for the new header in order to avoid encoding delays, and MAY insert the header into the table later if desired.</p>
-<p id="rfc.section.3.1.1.p.3">To ensure that the blocked eviction case is rare, references to the oldest entries in the dynamic table SHOULD be avoided.  When one of the oldest entries in the table is still actively used for references, the encoder SHOULD emit an Indexed-Duplicate representation instead (see <a href="#indexed-duplicate" class="xref">Section 2.3.3</a>).</p>
-<h3 id="rfc.section.3.1.2">
-<a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
-</h3>
-<p id="rfc.section.3.1.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 2.4</a>.</p>
-<p id="rfc.section.3.1.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
+<p id="rfc.section.3.1.p.1">An encoder making a single pass over a list of headers must choose Base Index before knowing Largest Reference.  When trying to reference a header inserted to the table after encoding has begun, the entry is encoded with different instructions that tell the decoder to use an absolute index greater than the Base Index.</p>
 <h2 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>
+<a href="#rfc.section.3.2">3.2.</a> <a href="#evictions" id="evictions">Preventing Eviction Races</a>
 </h2>
-<p id="rfc.section.3.2.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Indexed-Duplicate representations for popular header fields (<a href="#indexed-duplicate" class="xref">Section 2.3.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
+<p id="rfc.section.3.2.p.1">Due to out-of-order arrival, QPACK&#8217;s eviction algorithm requires changes (relative to HPACK) to avoid the possibility that an indexed representation is decoded after the referenced entry has already been evicted.  QPACK employs a two-phase eviction algorithm, in which the encoder will not evict entries that have outstanding (unacknowledged) references.</p>
+<h2 id="rfc.section.3.3">
+<a href="#rfc.section.3.3">3.3.</a> <a href="#reference-tracking" id="reference-tracking">Reference Tracking</a>
+</h2>
+<p id="rfc.section.3.3.p.1">An encoder MUST ensure that a header block which references a dynamic table entry is not received by the decoder after the referenced entry has already been evicted, and MUST ensure that the decoder will not suffer head-of-line blocking if the decoder has not opted to receive blocking references. Even if the decoder is willing to process blocking references, the encoder might choose to avoid them in certain cases.</p>
+<p id="rfc.section.3.3.p.2">In order to enable this, the encoder will need to track outstanding (unacknowledged) header blocks and table updates using feedback received from the decoder.</p>
+<h3 id="rfc.section.3.3.1">
+<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#blocked-eviction" id="blocked-eviction">Blocked Eviction</a>
+</h3>
+<p id="rfc.section.3.3.1.p.1">The encoder MUST NOT permit an entry to be evicted while a reference to that entry remains unacknowledged.  If a new header to be inserted into the dynamic table would cause the eviction of such an entry, the encoder MUST NOT emit the insert instruction until the reference has been processed by the decoder and acknowledged.</p>
+<p id="rfc.section.3.3.1.p.2">The encoder can emit a literal representation for the new header in order to avoid encoding delays, and MAY insert the header into the table later if desired.</p>
+<p id="rfc.section.3.3.1.p.3">To ensure that the blocked eviction case is rare, references to the oldest entries in the dynamic table SHOULD be avoided.  When one of the oldest entries in the table is still actively used for references, the encoder SHOULD emit an Indexed-Duplicate representation instead (see <a href="#indexed-duplicate" class="xref">Section 2.3.3</a>).</p>
+<h3 id="rfc.section.3.3.2">
+<a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
+</h3>
+<p id="rfc.section.3.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 2.4</a>.</p>
+<p id="rfc.section.3.3.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
+<h2 id="rfc.section.3.4">
+<a href="#rfc.section.3.4">3.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>
+</h2>
+<p id="rfc.section.3.4.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Indexed-Duplicate representations for popular header fields (<a href="#indexed-duplicate" class="xref">Section 2.3.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
+<h2 id="rfc.section.3.5">
+<a href="#rfc.section.3.5">3.5.</a> <a href="#sample-one-pass-encoding-algorithm" id="sample-one-pass-encoding-algorithm">Sample One Pass Encoding Algorithm</a>
+</h2>
+<p id="rfc.section.3.5.p.1">Pseudo-code for single pass encoding, excluding handling of duplicates, non-blocking mode, and reference tracking.</p>
+<pre>
+baseIndex = dynamicTable.baseIndex
+largestReference = 0
+for header in headers:
+  staticIdx = staticTable.getIndex(header)
+  if staticIdx:
+    encodeIndexReference(streamBuffer, staticIdx)
+    continue
+
+  dynamicIdx = dynamicTable.getIndex(header)
+  if !dynamicIdx:
+    # No matching entry.  Either insert+index or encode literal
+    nameIdx = getNameIndex(header)
+    if shouldIndex(header) and dynamicTable.canIndex(header):
+      encodeLiteralWithIncrementalIndex(controlBuffer, nameIdx,
+                                        header)
+      dynamicTable.add(header)
+      dynamicIdx = dynamicTable.baseIndex
+
+  if !dynamicIdx:
+    # Couldn't index it, literal
+    if nameIdx &lt;= staticTable.size:
+      encodeLiteral(streamBuffer, nameIndex, header)
+    else:
+      # encode literal, possibly with nameIdx above baseIndex
+      encodeDynamicLiteral(streamBuffer, nameIndex, baseIndex,
+                           header)
+      largestReference = max(largestReference,
+                             dynamicTable.toAbsolute(nameIdx))
+  else:
+    # Dynamic index reference
+    assert(dynamicIdx)
+    largestReference = max(largestReference, dynamicIdx)
+    # Encode dynamicIdx, possibly with dynamicIdx above baseIndex
+    encodeDynamicIndexReference(streamBuffer, dynamicIdx,
+                                baseIndex)
+
+# encode the prefix
+encodeInteger(prefixBuffer, 0x00, largestReference, 8)
+delta = largestReference - baseIndex
+sign = delta &gt; 0 ? 0x80 : 0
+encodeInteger(prefixBuffer, sign, delta, 7)
+
+return controlBuffer, prefixBuffer + streamBuffer
+</pre>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
