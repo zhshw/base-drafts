@@ -673,7 +673,7 @@ d = count of entries dropped
 <h3 id="rfc.section.3.1.2">
 <a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
 </h3>
-<p id="rfc.section.3.1.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 2.4</a>.  Since all table updates are processed in sequence on the control stream, an index into the dynamic table is sufficient to track which entries have been processed.</p>
+<p id="rfc.section.3.1.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 2.4</a>.  Since all table updates are processed in sequence on the control stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
 <p id="rfc.section.3.1.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
 <h2 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>

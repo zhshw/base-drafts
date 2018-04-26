@@ -687,7 +687,7 @@ Internet-Draft                    QPACK                       April 2018
    not yet been acknowledged with Section 2.4.  Since all table updates
    are processed in sequence on the control stream, an index into the
    dynamic table is sufficient to track which entries have been
-   processed.
+   acknowledged.
 
    To track blocked streams, the necessary Base Index value for each
    stream can be used.  Whenever the decoder processes a table update,
