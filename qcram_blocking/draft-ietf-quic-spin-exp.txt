@@ -138,7 +138,7 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 2.1.  Proposed Short Header Format Including Spin Bit
 
    As of the current editor's version of [QUIC-TRANSPORT], this proposal
-   specifies using the fifth most significant bit (0x08) of the first
+   specifies using the sixth most significant bit (0x04) of the first
    octet in the short header for the spin bit.
 
     0                   1                   2                   3

@@ -732,13 +732,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#frame-headers" id="frame-headers">HEADERS</a>
 </h3>
 <p id="rfc.section.4.2.2.p.1">The HEADERS frame (type=0x1) is used to carry a header block, compressed using QPACK. See <a href="#QPACK" class="xref">[QPACK]</a> for more details.</p>
-<p id="rfc.section.4.2.2.p.2">The HEADERS frame defines a single flag:</p>
-<p></p>
-
-<dl>
-<dt>BLOCKING (0x01):</dt>
-<dd style="margin-left: 8">Indicates the stream might need to wait for dependent headers before processing.  If 0, the frame can be processed immediately upon receipt.</dd>
-</dl>
+<p id="rfc.section.4.2.2.p.2">The HEADERS frame defines no flags.</p>
 <div id="rfc.figure.4"></div>
 <div id="fig-headers"></div>
 <pre>
@@ -749,7 +743,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 4: HEADERS frame payload</p>
-<p id="rfc.section.4.2.2.p.4">HEADERS frames can be sent on the Control Stream as well as on request / push streams.  The value of BLOCKING MUST be 0 for HEADERS frames on the Control Stream, since they can only depend on previous HEADERS on the same stream.</p>
+<p id="rfc.section.4.2.2.p.3">HEADERS frames can be sent on the Control Stream as well as on request / push streams.</p>
 <h3 id="rfc.section.4.2.3">
 <a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#frame-priority" id="frame-priority">PRIORITY</a>
 </h3>
@@ -871,13 +865,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h3 id="rfc.section.4.2.6">
 <a href="#rfc.section.4.2.6">4.2.6.</a> <a href="#frame-push-promise" id="frame-push-promise">PUSH_PROMISE</a>
 </h3>
-<p id="rfc.section.4.2.6.p.1">The PUSH_PROMISE frame (type=0x05) is used to carry a request header set from server to client, as in HTTP/2.  The PUSH_PROMISE frame defines a single flag:</p>
-<p></p>
-
-<dl>
-<dt>BLOCKING (0x01):</dt>
-<dd style="margin-left: 8">Indicates the stream might need to wait for dependent headers before processing.  If 0, the frame can be processed immediately upon receipt.</dd>
-</dl>
+<p id="rfc.section.4.2.6.p.1">The PUSH_PROMISE frame (type=0x05) is used to carry a request header set from server to client, as in HTTP/2.  The PUSH_PROMISE frame defines no flags.</p>
 <div id="rfc.figure.8"></div>
 <div id="fig-push-promise"></div>
 <pre>
@@ -890,7 +878,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 8: PUSH_PROMISE frame payload</p>
-<p id="rfc.section.4.2.6.p.3">The payload consists of:</p>
+<p id="rfc.section.4.2.6.p.2">The payload consists of:</p>
 <p></p>
 
 <dl>
@@ -899,10 +887,10 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>Header Block:</dt>
 <dd style="margin-left: 8">QPACK-compressed request headers for the promised response.  See <a href="#QPACK" class="xref">[QPACK]</a> for more details.</dd>
 </dl>
-<p id="rfc.section.4.2.6.p.5">A server MUST NOT use a Push ID that is larger than the client has provided in a MAX_PUSH_ID frame (<a href="#frame-max-push-id" class="xref">Section 4.2.9</a>).  A client MUST treat receipt of a PUSH_PROMISE that contains a larger Push ID than the client has advertised as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.6.p.6">A server MAY use the same Push ID in multiple PUSH_PROMISE frames.  This allows the server to use the same server push in response to multiple concurrent requests.  Referencing the same server push ensures that a PUSH_PROMISE can be made in relation to every response in which server push might be needed without duplicating pushes.</p>
-<p id="rfc.section.4.2.6.p.7">A server that uses the same Push ID in multiple PUSH_PROMISE frames MUST include the same header fields each time.  The octets of the header block MAY be different due to differing encoding, but the header fields and their values MUST be identical.  Note that ordering of header fields is significant.  A client MUST treat receipt of a PUSH_PROMISE with conflicting header field values for the same Push ID as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.6.p.8">Allowing duplicate references to the same Push ID is primarily to reduce duplication caused by concurrent requests.  A server SHOULD avoid reusing a Push ID over a long period.  Clients are likely to consume server push responses and not retain them for reuse over time.  Clients that see a PUSH_PROMISE that uses a Push ID that they have since consumed and discarded are forced to ignore the PUSH_PROMISE.</p>
+<p id="rfc.section.4.2.6.p.4">A server MUST NOT use a Push ID that is larger than the client has provided in a MAX_PUSH_ID frame (<a href="#frame-max-push-id" class="xref">Section 4.2.9</a>).  A client MUST treat receipt of a PUSH_PROMISE that contains a larger Push ID than the client has advertised as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.6.p.5">A server MAY use the same Push ID in multiple PUSH_PROMISE frames.  This allows the server to use the same server push in response to multiple concurrent requests.  Referencing the same server push ensures that a PUSH_PROMISE can be made in relation to every response in which server push might be needed without duplicating pushes.</p>
+<p id="rfc.section.4.2.6.p.6">A server that uses the same Push ID in multiple PUSH_PROMISE frames MUST include the same header fields each time.  The octets of the header block MAY be different due to differing encoding, but the header fields and their values MUST be identical.  Note that ordering of header fields is significant.  A client MUST treat receipt of a PUSH_PROMISE with conflicting header field values for the same Push ID as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.6.p.7">Allowing duplicate references to the same Push ID is primarily to reduce duplication caused by concurrent requests.  A server SHOULD avoid reusing a Push ID over a long period.  Clients are likely to consume server push responses and not retain them for reuse over time.  Clients that see a PUSH_PROMISE that uses a Push ID that they have since consumed and discarded are forced to ignore the PUSH_PROMISE.</p>
 <h3 id="rfc.section.4.2.7">
 <a href="#rfc.section.4.2.7">4.2.7.</a> <a href="#frame-goaway" id="frame-goaway">GOAWAY</a>
 </h3>
