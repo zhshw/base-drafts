@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: October 26, 2018                            Akamai Technologies
+Expires: October 28, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          April 24, 2018
+                                                          April 26, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 26, 2018.
+   This Internet-Draft will expire on October 28, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 1]
+Krasic, et al.          Expires October 28, 2018                [Page 1]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 2]
+Krasic, et al.          Expires October 28, 2018                [Page 2]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 3]
+Krasic, et al.          Expires October 28, 2018                [Page 3]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -174,18 +174,18 @@ Internet-Draft                    QPACK                       April 2018
 
    In the example above, the header block on the second stream contained
    a reference to data which might not yet have been processed by the
-   recipient.  Such references are called "blocking," because the loss
+   recipient.  Such references are called "vulnerable," because the loss
    of a different packet can keep the reference from being usable.
 
-   The decoder can signal that it is willing to process blocking
+   The decoder can signal that it is willing to process vulnerable
    references by setting SETTINGS_BLOCKING_HEADER_REFERENCES to a non-
    zero value.  In this case, the encoder can choose on a per-header-
-   block basis whether to favor higher compression ratio (by permitting
-   blocking references) or HoL resilience (by avoiding them).  This is
+   block basis whether to favor higher compression ratio (by emitting
+   vulnerable references) or HoL resilience (by avoiding them).  This is
    signaled by the BLOCKING flag in HEADERS and PUSH_PROMISE frames (see
    [QUIC-HTTP]).  Otherwise, the BLOCKING flag MUST be 0.
 
-   If a header block contains no blocking header fields, BLOCKING MUST
+   If a header block contains no vulnerable header fields, BLOCKING MUST
    be 0.  This implies that the header fields are represented either as
    references to dynamic table entries which are known to have been
    received, or as Literal header fields (see Section 6.2 of [RFC7541]).
@@ -193,16 +193,17 @@ Internet-Draft                    QPACK                       April 2018
    If a header block contains any header field which references dynamic
    table state which the peer might not have received yet, the BLOCKING
    flag MUST be set.  If the peer does not yet have the appropriate
-   state, such blocks might not be processed on arrival.
+   state, such blocks might not be processed on arrival.  These are
+   considered "blocking."
 
    An encoder MUST NOT have more header blocks outstanding with the
    BLOCKING flag set than the value of
    SETTINGS_BLOCKING_HEADER_REFERENCES at any time.  Note that the
    decoder's count of references which are actually blocking will be
    less than or equal to the encoder's count of references which are
-   potentially blocking.  If the decoder encounters more blocking
-   references than it promised to support, it SHOULD treat this as a
-   stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
+   vulnerable (potentially blocking).  If the decoder encounters more
+   blocking references than it promised to support, it SHOULD treat this
+   as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
 
    The header block contains a prefix (Section 2.4.1).  This prefix
    contains table offset information that establishes total ordering
@@ -210,18 +211,17 @@ Internet-Draft                    QPACK                       April 2018
    Section 2.4.2).
 
    In blocking mode, the prefix additionally identifies the minimum
-   state required to process any blocking references in the header block
-   (see "Depends Index" in Section 2.4.2).  The decoder keeps track of
-   which entries have been added to its dynamic table.  The stream for a
-   header with BLOCKING flag set is considered blocked by the decoder
-   and can not be processed until all entries in the range "[1, Depends
-   Index]" have been added.  While blocked, header field data MUST
-   remain in the blocked stream's flow control window.
+   state required to process any vulnerable references in the header
+   block (see "Depends Index" in Section 2.4.2).  The decoder keeps
+   track of which entries have been added to its dynamic table.  The
+   stream for a header with BLOCKING flag set is considered blocked by
+   the decoder and can not be processed until all entries in the range
+   "[1, Depends Index]" have been added.  While blocked, header field
+   data MUST remain in the blocked stream's flow control window.
 
 
 
-
-Krasic, et al.          Expires October 26, 2018                [Page 4]
+Krasic, et al.          Expires October 28, 2018                [Page 4]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 5]
+Krasic, et al.          Expires October 28, 2018                [Page 5]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 6]
+Krasic, et al.          Expires October 28, 2018                [Page 6]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 7]
+Krasic, et al.          Expires October 28, 2018                [Page 7]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 8]
+Krasic, et al.          Expires October 28, 2018                [Page 8]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018                [Page 9]
+Krasic, et al.          Expires October 28, 2018                [Page 9]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 10]
+Krasic, et al.          Expires October 28, 2018               [Page 10]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 11]
+Krasic, et al.          Expires October 28, 2018               [Page 11]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 12]
+Krasic, et al.          Expires October 28, 2018               [Page 12]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -684,7 +684,7 @@ Internet-Draft                    QPACK                       April 2018
    table entry is not received by the decoder after the referenced entry
    has already been evicted, and MUST ensure that the decoder will not
    suffer head-of-line blocking if the decoder has not opted to receive
-   blocking references.  Even if the decoder is willing to process
+   vulnerable references.  Even if the decoder is willing to process
    blocking references, the encoder might choose to avoid them in
    certain cases.
 
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 13]
+Krasic, et al.          Expires October 28, 2018               [Page 13]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 14]
+Krasic, et al.          Expires October 28, 2018               [Page 14]
 
 Internet-Draft                    QPACK                       April 2018
 
@@ -837,4 +837,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires October 26, 2018               [Page 15]
+Krasic, et al.          Expires October 28, 2018               [Page 15]
