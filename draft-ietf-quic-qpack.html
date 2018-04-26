@@ -473,7 +473,7 @@ ul.toc li {
 <li>Finally, the contents of HEADERS and PUSH_PROMISE frames on request streams reference the QPACK table state.</li>
 </ul>
 <p id="rfc.section.2.p.3">This section describes the instructions which are possible on each stream type.</p>
-<p id="rfc.section.2.p.4">In order to ensure table consistency and simplify update management, all table updates occur on the control stream rather than on request streams. Request streams contain only header blocks, which do not modify the state of the table.</p>
+<p id="rfc.section.2.p.4">All table updates occur on the control stream.  Request streams only carry header blocks that do not modify the state of the table.</p>
 <h2 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#primitives" id="primitives">Primitives</a>
 </h2>
