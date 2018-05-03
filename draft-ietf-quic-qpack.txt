@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: October 28, 2018                            Akamai Technologies
+Expires: November 4, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          April 26, 2018
+                                                            May 03, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 28, 2018.
+   This Internet-Draft will expire on November 4, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 1]
+Krasic, et al.          Expires November 4, 2018                [Page 1]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 2]
+Krasic, et al.          Expires November 4, 2018                [Page 2]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 3]
+Krasic, et al.          Expires November 4, 2018                [Page 3]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 1.2.  Avoiding Head-of-Line Blocking in HTTP/QUIC
@@ -221,9 +221,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 4]
+Krasic, et al.          Expires November 4, 2018                [Page 4]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 2.1.  Primitives
@@ -277,9 +277,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 5]
+Krasic, et al.          Expires November 4, 2018                [Page 5]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
        +---+---------------+-------+
@@ -333,9 +333,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 6]
+Krasic, et al.          Expires November 4, 2018                [Page 6]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
                 Base Index
@@ -389,9 +389,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 7]
+Krasic, et al.          Expires November 4, 2018                [Page 7]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
         0   1   2   3   4   5   6   7
@@ -445,9 +445,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 8]
+Krasic, et al.          Expires November 4, 2018                [Page 8]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    the eviction of older entries which are frequently referenced, both
@@ -501,9 +501,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 9]
+Krasic, et al.          Expires November 4, 2018                [Page 9]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    have intermediate status codes and PUSH_PROMISE frames.)  As the
@@ -557,9 +557,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 10]
+Krasic, et al.          Expires November 4, 2018               [Page 10]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 2.5.2.  Instructions
@@ -613,9 +613,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 11]
+Krasic, et al.          Expires November 4, 2018               [Page 11]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    The following bit, 'N', indicates whether an intermediary is
@@ -669,9 +669,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 12]
+Krasic, et al.          Expires November 4, 2018               [Page 12]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 2.5.2.3.  Literal Header Field Without Name Reference
@@ -725,9 +725,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 13]
+Krasic, et al.          Expires November 4, 2018               [Page 13]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    encoder will not evict entries that have outstanding (unacknowledged)
@@ -781,9 +781,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 14]
+Krasic, et al.          Expires November 4, 2018               [Page 14]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 3.4.  Speculative table updates
@@ -837,9 +837,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 15]
+Krasic, et al.          Expires November 4, 2018               [Page 15]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    baseIndex = dynamicTable.baseIndex
@@ -893,9 +893,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 16]
+Krasic, et al.          Expires November 4, 2018               [Page 16]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 4.  Security Considerations
@@ -949,9 +949,9 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 17]
+Krasic, et al.          Expires November 4, 2018               [Page 17]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    o  Patrick McManus
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 18]
+Krasic, et al.          Expires November 4, 2018               [Page 18]
