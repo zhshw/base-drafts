@@ -1086,7 +1086,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">Not applicable, since no acknowledgement of SETTINGS is defined.</dd>
 <dt>STREAM_CLOSED (0x5):</dt>
 <dd style="margin-left: 8">Not applicable, since QUIC handles stream management.  Would provoke a QUIC_STREAM_DATA_AFTER_TERMINATION from the QUIC layer.</dd>
-<dt>FRAME_SIZE_ERROR (0x6)</dt>
+<dt>FRAME_SIZE_ERROR (0x6):</dt>
 <dd style="margin-left: 8">No single mapping.  See new error codes defined in <a href="#http-error-codes" class="xref">Section 6.1</a>.</dd>
 <dt>REFUSED_STREAM (0x7):</dt>
 <dd style="margin-left: 8">Not applicable, since QUIC handles stream management.  Would provoke a QUIC_TOO_MANY_OPEN_STREAMS from the QUIC layer.</dd>
@@ -1107,7 +1107,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2.</p>
+<p id="rfc.section.8.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2 with TLS.</p>
 <p id="rfc.section.8.p.2">The modified SETTINGS format contains nested length elements, which could pose a security risk to an uncautious implementer.  A SETTINGS frame parser MUST ensure that the length of the frame exactly matches the length of the settings it contains.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>

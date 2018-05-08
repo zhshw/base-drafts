@@ -1616,7 +1616,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
       management.  Would provoke a QUIC_STREAM_DATA_AFTER_TERMINATION
       from the QUIC layer.
 
-   FRAME_SIZE_ERROR (0x6)  No single mapping.  See new error codes
+   FRAME_SIZE_ERROR (0x6):  No single mapping.  See new error codes
       defined in Section 6.1.
 
 
@@ -1650,7 +1650,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 8.  Security Considerations
 
    The security considerations of HTTP over QUIC should be comparable to
-   those of HTTP/2.
+   those of HTTP/2 with TLS.
 
    The modified SETTINGS format contains nested length elements, which
    could pose a security risk to an uncautious implementer.  A SETTINGS
