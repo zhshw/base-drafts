@@ -1154,14 +1154,11 @@ Internet-Draft                QUIC over TLS                     May 2018
    applied (see Section 5.4).  The ciphertext of the packet is sampled
    and used as input to an encryption algorithm.
 
-   For packets with a long header, the ciphertext starting immediately
-   after the packet number is used.
-
-   For packets with a short header, the packet number length is assumed
-   to be the smaller of the maximum possible packet number encoding (4
-   octets), or the size of the protected packet minus the minimum
-   expansion for the AEAD.  Thus, the sampled ciphertext for a short
-   header can be determined by:
+   In sampling the packet ciphertext, the packet number length is
+   assumed to be the smaller of the maximum possible packet number
+   encoding (4 octets), or the size of the protected packet minus the
+   minimum expansion for the AEAD.  For example, the sampled ciphertext
+   for a packet with a short header can be determined by:
 
    "sample_offset = min(1 + connection_id_length + 4, packet_length -
    aead_expansion) sample =
@@ -1171,12 +1168,19 @@ Internet-Draft                QUIC over TLS                     May 2018
    number protection algorithms MUST NOT sample more ciphertext than the
    minimum expansion of the corresponding AEAD.
 
+   Packet number protection is applied to the packet number encoded as
+   described in Section 4.8 of [QUIC-TRANSPORT].  Since the length of
+
 
 
 Thomson & Turner        Expires November 9, 2018               [Page 21]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   the packet number is stored in the first octet of the encoded packet
+   number, it may be necessary to progressively decrypt the packet
+   number.
 
    Before a TLS ciphersuite can be used with QUIC, a packet protection
    algorithm MUST be specifed for the AEAD used with that ciphersuite.
@@ -1222,10 +1226,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    number, it MUST discard all packets with higher packet numbers if
    they cannot be successfully unprotected with either the same key, or
    - if there is a key update - the next packet protection key (see
-   Section 6.2).  Similarly, a packet that appears to trigger a key
-   update, but cannot be unprotected successfully MUST be discarded.
-
-
 
 
 
@@ -1233,6 +1233,9 @@ Thomson & Turner        Expires November 9, 2018               [Page 22]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   Section 6.2).  Similarly, a packet that appears to trigger a key
+   update, but cannot be unprotected successfully MUST be discarded.
 
    Failure to unprotect a packet does not necessarily indicate the
    existence of a protocol error in a peer or an attack.  The truncated
@@ -1278,10 +1281,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    containing these messages use the packet protection keys that are
    current at the time of sending (or retransmission).
 
-   Like the client, a server MUST send retransmissions of its
-   unprotected handshake messages or acknowledgments for unprotected
-   handshake messages sent by the client in packets protected with
-   handshake keys.
+
 
 
 
@@ -1289,6 +1289,11 @@ Thomson & Turner        Expires November 9, 2018               [Page 23]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   Like the client, a server MUST send retransmissions of its
+   unprotected handshake messages or acknowledgments for unprotected
+   handshake messages sent by the client in packets protected with
+   handshake keys.
 
 6.1.1.  Initial Key Transitions
 
@@ -1333,11 +1338,6 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    Even though newer keys could be available when retransmitting,
    retransmissions of these handshake messages MUST be sent in packets
-   protected with handshake keys.  An endpoint MUST generate ACK frames
-   for these messages and send them in packets protected with handshake
-   keys.
-
-
 
 
 
@@ -1345,6 +1345,10 @@ Thomson & Turner        Expires November 9, 2018               [Page 24]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   protected with handshake keys.  An endpoint MUST generate ACK frames
+   for these messages and send them in packets protected with handshake
+   keys.
 
    A HelloRetryRequest handshake message might be used to reject an
    initial ClientHello.  A HelloRetryRequest handshake message is sent
@@ -1390,10 +1394,6 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    A receiving endpoint detects an update when the KEY_PHASE bit doesn't
    match what it is expecting.  It creates a new secret (see
-   Section 5.3) and the corresponding read key and IV.  If the packet
-   can be decrypted and authenticated using these values, then the keys
-   it uses for packet protection are also updated.  The next packet sent
-   by the endpoint will then use the new keys.
 
 
 
@@ -1401,6 +1401,11 @@ Thomson & Turner        Expires November 9, 2018               [Page 25]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   Section 5.3) and the corresponding read key and IV.  If the packet
+   can be decrypted and authenticated using these values, then the keys
+   it uses for packet protection are also updated.  The next packet sent
+   by the endpoint will then use the new keys.
 
    An endpoint doesn't need to send packets immediately when it detects
    that its peer has updated keys.  The next packet that it sends will
@@ -1446,11 +1451,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    be received by a peer.  Once both sending and receiving keys have
    been updated, the peers immediately begin to use them.
 
-   A server cannot initiate a key update until it has received the
-   client's Finished message.  Otherwise, packets protected by the
-   updated keys could be confused for retransmissions of handshake
-
-
 
 
 Thomson & Turner        Expires November 9, 2018               [Page 26]
@@ -1458,6 +1458,9 @@ Thomson & Turner        Expires November 9, 2018               [Page 26]
 Internet-Draft                QUIC over TLS                     May 2018
 
 
+   A server cannot initiate a key update until it has received the
+   client's Finished message.  Otherwise, packets protected by the
+   updated keys could be confused for retransmissions of handshake
    messages.  A client cannot initiate a key update until all of its
    handshake messages have been acknowledged by the server.
 
@@ -1504,9 +1507,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    to combine a request for address validation with a request for a
    different client key share.
 
-   If TLS needs to send a HelloRetryRequest for other reasons, it needs
-   to ensure that it can correctly identify the reason that the
-
 
 
 Thomson & Turner        Expires November 9, 2018               [Page 27]
@@ -1514,6 +1514,8 @@ Thomson & Turner        Expires November 9, 2018               [Page 27]
 Internet-Draft                QUIC over TLS                     May 2018
 
 
+   If TLS needs to send a HelloRetryRequest for other reasons, it needs
+   to ensure that it can correctly identify the reason that the
    HelloRetryRequest was generated.  During the processing of a second
    ClientHello, TLS does not need to consult the transport protocol
    regarding address validation if address validation was not requested
@@ -1560,8 +1562,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    Variations in Retry packet, if used by a client, could lead to
    multiple connections derived from the same ClientHello.  Reuse of the
    client nonce is not supported by TLS and could lead to security
-   vulnerabilities.  Clients that receive multiple Retry packets MUST
-   use only one and discard the remainder.
 
 
 
@@ -1569,6 +1569,9 @@ Thomson & Turner        Expires November 9, 2018               [Page 28]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
+
+   vulnerabilities.  Clients that receive multiple Retry packets MUST
+   use only one and discard the remainder.
 
 7.2.  NewSessionTicket Address Validation
 
@@ -1616,9 +1619,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    during the exchange of unauthenticated messages for congestion
    control.
 
-   This section generally only applies to TLS handshake messages from
-   both peers and acknowledgments of the packets carrying those
-
 
 
 Thomson & Turner        Expires November 9, 2018               [Page 29]
@@ -1626,6 +1626,8 @@ Thomson & Turner        Expires November 9, 2018               [Page 29]
 Internet-Draft                QUIC over TLS                     May 2018
 
 
+   This section generally only applies to TLS handshake messages from
+   both peers and acknowledgments of the packets carrying those
    messages.  In many cases, the need for servers to provide
    acknowledgments is minimal, since the messages that clients send are
    small and implicitly acknowledged by the server's responses.
@@ -1672,8 +1674,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    Sending and receiving unprotected messages is hazardous.  Unless
    expressly permitted, receipt of an unprotected message of any kind
    MUST be treated as a fatal error.
-
-
 
 
 
