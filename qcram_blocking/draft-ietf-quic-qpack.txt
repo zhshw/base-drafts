@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: October 28, 2018                            Akamai Technologies
+Expires: November 10, 2018                           Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                          April 26, 2018
+                                                            May 09, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 28, 2018.
+   This Internet-Draft will expire on November 10, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 1]
+Krasic, et al.          Expires November 10, 2018               [Page 1]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 2]
+Krasic, et al.          Expires November 10, 2018               [Page 2]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 1.  Introduction
@@ -165,34 +165,35 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 3]
+Krasic, et al.          Expires November 10, 2018               [Page 3]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 1.2.  Avoiding Head-of-Line Blocking in HTTP/QUIC
 
-   In the example above, the header block on the second stream contained
-   a reference to data which might not yet have been processed by the
-   recipient.  Such references are called "vulnerable," because the loss
-   of a different packet can keep the reference from being usable.  If
-   the reference cannot be immediately processed on receipt, the stream
-   is considered "blocked."
+   Because QUIC does not guarantee order between data on different
+   streams, a reference might be received on a request stream to an
+   entry which is not yet in the dynamic table.  References are called
+   "vulnerable" when they refer to entries whose receipt has not been
+   confirmed by the peer, because loss or reordering can keep the
+   reference from being immediately usable.  If the reference cannot be
+   immediately processed on receipt, the stream is considered "blocked."
 
    The decoder can signal that it is willing to process vulnerable
-   references by setting SETTINGS_BLOCKING_HEADER_REFERENCES to a non-
-   zero value.  In this case, the encoder can choose on a per-header-
-   block basis whether to favor higher compression ratio (by permitting
+   references by setting SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero
+   value.  In this case, the encoder can choose on a per-header-block
+   basis whether to favor higher compression ratio (by permitting
    vulnerable references) or HoL resilience (by avoiding them).
 
    An encoder MUST NOT have header blocks which contain vulnerable
    references outstanding on more streams than the value of
-   SETTINGS_BLOCKING_HEADER_REFERENCES at any time.  Note that the
-   decoder's count of streams which are actually blocked will be less
-   than or equal to the encoder's count of references which are
-   vulnerable (potentially blocking).  If the decoder encounters more
-   blocked streams than it promised to support, it SHOULD treat this as
-   a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
+   SETTINGS_QPACK_BLOCKED_STREAMS at any time.  Note that the decoder's
+   count of streams which are actually blocked will be less than or
+   equal to the encoder's count of references which are vulnerable
+   (potentially blocking).  If the decoder encounters more blocked
+   streams than it promised to support, it SHOULD treat this as a stream
+   error of type HTTP_QPACK_DECOMPRESSION_FAILED.
 
    The header block contains a Base Index (see Section 2.5.1) which is
    used to correctly index entries, regardless of reordering in the
@@ -215,16 +216,19 @@ Internet-Draft                    QPACK                       April 2018
       dynamic table state without generating output to any particular
       request.
 
+
+
+
+
+
+Krasic, et al.          Expires November 10, 2018               [Page 4]
+
+Internet-Draft                    QPACK                         May 2018
+
+
    o  Acknowledgement of header frame processing is carried by
       HEADER_ACK frames on the control stream, running from decoder to
       encoder.
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 4]
-
-Internet-Draft                    QPACK                       April 2018
-
 
    o  Finally, the contents of HEADERS and PUSH_PROMISE frames on
       request streams reference the QPACK table state.
@@ -270,17 +274,16 @@ Internet-Draft                    QPACK                       April 2018
    Entries are inserted into the dynamic table over time.  Each entry
    possesses both an absolute index which is fixed for the lifetime of
    that entry and a relative index which changes over time based on the
+
+
+
+Krasic, et al.          Expires November 10, 2018               [Page 5]
+
+Internet-Draft                    QPACK                         May 2018
+
+
    context of the reference.  The first entry inserted has an absolute
    index of "1"; indices increase sequentially with each insertion.
-
-
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 5]
-
-Internet-Draft                    QPACK                       April 2018
-
 
    On the control stream, a relative index of "0" always refers to the
    most recently inserted value in the dynamic table.  Note that this
@@ -330,12 +333,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-
-
-
-Krasic, et al.          Expires October 28, 2018                [Page 6]
+Krasic, et al.          Expires November 10, 2018               [Page 6]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
                 Base Index
@@ -389,9 +389,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 7]
+Krasic, et al.          Expires November 10, 2018               [Page 7]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
         0   1   2   3   4   5   6   7
@@ -445,9 +445,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 8]
+Krasic, et al.          Expires November 10, 2018               [Page 8]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    the eviction of older entries which are frequently referenced, both
@@ -501,9 +501,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018                [Page 9]
+Krasic, et al.          Expires November 10, 2018               [Page 9]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    have intermediate status codes and PUSH_PROMISE frames.)  As the
@@ -557,9 +557,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 10]
+Krasic, et al.          Expires November 10, 2018              [Page 10]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 2.5.2.  Instructions
@@ -613,9 +613,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 11]
+Krasic, et al.          Expires November 10, 2018              [Page 11]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    The following bit, 'N', indicates whether an intermediary is
@@ -669,9 +669,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 12]
+Krasic, et al.          Expires November 10, 2018              [Page 12]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 2.5.2.3.  Literal Header Field Without Name Reference
@@ -725,9 +725,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 13]
+Krasic, et al.          Expires November 10, 2018              [Page 13]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    encoder will not evict entries that have outstanding (unacknowledged)
@@ -781,9 +781,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 14]
+Krasic, et al.          Expires November 10, 2018              [Page 14]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 3.4.  Speculative table updates
@@ -837,9 +837,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 15]
+Krasic, et al.          Expires November 10, 2018              [Page 15]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    baseIndex = dynamicTable.baseIndex
@@ -893,9 +893,9 @@ Internet-Draft                    QPACK                       April 2018
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 16]
+Krasic, et al.          Expires November 10, 2018              [Page 16]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
 4.  Security Considerations
@@ -949,9 +949,9 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 17]
+Krasic, et al.          Expires November 10, 2018              [Page 17]
 
-Internet-Draft                    QPACK                       April 2018
+Internet-Draft                    QPACK                         May 2018
 
 
    o  Patrick McManus
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires October 28, 2018               [Page 18]
+Krasic, et al.          Expires November 10, 2018              [Page 18]
