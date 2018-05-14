@@ -850,9 +850,11 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 
 <dl>
 <dt>SETTINGS_HEADER_TABLE_SIZE (0x1):</dt>
-<dd style="margin-left: 8">An integer with a maximum value of 2^30 - 1.</dd>
+<dd style="margin-left: 8">An integer with a maximum value of 2^30 - 1.  The default value is 4,096 bytes.</dd>
 <dt>SETTINGS_MAX_HEADER_LIST_SIZE (0x6):</dt>
-<dd style="margin-left: 8">An integer with a maximum value of 2^30 - 1</dd>
+<dd style="margin-left: 8">An integer with a maximum value of 2^30 - 1.  The default value is unlimited.</dd>
+<dt>SETTINGS_QPACK_BLOCKED_STREAMS (0x7):</dt>
+<dd style="margin-left: 8">An integer with a maximum value of 2^16 - 1.  The default value is 100.</dd>
 </dl>
 <h4 id="rfc.section.4.2.5.3">
 <a href="#rfc.section.4.2.5.3">4.2.5.3.</a> <a href="#initial-settings-values" id="initial-settings-values">Initial SETTINGS Values</a>
@@ -1273,6 +1275,11 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <tr>
 <td class="left">MAX_HEADER_LIST_SIZE</td>
 <td class="center">0x6</td>
+<td class="left"><a href="#settings-parameters" class="xref">Section 4.2.5.2</a></td>
+</tr>
+<tr>
+<td class="left">QPACK_BLOCKED_STREAMS</td>
+<td class="center">0x7</td>
 <td class="left"><a href="#settings-parameters" class="xref">Section 4.2.5.2</a></td>
 </tr>
 </tbody>

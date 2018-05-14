@@ -130,14 +130,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  35
      10.2.  Informative References . . . . . . . . . . . . . . . . .  36
      10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  36
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  36
+   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  37
    Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  37
      B.1.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  37
      B.2.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  37
      B.3.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  37
      B.4.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  37
      B.5.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  37
-     B.6.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  37
+     B.6.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  38
      B.7.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  38
      B.8.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  38
      B.9.  Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  38
@@ -998,10 +998,10 @@ Internet-Draft               HTTP over QUIC                     May 2018
    The following settings are defined in HTTP/QUIC:
 
    SETTINGS_HEADER_TABLE_SIZE (0x1):  An integer with a maximum value of
-      2^30 - 1.
+      2^30 - 1.  The default value is 4,096 bytes.
 
    SETTINGS_MAX_HEADER_LIST_SIZE (0x6):  An integer with a maximum value
-      of 2^30 - 1
+      of 2^30 - 1.  The default value is unlimited.
 
 
 
@@ -1009,6 +1009,9 @@ Bishop                  Expires November 15, 2018              [Page 18]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   SETTINGS_QPACK_BLOCKED_STREAMS (0x7):  An integer with a maximum
+      value of 2^16 - 1.  The default value is 100.
 
 4.2.5.3.  Initial SETTINGS Values
 
@@ -1055,9 +1058,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    A server MUST NOT use a Push ID that is larger than the client has
    provided in a MAX_PUSH_ID frame (Section 4.2.9).  A client MUST treat
    receipt of a PUSH_PROMISE that contains a larger Push ID than the
-   client has advertised as a connection error of type
-   HTTP_MALFORMED_FRAME.
-
 
 
 
@@ -1065,6 +1065,9 @@ Bishop                  Expires November 15, 2018              [Page 19]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   client has advertised as a connection error of type
+   HTTP_MALFORMED_FRAME.
 
    A server MAY use the same Push ID in multiple PUSH_PROMISE frames.
    This allows the server to use the same server push in response to
@@ -1111,9 +1114,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    MUST treat receipt of a GOAWAY frame containing a Stream ID of any
    other type as a connection error of type HTTP_MALFORMED_FRAME.
 
-   Clients do not need to send GOAWAY to initiate a graceful shutdown;
-   they simply stop making new requests.  A server MUST treat receipt of
-
 
 
 
@@ -1122,6 +1122,8 @@ Bishop                  Expires November 15, 2018              [Page 20]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   Clients do not need to send GOAWAY to initiate a graceful shutdown;
+   they simply stop making new requests.  A server MUST treat receipt of
    a GOAWAY frame as a connection error (Section 6) of type
    HTTP_UNEXPECTED_GOAWAY.
 
@@ -1168,8 +1170,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    For unexpected closures caused by error conditions, a QUIC
    CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST be used.  However, a
-   GOAWAY MAY be sent first to provide additional detail to clients and
-   to allow the client to retry requests.  Including the GOAWAY frame in
 
 
 
@@ -1178,6 +1178,8 @@ Bishop                  Expires November 15, 2018              [Page 21]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   GOAWAY MAY be sent first to provide additional detail to clients and
+   to allow the client to retry requests.  Including the GOAWAY frame in
    the same packet as the QUIC CONNECTION_CLOSE or APPLICATION_CLOSE
    frame improves the chances of the frame being received by clients.
 
@@ -1223,9 +1225,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    sends them to the server to acknowledge processing of the server's
    header blocks.
 
-   The HEADER_ACK frame is sent on the Control Stream when the QPACK
-   decoder has fully processed a header block.  It is used by the peer's
-   QPACK encoder to determine whether subsequent indexed representations
+
 
 
 
@@ -1234,6 +1234,9 @@ Bishop                  Expires November 15, 2018              [Page 22]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   The HEADER_ACK frame is sent on the Control Stream when the QPACK
+   decoder has fully processed a header block.  It is used by the peer's
+   QPACK encoder to determine whether subsequent indexed representations
    that might reference that block are vulnerable to head-of-line
    blocking, and to prevent eviction races.  See [QPACK] for more
    details on the use of this information.
@@ -1280,15 +1283,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    increase the maximum Push ID by sending a MAX_PUSH_ID frame as the
    server fulfills or cancels server pushes.
 
-   The MAX_PUSH_ID frame has no defined flags.
-
-
 
 
 Bishop                  Expires November 15, 2018              [Page 23]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   The MAX_PUSH_ID frame has no defined flags.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1334,8 +1336,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    This section describes HTTP-specific error codes which can be used to
    express the cause of a connection or stream error.
-
-
 
 
 
@@ -1799,21 +1799,23 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    The entries in the following table are registered by this document.
 
-             +----------------------+------+-----------------+
-             | Setting Name         | Code | Specification   |
-             +----------------------+------+-----------------+
-             | HEADER_TABLE_SIZE    | 0x1  | Section 4.2.5.2 |
-             |                      |      |                 |
-             | Reserved             | 0x2  | N/A             |
-             |                      |      |                 |
-             | Reserved             | 0x3  | N/A             |
-             |                      |      |                 |
-             | Reserved             | 0x4  | N/A             |
-             |                      |      |                 |
-             | Reserved             | 0x5  | N/A             |
-             |                      |      |                 |
-             | MAX_HEADER_LIST_SIZE | 0x6  | Section 4.2.5.2 |
-             +----------------------+------+-----------------+
+            +-----------------------+------+-----------------+
+            | Setting Name          | Code | Specification   |
+            +-----------------------+------+-----------------+
+            | HEADER_TABLE_SIZE     | 0x1  | Section 4.2.5.2 |
+            |                       |      |                 |
+            | Reserved              | 0x2  | N/A             |
+            |                       |      |                 |
+            | Reserved              | 0x3  | N/A             |
+            |                       |      |                 |
+            | Reserved              | 0x4  | N/A             |
+            |                       |      |                 |
+            | Reserved              | 0x5  | N/A             |
+            |                       |      |                 |
+            | MAX_HEADER_LIST_SIZE  | 0x6  | Section 4.2.5.2 |
+            |                       |      |                 |
+            | QPACK_BLOCKED_STREAMS | 0x7  | Section 4.2.5.2 |
+            +-----------------------+------+-----------------+
 
 9.5.  Error Codes
 
@@ -1840,8 +1842,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Specification:  An optional reference for a specification that
       defines the error code.
 
-   The entries in the following table are registered by this document.
-
 
 
 
@@ -1849,6 +1849,8 @@ Bishop                  Expires November 15, 2018              [Page 33]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   The entries in the following table are registered by this document.
 
    +----------------------------+--------+------------+----------------+
    | Name                       | Code   | Descriptio | Specification  |
@@ -1896,8 +1898,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    | HTTP_WRONG_STREAM          | 0x000A | A frame    | Section 6.1    |
    |                            |        | was sent   |                |
    |                            |        | on the     |                |
-   |                            |        | wrong      |                |
-   |                            |        | stream     |                |
 
 
 
@@ -1906,6 +1906,8 @@ Bishop                  Expires November 15, 2018              [Page 34]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   |                            |        | wrong      |                |
+   |                            |        | stream     |                |
    |                            |        |            |                |
    | HTTP_PUSH_LIMIT_EXCEEDED   | 0x000B | Maximum    | Section 6.1    |
    |                            |        | Push ID    |                |
@@ -1950,10 +1952,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
               DOI 10.17487/RFC5234, January 2008,
               <https://www.rfc-editor.org/info/rfc5234>.
 
-   [RFC6066]  Eastlake 3rd, D., "Transport Layer Security (TLS)
-              Extensions: Extension Definitions", RFC 6066,
-              DOI 10.17487/RFC6066, January 2011,
-              <https://www.rfc-editor.org/info/rfc6066>.
+
+
 
 
 
@@ -1961,6 +1961,11 @@ Bishop                  Expires November 15, 2018              [Page 35]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   [RFC6066]  Eastlake 3rd, D., "Transport Layer Security (TLS)
+              Extensions: Extension Definitions", RFC 6066,
+              DOI 10.17487/RFC6066, January 2011,
+              <https://www.rfc-editor.org/info/rfc6066>.
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Message Syntax and Routing",
@@ -2005,11 +2010,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-http
 
-Appendix A.  Contributors
-
-   The original authors of this specification were Robbie Shade and Mike
-   Warres.
-
 
 
 
@@ -2017,6 +2017,11 @@ Bishop                  Expires November 15, 2018              [Page 36]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+Appendix A.  Contributors
+
+   The original authors of this specification were Robbie Shade and Mike
+   Warres.
 
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
@@ -2058,6 +2063,17 @@ B.5.  Since draft-ietf-quic-http-06
 
    o  Track changes in QUIC error code usage (#485)
 
+
+
+
+
+
+
+Bishop                  Expires November 15, 2018              [Page 37]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 B.6.  Since draft-ietf-quic-http-05
 
    o  Made push ID sequential, add MAX_PUSH_ID, remove
@@ -2066,13 +2082,6 @@ B.6.  Since draft-ietf-quic-http-05
    o  Guidance about keep-alive and QUIC PINGs (#729)
 
    o  Expanded text on GOAWAY and cancellation (#757)
-
-
-
-Bishop                  Expires November 15, 2018              [Page 37]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 B.7.  Since draft-ietf-quic-http-04
 
@@ -2112,6 +2121,15 @@ B.10.  Since draft-ietf-quic-http-01
 
       *  Boolean format updated
 
+
+
+
+
+Bishop                  Expires November 15, 2018              [Page 38]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    o  Alt-Svc parameter changed from "v" to "quic"; format updated
       (#229)
 
@@ -2121,14 +2139,6 @@ B.10.  Since draft-ietf-quic-http-01
    o  HPACK Sequence counter can wrap (#173)
 
    o  0-RTT guidance added
-
-
-
-
-Bishop                  Expires November 15, 2018              [Page 38]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
@@ -2164,16 +2174,6 @@ Author's Address
    Akamai
 
    Email: mbishop@evequefou.be
-
-
-
-
-
-
-
-
-
-
 
 
 
