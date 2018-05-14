@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: November 12, 2018                           Akamai Technologies
+Expires: November 15, 2018                           Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                            May 11, 2018
+                                                            May 14, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 12, 2018.
+   This Internet-Draft will expire on November 15, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 1]
+Krasic, et al.          Expires November 15, 2018               [Page 1]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 2]
+Krasic, et al.          Expires November 15, 2018               [Page 2]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 3]
+Krasic, et al.          Expires November 15, 2018               [Page 3]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -183,7 +183,10 @@ Internet-Draft                    QPACK                         May 2018
    blocked, header field data should remain in the blocked stream's flow
    control window.  When the Largest Reference is zero, the frame
    contains no references to the dynamic table and can always be
-   processed immediately.
+   processed immediately.  A stream becomes unblocked when the greatest
+   absolute index in the dynamic table becomes greater than or equal to
+   the Largest Reference for all header blocks the decoder has started
+   reading from the stream.
 
    A decoder can permit the possibility of blocked streams by setting
    SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value.  This setting
@@ -214,17 +217,17 @@ Internet-Draft                    QPACK                         May 2018
 
    o  Table updates are carried by HEADERS frames on the control stream,
       as defined by [QUIC-HTTP].  Frames on this stream modify the
-      dynamic table state without generating output to any particular
-      request.
 
 
 
 
-
-Krasic, et al.          Expires November 12, 2018               [Page 4]
+Krasic, et al.          Expires November 15, 2018               [Page 4]
 
 Internet-Draft                    QPACK                         May 2018
 
+
+      dynamic table state without generating output to any particular
+      request.
 
    o  Acknowledgement of header frame processing is carried by
       HEADER_ACK frames on the control stream, running from decoder to
@@ -271,17 +274,17 @@ Internet-Draft                    QPACK                         May 2018
    because HPACK did not use zero-based references, there is no value at
    index zero of the static table.
 
-   Entries are inserted into the dynamic table over time.  Each entry
-   possesses both an absolute index which is fixed for the lifetime of
-   that entry and a relative index which changes over time based on the
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 5]
+Krasic, et al.          Expires November 15, 2018               [Page 5]
 
 Internet-Draft                    QPACK                         May 2018
 
 
+   Entries are inserted into the dynamic table over time.  Each entry
+   possesses both an absolute index which is fixed for the lifetime of
+   that entry and a relative index which changes over time based on the
    context of the reference.  The first entry inserted has an absolute
    index of "1"; indices increase sequentially with each insertion.
 
@@ -326,17 +329,18 @@ Internet-Draft                    QPACK                         May 2018
 
               Example Dynamic Table Indexing - Request Stream
 
-   Entries with an absolute index greater than a frame's Base Index can
-   be referenced using specific Post-Base instructions.  The relative
-   indices of Post-Base references count up from Base Index.
 
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 6]
+Krasic, et al.          Expires November 15, 2018               [Page 6]
 
 Internet-Draft                    QPACK                         May 2018
 
+
+   Entries with an absolute index greater than a frame's Base Index can
+   be referenced using specific Post-Base instructions.  The relative
+   indices of Post-Base references count up from Base Index.
 
                 Base Index
                     |
@@ -385,11 +389,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-
-
-
-
-Krasic, et al.          Expires November 12, 2018               [Page 7]
+Krasic, et al.          Expires November 15, 2018               [Page 7]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 8]
+Krasic, et al.          Expires November 15, 2018               [Page 8]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018               [Page 9]
+Krasic, et al.          Expires November 15, 2018               [Page 9]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 10]
+Krasic, et al.          Expires November 15, 2018              [Page 10]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 11]
+Krasic, et al.          Expires November 15, 2018              [Page 11]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 12]
+Krasic, et al.          Expires November 15, 2018              [Page 12]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 13]
+Krasic, et al.          Expires November 15, 2018              [Page 13]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 14]
+Krasic, et al.          Expires November 15, 2018              [Page 14]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 15]
+Krasic, et al.          Expires November 15, 2018              [Page 15]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 16]
+Krasic, et al.          Expires November 15, 2018              [Page 16]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -949,7 +949,7 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 17]
+Krasic, et al.          Expires November 15, 2018              [Page 17]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires November 12, 2018              [Page 18]
+Krasic, et al.          Expires November 15, 2018              [Page 18]

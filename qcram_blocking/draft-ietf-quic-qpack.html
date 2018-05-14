@@ -21,7 +21,7 @@ body {
 }
 
 .title, .filename, h1, h2, h3, h4, h5 {
-  font: 16px "Helvetica Neue","Roboto Condensed","Open Sans",Helvetica,Calibri,sans-serif;
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   font-size-adjust: 0.5;
   font-weight: bold;
   color: #333;
@@ -313,7 +313,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-11" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-14" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -337,7 +337,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: November 12, 2018</td>
+<td class="left">Expires: November 15, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -350,7 +350,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 11, 2018</td>
+<td class="right">May 14, 2018</td>
 </tr>
 
     	
@@ -369,7 +369,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 12, 2018.</p>
+<p>This Internet-Draft will expire on November 15, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -459,7 +459,7 @@ ul.toc li {
 <a href="#rfc.section.1.2">1.2.</a> <a href="#overview-hol-avoidance" id="overview-hol-avoidance">Avoiding Head-of-Line Blocking in HTTP/QUIC</a>
 </h2>
 <p id="rfc.section.1.2.p.1">Because QUIC does not guarantee order between data on different streams, a header block might reference an entry in the dynamic table that has not yet been received.</p>
-<p id="rfc.section.1.2.p.2">Each header block contains a Largest Reference (see <a href="#absolute-index" class="xref">Section 2.5.1</a>) which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately.</p>
+<p id="rfc.section.1.2.p.2">Each header block contains a Largest Reference (see <a href="#absolute-index" class="xref">Section 2.5.1</a>) which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately. A stream becomes unblocked when the greatest absolute index in the dynamic table becomes greater than or equal to the Largest Reference for all header blocks the decoder has started reading from the stream.</p>
 <p id="rfc.section.1.2.p.3">A decoder can permit the possibility of blocked streams by setting SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value.  This setting specifies an upper bound on the number of streams which can be blocked.</p>
 <p id="rfc.section.1.2.p.4">An encoder can decide whether to risk having a stream become blocked. If permitted by the value of SETTINGS_QPACK_BLOCKED_STREAMS, compression efficiency can be improved by referencing dynamic table entries that are still in transit, but if there is loss or reordering the stream can become blocked at the decoder.  An encoder avoids the risk of blocking by only referencing dynamic table entries which have been acknowledged, but this means using literals. Since literals make the header block larger, this can result in the encoder becoming blocked on congestion or flow control limits.</p>
 <p id="rfc.section.1.2.p.5">An encoder MUST limit the number of streams which could become blocked to the value of SETTINGS_QPACK_BLOCKED_STREAMS at all times. Note that the decoder might not actually become blocked on every stream which risks becoming blocked.  If the decoder encounters more blocked streams than it promised to support, it SHOULD treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.</p>
