@@ -612,7 +612,7 @@ d = count of entries dropped
 </pre>
 <p class="figure">Insert Header Field -- New Name</p>
 <h3 id="rfc.section.3.3.3">
-<a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#indexed-duplicate" id="indexed-duplicate">Duplicate</a>
+<a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#duplicate" id="duplicate">Duplicate</a>
 </h3>
 <p id="rfc.section.3.3.3.p.1">Duplication of an existing entry in the dynamic table starts with the &#8216;000&#8217; three-bit pattern.  The relative index of the existing entry is represented as an integer with a 5-bit prefix.</p>
 <div id="rfc.figure.1"></div>
@@ -767,7 +767,7 @@ baseIndex = largestReference + deltaBaseIndex
 </h3>
 <p id="rfc.section.4.3.1.p.1">The encoder MUST NOT permit an entry to be evicted while a reference to that entry remains unacknowledged.  If a new header to be inserted into the dynamic table would cause the eviction of such an entry, the encoder MUST NOT emit the insert instruction until the reference has been processed by the decoder and acknowledged.</p>
 <p id="rfc.section.4.3.1.p.2">The encoder can emit a literal representation for the new header in order to avoid encoding delays, and MAY insert the header into the table later if desired.</p>
-<p id="rfc.section.4.3.1.p.3">To ensure that the blocked eviction case is rare, references to the oldest entries in the dynamic table SHOULD be avoided.  When one of the oldest entries in the table is still actively used for references, the encoder SHOULD emit an Indexed-Duplicate representation instead (see <a href="#indexed-duplicate" class="xref">Section 3.3.3</a>).</p>
+<p id="rfc.section.4.3.1.p.3">To ensure that the blocked eviction case is rare, references to the oldest entries in the dynamic table SHOULD be avoided.  When one of the oldest entries in the table is still actively used for references, the encoder SHOULD emit an Duplicate representation instead (see <a href="#duplicate" class="xref">Section 3.3.3</a>).</p>
 <h3 id="rfc.section.4.3.2">
 <a href="#rfc.section.4.3.2">4.3.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
 </h3>
@@ -776,7 +776,7 @@ baseIndex = largestReference + deltaBaseIndex
 <h2 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>
 </h2>
-<p id="rfc.section.4.4.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Indexed-Duplicate representations for popular header fields (<a href="#indexed-duplicate" class="xref">Section 3.3.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
+<p id="rfc.section.4.4.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Duplicate representations for popular header fields (<a href="#duplicate" class="xref">Section 3.3.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#sample-one-pass-encoding-algorithm" id="sample-one-pass-encoding-algorithm">Sample One Pass Encoding Algorithm</a>
 </h2>

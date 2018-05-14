@@ -805,8 +805,8 @@ Internet-Draft                    QPACK                         May 2018
    To ensure that the blocked eviction case is rare, references to the
    oldest entries in the dynamic table SHOULD be avoided.  When one of
    the oldest entries in the table is still actively used for
-   references, the encoder SHOULD emit an Indexed-Duplicate
-   representation instead (see Section 3.3.3).
+   references, the encoder SHOULD emit an Duplicate representation
+   instead (see Section 3.3.3).
 
 4.3.2.  Blocked Decoding
 
@@ -825,7 +825,7 @@ Internet-Draft                    QPACK                         May 2018
    Control Streams which are not needed for any current HTTP request or
    response.  Such headers could be used strategically to improve
    performance.  For instance, the encoder might decide to _refresh_ by
-   sending Indexed-Duplicate representations for popular header fields
+   sending Duplicate representations for popular header fields
    (Section 3.3.3), ensuring they have small indices and hence minimal
    size on the wire.
 
