@@ -189,7 +189,7 @@ Internet-Draft           QUIC Transport Protocol                May 2018
      9.5.  Sending and Receiving Data  . . . . . . . . . . . . . . .  81
      9.6.  Stream Prioritization . . . . . . . . . . . . . . . . . .  81
    10. Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  82
-     10.1.  Edge Cases and Other Considerations  . . . . . . . . . .  83
+     10.1.  Edge Cases and Other Considerations  . . . . . . . . . .  84
        10.1.1.  Response to a RST_STREAM . . . . . . . . . . . . . .  84
        10.1.2.  Data Limit Increments  . . . . . . . . . . . . . . .  84
        10.1.3.  Handshake Exemption  . . . . . . . . . . . . . . . .  85
@@ -198,13 +198,13 @@ Internet-Draft           QUIC Transport Protocol                May 2018
      10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . .  86
    11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  86
      11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  87
-     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  87
+     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  88
      11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . .  88
      11.4.  Application Protocol Error Codes . . . . . . . . . . . .  89
-   12. Security Considerations . . . . . . . . . . . . . . . . . . .  89
+   12. Security Considerations . . . . . . . . . . . . . . . . . . .  90
      12.1.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . .  90
      12.2.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . .  90
-     12.3.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . .  90
+     12.3.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . .  91
      12.4.  Stream Fragmentation and Reassembly Attacks  . . . . . .  91
      12.5.  Stream Commitment Attack . . . . . . . . . . . . . . . .  91
    13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  92
@@ -4496,11 +4496,19 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    encapsulating STREAM frame's offset field to the stream offset of the
    first byte of this new data.  The first octet of data on a stream has
    an offset of 0.  An endpoint is expected to send every stream octet.
-   The largest offset delivered on a stream MUST be less than 2^62.  A
-   receiver MUST ensure that received stream data is delivered to the
-   application as an ordered byte-stream.  Data received out of order
-   MUST be buffered for later delivery, as long as it is not in
-   violation of the receiver's flow control limits.
+   The largest offset delivered on a stream MUST be less than 2^62.
+
+   QUIC makes no specific allowances for partial reliability or delivery
+   of stream data out of order.  Endpoints MUST be able to deliver
+   stream data to an application as an ordered byte-stream.  Delivering
+   an ordered byte-stream requires that an endpoint buffer any data that
+   is received out of order, up to the advertised flow control limit.
+
+   An endpoint could receive the same octets multiple times; octets that
+   have already been received can be discarded.  The value for a given
+   octet MUST NOT change if it is sent multiple times; an endpoint MAY
+   treat receipt of a changed octet as a connection error of type
+   PROTOCOL_VIOLATION.
 
    An endpoint MUST NOT send data on any stream without ensuring that it
    is within the data limits set by its peer.  The cryptographic
@@ -4522,14 +4530,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    Stream multiplexing has a significant effect on application
    performance if resources allocated to streams are correctly
    prioritized.  Experience with other multiplexed protocols, such as
-   HTTP/2 [HTTP2], shows that effective prioritization strategies have a
-   significant positive impact on performance.
-
-   QUIC does not provide frames for exchanging prioritization
-   information.  Instead it relies on receiving priority information
-   from the application that uses QUIC.  Protocols that use QUIC are
-   able to define any prioritization scheme that suits their application
-   semantics.  A protocol might define explicit messages for signaling
 
 
 
@@ -4538,6 +4538,14 @@ Iyengar & Thomson       Expires November 16, 2018              [Page 81]
 Internet-Draft           QUIC Transport Protocol                May 2018
 
 
+   HTTP/2 [HTTP2], shows that effective prioritization strategies have a
+   significant positive impact on performance.
+
+   QUIC does not provide frames for exchanging prioritization
+   information.  Instead it relies on receiving priority information
+   from the application that uses QUIC.  Protocols that use QUIC are
+   able to define any prioritization scheme that suits their application
+   semantics.  A protocol might define explicit messages for signaling
    priority, such as those defined in HTTP/2; it could define rules that
    allow an endpoint to determine priority based on context; or it could
    leave the determination to the application.
@@ -4577,14 +4585,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    consuming significant resources at a receiver.  This section
    describes QUIC's flow-control mechanisms.
 
-   QUIC employs a credit-based flow-control scheme similar to HTTP/2's
-   flow control [HTTP2].  A receiver advertises the number of octets it
-   is prepared to receive on a given stream and for the entire
-   connection.  This leads to two levels of flow control in QUIC: (i)
-   Connection flow control, which prevents senders from exceeding a
-   receiver's buffer capacity for the connection, and (ii) Stream flow
-   control, which prevents a single stream from consuming the entire
-   receive buffer for a connection.
 
 
 
@@ -4593,6 +4593,15 @@ Iyengar & Thomson       Expires November 16, 2018              [Page 82]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   QUIC employs a credit-based flow-control scheme similar to HTTP/2's
+   flow control [HTTP2].  A receiver advertises the number of octets it
+   is prepared to receive on a given stream and for the entire
+   connection.  This leads to two levels of flow control in QUIC: (i)
+   Connection flow control, which prevents senders from exceeding a
+   receiver's buffer capacity for the connection, and (ii) Stream flow
+   control, which prevents a single stream from consuming the entire
+   receive buffer for a connection.
 
    A data receiver sends MAX_STREAM_DATA or MAX_DATA frames to the
    sender to advertise additional credit.  MAX_STREAM_DATA frames send
@@ -4634,6 +4643,13 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    contributing streams to determine the maximum data limit to be
    advertised.
 
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 83]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
 10.1.  Edge Cases and Other Considerations
 
    There are some edge cases which must be considered when dealing with
@@ -4641,14 +4657,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    endpoints must agree on flow control state.  If one end believes it
    can send more than the other end is willing to receive, the
    connection will be torn down when too much data arrives.
-
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 83]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
 
    Conversely if a sender believes it is blocked, while endpoint B
    expects more data can be received, then the connection can be in a
@@ -4690,14 +4698,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    MAX_DATA or MAX_STREAM_DATA to implementations, but offers a few
    considerations.  These frames contribute to connection overhead.
    Therefore frequently sending frames with small changes is
-   undesirable.  At the same time, infrequent updates require larger
-   increments to limits if blocking is to be avoided.  Thus, larger
-   updates require a receiver to commit to larger resource commitments.
-   Thus there is a tradeoff between resource commitment and overhead
-   when determining how large a limit is advertised.
-
-   A receiver MAY use an autotuning mechanism to tune the frequency and
-   amount that it increases data limits based on a round-trip time
 
 
 
@@ -4706,6 +4706,14 @@ Iyengar & Thomson       Expires November 16, 2018              [Page 84]
 Internet-Draft           QUIC Transport Protocol                May 2018
 
 
+   undesirable.  At the same time, infrequent updates require larger
+   increments to limits if blocking is to be avoided.  Thus, larger
+   updates require a receiver to commit to larger resource commitments.
+   Thus there is a tradeoff between resource commitment and overhead
+   when determining how large a limit is advertised.
+
+   A receiver MAY use an autotuning mechanism to tune the frequency and
+   amount that it increases data limits based on a round-trip time
    estimate and the rate at which the receiving application consumes
    data, similar to common TCP implementations.
 
@@ -4746,14 +4754,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    SHOULD send a BLOCKED or STREAM_BLOCKED frame.  These frames are
    expected to be useful for debugging at the receiver; they do not
    require any other action.  A receiver SHOULD NOT wait for a BLOCKED
-   or STREAM_BLOCKED frame before sending MAX_DATA or MAX_STREAM_DATA,
-   since doing so will mean that a sender is unable to send for an
-   entire round trip.
-
-   For smooth operation of the congestion controller, it is generally
-   considered best to not let the sender go into quiescence if
-   avoidable.  To avoid blocking a sender, and to reasonably account for
-   the possibiity of loss, a receiver should send a MAX_DATA or
 
 
 
@@ -4762,6 +4762,14 @@ Iyengar & Thomson       Expires November 16, 2018              [Page 85]
 Internet-Draft           QUIC Transport Protocol                May 2018
 
 
+   or STREAM_BLOCKED frame before sending MAX_DATA or MAX_STREAM_DATA,
+   since doing so will mean that a sender is unable to send for an
+   entire round trip.
+
+   For smooth operation of the congestion controller, it is generally
+   considered best to not let the sender go into quiescence if
+   avoidable.  To avoid blocking a sender, and to reasonably account for
+   the possibiity of loss, a receiver should send a MAX_DATA or
    MAX_STREAM_DATA frame at least two round trips before it expects the
    sender to get blocked.
 
@@ -4801,14 +4809,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    An endpoint that detects an error SHOULD signal the existence of that
    error to its peer.  Both transport-level and application-level errors
    can affect an entire connection (see Section 11.1), while only
-   application-level errors can be isolated to a single stream (see
-   Section 11.2).
-
-   The most appropriate error code (Section 11.3) SHOULD be included in
-   the frame that signals the error.  Where this specification
-   identifies error conditions, it also identifies the error code that
-   is used.
-
 
 
 
@@ -4817,6 +4817,14 @@ Iyengar & Thomson       Expires November 16, 2018              [Page 86]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   application-level errors can be isolated to a single stream (see
+   Section 11.2).
+
+   The most appropriate error code (Section 11.3) SHOULD be included in
+   the frame that signals the error.  Where this specification
+   identifies error conditions, it also identifies the error code that
+   is used.
 
    A stateless reset (Section 6.10.4) is not suitable for any error that
    can be signaled with a CONNECTION_CLOSE, APPLICATION_CLOSE, or
@@ -4855,6 +4863,17 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    APPLICATION_CLOSE frame MUST NOT signal the existence of the error to
    its peer.
 
+
+
+
+
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 87]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
 11.2.  Stream Errors
 
    If an application-level error affects a single stream, but otherwise
@@ -4866,13 +4885,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    stream 0 is closed with either a RST_STREAM or STREAM frame bearing
    the FIN flag, an endpoint MUST generate a connection error of type
    PROTOCOL_VIOLATION.
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 87]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
 
    Other than STOPPING (Section 9.3), RST_STREAM MUST be instigated by
    the application and MUST carry an application error code.  Resetting
@@ -4909,6 +4921,15 @@ Internet-Draft           QUIC Transport Protocol                May 2018
       that was not in a state that permitted that frame (see
       Section 9.2).
 
+
+
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 88]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
    FINAL_OFFSET_ERROR (0x6):  An endpoint received a STREAM frame
       containing data that exceeded the previously established final
       offset.  Or an endpoint received a RST_STREAM frame containing a
@@ -4921,15 +4942,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
       badly formatted.  For instance, an empty STREAM frame that omitted
       the FIN flag, or an ACK frame that has more acknowledgment ranges
       than the remainder of the packet could carry.  This is a generic
-
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 88]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
-
       error code; an endpoint SHOULD use the more specific frame format
       error codes (0x1XX) if possible.
 
@@ -4967,6 +4979,13 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    protocols.  Application protocol error codes are used for the
    RST_STREAM (Section 7.3) and APPLICATION_CLOSE (Section 7.5) frames.
 
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 89]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
    There is no restriction on the use of the 16-bit error code space for
    application protocols.  However, QUIC reserves the error code with a
    value of 0 to mean STOPPING.  The application error code of STOPPING
@@ -4974,17 +4993,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    receipt of a STOP_SENDING frame.
 
 12.  Security Considerations
-
-
-
-
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 89]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
 
 12.1.  Spoofed ACK Attack
 
@@ -5024,6 +5032,16 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    close the connection with a connection error of type
    PROTOCOL_VIOLATION (see Section 6.10.3).
 
+
+
+
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 90]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
 12.3.  Slowloris Attacks
 
    The attacks commonly known as Slowloris [SLOWLORIS] try to keep many
@@ -5034,13 +5052,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    data, gradually opening flow control windows in order to control the
    sender rate, or manufacturing ACK frames that simulate a high loss
    rate.
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 90]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
 
    QUIC deployments SHOULD provide mitigations for the Slowloris
    attacks, such as increasing the maximum number of clients the server
@@ -5079,6 +5090,14 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    Normally, clients will open streams sequentially, as explained in
    Section 9.1.  However, when several streams are initiated at short
    intervals, transmission error may cause STREAM DATA frames opening
+
+
+
+Iyengar & Thomson       Expires November 16, 2018              [Page 91]
+
+Internet-Draft           QUIC Transport Protocol                May 2018
+
+
    streams to be received out of sequence.  A receiver is obligated to
    open intervening streams if a higher-numbered stream ID is received.
    Thus, on a new connection, opening stream 2000001 opens 1 million
@@ -5089,14 +5108,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    judisciously, this limit mitigates the effect of the stream
    commitment attack.  However, setting the limit too low could affect
    performance when applications expect to open large number of streams.
-
-
-
-
-Iyengar & Thomson       Expires November 16, 2018              [Page 91]
-
-Internet-Draft           QUIC Transport Protocol                May 2018
-
 
 13.  IANA Considerations
 
@@ -5129,17 +5140,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
    architecturally dubious).
 
    The initial contents of this registry are shown in Table 7.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
