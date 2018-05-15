@@ -1352,46 +1352,46 @@ Internet-Draft                    QPACK                         May 2018
    | 0  | security-      | uri 'none'                                  |
    |    | policy         |                                             |
    |    |                |                                             |
-   | 11 | transfer-      | chunked                                     |
-   | 1  | encoding       |                                             |
-   |    |                |                                             |
    | 11 | upgrade-       | 1                                           |
-   | 2  | insecure-      |                                             |
+   | 1  | insecure-      |                                             |
    |    | requests       |                                             |
    |    |                |                                             |
    | 11 | x-served-by    |                                             |
-   | 3  |                |                                             |
+   | 2  |                |                                             |
    |    |                |                                             |
    | 11 | x-requested-   | xmlhttprequest                              |
-   | 4  | with           |                                             |
+   | 3  | with           |                                             |
    |    |                |                                             |
    | 11 | access-        | content-type                                |
-   | 5  | control-       |                                             |
+   | 4  | control-       |                                             |
    |    | request-       |                                             |
    |    | headers        |                                             |
    |    |                |                                             |
    | 11 | access-        | x-requested-with                            |
-   | 6  | control-       |                                             |
+   | 5  | control-       |                                             |
    |    | request-       |                                             |
    |    | headers        |                                             |
    |    |                |                                             |
    | 11 | access-        | post                                        |
-   | 7  | control-       |                                             |
+   | 6  | control-       |                                             |
    |    | request-method |                                             |
    |    |                |                                             |
    | 11 | access-        | get                                         |
-   | 8  | control-       |                                             |
+   | 7  | control-       |                                             |
    |    | request-method |                                             |
    |    |                |                                             |
    | 11 | purpose        | prefetch                                    |
+   | 8  |                |                                             |
+   |    |                |                                             |
+   | 11 | x-csrf-token   | null                                        |
    | 9  |                |                                             |
    |    |                |                                             |
-   | 12 | x-csrf-token   | null                                        |
-   | 0  |                |                                             |
-   |    |                |                                             |
    | 12 | x-csrf-token   | undefined                                   |
-   | 1  |                |                                             |
+   | 0  |                |                                             |
    +----+----------------+---------------------------------------------+
+
+
+
 
 
 
