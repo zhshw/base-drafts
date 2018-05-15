@@ -5,7 +5,7 @@
 QUIC                                                    B. Trammell, Ed.
 Internet-Draft                                             M. Kuehlewind
 Intended status: Experimental                                 ETH Zurich
-Expires: October 26, 2018                                 April 24, 2018
+Expires: November 16, 2018                                  May 15, 2018
 
 
                        The QUIC Latency Spin Bit
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 1]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 1]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
    working documents as Internet-Drafts.  The list of current Internet-
@@ -66,7 +66,7 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 26, 2018.
+   This Internet-Draft will expire on November 16, 2018.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 2]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 2]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
    path observers and used to estimate end-to-end latency, QUIC's wire
@@ -138,7 +138,7 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 2.1.  Proposed Short Header Format Including Spin Bit
 
    As of the current editor's version of [QUIC-TRANSPORT], this proposal
-   specifies using the fifth most significant bit (0x08) of the first
+   specifies using the sixth most significant bit (0x04) of the first
    octet in the short header for the spin bit.
 
     0                   1                   2                   3
@@ -165,9 +165,9 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 3]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 3]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
 2.2.  Setting the Spin Bit on Outgoing Packets
@@ -221,9 +221,9 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 4]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 4]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
    include an edge, which would lead to very low RTT estimates if not
@@ -277,9 +277,9 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 5]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 5]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
    It has been shown [PAM-RTT] that RTT measurements do not provide more
@@ -324,7 +324,7 @@ Internet-Draft                QUIC Spin Bit                   April 2018
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), April 2018.
+              transport (work in progress), May 2018.
 
 
 
@@ -333,9 +333,9 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 6]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 6]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
 7.2.  Informative References
@@ -348,8 +348,8 @@ Internet-Draft                QUIC Spin Bit                   April 2018
               Trammell, B., Vaere, P., Even, R., Fioccola, G., Fossati,
               T., Ihlar, M., Morton, A., and S. Emile, "Adding Explicit
               Passive Measurability of Two-Way Latency to the QUIC
-              Transport Protocol", draft-trammell-quic-spin-02 (work in
-              progress), April 2018.
+              Transport Protocol", draft-trammell-quic-spin-03 (work in
+              progress), May 2018.
 
    [PAM-RTT]  Trammell, B. and M. Kuehlewind, "Revisiting the Privacy
               Implications of Two-Way Internet Latency Data (in Proc.
@@ -359,8 +359,8 @@ Internet-Draft                QUIC Spin Bit                   April 2018
               Trammell, B., Vaere, P., Even, R., Fioccola, G., Fossati,
               T., Ihlar, M., Morton, A., and S. Emile, "Adding Explicit
               Passive Measurability of Two-Way Latency to the QUIC
-              Transport Protocol", draft-trammell-quic-spin-02 (work in
-              progress), April 2018.
+              Transport Protocol", draft-trammell-quic-spin-03 (work in
+              progress), May 2018.
 
    [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", draft-ietf-tls-tls13-21 (work in progress),
@@ -389,9 +389,9 @@ Internet-Draft                QUIC Spin Bit                   April 2018
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 7]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 7]
 
-Internet-Draft                QUIC Spin Bit                   April 2018
+Internet-Draft                QUIC Spin Bit                     May 2018
 
 
 Authors' Addresses
@@ -445,4 +445,4 @@ Authors' Addresses
 
 
 
-Trammell & Kuehlewind   Expires October 26, 2018                [Page 8]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 8]
