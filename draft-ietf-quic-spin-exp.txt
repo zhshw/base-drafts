@@ -96,9 +96,9 @@ Table of Contents
    6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
    7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
      7.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .   6
      7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   7
 
 1.  Introduction
 
@@ -144,7 +144,7 @@ Internet-Draft                QUIC Spin Bit                     May 2018
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+
-   |0|K|1|1|0|S|T T|
+   |0|K|1|1|0|S|R R|
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                Destination Connection ID (0..144)           ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -159,8 +159,8 @@ Internet-Draft                QUIC Spin Bit                     May 2018
    S: The Spin bit is set 0 or 1 depending on the stored spin value that
    is updated on packet reception as explained in Section 2.2.
 
-
-
+   R: Two additional bits are reserved for experimentation in the short
+   header.
 
 
 
@@ -290,9 +290,8 @@ Internet-Draft                QUIC Spin Bit                     May 2018
 
 6.  Acknowledgments
 
-   This document is derived from [I-D.trammell-quic-spin], which was the
-   work of the following authors in addition to the editor of this
-   document:
+   This document is derived from [QUIC-SPIN], which was the work of the
+   following authors in addition to the editor of this document:
 
    o  Piet De Vaere, ETH Zurich
 
@@ -326,10 +325,11 @@ Internet-Draft                QUIC Spin Bit                     May 2018
               Multiplexed and Secure Transport", draft-ietf-quic-
               transport (work in progress), May 2018.
 
+7.2.  Informative References
 
-
-
-
+   [CACM-TCP]
+              Strowes, S., "Passively Measuring TCP Round-Trip Times (in
+              Communications of the ACM)", October 2013.
 
 
 
@@ -337,19 +337,6 @@ Trammell & Kuehlewind   Expires November 16, 2018               [Page 6]
 
 Internet-Draft                QUIC Spin Bit                     May 2018
 
-
-7.2.  Informative References
-
-   [CACM-TCP]
-              Strowes, S., "Passively Measuring TCP Round-Trip Times (in
-              Communications of the ACM)", October 2013.
-
-   [I-D.trammell-quic-spin]
-              Trammell, B., Vaere, P., Even, R., Fioccola, G., Fossati,
-              T., Ihlar, M., Morton, A., and S. Emile, "Adding Explicit
-              Passive Measurability of Two-Way Latency to the QUIC
-              Transport Protocol", draft-trammell-quic-spin-03 (work in
-              progress), May 2018.
 
    [PAM-RTT]  Trammell, B. and M. Kuehlewind, "Revisiting the Privacy
               Implications of Two-Way Internet Latency Data (in Proc.
@@ -383,17 +370,6 @@ Internet-Draft                QUIC Spin Bit                     May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-spin
 
-
-
-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 7]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
-
 Authors' Addresses
 
    Brian Trammell (editor)
@@ -413,36 +389,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 8]
+Trammell & Kuehlewind   Expires November 16, 2018               [Page 7]

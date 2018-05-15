@@ -407,7 +407,7 @@ ul.toc li {
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+
-|0|K|1|1|0|S|T T|
+|0|K|1|1|0|S|R R|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                Destination Connection ID (0..144)           ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -419,6 +419,7 @@ ul.toc li {
 </pre>
 <p class="figure">Figure 1: Short Header Format including proposed Spin Bit</p>
 <p id="rfc.section.2.1.p.2">S: The Spin bit is set 0 or 1 depending on the stored spin value that is updated on packet reception as explained in <a href="#spinbit" class="xref">Section 2.2</a>.</p>
+<p id="rfc.section.2.1.p.3">R: Two additional bits are reserved for experimentation in the short header.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#spinbit" id="spinbit">Setting the Spin Bit on Outgoing Packets</a>
 </h1>
@@ -456,7 +457,7 @@ ul.toc li {
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
 </h1>
-<p id="rfc.section.6.p.1">This document is derived from <a href="#I-D.trammell-quic-spin" class="xref">[I-D.trammell-quic-spin]</a>, which was the work of the following authors in addition to the editor of this document:</p>
+<p id="rfc.section.6.p.1">This document is derived from <a href="#QUIC-SPIN" class="xref">[QUIC-SPIN]</a>, which was the work of the following authors in addition to the editor of this document:</p>
 <p></p>
 
 <ul>
@@ -486,11 +487,6 @@ ul.toc li {
 <td class="reference"><b id="CACM-TCP">[CACM-TCP]</b></td>
 <td class="top">
 <a>Strowes, S.</a>, "<a>Passively Measuring TCP Round-Trip Times (in Communications of the ACM)</a>", October 2013.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.trammell-quic-spin">[I-D.trammell-quic-spin]</b></td>
-<td class="top">
-<a>Trammell, B.</a>, <a>Vaere, P.</a>, <a>Even, R.</a>, <a>Fioccola, G.</a>, <a>Fossati, T.</a>, <a>Ihlar, M.</a>, <a>Morton, A.</a> and <a>S. Emile</a>, "<a href="https://tools.ietf.org/html/draft-trammell-quic-spin-03">Adding Explicit Passive Measurability of Two-Way Latency to the QUIC Transport Protocol</a>", Internet-Draft draft-trammell-quic-spin-03, May 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="PAM-RTT">[PAM-RTT]</b></td>
