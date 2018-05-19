@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                               Google, Inc
 Intended status: Standards Track                               M. Bishop
-Expires: November 19, 2018                           Akamai Technologies
+Expires: November 20, 2018                           Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                            May 18, 2018
+                                                            May 19, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 19, 2018.
+   This Internet-Draft will expire on November 20, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 1]
+Krasic, et al.          Expires November 20, 2018               [Page 1]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -105,15 +105,16 @@ Table of Contents
      5.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  17
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     7.1.  Settings Registration . . . . . . . . . . . . . . . . . .  19
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 2]
+Krasic, et al.          Expires November 20, 2018               [Page 2]
 
 Internet-Draft                    QPACK                         May 2018
 
 
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
      8.2.  Informative References  . . . . . . . . . . . . . . . . .  19
      8.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  20
@@ -164,8 +165,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-
-Krasic, et al.          Expires November 19, 2018               [Page 3]
+Krasic, et al.          Expires November 20, 2018               [Page 3]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 4]
+Krasic, et al.          Expires November 20, 2018               [Page 4]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 5]
+Krasic, et al.          Expires November 20, 2018               [Page 5]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 6]
+Krasic, et al.          Expires November 20, 2018               [Page 6]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 7]
+Krasic, et al.          Expires November 20, 2018               [Page 7]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 8]
+Krasic, et al.          Expires November 20, 2018               [Page 8]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018               [Page 9]
+Krasic, et al.          Expires November 20, 2018               [Page 9]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 10]
+Krasic, et al.          Expires November 20, 2018              [Page 10]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 11]
+Krasic, et al.          Expires November 20, 2018              [Page 11]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 12]
+Krasic, et al.          Expires November 20, 2018              [Page 12]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 13]
+Krasic, et al.          Expires November 20, 2018              [Page 13]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 14]
+Krasic, et al.          Expires November 20, 2018              [Page 14]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 15]
+Krasic, et al.          Expires November 20, 2018              [Page 15]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 16]
+Krasic, et al.          Expires November 20, 2018              [Page 16]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 17]
+Krasic, et al.          Expires November 20, 2018              [Page 17]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires November 19, 2018              [Page 18]
+Krasic, et al.          Expires November 20, 2018              [Page 18]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1015,6 +1015,8 @@ Internet-Draft                    QPACK                         May 2018
    TBD.
 
 7.  IANA Considerations
+
+7.1.  Settings Registration
 
    This document creates two new settings in the "HTTP/QUIC Settings"
    registry established in [QUIC-HTTP].
@@ -1053,18 +1055,21 @@ Internet-Draft                    QPACK                         May 2018
 
 8.2.  Informative References
 
+
+
+
+
+
+
+Krasic, et al.          Expires November 20, 2018              [Page 19]
+
+Internet-Draft                    QPACK                         May 2018
+
+
    [QUIC-TRANSPORT]
               Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
               and Secure Transport", draft-ietf-quic-transport-11 (work
               in progress), April 2018.
-
-
-
-
-Krasic, et al.          Expires November 19, 2018              [Page 19]
-
-Internet-Draft                    QPACK                         May 2018
-
 
    [RFC2360]  Scott, G., "Guide for Internet Standards Writers", BCP 22,
               RFC 2360, DOI 10.17487/RFC2360, June 1998,
@@ -1109,17 +1114,18 @@ Authors' Addresses
    Email: ckrasic@google.com
 
 
+
+
+
+Krasic, et al.          Expires November 20, 2018              [Page 20]
+
+Internet-Draft                    QPACK                         May 2018
+
+
    Mike Bishop
    Akamai Technologies
 
    Email: mbishop@evequefou.be
-
-
-
-
-Krasic, et al.          Expires November 19, 2018              [Page 20]
-
-Internet-Draft                    QPACK                         May 2018
 
 
    Alan Frindell (editor)
@@ -1167,10 +1173,4 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-
-
-
-
-
-
-Krasic, et al.          Expires November 19, 2018              [Page 21]
+Krasic, et al.          Expires November 20, 2018              [Page 21]
