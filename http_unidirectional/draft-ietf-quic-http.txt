@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                            May 18, 2018
-Expires: November 19, 2018
+Intended status: Standards Track                            May 19, 2018
+Expires: November 20, 2018
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 19, 2018.
+   This Internet-Draft will expire on November 20, 2018.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Bishop                  Expires November 19, 2018               [Page 1]
+Bishop                  Expires November 20, 2018               [Page 1]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -109,12 +109,12 @@ Table of Contents
 
 
 
-Bishop                  Expires November 19, 2018               [Page 2]
+Bishop                  Expires November 20, 2018               [Page 2]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
-   7.  Considerations for Transitioning from HTTP/2  . . . . . . . .  25
+   7.  Considerations for Transitioning from HTTP/2  . . . . . . . .  26
      7.1.  Streams . . . . . . . . . . . . . . . . . . . . . . . . .  26
      7.2.  HTTP Frame Types  . . . . . . . . . . . . . . . . . . . .  26
      7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  28
@@ -122,7 +122,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  30
    9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  30
      9.1.  Registration of HTTP/QUIC Identification String . . . . .  30
-     9.2.  Registration of QUIC Version Hint Alt-Svc Parameter . . .  30
+     9.2.  Registration of QUIC Version Hint Alt-Svc Parameter . . .  31
      9.3.  Frame Types . . . . . . . . . . . . . . . . . . . . . . .  31
      9.4.  Settings Parameters . . . . . . . . . . . . . . . . . . .  32
      9.5.  Error Codes . . . . . . . . . . . . . . . . . . . . . . .  33
@@ -132,18 +132,18 @@ Internet-Draft               HTTP over QUIC                     May 2018
      10.2.  Informative References . . . . . . . . . . . . . . . . .  37
      10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  37
    Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  37
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  37
-     B.1.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  37
+   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  38
+     B.1.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  38
      B.2.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  38
      B.3.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  38
      B.4.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  38
      B.5.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  38
      B.6.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  38
-     B.7.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  38
+     B.7.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  39
      B.8.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  39
      B.9.  Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  39
      B.10. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  39
-     B.11. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  39
+     B.11. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  40
      B.12. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  40
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  40
 
@@ -165,7 +165,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 3]
+Bishop                  Expires November 20, 2018               [Page 3]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -221,7 +221,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 4]
+Bishop                  Expires November 20, 2018               [Page 4]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -277,7 +277,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 5]
+Bishop                  Expires November 20, 2018               [Page 5]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -333,7 +333,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 6]
+Bishop                  Expires November 20, 2018               [Page 6]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -389,7 +389,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 7]
+Bishop                  Expires November 20, 2018               [Page 7]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 8]
+Bishop                  Expires November 20, 2018               [Page 8]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018               [Page 9]
+Bishop                  Expires November 20, 2018               [Page 9]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 10]
+Bishop                  Expires November 20, 2018              [Page 10]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -597,7 +597,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
    the connection and send its SETTINGS frame as the first frame on this
    stream.  Only one control stream is permitted; receipt of a second
    stream which claims to be a control stream MUST be treated as a
-   connection error of type HTTP_TOO_CONTROLLING.
+   connection error of type HTTP_TOO_CONTROLLING.  If the control stream
+   is closed at any point, this MUST be treated as a connection error of
+   type HTTP_CLOSED_CRITICAL_STREAM.
 
    Since most connection-level concerns will be managed by QUIC, the
    primary use of the control streams will be for the SETTINGS frame
@@ -611,9 +613,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-
-
-Bishop                  Expires November 19, 2018              [Page 11]
+Bishop                  Expires November 20, 2018              [Page 11]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -628,7 +628,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    client-initiated push stream, this MUST be treated as a stream error
    of type HTTP_PUSH_LIMIT_EXCEEDED.
 
-   A push stream is indicated by a stream type of "0x80", followed by
+   A push stream is indicated by a stream type of "0x50", followed by
    the Push ID of the promise that it fulfills, encoded as a variable-
    length integer.
 
@@ -669,7 +669,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 12]
+Bishop                  Expires November 20, 2018              [Page 12]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -725,7 +725,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 13]
+Bishop                  Expires November 20, 2018              [Page 13]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -781,7 +781,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 14]
+Bishop                  Expires November 20, 2018              [Page 14]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 15]
+Bishop                  Expires November 20, 2018              [Page 15]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 16]
+Bishop                  Expires November 20, 2018              [Page 16]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -949,7 +949,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 17]
+Bishop                  Expires November 20, 2018              [Page 17]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 18]
+Bishop                  Expires November 20, 2018              [Page 18]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 19]
+Bishop                  Expires November 20, 2018              [Page 19]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 20]
+Bishop                  Expires November 20, 2018              [Page 20]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 21]
+Bishop                  Expires November 20, 2018              [Page 21]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 22]
+Bishop                  Expires November 20, 2018              [Page 22]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 23]
+Bishop                  Expires November 20, 2018              [Page 23]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 24]
+Bishop                  Expires November 20, 2018              [Page 24]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1382,10 +1382,25 @@ Internet-Draft               HTTP over QUIC                     May 2018
    HTTP_TOO_CONTROLLING (0x0E):  More than one control stream was opened
       by the peer.
 
+   HTTP_CLOSED_CRITICAL_STREAM (0x0F):  A stream required by the
+      connection was closed or reset.
+
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
       For example, an error in a MAX_PUSH_ID frame would be indicated
       with the code (0x10D).
+
+
+
+
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 25]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
 
 7.  Considerations for Transitioning from HTTP/2
 
@@ -1393,14 +1408,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    similarities.  This section describes the approach taken to design
    HTTP/QUIC, points out important differences from HTTP/2, and
    describes how to map HTTP/2 extensions into HTTP/QUIC.
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 25]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
    feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
@@ -1442,6 +1449,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Many of the differences arise from the fact that HTTP/2 provides an
    absolute ordering between frames across all streams, while QUIC
    provides this guarantee on each stream only.  As a result, if a frame
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 26]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    type makes assumptions that frames from different streams will still
    be received in the order sent, HTTP/QUIC will break them.
 
@@ -1450,14 +1466,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    tree mutations): since operations on the dependency tree such as
    reparenting a subtree are not commutative, both sender and receiver
    must apply them in the same order to ensure that both sides have a
-
-
-
-Bishop                  Expires November 19, 2018              [Page 26]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    consistent view of the stream dependency tree.  HTTP/2 specifies
    priority assignments in PRIORITY frames and (optionally) in HEADERS
    frames.  To achieve in-order delivery of priority changes in HTTP/
@@ -1498,21 +1506,20 @@ Internet-Draft               HTTP over QUIC                     May 2018
       the control stream and can reference either a Stream ID or a Push
       ID.  See Section 4.2.3.
 
+
+
+
+Bishop                  Expires November 20, 2018              [Page 27]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    RST_STREAM (0x3):  RST_STREAM frames do not exist, since QUIC
       provides stream lifecycle management.  The same code point is used
       for the CANCEL_PUSH frame (Section 4.2.4).
 
    SETTINGS (0x4):  SETTINGS frames are sent only at the beginning of
       the connection.  See Section 4.2.5 and Section 7.3.
-
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 27]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    PUSH_PROMISE (0x5):  The PUSH_PROMISE does not reference a stream;
       instead the push stream references the PUSH_PROMISE frame using a
@@ -1554,6 +1561,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    SETTINGS_ENABLE_PUSH:  This is removed in favor of the MAX_PUSH_ID
       which provides a more granular control over server push.
 
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 28]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    SETTINGS_MAX_CONCURRENT_STREAMS:  QUIC controls the largest open
       Stream ID as part of its flow control logic.  Specifying
       SETTINGS_MAX_CONCURRENT_STREAMS in the SETTINGS frame is an error.
@@ -1562,13 +1578,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
       connection flow control window sizes to be specified in the
       initial transport handshake.  Specifying
       SETTINGS_INITIAL_WINDOW_SIZE in the SETTINGS frame is an error.
-
-
-
-Bishop                  Expires November 19, 2018              [Page 28]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    SETTINGS_MAX_FRAME_SIZE:  This setting has no equivalent in HTTP/
       QUIC.  Specifying it in the SETTINGS frame is an error.
@@ -1610,6 +1619,13 @@ Internet-Draft               HTTP over QUIC                     May 2018
    FRAME_SIZE_ERROR (0x6):  No single mapping.  See new error codes
       defined in Section 6.1.
 
+
+
+Bishop                  Expires November 20, 2018              [Page 29]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    REFUSED_STREAM (0x7):  Not applicable, since QUIC handles stream
       management.  Would provoke a QUIC_TOO_MANY_OPEN_STREAMS from the
       QUIC layer.
@@ -1618,13 +1634,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    COMPRESSION_ERROR (0x9):  HTTP_HPACK_DECOMPRESSION_FAILED in
       Section 6.1.
-
-
-
-Bishop                  Expires November 19, 2018              [Page 29]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    CONNECT_ERROR (0xa):  HTTP_CONNECT_ERROR in Section 6.1.
 
@@ -1664,6 +1673,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Specification:  This document
 
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 30]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 9.2.  Registration of QUIC Version Hint Alt-Svc Parameter
 
    This document creates a new registration for version-negotiation
@@ -1673,14 +1691,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Parameter:  "quic"
 
    Specification:  This document, Section 2.1.1
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 30]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 9.3.  Frame Types
 
@@ -1723,17 +1733,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-
-
-
-
-
-
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 31]
+Bishop                  Expires November 20, 2018              [Page 31]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1789,7 +1789,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 32]
+Bishop                  Expires November 20, 2018              [Page 32]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1845,85 +1845,92 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 19, 2018              [Page 33]
+Bishop                  Expires November 20, 2018              [Page 33]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
    The entries in the following table are registered by this document.
 
-   +----------------------------+--------+------------+----------------+
-   | Name                       | Code   | Descriptio | Specification  |
-   |                            |        | n          |                |
-   +----------------------------+--------+------------+----------------+
-   | STOPPING                   | 0x0000 | Reserved   | [QUIC-TRANSPOR |
-   |                            |        | by QUIC    | T]             |
-   |                            |        |            |                |
-   | HTTP_NO_ERROR              | 0x0001 | No error   | Section 6.1    |
-   |                            |        |            |                |
-   | HTTP_PUSH_REFUSED          | 0x0002 | Client     | Section 6.1    |
-   |                            |        | refused    |                |
-   |                            |        | pushed     |                |
-   |                            |        | content    |                |
-   |                            |        |            |                |
-   | HTTP_INTERNAL_ERROR        | 0x0003 | Internal   | Section 6.1    |
-   |                            |        | error      |                |
-   |                            |        |            |                |
-   | HTTP_PUSH_ALREADY_IN_CACHE | 0x0004 | Pushed     | Section 6.1    |
-   |                            |        | content    |                |
-   |                            |        | already    |                |
-   |                            |        | cached     |                |
-   |                            |        |            |                |
-   | HTTP_REQUEST_CANCELLED     | 0x0005 | Data no    | Section 6.1    |
-   |                            |        | longer     |                |
-   |                            |        | needed     |                |
-   |                            |        |            |                |
-   | HTTP_HPACK_DECOMPRESSION_F | 0x0006 | HPACK      | Section 6.1    |
-   | AILED                      |        | cannot     |                |
-   |                            |        | continue   |                |
-   |                            |        |            |                |
-   | HTTP_CONNECT_ERROR         | 0x0007 | TCP reset  | Section 6.1    |
-   |                            |        | or error   |                |
-   |                            |        | on CONNECT |                |
-   |                            |        | request    |                |
-   |                            |        |            |                |
-   | HTTP_EXCESSIVE_LOAD        | 0x0008 | Peer       | Section 6.1    |
-   |                            |        | generating |                |
-   |                            |        | excessive  |                |
-   |                            |        | load       |                |
-   |                            |        |            |                |
-   | HTTP_VERSION_FALLBACK      | 0x0009 | Retry over | Section 6.1    |
-   |                            |        | HTTP/2     |                |
-   |                            |        |            |                |
-   | HTTP_WRONG_STREAM          | 0x000A | A frame    | Section 6.1    |
-   |                            |        | was sent   |                |
-   |                            |        | on the     |                |
+   +---------------------------+-------+--------------+----------------+
+   | Name                      | Code  | Description  | Specification  |
+   +---------------------------+-------+--------------+----------------+
+   | STOPPING                  | 0x000 | Reserved by  | [QUIC-TRANSPOR |
+   |                           | 0     | QUIC         | T]             |
+   |                           |       |              |                |
+   | HTTP_NO_ERROR             | 0x000 | No error     | Section 6.1    |
+   |                           | 1     |              |                |
+   |                           |       |              |                |
+   | HTTP_PUSH_REFUSED         | 0x000 | Client       | Section 6.1    |
+   |                           | 2     | refused      |                |
+   |                           |       | pushed       |                |
+   |                           |       | content      |                |
+   |                           |       |              |                |
+   | HTTP_INTERNAL_ERROR       | 0x000 | Internal     | Section 6.1    |
+   |                           | 3     | error        |                |
+   |                           |       |              |                |
+   | HTTP_PUSH_ALREADY_IN_CACH | 0x000 | Pushed       | Section 6.1    |
+   | E                         | 4     | content      |                |
+   |                           |       | already      |                |
+   |                           |       | cached       |                |
+   |                           |       |              |                |
+   | HTTP_REQUEST_CANCELLED    | 0x000 | Data no      | Section 6.1    |
+   |                           | 5     | longer       |                |
+   |                           |       | needed       |                |
+   |                           |       |              |                |
+   | HTTP_HPACK_DECOMPRESSION_ | 0x000 | HPACK cannot | Section 6.1    |
+   | FAILED                    | 6     | continue     |                |
+   |                           |       |              |                |
+   | HTTP_CONNECT_ERROR        | 0x000 | TCP reset or | Section 6.1    |
+   |                           | 7     | error on     |                |
+   |                           |       | CONNECT      |                |
+   |                           |       | request      |                |
+   |                           |       |              |                |
+   | HTTP_EXCESSIVE_LOAD       | 0x000 | Peer         | Section 6.1    |
+   |                           | 8     | generating   |                |
+   |                           |       | excessive    |                |
+   |                           |       | load         |                |
+   |                           |       |              |                |
+   | HTTP_VERSION_FALLBACK     | 0x000 | Retry over   | Section 6.1    |
+   |                           | 9     | HTTP/2       |                |
+   |                           |       |              |                |
+   | HTTP_WRONG_STREAM         | 0x000 | A frame was  | Section 6.1    |
+   |                           | A     | sent on the  |                |
+   |                           |       | wrong stream |                |
+   |                           |       |              |                |
 
 
 
-Bishop                  Expires November 19, 2018              [Page 34]
+Bishop                  Expires November 20, 2018              [Page 34]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
-   |                            |        | wrong      |                |
-   |                            |        | stream     |                |
-   |                            |        |            |                |
-   | HTTP_PUSH_LIMIT_EXCEEDED   | 0x000B | Maximum    | Section 6.1    |
-   |                            |        | Push ID    |                |
-   |                            |        | exceeded   |                |
-   |                            |        |            |                |
-   | HTTP_DUPLICATE_PUSH        | 0x000C | Push ID    | Section 6.1    |
-   |                            |        | was        |                |
-   |                            |        | fulfilled  |                |
-   |                            |        | multiple   |                |
-   |                            |        | times      |                |
-   |                            |        |            |                |
-   | HTTP_MALFORMED_FRAME       | 0x01XX | Error in   | Section 6.1    |
-   |                            |        | frame      |                |
-   |                            |        | formatting |                |
-   |                            |        | or use     |                |
-   +----------------------------+--------+------------+----------------+
+   | HTTP_PUSH_LIMIT_EXCEEDED  | 0x000 | Maximum Push | Section 6.1    |
+   |                           | B     | ID exceeded  |                |
+   |                           |       |              |                |
+   | HTTP_DUPLICATE_PUSH       | 0x000 | Push ID was  | Section 6.1    |
+   |                           | C     | fulfilled    |                |
+   |                           |       | multiple     |                |
+   |                           |       | times        |                |
+   |                           |       |              |                |
+   | HTTP_MALFORMED_FRAME      | 0x01X | Error in     | Section 6.1    |
+   |                           | X     | frame        |                |
+   |                           |       | formatting   |                |
+   |                           |       | or use       |                |
+   |                           |       |              |                |
+   | HTTP_UNKNOWN_STREAM_TYPE  | 0x0D  | Unknown unid | Section 6.1    |
+   |                           |       | irectional   |                |
+   |                           |       | stream type  |                |
+   |                           |       |              |                |
+   | HTTP_TOO_CONTROLLING      | 0x0E  | Multiple     | Section 6.1    |
+   |                           |       | control      |                |
+   |                           |       | streams      |                |
+   |                           |       |              |                |
+   | HTTP_CLOSED_CRITICAL_STRE | 0x0F  | Critical     | Section 6.1    |
+   | AM                        |       | stream was   |                |
+   |                           |       | closed       |                |
+   +---------------------------+-------+--------------+----------------+
 
 9.6.  Stream Types
 
@@ -1946,21 +1953,22 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    The entries in the following table are registered by this document.
 
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 35]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
                  +----------------+------+---------------+
                  | Stream Type    | Code | Specification |
                  +----------------+------+---------------+
                  | Control Stream | 0x43 | Section 3.3.1 |
                  |                |      |               |
-                 | Push Stream    | 0x80 | Section 3.3.2 |
+                 | Push Stream    | 0x50 | Section 3.3.2 |
                  +----------------+------+---------------+
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 35]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 10.  References
 
@@ -1999,6 +2007,17 @@ Internet-Draft               HTTP over QUIC                     May 2018
               RFC 7230, DOI 10.17487/RFC7230, June 2014,
               <https://www.rfc-editor.org/info/rfc7230>.
 
+
+
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 36]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    [RFC7231]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Semantics and Content", RFC 7231,
               DOI 10.17487/RFC7231, June 2014,
@@ -2008,15 +2027,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
               DOI 10.17487/RFC7540, May 2015,
               <https://www.rfc-editor.org/info/rfc7540>.
-
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 36]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    [RFC7838]  Nottingham, M., McManus, P., and J. Reschke, "HTTP
               Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
@@ -2054,6 +2064,16 @@ Appendix A.  Contributors
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
 
+
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 37]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 Appendix B.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
@@ -2063,16 +2083,6 @@ B.1.  Since draft-ietf-quic-http-10
 
    o  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
-
-
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 37]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 B.2.  Since draft-ietf-quic-http-09
 
@@ -2110,6 +2120,16 @@ B.6.  Since draft-ietf-quic-http-05
 
    o  Expanded text on GOAWAY and cancellation (#757)
 
+
+
+
+
+
+Bishop                  Expires November 20, 2018              [Page 38]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 B.7.  Since draft-ietf-quic-http-04
 
    o  Cite RFC 5234 (#404)
@@ -2121,14 +2141,6 @@ B.7.  Since draft-ietf-quic-http-04
    o  SETTINGS_ENABLE_PUSH instead of SETTINGS_DISABLE_PUSH (#477)
 
    o  Restored GOAWAY (#696)
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 38]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    o  Identify server push using Push ID rather than a stream ID
       (#702,#281)
@@ -2166,6 +2178,14 @@ B.10.  Since draft-ietf-quic-http-01
 
    o  0-RTT guidance added
 
+
+
+
+Bishop                  Expires November 20, 2018              [Page 39]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
@@ -2178,13 +2198,6 @@ B.11.  Since draft-ietf-quic-http-00
 
    o  Adopted SETTINGS format from draft-bishop-httpbis-extended-
       settings-01
-
-
-
-Bishop                  Expires November 19, 2018              [Page 39]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    o  Reworked SETTINGS_ACK to account for indeterminate inter-stream
       order (#75)
@@ -2224,17 +2237,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Bishop                  Expires November 19, 2018              [Page 40]
+Bishop                  Expires November 20, 2018              [Page 40]
