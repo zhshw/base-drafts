@@ -269,10 +269,10 @@ Internet-Draft                    QPACK                         May 2018
    QPACK instructions occur in three locations, each of which uses a
    separate instruction space:
 
-   o  The encoder stream is a unidirectional stream of type "0x48" which
-      carries table updates from encoder to decoder.  Instructions on
-      this stream modify the dynamic table state without generating
-      output to any particular request.
+   o  The encoder stream is a unidirectional stream of type "0x48"
+      (ASCII 'H') which carries table updates from encoder to decoder.
+      Instructions on this stream modify the dynamic table state without
+      generating output to any particular request.
 
 
 
@@ -282,9 +282,9 @@ Krasic, et al.          Expires November 23, 2018               [Page 5]
 Internet-Draft                    QPACK                         May 2018
 
 
-   o  The decoder stream is a unidirectional stream of type "0x68" which
-      carries acknowledgements of table modifications and header
-      processing from decoder to encoder.
+   o  The decoder stream is a unidirectional stream of type "0x68"
+      (ASCII 'h') which carries acknowledgements of table modifications
+      and header processing from decoder to encoder.
 
    o  Finally, the contents of HEADERS and PUSH_PROMISE frames on
       request streams and push streams reference the QPACK table state.
@@ -1037,7 +1037,7 @@ Internet-Draft                    QPACK                         May 2018
 
    [QUIC-HTTP]
               Bishop, M., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http-11 (work in progress), April
+              QUIC", draft-ietf-quic-http-12 (work in progress), May
               2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -1068,8 +1068,8 @@ Internet-Draft                    QPACK                         May 2018
 
    [QUIC-TRANSPORT]
               Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
-              and Secure Transport", draft-ietf-quic-transport-11 (work
-              in progress), April 2018.
+              and Secure Transport", draft-ietf-quic-transport-12 (work
+              in progress), May 2018.
 
    [RFC2360]  Scott, G., "Guide for Internet Standards Writers", BCP 22,
               RFC 2360, DOI 10.17487/RFC2360, June 1998,

@@ -519,8 +519,8 @@ ul.toc li {
 <p></p>
 
 <ul>
-<li>The encoder stream is a unidirectional stream of type <samp>0x48</samp> which carries table updates from encoder to decoder. Instructions on this stream modify the dynamic table state without generating output to any particular request.</li>
-<li>The decoder stream is a unidirectional stream of type <samp>0x68</samp> which carries acknowledgements of table modifications and header processing from decoder to encoder.</li>
+<li>The encoder stream is a unidirectional stream of type <samp>0x48</samp> (ASCII &#8216;H&#8217;) which carries table updates from encoder to decoder. Instructions on this stream modify the dynamic table state without generating output to any particular request.</li>
+<li>The decoder stream is a unidirectional stream of type <samp>0x68</samp> (ASCII &#8216;h&#8217;) which carries acknowledgements of table modifications and header processing from decoder to encoder.</li>
 <li>Finally, the contents of HEADERS and PUSH_PROMISE frames on request streams and push streams reference the QPACK table state.</li>
 </ul>
 <p id="rfc.section.3.p.3">There MUST be exactly one of each unidirectional stream type in each direction.  Receipt of a second instance of either stream type MUST be treated as a connection error of HTTP_TOO_CONTROLLING.  Closure of either unidirectional stream MUST be treated as a connection error of type HTTP_CLOSED_CRITICAL_STREAM.</p>
@@ -914,7 +914,7 @@ return controlBuffer, prefixBuffer + streamBuffer
 <tr>
 <td class="reference"><b id="QUIC-HTTP">[QUIC-HTTP]</b></td>
 <td class="top">
-<a>Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http-11">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http-11, April 2018.</td>
+<a>Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http-12">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http-12, May 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -938,7 +938,7 @@ return controlBuffer, prefixBuffer + streamBuffer
 <tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
-<a>Iyengar, J.</a> and <a>M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-11">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport-11, April 2018.</td>
+<a>Iyengar, J.</a> and <a>M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport-12">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport-12, May 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2360">[RFC2360]</b></td>
