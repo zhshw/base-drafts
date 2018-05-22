@@ -117,7 +117,9 @@ Internet-Draft                    QPACK                         May 2018
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  18
      7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  19
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  19
+   Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     B.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  19
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
 
@@ -160,8 +162,6 @@ Internet-Draft                    QPACK                         May 2018
    values are then available for reuse in subsequent header blocks
    simply by referencing the entry number in the table.
 
-   If the packet containing a header is lost, that stream cannot
-   complete header processing until the packet is retransmitted.  This
 
 
 
@@ -170,6 +170,8 @@ Krasic, et al.          Expires November 23, 2018               [Page 3]
 Internet-Draft                    QPACK                         May 2018
 
 
+   If the packet containing a header is lost, that stream cannot
+   complete header processing until the packet is retransmitted.  This
    is unavoidable.  However, other streams which rely on the state
    created by that packet _also_ cannot make progress.  This is the
    problem which QUIC solves in general, but which is reintroduced by
@@ -214,8 +216,6 @@ Internet-Draft                    QPACK                         May 2018
    stream which risks becoming blocked.  If the decoder encounters more
    blocked streams than it promised to support, it SHOULD treat this as
    a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
-
-
 
 
 
@@ -1036,6 +1036,36 @@ Acknowledgments
 
    o  Dmitri Tikhonov
 
+Change Log
+
+      *RFC Editor's Note:* Please remove this section prior to
+      publication of a final version of this document.
+
+B.1.  Since draft-ietf-quic-qcram-00
+
+   o  Separate instruction sets for table updates and header blocks
+      (#1235, #1142, #1141)
+
+   o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
+      #1314)
+
+   o  Added mechanisms that support one-pass encoding (#1138, #1320)
+
+   o  Added a setting to control the number of blocked decoders (#238,
+      #1140, #1143)
+
+   o  Moved table updates and acknowledgments to dedicated streams
+      (#1121, #1122, #1238)
+
+
+
+
+
+Krasic, et al.          Expires November 23, 2018              [Page 19]
+
+Internet-Draft                    QPACK                         May 2018
+
+
 Authors' Addresses
 
    Charles 'Buck' Krasic
@@ -1061,4 +1091,30 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires November 23, 2018              [Page 19]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires November 23, 2018              [Page 20]

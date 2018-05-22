@@ -5444,7 +5444,14 @@ Appendix C.  Change Log
 C.1.  Since draft-ietf-quic-transport-11
 
    o  Enable server to transition connections to a preferred address
-      (#560,#1251).
+      (#560, #1251)
+
+   o  Packet numbers are encrypted (#1174, #1043, #1048, #1034, #850,
+      #990, #734, #1079)
+
+   o  Packet numbers use a variable-length encoding (#989, #1334)
+
+   o  STREAM frames can now be empty (#1350)
 
 C.2.  Since draft-ietf-quic-transport-10
 
@@ -5474,13 +5481,6 @@ C.2.  Since draft-ietf-quic-transport-10
 
    o  STOP_SENDING is now prohibited before streams are used (#1050)
 
-   o  Recommend including ACK in Retry packets and allow PADDING (#1067,
-      #882)
-
-   o  Endpoints now become closing after an idle timeout (#1178, #1179)
-
-   o  Remove implication that Version Negotiation is sent when a packet
-      of the wrong version is received (#1197)
 
 
 
@@ -5489,6 +5489,14 @@ Iyengar & Thomson       Expires November 23, 2018              [Page 98]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Recommend including ACK in Retry packets and allow PADDING (#1067,
+      #882)
+
+   o  Endpoints now become closing after an idle timeout (#1178, #1179)
+
+   o  Remove implication that Version Negotiation is sent when a packet
+      of the wrong version is received (#1197)
 
 C.3.  Since draft-ietf-quic-transport-09
 
@@ -5530,14 +5538,6 @@ C.4.  Since draft-ietf-quic-transport-08
 
    o  Clarified stream state machine (#634, #662, #743, #894)
 
-   o  Reserved versions don't need to be generated deterministically
-      (#831, #931)
-
-   o  You don't always need the draining period (#871)
-
-   o  Stateless reset clarified as version-specific (#930, #986)
-
-
 
 
 
@@ -5545,6 +5545,13 @@ Iyengar & Thomson       Expires November 23, 2018              [Page 99]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Reserved versions don't need to be generated deterministically
+      (#831, #931)
+
+   o  You don't always need the draining period (#871)
+
+   o  Stateless reset clarified as version-specific (#930, #986)
 
    o  initial_max_stream_id_x transport parameters are optional (#970,
       #971)
@@ -5588,19 +5595,19 @@ C.5.  Since draft-ietf-quic-transport-07
 
       *  Clarifications about stateless reset (#889, #890)
 
-   o  Address validation for connection migration (#161, #732, #878)
-
-   o  Clearly defined retransmission rules for BLOCKED (#452, #65, #924)
-
-   o  negotiated_version is sent in server transport parameters (#710,
-      #959)
-
 
 
 Iyengar & Thomson       Expires November 23, 2018             [Page 100]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Address validation for connection migration (#161, #732, #878)
+
+   o  Clearly defined retransmission rules for BLOCKED (#452, #65, #924)
+
+   o  negotiated_version is sent in server transport parameters (#710,
+      #959)
 
    o  Increased the range over which packet numbers are randomized
       (#864, #850, #964)
@@ -5643,13 +5650,6 @@ C.8.  Since draft-ietf-quic-transport-04
    o  Introduce STOP_SENDING frame, RST_STREAM only resets in one
       direction (#165)
 
-   o  Removed GOAWAY; application protocols are responsible for graceful
-      shutdown (#696)
-
-   o  Reduced the number of error codes (#96, #177, #184, #211)
-
-   o  Version validation fields can't move or change (#121)
-
 
 
 
@@ -5657,6 +5657,13 @@ Iyengar & Thomson       Expires November 23, 2018             [Page 101]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Removed GOAWAY; application protocols are responsible for graceful
+      shutdown (#696)
+
+   o  Reduced the number of error codes (#96, #177, #184, #211)
+
+   o  Version validation fields can't move or change (#121)
 
    o  Removed versions from the transport parameters in a
       NewSessionTicket message (#547)
@@ -5700,19 +5707,19 @@ C.10.  Since draft-ietf-quic-transport-02
    o  Rework initial packet types to change how the connection ID is
       chosen (#482, #442, #493)
 
-   o  No timestamps are forbidden in unprotected packets (#542, #429)
-
-   o  Cryptographic handshake is now on stream 0 (#456)
-
-   o  Remove congestion control exemption for cryptographic handshake
-      (#248, #476)
-
 
 
 Iyengar & Thomson       Expires November 23, 2018             [Page 102]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  No timestamps are forbidden in unprotected packets (#542, #429)
+
+   o  Cryptographic handshake is now on stream 0 (#456)
+
+   o  Remove congestion control exemption for cryptographic handshake
+      (#248, #476)
 
    o  Version 1 of QUIC uses TLS; a new version is needed to use a
       different handshake protocol (#516)
@@ -5755,13 +5762,6 @@ C.11.  Since draft-ietf-quic-transport-01
 
    o  Defined client address validation (#52, #118, #120, #275)
 
-   o  Define transport parameters as a TLS extension (#49, #122)
-
-   o  SCUP and COPT parameters are no longer valid (#116, #117)
-
-   o  Transport parameters for 0-RTT are either remembered from before,
-      or assume default values (#126)
-
 
 
 
@@ -5769,6 +5769,13 @@ Iyengar & Thomson       Expires November 23, 2018             [Page 103]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Define transport parameters as a TLS extension (#49, #122)
+
+   o  SCUP and COPT parameters are no longer valid (#116, #117)
+
+   o  Transport parameters for 0-RTT are either remembered from before,
+      or assume default values (#126)
 
    o  The server chooses connection IDs in its final flight (#119, #349,
       #361)
@@ -5811,13 +5818,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
       acknowledgment of all STREAM frames or the RST_STREAM, before it
       closes (#381)
 
-   o  Remove stream reservation from state machine (#174, #280)
-
-   o  Only stream 1 does not contribute to connection-level flow control
-      (#204)
-
-   o  Stream 1 counts towards the maximum concurrent stream limit (#201,
-      #282)
 
 
 
@@ -5825,6 +5825,14 @@ Iyengar & Thomson       Expires November 23, 2018             [Page 104]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Remove stream reservation from state machine (#174, #280)
+
+   o  Only stream 1 does not contribute to connection-level flow control
+      (#204)
+
+   o  Stream 1 counts towards the maximum concurrent stream limit (#201,
+      #282)
 
    o  Remove connection-level flow control exclusion for some streams
       (except 1) (#246)
@@ -5867,20 +5875,16 @@ C.13.  Since draft-hamilton-quic-transport-protocol-01
 
    o  Updated authors/editors list
 
-   o  Added IANA Considerations section
-
-   o  Moved Contributors and Acknowledgments to appendices
-
-
-
-
-
 
 
 Iyengar & Thomson       Expires November 23, 2018             [Page 105]
 
 Internet-Draft           QUIC Transport Protocol                May 2018
 
+
+   o  Added IANA Considerations section
+
+   o  Moved Contributors and Acknowledgments to appendices
 
 Authors' Addresses
 
@@ -5894,10 +5898,6 @@ Authors' Addresses
    Mozilla
 
    Email: martin.thomson@gmail.com
-
-
-
-
 
 
 
