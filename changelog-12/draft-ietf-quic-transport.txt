@@ -5444,14 +5444,12 @@ Appendix C.  Change Log
 C.1.  Since draft-ietf-quic-transport-11
 
    o  Enable server to transition connections to a preferred address
-      (#560,#1251)
+      (#560, #1251)
 
    o  Packet numbers are encrypted (#1174, #1043, #1048, #1034, #850,
       #990, #734, #1079)
 
    o  Packet numbers use a variable-length encoding (#989, #1334)
-
-   o  Servers can set a preferred address (#560, #1251)
 
    o  STREAM frames can now be empty (#1350)
 
@@ -5482,6 +5480,8 @@ C.2.  Since draft-ietf-quic-transport-10
       stream ID (#1023, #1065)
 
    o  STOP_SENDING is now prohibited before streams are used (#1050)
+
+
 
 
 
