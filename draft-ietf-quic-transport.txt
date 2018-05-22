@@ -5165,6 +5165,8 @@ Internet-Draft           QUIC Transport Protocol                May 2018
            |        |                          |               |
            | 0x0003 | idle_timeout             | Section 6.4.1 |
            |        |                          |               |
+           | 0x0004 | preferred_address        | Section 6.4.1 |
+           |        |                          |               |
            | 0x0005 | max_packet_size          | Section 6.4.1 |
            |        |                          |               |
            | 0x0006 | stateless_reset_token    | Section 6.4.1 |
@@ -5200,8 +5202,6 @@ Internet-Draft           QUIC Transport Protocol                May 2018
 
    Specification:  A reference to a publicly available specification for
       the value.
-
-
 
 
 
