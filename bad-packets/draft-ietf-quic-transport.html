@@ -21,7 +21,7 @@ body {
 }
 
 .title, .filename, h1, h2, h3, h4, h5 {
-  font: 16px "Helvetica Neue","Roboto Condensed","Open Sans",Helvetica,Calibri,sans-serif;
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   font-size-adjust: 0.5;
   font-weight: bold;
   color: #333;
@@ -422,7 +422,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-10" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-23" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -446,12 +446,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: November 11, 2018</td>
+<td class="left">Expires: November 24, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 10, 2018</td>
+<td class="right">May 23, 2018</td>
 </tr>
 
     	
@@ -470,7 +470,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 11, 2018.</p>
+<p>This Internet-Draft will expire on November 24, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -2651,13 +2651,13 @@ ul.toc li {
 <h2 id="rfc.section.12.1">
 <a href="#rfc.section.12.1">12.1.</a> <a href="#handshake-denial-of-service" id="handshake-denial-of-service">Handshake Denial of Service</a>
 </h2>
-<p id="rfc.section.12.1.p.1">As an encrypted and authenticated transport QUIC provides a range of protections against denial of service.  Once the cryptographic handshake is complete, QUIC endpoints discard packets that are not authenticated, greatly limiting the ability of an attacker to interfere with existing connections.</p>
+<p id="rfc.section.12.1.p.1">As an encrypted and authenticated transport QUIC provides a range of protections against denial of service.  Once the cryptographic handshake is complete, QUIC endpoints discard most packets that are not authenticated, greatly limiting the ability of an attacker to interfere with existing connections.</p>
 <p id="rfc.section.12.1.p.2">Once a connection is established QUIC endpoints might accept some unauthenticated ICMP packets (see <a href="#v4-pmtud" class="xref">Section 8.4.1</a>), but the use of these packets is extremely limited.  The only other type of packet that an endpoint might accept is a stateless reset (<a href="#stateless-reset" class="xref">Section 6.10.4</a>) which relies on the token being kept secret until it is used.</p>
 <p id="rfc.section.12.1.p.3">During the creation of a connection, QUIC only provides protection against attack from off the network path.  All QUIC packets contain proof that the recipient saw a preceding packet from its peer.</p>
-<p id="rfc.section.12.1.p.4">The first mechanism used is the source and destination connection IDs, which are required to match those set by a peer.  Except for an Initial packet and stateless reset, an endpoint only accepts packets that include a destination connection that matches a connection ID the endpoint previously chose.  This is the only protection offered for Version Negotiation packets.</p>
-<p id="rfc.section.12.1.p.5">The destination connection ID in an Initial packet is selected by a client to be unpredictable, which serves an additional purpose.  The packets that carry the cryptographic handshake are protected with a key that is derived from the connection ID and salt specific to the QUIC version.  This allows endpoints to use the same process for authenticating packets that they receive as they use after the cryptographic handshake completes.  Packets that cannot be authenticated are discarded.  Protecting packets in this fashion provides a strong assurance that the sender of the packet saw previous packets and understood them.</p>
-<p id="rfc.section.12.1.p.6">These protections are not intended to be effective against an attacker that is able to receive QUIC packets.  Such an attacker can potentially send packets that will be accepted by QUIC clients or servers.  This version of QUIC only attempts to detect this sort of attack.  Interference with the handshake is detected when the cryptographic handshake fails.  For the most part, this is a property that the cryptographic handshake protocol <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> is required to provide, though additional validation is required for version negotiation (see <a href="#version-validation" class="xref">Section 6.4.4</a>).</p>
-<p id="rfc.section.12.1.p.7">Endpoints are permitted to use other methods to detect and attempt to recover from interference with the handshake.  For instance, if invalid packets can be identified then they can be discarded.  This can be complex or difficult and so no specific method is mandated in this version of QUIC.</p>
+<p id="rfc.section.12.1.p.4">The first mechanism used is the source and destination connection IDs, which are required to match those set by a peer.  Except for an Initial and stateless reset packets, an endpoint only accepts packets that include a destination connection that matches a connection ID the endpoint previously chose.  This is the only protection offered for Version Negotiation packets.</p>
+<p id="rfc.section.12.1.p.5">The destination connection ID in an Initial packet is selected by a client to be unpredictable, which serves an additional purpose.  The packets that carry the cryptographic handshake are protected with a key that is derived from this connection ID and salt specific to the QUIC version.  This allows endpoints to use the same process for authenticating packets that they receive as they use after the cryptographic handshake completes.  Packets that cannot be authenticated are discarded.  Protecting packets in this fashion provides a strong assurance that the sender of the packet saw the Initial packets and understood it.</p>
+<p id="rfc.section.12.1.p.6">These protections are not intended to be effective against an attacker that is able to receive QUIC packets prior to the connection being established.  Such an attacker can potentially send packets that will be accepted by QUIC clients or servers.  This version of QUIC attempts to detect this sort of attack, but it expects that endpoints will fail to establish a connection rather than recovering.  For the most part, the cryptographic handshake protocol <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> is responsible for detecting tampering during the handshake, though additional validation is required for version negotiation (see <a href="#version-validation" class="xref">Section 6.4.4</a>).</p>
+<p id="rfc.section.12.1.p.7">Endpoints are permitted to use other methods to detect and attempt to recover from interference with the handshake.  Invalid packets may be identified and discarded using other methods, but no specific method is mandated in this document.</p>
 <h2 id="rfc.section.12.2">
 <a href="#rfc.section.12.2">12.2.</a> <a href="#spoofed-ack-attack" id="spoofed-ack-attack">Spoofed ACK Attack</a>
 </h2>
