@@ -1036,11 +1036,11 @@ Acknowledgments
 
    o  Dmitri Tikhonov
 
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
-
    Buck's contribution was supported by Google during his employment
    there.
+
+   A substantial portion of Mike's contribution was supported by
+   Microsoft during his employment there.
 
 Change Log
 
