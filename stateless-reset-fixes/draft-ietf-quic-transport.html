@@ -421,7 +421,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-18" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-23" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -445,12 +445,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: November 19, 2018</td>
+<td class="left">Expires: November 24, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 18, 2018</td>
+<td class="right">May 23, 2018</td>
 </tr>
 
     	
@@ -469,7 +469,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 19, 2018.</p>
+<p>This Internet-Draft will expire on November 24, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1670,30 +1670,29 @@ ul.toc li {
 </pre>
 <p id="rfc.section.6.10.4.p.4">This design ensures that a stateless reset packet is - to the extent possible - indistinguishable from a regular packet with a short header.</p>
 <p id="rfc.section.6.10.4.p.5">The message consists of a header octet, followed by random octets of arbitrary length, followed by a Stateless Reset Token.</p>
-<p id="rfc.section.6.10.4.p.6">The endpoint SHOULD send a packet with a short header.</p>
-<p id="rfc.section.6.10.4.p.7">Assuming a short header, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
-<p id="rfc.section.6.10.4.p.8">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
-<p id="rfc.section.6.10.4.p.9">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to new connection ID that was provided using the NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
-<p id="rfc.section.6.10.4.p.10">Using a randomized connection ID results in two problems:</p>
+<p id="rfc.section.6.10.4.p.6">A stateless reset will be interpreted by a recipient as a packet with a short header.  For the packet to appear as valid, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
+<p id="rfc.section.6.10.4.p.7">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
+<p id="rfc.section.6.10.4.p.8">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
+<p id="rfc.section.6.10.4.p.9">Using a randomized connection ID results in two problems:</p>
 <p></p>
 
 <ul>
 <li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This causes the stateless reset to be ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
 <li>The randomly generated connection ID can be used by entities other than the peer to identify this as a potential stateless reset.  An endpoint that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
 </ul>
-<p id="rfc.section.6.10.4.p.12">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
-<p id="rfc.section.6.10.4.p.13">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
-<p id="rfc.section.6.10.4.p.14">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
+<p id="rfc.section.6.10.4.p.11">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
+<p id="rfc.section.6.10.4.p.12">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
+<p id="rfc.section.6.10.4.p.13">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
 <h4 id="rfc.section.6.10.4.1">
 <a href="#rfc.section.6.10.4.1">6.10.4.1.</a> <a href="#detecting-a-stateless-reset" id="detecting-a-stateless-reset">Detecting a Stateless Reset</a>
 </h4>
-<p id="rfc.section.6.10.4.1.p.1">An endpoint detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The endpoint then compares the last 16 octets of the packet with the Stateless Reset Token provided by its peer, either from the NEW_CONNECTION_ID frame or the server transport parameters.  If these values are identical, the endpoint MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
+<p id="rfc.section.6.10.4.1.p.1">An endpoint detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The endpoint then compares the last 16 octets of the packet with the Stateless Reset Token provided by its peer, either in a NEW_CONNECTION_ID frame or the server&#8217;s transport parameters.  If these values are identical, the endpoint MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
 <h4 id="rfc.section.6.10.4.2">
 <a href="#rfc.section.6.10.4.2">6.10.4.2.</a> <a href="#calculating-a-stateless-reset-token" id="calculating-a-stateless-reset-token">Calculating a Stateless Reset Token</a>
 </h4>
 <p id="rfc.section.6.10.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, an endpoint could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple instances in a cluster or a storage problem for a endpoint that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
 <p id="rfc.section.6.10.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 4.7</a>), and an instance identifier.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, instance_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with instance and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
-<p id="rfc.section.6.10.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Secret.  The connection ID comes from the packet that the endpoint receives.  An instance that receives a packet for another instance might recover the instance identifier from the connection ID.</p>
+<p id="rfc.section.6.10.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.  An instance that receives a packet for another instance might be able to recover the instance identifier using the connection ID.  Alternatively, the instance identifier might be omitted from the calculation of the Stateless Reset Token so that all instances are equally able to generate a stateless reset.</p>
 <p id="rfc.section.6.10.4.2.p.4">This design relies on the peer always sending a connection ID in its packets so that the endpoint can use the connection ID from a packet to reset the connection.  An endpoint that uses this design cannot allow its peers to send packets with a zero-length destination connection ID.</p>
 <p id="rfc.section.6.10.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same instance without first changing to use a different static key or instance identifier.</p>
 <p id="rfc.section.6.10.4.2.p.6">Note that Stateless Reset messages do not have any cryptographic protection.</p>
