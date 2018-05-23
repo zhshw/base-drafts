@@ -1036,6 +1036,12 @@ Acknowledgments
 
    o  Dmitri Tikhonov
 
+   A substantial portion of Mike's contribution was supported by
+   Microsoft during his employment there.
+
+   Buck's contribution was supported by Google during his employment
+   there.
+
 Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
@@ -1051,12 +1057,6 @@ B.1.  Since draft-ietf-quic-qcram-00
 
    o  Added mechanisms that support one-pass encoding (#1138, #1320)
 
-   o  Added a setting to control the number of blocked decoders (#238,
-      #1140, #1143)
-
-   o  Moved table updates and acknowledgments to dedicated streams
-      (#1121, #1122, #1238)
-
 
 
 
@@ -1065,6 +1065,12 @@ Krasic, et al.          Expires November 24, 2018              [Page 19]
 
 Internet-Draft                    QPACK                         May 2018
 
+
+   o  Added a setting to control the number of blocked decoders (#238,
+      #1140, #1143)
+
+   o  Moved table updates and acknowledgments to dedicated streams
+      (#1121, #1122, #1238)
 
 Authors' Addresses
 
@@ -1084,12 +1090,6 @@ Authors' Addresses
    Facebook
 
    Email: afrind@fb.com
-
-
-
-
-
-
 
 
 
