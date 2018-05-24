@@ -129,20 +129,20 @@ Internet-Draft             QUIC Loss Detection                  May 2018
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .  26
      6.2.  Informative References  . . . . . . . . . . . . . . . . .  26
      6.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  27
-   Appendix A.  Acknowledgments  . . . . . . . . . . . . . . . . . .  28
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  28
-     B.1.  Since draft-ietf-quic-recovery-10 . . . . . . . . . . . .  28
-     B.2.  Since draft-ietf-quic-recovery-09 . . . . . . . . . . . .  28
-     B.3.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  28
-     B.4.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  28
-     B.5.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  28
-     B.6.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  29
-     B.7.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  29
-     B.8.  Since draft-ietf-quic-recovery-03 . . . . . . . . . . . .  29
-     B.9.  Since draft-ietf-quic-recovery-02 . . . . . . . . . . . .  29
-     B.10. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  29
-     B.11. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  29
-     B.12. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  29
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  28
+     A.1.  Since draft-ietf-quic-recovery-10 . . . . . . . . . . . .  28
+     A.2.  Since draft-ietf-quic-recovery-09 . . . . . . . . . . . .  28
+     A.3.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  28
+     A.4.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  28
+     A.5.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  28
+     A.6.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  28
+     A.7.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  29
+     A.8.  Since draft-ietf-quic-recovery-03 . . . . . . . . . . . .  29
+     A.9.  Since draft-ietf-quic-recovery-02 . . . . . . . . . . . .  29
+     A.10. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  29
+     A.11. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  29
+     A.12. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  29
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  29
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  30
 
 1.  Introduction
@@ -1516,14 +1516,12 @@ Internet-Draft             QUIC Loss Detection                  May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-recovery
 
-Appendix A.  Acknowledgments
-
-Appendix B.  Change Log
+Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-B.1.  Since draft-ietf-quic-recovery-10
+A.1.  Since draft-ietf-quic-recovery-10
 
    o  Improved text on ack generation (#1139, #1159)
 
@@ -1537,15 +1535,15 @@ B.1.  Since draft-ietf-quic-recovery-10
    o  Minimum RTT (min_rtt) is initialized with an infinite value
       (#1169)
 
-B.2.  Since draft-ietf-quic-recovery-09
+A.2.  Since draft-ietf-quic-recovery-09
 
    No significant changes.
 
-B.3.  Since draft-ietf-quic-recovery-08
+A.3.  Since draft-ietf-quic-recovery-08
 
    o  Clarified pacing and RTO (#967, #977)
 
-B.4.  Since draft-ietf-quic-recovery-07
+A.4.  Since draft-ietf-quic-recovery-07
 
    o  Include Ack Delay in RTO(and TLP) computations (#981)
 
@@ -1555,11 +1553,13 @@ B.4.  Since draft-ietf-quic-recovery-07
 
    o  Many editorial fixes.
 
-B.5.  Since draft-ietf-quic-recovery-06
+A.5.  Since draft-ietf-quic-recovery-06
 
    No significant changes.
 
+A.6.  Since draft-ietf-quic-recovery-05
 
+   o  Add more congestion control text (#776)
 
 
 
@@ -1570,19 +1570,15 @@ Iyengar & Swett         Expires November 25, 2018              [Page 28]
 Internet-Draft             QUIC Loss Detection                  May 2018
 
 
-B.6.  Since draft-ietf-quic-recovery-05
-
-   o  Add more congestion control text (#776)
-
-B.7.  Since draft-ietf-quic-recovery-04
+A.7.  Since draft-ietf-quic-recovery-04
 
    No significant changes.
 
-B.8.  Since draft-ietf-quic-recovery-03
+A.8.  Since draft-ietf-quic-recovery-03
 
    No significant changes.
 
-B.9.  Since draft-ietf-quic-recovery-02
+A.9.  Since draft-ietf-quic-recovery-02
 
    o  Integrate F-RTO (#544, #409)
 
@@ -1593,7 +1589,7 @@ B.9.  Since draft-ietf-quic-recovery-02
 
    o  Simplify RTO calculations (#142, #417)
 
-B.10.  Since draft-ietf-quic-recovery-01
+A.10.  Since draft-ietf-quic-recovery-01
 
    o  Overview added to loss detection
 
@@ -1605,17 +1601,21 @@ B.10.  Since draft-ietf-quic-recovery-01
 
    o  Fixed references and made TCP references informative
 
-B.11.  Since draft-ietf-quic-recovery-00
+A.11.  Since draft-ietf-quic-recovery-00
 
    o  Improved description of constants and ACK behavior
 
-B.12.  Since draft-iyengar-quic-loss-recovery-01
+A.12.  Since draft-iyengar-quic-loss-recovery-01
 
    o  Adopted as base for draft-ietf-quic-recovery
 
    o  Updated authors/editors list
 
    o  Added table of contents
+
+Acknowledgments
+
+
 
 
 

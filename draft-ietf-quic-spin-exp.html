@@ -284,10 +284,12 @@ ul.toc li {
 <link href="#rfc.section.3" rel="Chapter" title="3 Using the Spin Bit for Passive RTT Measurement">
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations">
 <link href="#rfc.section.5" rel="Chapter" title="5 Security and Privacy Considerations">
-<link href="#rfc.section.6" rel="Chapter" title="6 Acknowledgments">
-<link href="#rfc.references" rel="Chapter" title="7 References">
-<link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References">
+<link href="#rfc.section.6" rel="Chapter" title="6 Change Log">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Since draft-ietf-spin-exp-00">
+<link href="#rfc.acknowledgments" rel="Chapter">
+<link href="#rfc.references" rel="Chapter" title="8 References">
+<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -374,13 +376,17 @@ ul.toc li {
 </li>
 <li>5.   <a href="#rfc.section.5">Security and Privacy Considerations</a>
 </li>
-<li>6.   <a href="#rfc.section.6">Acknowledgments</a>
+<li>6.   <a href="#rfc.section.6">Change Log</a>
 </li>
-<li>7.   <a href="#rfc.references">References</a>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Since draft-ietf-spin-exp-00</a>
 </li>
-<ul><li>7.1.   <a href="#rfc.references.1">Normative References</a>
+</ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
-<li>7.2.   <a href="#rfc.references.2">Informative References</a>
+<li>8.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>8.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
@@ -455,9 +461,18 @@ ul.toc li {
 </h1>
 <p id="rfc.section.5.p.1">The spin bit is intended to expose end-to-end RTT to observers along the path, so the privacy considerations for the latency spin bit are essentially the same as those for passive RTT measurement in general. It has been shown <a href="#PAM-RTT" class="xref">[PAM-RTT]</a> that RTT measurements do not provide more information for geolocation than is available in the most basic, freely-available IP address based location databases. The risk of exposure of per-flow network RTT to on-path devices is therefore negligible.</p>
 <h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
+<a href="#rfc.section.6">6.</a> <a href="#change-log" id="change-log">Change Log</a>
 </h1>
-<p id="rfc.section.6.p.1">This document is derived from <a href="#QUIC-SPIN" class="xref">[QUIC-SPIN]</a>, which was the work of the following authors in addition to the editor of this document:</p>
+<p></p>
+
+<ul class="empty"><li>
+<strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
+<h1 id="rfc.section.6.1">
+<a href="#rfc.section.6.1">6.1.</a> <a href="#since-draft-ietf-spin-exp-00" id="since-draft-ietf-spin-exp-00">Since draft-ietf-spin-exp-00</a>
+</h1>
+<p id="rfc.section.6.1.p.1">Nothing yet.</p>
+<h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.7.p.1">This document is derived from <a href="#QUIC-SPIN" class="xref">[QUIC-SPIN]</a>, which was the work of the following authors in addition to the editor of this document:</p>
 <p></p>
 
 <ul>
@@ -469,19 +484,19 @@ ul.toc li {
 <li>Al Morton, AT&amp;T Labs</li>
 <li>Emile Stephan, Orange</li>
 </ul>
-<p id="rfc.section.6.p.3">The QUIC Spin Bit was originally specified in a slightly different form by Christian Huitema.</p>
-<p id="rfc.section.6.p.4">This work is partially supported by the European Commission under Horizon 2020 grant agreement no. 688421 Measurement and Architecture for a Middleboxed Internet (MAMI), and by the Swiss State Secretariat for Education, Research, and Innovation under contract no. 15.0268. This support does not imply endorsement.</p>
+<p id="rfc.section.7.p.3">The QUIC Spin Bit was originally specified in a slightly different form by Christian Huitema.</p>
+<p id="rfc.section.7.p.4">This work is partially supported by the European Commission under Horizon 2020 grant agreement no. 688421 Measurement and Architecture for a Middleboxed Internet (MAMI), and by the Swiss State Secretariat for Education, Research, and Innovation under contract no. 15.0268. This support does not imply endorsement.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">7.</a> References</h1>
+<a href="#rfc.references">8.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">7.1.</a> Normative References</h1>
+<a href="#rfc.references.1">8.1.</a> Normative References</h1>
 <table><tbody><tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
 <a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, May 2018.</td>
 </tr></tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">7.2.</a> Informative References</h1>
+<a href="#rfc.references.2">8.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="CACM-TCP">[CACM-TCP]</b></td>

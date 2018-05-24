@@ -116,9 +116,9 @@ Internet-Draft                    QPACK                         May 2018
 
      7.2.  Informative References  . . . . . . . . . . . . . . . . .  18
      7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  19
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  19
+     A.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  19
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  19
-   Change Log  . . . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     B.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  19
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  20
 
 1.  Introduction
@@ -1018,6 +1018,27 @@ Internet-Draft                    QPACK                         May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-qpack
 
+Appendix A.  Change Log
+
+      *RFC Editor's Note:* Please remove this section prior to
+      publication of a final version of this document.
+
+A.1.  Since draft-ietf-quic-qcram-00
+
+   o  Separate instruction sets for table updates and header blocks
+      (#1235, #1142, #1141)
+
+   o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
+      #1314)
+
+   o  Added mechanisms that support one-pass encoding (#1138, #1320)
+
+   o  Added a setting to control the number of blocked decoders (#238,
+      #1140, #1143)
+
+   o  Moved table updates and acknowledgments to dedicated streams
+      (#1121, #1122, #1238)
+
 Acknowledgments
 
    This draft draws heavily on the text of [RFC7541].  The indirect
@@ -1035,27 +1056,6 @@ Acknowledgments
    o  Ian Swett
 
    o  Dmitri Tikhonov
-
-Change Log
-
-      *RFC Editor's Note:* Please remove this section prior to
-      publication of a final version of this document.
-
-B.1.  Since draft-ietf-quic-qcram-00
-
-   o  Separate instruction sets for table updates and header blocks
-      (#1235, #1142, #1141)
-
-   o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
-      #1314)
-
-   o  Added mechanisms that support one-pass encoding (#1138, #1320)
-
-   o  Added a setting to control the number of blocked decoders (#238,
-      #1140, #1143)
-
-   o  Moved table updates and acknowledgments to dedicated streams
-      (#1121, #1122, #1238)
 
 
 

@@ -129,21 +129,21 @@ Internet-Draft               HTTP over QUIC                     May 2018
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  34
      10.2.  Informative References . . . . . . . . . . . . . . . . .  35
      10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  35
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  36
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  36
-     B.1.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  36
-     B.2.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  36
-     B.3.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  36
-     B.4.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  36
-     B.5.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  36
-     B.6.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  37
-     B.7.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  37
-     B.8.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  37
-     B.9.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  37
-     B.10. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  37
-     B.11. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  37
-     B.12. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  38
-     B.13. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  38
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  36
+     A.1.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  36
+     A.2.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  36
+     A.3.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  36
+     A.4.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  36
+     A.5.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  36
+     A.6.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  36
+     A.7.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  36
+     A.8.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  37
+     A.9.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  37
+     A.10. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  37
+     A.11. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  37
+     A.12. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  38
+     A.13. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  38
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  38
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  38
 
 1.  Introduction
@@ -1962,30 +1962,22 @@ Bishop                  Expires November 25, 2018              [Page 35]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
-Appendix A.  Contributors
-
-   The original authors of this specification were Robbie Shade and Mike
-   Warres.
-
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
-
-Appendix B.  Change Log
+Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-B.1.  Since draft-ietf-quic-http-11
+A.1.  Since draft-ietf-quic-http-11
 
    o  Moved QPACK table updates and acknowledgments to dedicated streams
       (#1121, #1122, #1238)
 
-B.2.  Since draft-ietf-quic-http-10
+A.2.  Since draft-ietf-quic-http-10
 
    o  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
 
-B.3.  Since draft-ietf-quic-http-09
+A.3.  Since draft-ietf-quic-http-09
 
    o  Selected QCRAM for header compression (#228, #1117)
 
@@ -1994,11 +1986,11 @@ B.3.  Since draft-ietf-quic-http-09
    o  Specified handling of unsupported versions in Alt-Svc (#1093,
       #1097)
 
-B.4.  Since draft-ietf-quic-http-08
+A.4.  Since draft-ietf-quic-http-08
 
    o  Clarified connection coalescing rules (#940, #1024)
 
-B.5.  Since draft-ietf-quic-http-07
+A.5.  Since draft-ietf-quic-http-07
 
    o  Changes for integer encodings in QUIC (#595,#905)
 
@@ -2008,8 +2000,16 @@ B.5.  Since draft-ietf-quic-http-07
 
    o  Improve description of server push usage (#947, #950, #957)
 
+A.6.  Since draft-ietf-quic-http-06
 
+   o  Track changes in QUIC error code usage (#485)
 
+A.7.  Since draft-ietf-quic-http-05
+
+   o  Made push ID sequential, add MAX_PUSH_ID, remove
+      SETTINGS_ENABLE_PUSH (#709)
+
+   o  Guidance about keep-alive and QUIC PINGs (#729)
 
 
 
@@ -2018,20 +2018,9 @@ Bishop                  Expires November 25, 2018              [Page 36]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
-B.6.  Since draft-ietf-quic-http-06
-
-   o  Track changes in QUIC error code usage (#485)
-
-B.7.  Since draft-ietf-quic-http-05
-
-   o  Made push ID sequential, add MAX_PUSH_ID, remove
-      SETTINGS_ENABLE_PUSH (#709)
-
-   o  Guidance about keep-alive and QUIC PINGs (#729)
-
    o  Expanded text on GOAWAY and cancellation (#757)
 
-B.8.  Since draft-ietf-quic-http-04
+A.8.  Since draft-ietf-quic-http-04
 
    o  Cite RFC 5234 (#404)
 
@@ -2048,15 +2037,15 @@ B.8.  Since draft-ietf-quic-http-04
 
    o  DATA frames cannot be empty (#700)
 
-B.9.  Since draft-ietf-quic-http-03
+A.9.  Since draft-ietf-quic-http-03
 
    None.
 
-B.10.  Since draft-ietf-quic-http-02
+A.10.  Since draft-ietf-quic-http-02
 
    o  Track changes in transport draft
 
-B.11.  Since draft-ietf-quic-http-01
+A.11.  Since draft-ietf-quic-http-01
 
    o  SETTINGS changes (#181):
 
@@ -2066,13 +2055,6 @@ B.11.  Since draft-ietf-quic-http-01
       *  SETTINGS_ACK removed
 
       *  Settings can only occur in the SETTINGS frame a single time
-
-
-
-Bishop                  Expires November 25, 2018              [Page 37]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
       *  Boolean format updated
 
@@ -2084,12 +2066,20 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    o  HPACK Sequence counter can wrap (#173)
 
+
+
+
+Bishop                  Expires November 25, 2018              [Page 37]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    o  0-RTT guidance added
 
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
-B.12.  Since draft-ietf-quic-http-00
+A.12.  Since draft-ietf-quic-http-00
 
    o  Changed "HTTP/2-over-QUIC" to "HTTP/QUIC" throughout (#11,#29)
 
@@ -2108,11 +2098,19 @@ B.12.  Since draft-ietf-quic-http-00
 
    o  Application-layer-defined error codes (#19,#74)
 
-B.13.  Since draft-shade-quic-http2-mapping-00
+A.13.  Since draft-shade-quic-http2-mapping-00
 
    o  Adopted as base for draft-ietf-quic-http
 
    o  Updated authors/editors list
+
+Acknowledgements
+
+   The original authors of this specification were Robbie Shade and Mike
+   Warres.
+
+   A substantial portion of Mike's contribution was supported by
+   Microsoft during his employment there.
 
 Author's Address
 
@@ -2120,6 +2118,8 @@ Author's Address
    Akamai
 
    Email: mbishop@evequefou.be
+
+
 
 
 
