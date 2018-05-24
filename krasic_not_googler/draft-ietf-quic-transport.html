@@ -359,7 +359,7 @@ ul.toc li {
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Retransmission of Information">
 <link href="#rfc.section.8.3" rel="Chapter" title="8.3 Packet Size">
 <link href="#rfc.section.8.4" rel="Chapter" title="8.4 Path Maximum Transmission Unit">
-<link href="#rfc.section.8.4.1" rel="Chapter" title="8.4.1 Special Considerations for PMTU Discovery">
+<link href="#rfc.section.8.4.1" rel="Chapter" title="8.4.1 IPv4 PMTU Discovery">
 <link href="#rfc.section.8.4.2" rel="Chapter" title="8.4.2 Special Considerations for Packetization Layer PMTU Discovery">
 <link href="#rfc.section.9" rel="Chapter" title="9 Streams: QUIC&#8217;s Data Structuring Abstraction">
 <link href="#rfc.section.9.1" rel="Chapter" title="9.1 Stream Identifiers">
@@ -386,33 +386,34 @@ ul.toc li {
 <link href="#rfc.section.11.3" rel="Chapter" title="11.3 Transport Error Codes">
 <link href="#rfc.section.11.4" rel="Chapter" title="11.4 Application Protocol Error Codes">
 <link href="#rfc.section.12" rel="Chapter" title="12 Security Considerations">
-<link href="#rfc.section.12.1" rel="Chapter" title="12.1 Spoofed ACK Attack">
-<link href="#rfc.section.12.2" rel="Chapter" title="12.2 Optimistic ACK Attack">
-<link href="#rfc.section.12.3" rel="Chapter" title="12.3 Slowloris Attacks">
-<link href="#rfc.section.12.4" rel="Chapter" title="12.4 Stream Fragmentation and Reassembly Attacks">
-<link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Commitment Attack">
+<link href="#rfc.section.12.1" rel="Chapter" title="12.1 Handshake Denial of Service">
+<link href="#rfc.section.12.2" rel="Chapter" title="12.2 Spoofed ACK Attack">
+<link href="#rfc.section.12.3" rel="Chapter" title="12.3 Optimistic ACK Attack">
+<link href="#rfc.section.12.4" rel="Chapter" title="12.4 Slowloris Attacks">
+<link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Fragmentation and Reassembly Attacks">
+<link href="#rfc.section.12.6" rel="Chapter" title="12.6 Stream Commitment Attack">
 <link href="#rfc.section.13" rel="Chapter" title="13 IANA Considerations">
 <link href="#rfc.section.13.1" rel="Chapter" title="13.1 QUIC Transport Parameter Registry">
 <link href="#rfc.section.13.2" rel="Chapter" title="13.2 QUIC Transport Error Codes Registry">
 <link href="#rfc.references" rel="Chapter" title="14 References">
 <link href="#rfc.references.1" rel="Chapter" title="14.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="14.2 Informative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Contributors">
-<link href="#rfc.appendix.B" rel="Chapter" title="B Acknowledgments">
-<link href="#rfc.appendix.C" rel="Chapter" title="C Change Log">
-<link href="#rfc.appendix.C.1" rel="Chapter" title="C.1 Since draft-ietf-quic-transport-11">
-<link href="#rfc.appendix.C.2" rel="Chapter" title="C.2 Since draft-ietf-quic-transport-10">
-<link href="#rfc.appendix.C.3" rel="Chapter" title="C.3 Since draft-ietf-quic-transport-09">
-<link href="#rfc.appendix.C.4" rel="Chapter" title="C.4 Since draft-ietf-quic-transport-08">
-<link href="#rfc.appendix.C.5" rel="Chapter" title="C.5 Since draft-ietf-quic-transport-07">
-<link href="#rfc.appendix.C.6" rel="Chapter" title="C.6 Since draft-ietf-quic-transport-06">
-<link href="#rfc.appendix.C.7" rel="Chapter" title="C.7 Since draft-ietf-quic-transport-05">
-<link href="#rfc.appendix.C.8" rel="Chapter" title="C.8 Since draft-ietf-quic-transport-04">
-<link href="#rfc.appendix.C.9" rel="Chapter" title="C.9 Since draft-ietf-quic-transport-03">
-<link href="#rfc.appendix.C.10" rel="Chapter" title="C.10 Since draft-ietf-quic-transport-02">
-<link href="#rfc.appendix.C.11" rel="Chapter" title="C.11 Since draft-ietf-quic-transport-01">
-<link href="#rfc.appendix.C.12" rel="Chapter" title="C.12 Since draft-ietf-quic-transport-00">
-<link href="#rfc.appendix.C.13" rel="Chapter" title="C.13 Since draft-hamilton-quic-transport-protocol-01">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-transport-11">
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-transport-10">
+<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-transport-09">
+<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Since draft-ietf-quic-transport-08">
+<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 Since draft-ietf-quic-transport-07">
+<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 Since draft-ietf-quic-transport-06">
+<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 Since draft-ietf-quic-transport-05">
+<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 Since draft-ietf-quic-transport-04">
+<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 Since draft-ietf-quic-transport-03">
+<link href="#rfc.appendix.A.10" rel="Chapter" title="A.10 Since draft-ietf-quic-transport-02">
+<link href="#rfc.appendix.A.11" rel="Chapter" title="A.11 Since draft-ietf-quic-transport-01">
+<link href="#rfc.appendix.A.12" rel="Chapter" title="A.12 Since draft-ietf-quic-transport-00">
+<link href="#rfc.appendix.A.13" rel="Chapter" title="A.13 Since draft-hamilton-quic-transport-protocol-01">
+<link href="#rfc.acknowledgments" rel="Chapter">
+<link href="#rfc.contributors" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -421,7 +422,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-23" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-24" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -445,12 +446,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: November 24, 2018</td>
+<td class="left">Expires: November 25, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 23, 2018</td>
+<td class="right">May 24, 2018</td>
 </tr>
 
     	
@@ -469,7 +470,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 24, 2018.</p>
+<p>This Internet-Draft will expire on November 25, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -645,7 +646,7 @@ ul.toc li {
 </li>
 <li>8.4.   <a href="#rfc.section.8.4">Path Maximum Transmission Unit</a>
 </li>
-<ul><li>8.4.1.   <a href="#rfc.section.8.4.1">Special Considerations for PMTU Discovery</a>
+<ul><li>8.4.1.   <a href="#rfc.section.8.4.1">IPv4 PMTU Discovery</a>
 </li>
 <li>8.4.2.   <a href="#rfc.section.8.4.2">Special Considerations for Packetization Layer PMTU Discovery</a>
 </li>
@@ -699,15 +700,17 @@ ul.toc li {
 </li>
 </ul><li>12.   <a href="#rfc.section.12">Security Considerations</a>
 </li>
-<ul><li>12.1.   <a href="#rfc.section.12.1">Spoofed ACK Attack</a>
+<ul><li>12.1.   <a href="#rfc.section.12.1">Handshake Denial of Service</a>
 </li>
-<li>12.2.   <a href="#rfc.section.12.2">Optimistic ACK Attack</a>
+<li>12.2.   <a href="#rfc.section.12.2">Spoofed ACK Attack</a>
 </li>
-<li>12.3.   <a href="#rfc.section.12.3">Slowloris Attacks</a>
+<li>12.3.   <a href="#rfc.section.12.3">Optimistic ACK Attack</a>
 </li>
-<li>12.4.   <a href="#rfc.section.12.4">Stream Fragmentation and Reassembly Attacks</a>
+<li>12.4.   <a href="#rfc.section.12.4">Slowloris Attacks</a>
 </li>
-<li>12.5.   <a href="#rfc.section.12.5">Stream Commitment Attack</a>
+<li>12.5.   <a href="#rfc.section.12.5">Stream Fragmentation and Reassembly Attacks</a>
+</li>
+<li>12.6.   <a href="#rfc.section.12.6">Stream Commitment Attack</a>
 </li>
 </ul><li>13.   <a href="#rfc.section.13">IANA Considerations</a>
 </li>
@@ -721,39 +724,39 @@ ul.toc li {
 </li>
 <li>14.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
-</ul><li>Appendix A.   <a href="#rfc.appendix.A">Contributors</a>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
-<li>Appendix B.   <a href="#rfc.appendix.B">Acknowledgments</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-transport-11</a>
 </li>
-<li>Appendix C.   <a href="#rfc.appendix.C">Change Log</a>
+<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-transport-10</a>
 </li>
-<ul><li>C.1.   <a href="#rfc.appendix.C.1">Since draft-ietf-quic-transport-11</a>
+<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-transport-09</a>
 </li>
-<li>C.2.   <a href="#rfc.appendix.C.2">Since draft-ietf-quic-transport-10</a>
+<li>A.4.   <a href="#rfc.appendix.A.4">Since draft-ietf-quic-transport-08</a>
 </li>
-<li>C.3.   <a href="#rfc.appendix.C.3">Since draft-ietf-quic-transport-09</a>
+<li>A.5.   <a href="#rfc.appendix.A.5">Since draft-ietf-quic-transport-07</a>
 </li>
-<li>C.4.   <a href="#rfc.appendix.C.4">Since draft-ietf-quic-transport-08</a>
+<li>A.6.   <a href="#rfc.appendix.A.6">Since draft-ietf-quic-transport-06</a>
 </li>
-<li>C.5.   <a href="#rfc.appendix.C.5">Since draft-ietf-quic-transport-07</a>
+<li>A.7.   <a href="#rfc.appendix.A.7">Since draft-ietf-quic-transport-05</a>
 </li>
-<li>C.6.   <a href="#rfc.appendix.C.6">Since draft-ietf-quic-transport-06</a>
+<li>A.8.   <a href="#rfc.appendix.A.8">Since draft-ietf-quic-transport-04</a>
 </li>
-<li>C.7.   <a href="#rfc.appendix.C.7">Since draft-ietf-quic-transport-05</a>
+<li>A.9.   <a href="#rfc.appendix.A.9">Since draft-ietf-quic-transport-03</a>
 </li>
-<li>C.8.   <a href="#rfc.appendix.C.8">Since draft-ietf-quic-transport-04</a>
+<li>A.10.   <a href="#rfc.appendix.A.10">Since draft-ietf-quic-transport-02</a>
 </li>
-<li>C.9.   <a href="#rfc.appendix.C.9">Since draft-ietf-quic-transport-03</a>
+<li>A.11.   <a href="#rfc.appendix.A.11">Since draft-ietf-quic-transport-01</a>
 </li>
-<li>C.10.   <a href="#rfc.appendix.C.10">Since draft-ietf-quic-transport-02</a>
+<li>A.12.   <a href="#rfc.appendix.A.12">Since draft-ietf-quic-transport-00</a>
 </li>
-<li>C.11.   <a href="#rfc.appendix.C.11">Since draft-ietf-quic-transport-01</a>
+<li>A.13.   <a href="#rfc.appendix.A.13">Since draft-hamilton-quic-transport-protocol-01</a>
 </li>
-<li>C.12.   <a href="#rfc.appendix.C.12">Since draft-ietf-quic-transport-00</a>
+</ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
-<li>C.13.   <a href="#rfc.appendix.C.13">Since draft-hamilton-quic-transport-protocol-01</a>
+<li><a href="#rfc.contributors">Contributors</a>
 </li>
-</ul><li><a href="#rfc.authors">Authors' Addresses</a>
+<li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
 
@@ -1064,12 +1067,14 @@ ul.toc li {
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
 </h2>
-<p id="rfc.section.4.5.p.1">All QUIC packets are protected.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.</p>
-<p id="rfc.section.4.5.p.2">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
-<p id="rfc.section.4.5.p.3">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.7</a>.</p>
-<p id="rfc.section.4.5.p.4">The version field for protected packets is the current QUIC version.</p>
-<p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
-<p id="rfc.section.4.5.p.6">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
+<p id="rfc.section.4.5.p.1">All QUIC packets use packet protection.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.</p>
+<p id="rfc.section.4.5.p.2">Packets protected with handshake keys only use packet protection to ensure that the sender of the packet is on the network path.  This packet protection is not effective confidentiality protection; any entity that receives the Initial packet from a client can recover the keys necessary to remove packet protection or to generate packets that will be successfully authenticated.</p>
+<p id="rfc.section.4.5.p.3">Packets protected with 0-RTT and 1-RTT keys are expected to have confidentiality and data origin authentication; the cryptographic handshake ensures that only the communicating endpoints receive the corresponding keys.</p>
+<p id="rfc.section.4.5.p.4">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
+<p id="rfc.section.4.5.p.5">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.7</a>.</p>
+<p id="rfc.section.4.5.p.6">The version field for protected packets is the current QUIC version.</p>
+<p id="rfc.section.4.5.p.7">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
+<p id="rfc.section.4.5.p.8">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
 <h2 id="rfc.section.4.6">
 <a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coalescing Packets</a>
 </h2>
@@ -1091,7 +1096,7 @@ ul.toc li {
 <a href="#rfc.section.4.8">4.8.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
 </h2>
 <p id="rfc.section.4.8.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.  The packet number for sending MUST start at zero for the first packet sent and MUST increase by at least one after sending a packet.</p>
-<p id="rfc.section.4.8.p.2">A QUIC endpoint MUST NOT reuse a packet number within the same connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; a server MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.10.4</a>) in response to further packets that it receives.</p>
+<p id="rfc.section.4.8.p.2">A QUIC endpoint MUST NOT reuse a packet number within the same connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; an endpoint MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.10.4</a>) in response to further packets that it receives.</p>
 <p id="rfc.section.4.8.p.3">In the QUIC long and short packet headers, the number of bits required to represent the packet number are reduced by including only a variable number of the least significant bits of the packet number.  One or two of the most significant bits of the first octet determine how many bits of the packet number are provided, as shown in <a href="#pn-encodings" class="xref">Table 2</a>.</p>
 <div id="rfc.table.2"></div>
 <div id="pn-encodings"></div>
@@ -1649,20 +1654,16 @@ ul.toc li {
 <h3 id="rfc.section.6.10.4">
 <a href="#rfc.section.6.10.4">6.10.4.</a> <a href="#stateless-reset" id="stateless-reset">Stateless Reset</a>
 </h3>
-<p id="rfc.section.6.10.4.p.1">A stateless reset is provided as an option of last resort for a server that does not have access to the state of a connection.  A server crash or outage might result in clients continuing to send data to a server that is unable to properly continue the connection.  A server that wishes to communicate a fatal connection error MUST use a closing frame if it has sufficient state to do so.</p>
-<p id="rfc.section.6.10.4.p.2">To support this process, the server sends a stateless_reset_token value during the handshake in the transport parameters.  This value is protected by encryption, so only client and server know this value.</p>
-<p id="rfc.section.6.10.4.p.3">A server that receives packets that it cannot process sends a packet in the following layout:</p>
+<p id="rfc.section.6.10.4.p.1">A stateless reset is provided as an option of last resort for an endpoint that does not have access to the state of a connection.  A crash or outage might result in peers continuing to send data to an endpoint that is unable to properly continue the connection.  An endpoint that wishes to communicate a fatal connection error MUST use a closing frame if it has sufficient state to do so.</p>
+<p id="rfc.section.6.10.4.p.2">To support this process, a token is sent by endpoints.  The token is carried in the NEW_CONNECTION_ID frame sent by either peer, and servers can specify the stateless_reset_token transport parameter during the handshake (clients cannot because their transport parameters don&#8217;t have confidentiality protection).  This value is protected by encryption, so only client and server know this value.</p>
+<p id="rfc.section.6.10.4.p.3">An endpoint that receives packets that it cannot process sends a packet in the following layout:</p>
 <pre>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+
-|0|K| Type (6)  |
+|0|K|1|1|0|0|0|0|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                  Destination Connection ID (144)            ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                     Packet Number (8/16/32)                   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Random Octets (*)                    ...
+|                      Random Octets (160..)                  ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
 +                                                               +
@@ -1674,30 +1675,32 @@ ul.toc li {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p id="rfc.section.6.10.4.p.4">This design ensures that a stateless reset packet is - to the extent possible - indistinguishable from a regular packet with a short header.</p>
-<p id="rfc.section.6.10.4.p.5">A server generates a random 18-octet Destination Connection ID field.  For a client that depends on the server including a connection ID, this will mean that this value differs from previous packets.  Ths results in two problems:</p>
+<p id="rfc.section.6.10.4.p.5">The message consists of a header octet, followed by random octets of arbitrary length, followed by a Stateless Reset Token.</p>
+<p id="rfc.section.6.10.4.p.6">A stateless reset will be interpreted by a recipient as a packet with a short header.  For the packet to appear as valid, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
+<p id="rfc.section.6.10.4.p.7">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
+<p id="rfc.section.6.10.4.p.8">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
+<p id="rfc.section.6.10.4.p.9">Using a randomized connection ID results in two problems:</p>
 <p></p>
 
 <ul>
-<li>The packet might not reach the client.  If the Destination Connection ID is critical for routing toward the client, then this packet could be incorrectly routed.  This causes the stateless reset to be ineffective in causing errors to be quickly detected and recovered.  In this case, clients will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
-<li>The randomly generated connection ID can be used by entities other than the client to identify this as a potential stateless reset.  A server that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
+<li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This causes the stateless reset to be ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
+<li>The randomly generated connection ID can be used by entities other than the peer to identify this as a potential stateless reset.  An endpoint that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
 </ul>
-<p id="rfc.section.6.10.4.p.7">The Packet Number field is set to a randomized value.  The server SHOULD send a packet with a short header and a packet number length of 1 octet. Using the shortest possible packet number encoding minimizes the perceived gap between the last packet that the server sent and this packet.  A server MAY indicate a different packet number length, but a longer packet number encoding might allow this message to be identified as a stateless reset more easily using heuristics.</p>
-<p id="rfc.section.6.10.4.p.8">After the Packet Number, the server pads the message with an arbitrary number of octets containing random values.</p>
-<p id="rfc.section.6.10.4.p.9">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
-<p id="rfc.section.6.10.4.p.10">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
-<p id="rfc.section.6.10.4.p.11">This stateless reset design is specific to QUIC version 1.  A server that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by clients that support any version that the server might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
+<p id="rfc.section.6.10.4.p.11">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
+<p id="rfc.section.6.10.4.p.12">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
+<p id="rfc.section.6.10.4.p.13">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
 <h4 id="rfc.section.6.10.4.1">
 <a href="#rfc.section.6.10.4.1">6.10.4.1.</a> <a href="#detecting-a-stateless-reset" id="detecting-a-stateless-reset">Detecting a Stateless Reset</a>
 </h4>
-<p id="rfc.section.6.10.4.1.p.1">A client detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The client then compares the last 16 octets of the packet with the Stateless Reset Token provided by the server in its transport parameters.  If these values are identical, the client MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
+<p id="rfc.section.6.10.4.1.p.1">An endpoint detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The endpoint then compares the last 16 octets of the packet with the Stateless Reset Token provided by its peer, either in a NEW_CONNECTION_ID frame or the server&#8217;s transport parameters.  If these values are identical, the endpoint MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
 <h4 id="rfc.section.6.10.4.2">
 <a href="#rfc.section.6.10.4.2">6.10.4.2.</a> <a href="#calculating-a-stateless-reset-token" id="calculating-a-stateless-reset-token">Calculating a Stateless Reset Token</a>
 </h4>
-<p id="rfc.section.6.10.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, a server could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple servers in a cluster or a storage problem for a server that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
-<p id="rfc.section.6.10.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the server&#8217;s connection ID (see <a href="#connection-id" class="xref">Section 4.7</a>), and an identifier for the server instance.  A server could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, server_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with server and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
-<p id="rfc.section.6.10.4.2.p.3">A server that loses state can use the same method to generate a valid Stateless Reset Secret.  The connection ID comes from the packet that the server receives.</p>
-<p id="rfc.section.6.10.4.2.p.4">This design relies on the client always sending a connection ID in its packets so that the server can use the connection ID from a packet to reset the connection.  A server that uses this design cannot allow clients to use a zero-length connection ID.</p>
-<p id="rfc.section.6.10.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of server instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same server without first changing to use a different static key or server identifier.</p>
+<p id="rfc.section.6.10.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, an endpoint could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple instances in a cluster or a storage problem for a endpoint that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
+<p id="rfc.section.6.10.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 4.7</a>), and an instance identifier.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, instance_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with instance and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
+<p id="rfc.section.6.10.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.  An instance that receives a packet for another instance might be able to recover the instance identifier using the connection ID.  Alternatively, the instance identifier might be omitted from the calculation of the Stateless Reset Token so that all instances are equally able to generate a stateless reset.</p>
+<p id="rfc.section.6.10.4.2.p.4">This design relies on the peer always sending a connection ID in its packets so that the endpoint can use the connection ID from a packet to reset the connection.  An endpoint that uses this design cannot allow its peers to send packets with a zero-length destination connection ID.</p>
+<p id="rfc.section.6.10.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same instance without first changing to use a different static key or instance identifier.</p>
 <p id="rfc.section.6.10.4.2.p.6">Note that Stateless Reset messages do not have any cryptographic protection.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#frame-types-and-formats" id="frame-types-and-formats">Frame Types and Formats</a>
@@ -2241,7 +2244,7 @@ ul.toc li {
 <p id="rfc.section.8.4.p.5">QUIC depends on the network path supporting a MTU of at least 1280 octets. This is the IPv6 minimum MTU and therefore also supported by most modern IPv4 networks.  An endpoint MUST NOT reduce its MTU below this number, even if it receives signals that indicate a smaller limit might exist.</p>
 <p id="rfc.section.8.4.p.6">If a QUIC endpoint determines that the PMTU between any pair of local and remote IP addresses has fallen below 1280 octets, it MUST immediately cease sending QUIC packets on the affected path.  This could result in termination of the connection if an alternative path cannot be found.</p>
 <h3 id="rfc.section.8.4.1">
-<a href="#rfc.section.8.4.1">8.4.1.</a> <a href="#special-considerations-for-pmtu-discovery" id="special-considerations-for-pmtu-discovery">Special Considerations for PMTU Discovery</a>
+<a href="#rfc.section.8.4.1">8.4.1.</a> <a href="#v4-pmtud" id="v4-pmtud">IPv4 PMTU Discovery</a>
 </h3>
 <p id="rfc.section.8.4.1.p.1">Traditional ICMP-based path MTU discovery in IPv4 <a href="#PMTUDv4" class="xref">[PMTUDv4]</a> is potentially vulnerable to off-path attacks that successfully guess the IP/port 4-tuple and reduce the MTU to a bandwidth-inefficient value. TCP connections mitigate this risk by using the (at minimum) 8 bytes of transport header echoed in the ICMP message to validate the TCP sequence number as valid for the current connection. However, as QUIC operates over UDP, in IPv4 the echoed information could consist only of the IP and UDP headers, which usually has insufficient entropy to mitigate off-path attacks.</p>
 <p id="rfc.section.8.4.1.p.2">As a result, endpoints that implement PMTUD in IPv4 SHOULD take steps to mitigate this risk. For instance, an application could:</p>
@@ -2649,32 +2652,42 @@ ul.toc li {
 <a href="#rfc.section.12">12.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
 <h2 id="rfc.section.12.1">
-<a href="#rfc.section.12.1">12.1.</a> <a href="#spoofed-ack-attack" id="spoofed-ack-attack">Spoofed ACK Attack</a>
+<a href="#rfc.section.12.1">12.1.</a> <a href="#handshake-denial-of-service" id="handshake-denial-of-service">Handshake Denial of Service</a>
 </h2>
-<p id="rfc.section.12.1.p.1">An attacker might be able to receive an address validation token (<a href="#address-validation" class="xref">Section 6.6</a>) from the server and then release the IP address it used to acquire that token.  The attacker may, in the future, spoof this same address (which now presumably addresses a different endpoint), and initiate a 0-RTT connection with a server on the victim&#8217;s behalf.  The attacker can then spoof ACK frames to the server which cause the server to send excessive amounts of data toward the new owner of the IP address.</p>
-<p id="rfc.section.12.1.p.2">There are two possible mitigations to this attack.  The simplest one is that a server can unilaterally create a gap in packet-number space.  In the non-attack scenario, the client will send an ACK frame with the larger value for largest acknowledged.  In the attack scenario, the attacker could acknowledge a packet in the gap.  If the server sees an acknowledgment for a packet that was never sent, the connection can be aborted.</p>
-<p id="rfc.section.12.1.p.3">The second mitigation is that the server can require that acknowledgments for sent packets match the encryption level of the sent packet.  This mitigation is useful if the connection has an ephemeral forward-secure key that is generated and used for every new connection.  If a packet sent is protected with a forward-secure key, then any acknowledgments that are received for them MUST also be forward-secure protected.  Since the attacker will not have the forward secure key, the attacker will not be able to generate forward-secure protected packets with ACK frames.</p>
+<p id="rfc.section.12.1.p.1">As an encrypted and authenticated transport QUIC provides a range of protections against denial of service.  Once the cryptographic handshake is complete, QUIC endpoints discard most packets that are not authenticated, greatly limiting the ability of an attacker to interfere with existing connections.</p>
+<p id="rfc.section.12.1.p.2">Once a connection is established QUIC endpoints might accept some unauthenticated ICMP packets (see <a href="#v4-pmtud" class="xref">Section 8.4.1</a>), but the use of these packets is extremely limited.  The only other type of packet that an endpoint might accept is a stateless reset (<a href="#stateless-reset" class="xref">Section 6.10.4</a>) which relies on the token being kept secret until it is used.</p>
+<p id="rfc.section.12.1.p.3">During the creation of a connection, QUIC only provides protection against attack from off the network path.  All QUIC packets contain proof that the recipient saw a preceding packet from its peer.</p>
+<p id="rfc.section.12.1.p.4">The first mechanism used is the source and destination connection IDs, which are required to match those set by a peer.  Except for an Initial and stateless reset packets, an endpoint only accepts packets that include a destination connection that matches a connection ID the endpoint previously chose.  This is the only protection offered for Version Negotiation packets.</p>
+<p id="rfc.section.12.1.p.5">The destination connection ID in an Initial packet is selected by a client to be unpredictable, which serves an additional purpose.  The packets that carry the cryptographic handshake are protected with a key that is derived from this connection ID and salt specific to the QUIC version.  This allows endpoints to use the same process for authenticating packets that they receive as they use after the cryptographic handshake completes.  Packets that cannot be authenticated are discarded.  Protecting packets in this fashion provides a strong assurance that the sender of the packet saw the Initial packet and understood it.</p>
+<p id="rfc.section.12.1.p.6">These protections are not intended to be effective against an attacker that is able to receive QUIC packets prior to the connection being established.  Such an attacker can potentially send packets that will be accepted by QUIC endpoints.  This version of QUIC attempts to detect this sort of attack, but it expects that endpoints will fail to establish a connection rather than recovering.  For the most part, the cryptographic handshake protocol <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> is responsible for detecting tampering during the handshake, though additional validation is required for version negotiation (see <a href="#version-validation" class="xref">Section 6.4.4</a>).</p>
+<p id="rfc.section.12.1.p.7">Endpoints are permitted to use other methods to detect and attempt to recover from interference with the handshake.  Invalid packets may be identified and discarded using other methods, but no specific method is mandated in this document.</p>
 <h2 id="rfc.section.12.2">
-<a href="#rfc.section.12.2">12.2.</a> <a href="#optimistic-ack-attack" id="optimistic-ack-attack">Optimistic ACK Attack</a>
+<a href="#rfc.section.12.2">12.2.</a> <a href="#spoofed-ack-attack" id="spoofed-ack-attack">Spoofed ACK Attack</a>
 </h2>
-<p id="rfc.section.12.2.p.1">An endpoint that acknowledges packets it has not received might cause a congestion controller to permit sending at rates beyond what the network supports.  An endpoint MAY skip packet numbers when sending packets to detect this behavior.  An endpoint can then immediately close the connection with a connection error of type PROTOCOL_VIOLATION (see <a href="#immediate-close" class="xref">Section 6.10.3</a>).</p>
+<p id="rfc.section.12.2.p.1">An attacker might be able to receive an address validation token (<a href="#address-validation" class="xref">Section 6.6</a>) from the server and then release the IP address it used to acquire that token.  The attacker may, in the future, spoof this same address (which now presumably addresses a different endpoint), and initiate a 0-RTT connection with a server on the victim&#8217;s behalf.  The attacker can then spoof ACK frames to the server which cause the server to send excessive amounts of data toward the new owner of the IP address.</p>
+<p id="rfc.section.12.2.p.2">There are two possible mitigations to this attack.  The simplest one is that a server can unilaterally create a gap in packet-number space.  In the non-attack scenario, the client will send an ACK frame with the larger value for largest acknowledged.  In the attack scenario, the attacker could acknowledge a packet in the gap.  If the server sees an acknowledgment for a packet that was never sent, the connection can be aborted.</p>
+<p id="rfc.section.12.2.p.3">The second mitigation is that the server can require that acknowledgments for sent packets match the encryption level of the sent packet.  This mitigation is useful if the connection has an ephemeral forward-secure key that is generated and used for every new connection.  If a packet sent is protected with a forward-secure key, then any acknowledgments that are received for them MUST also be forward-secure protected.  Since the attacker will not have the forward secure key, the attacker will not be able to generate forward-secure protected packets with ACK frames.</p>
 <h2 id="rfc.section.12.3">
-<a href="#rfc.section.12.3">12.3.</a> <a href="#slowloris-attacks" id="slowloris-attacks">Slowloris Attacks</a>
+<a href="#rfc.section.12.3">12.3.</a> <a href="#optimistic-ack-attack" id="optimistic-ack-attack">Optimistic ACK Attack</a>
 </h2>
-<p id="rfc.section.12.3.p.1">The attacks commonly known as Slowloris <a href="#SLOWLORIS" class="xref">[SLOWLORIS]</a> try to keep many connections to the target endpoint open and hold them open as long as possible.  These attacks can be executed against a QUIC endpoint by generating the minimum amount of activity necessary to avoid being closed for inactivity.  This might involve sending small amounts of data, gradually opening flow control windows in order to control the sender rate, or manufacturing ACK frames that simulate a high loss rate.</p>
-<p id="rfc.section.12.3.p.2">QUIC deployments SHOULD provide mitigations for the Slowloris attacks, such as increasing the maximum number of clients the server will allow, limiting the number of connections a single IP address is allowed to make, imposing restrictions on the minimum transfer speed a connection is allowed to have, and restricting the length of time an endpoint is allowed to stay connected.</p>
+<p id="rfc.section.12.3.p.1">An endpoint that acknowledges packets it has not received might cause a congestion controller to permit sending at rates beyond what the network supports.  An endpoint MAY skip packet numbers when sending packets to detect this behavior.  An endpoint can then immediately close the connection with a connection error of type PROTOCOL_VIOLATION (see <a href="#immediate-close" class="xref">Section 6.10.3</a>).</p>
 <h2 id="rfc.section.12.4">
-<a href="#rfc.section.12.4">12.4.</a> <a href="#stream-fragmentation-and-reassembly-attacks" id="stream-fragmentation-and-reassembly-attacks">Stream Fragmentation and Reassembly Attacks</a>
+<a href="#rfc.section.12.4">12.4.</a> <a href="#slowloris-attacks" id="slowloris-attacks">Slowloris Attacks</a>
 </h2>
-<p id="rfc.section.12.4.p.1">An adversarial endpoint might intentionally fragment the data on stream buffers in order to cause disproportionate memory commitment.  An adversarial endpoint could open a stream and send some STREAM frames containing arbitrary fragments of the stream content.</p>
-<p id="rfc.section.12.4.p.2">The attack is mitigated if flow control windows correspond to available memory.  However, some receivers will over-commit memory and advertise flow control offsets in the aggregate that exceed actual available memory.  The over-commitment strategy can lead to better performance when endpoints are well behaved, but renders endpoints vulnerable to the stream fragmentation attack.</p>
-<p id="rfc.section.12.4.p.3">QUIC deployments SHOULD provide mitigations against the stream fragmentation attack.  Mitigations could consist of avoiding over-committing memory, delaying reassembly of STREAM frames, implementing heuristics based on the age and duration of reassembly holes, or some combination.</p>
+<p id="rfc.section.12.4.p.1">The attacks commonly known as Slowloris <a href="#SLOWLORIS" class="xref">[SLOWLORIS]</a> try to keep many connections to the target endpoint open and hold them open as long as possible.  These attacks can be executed against a QUIC endpoint by generating the minimum amount of activity necessary to avoid being closed for inactivity.  This might involve sending small amounts of data, gradually opening flow control windows in order to control the sender rate, or manufacturing ACK frames that simulate a high loss rate.</p>
+<p id="rfc.section.12.4.p.2">QUIC deployments SHOULD provide mitigations for the Slowloris attacks, such as increasing the maximum number of clients the server will allow, limiting the number of connections a single IP address is allowed to make, imposing restrictions on the minimum transfer speed a connection is allowed to have, and restricting the length of time an endpoint is allowed to stay connected.</p>
 <h2 id="rfc.section.12.5">
-<a href="#rfc.section.12.5">12.5.</a> <a href="#stream-commitment-attack" id="stream-commitment-attack">Stream Commitment Attack</a>
+<a href="#rfc.section.12.5">12.5.</a> <a href="#stream-fragmentation-and-reassembly-attacks" id="stream-fragmentation-and-reassembly-attacks">Stream Fragmentation and Reassembly Attacks</a>
 </h2>
-<p id="rfc.section.12.5.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
-<p id="rfc.section.12.5.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
-<p id="rfc.section.12.5.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
+<p id="rfc.section.12.5.p.1">An adversarial endpoint might intentionally fragment the data on stream buffers in order to cause disproportionate memory commitment.  An adversarial endpoint could open a stream and send some STREAM frames containing arbitrary fragments of the stream content.</p>
+<p id="rfc.section.12.5.p.2">The attack is mitigated if flow control windows correspond to available memory.  However, some receivers will over-commit memory and advertise flow control offsets in the aggregate that exceed actual available memory.  The over-commitment strategy can lead to better performance when endpoints are well behaved, but renders endpoints vulnerable to the stream fragmentation attack.</p>
+<p id="rfc.section.12.5.p.3">QUIC deployments SHOULD provide mitigations against the stream fragmentation attack.  Mitigations could consist of avoiding over-committing memory, delaying reassembly of STREAM frames, implementing heuristics based on the age and duration of reassembly holes, or some combination.</p>
+<h2 id="rfc.section.12.6">
+<a href="#rfc.section.12.6">12.6.</a> <a href="#stream-commitment-attack" id="stream-commitment-attack">Stream Commitment Attack</a>
+</h2>
+<p id="rfc.section.12.6.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
+<p id="rfc.section.12.6.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
+<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
 <h1 id="rfc.section.13">
 <a href="#rfc.section.13">13.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -2984,25 +2997,15 @@ ul.toc li {
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#contributors" id="contributors">Contributors</a>
-</h1>
-<p id="rfc.section.A.p.1">The original authors of this specification were Ryan Hamilton, Jana Iyengar, Ian Swett, and Alyssa Wilk.</p>
-<p id="rfc.section.A.p.2">The original design and rationale behind this protocol draw significantly from work by Jim Roskind <a href="#EARLY-DESIGN" class="xref">[EARLY-DESIGN]</a>. In alphabetical order, the contributors to the pre-IETF QUIC project at Google are: Britt Cyr, Jeremy Dorfman, Ryan Hamilton, Jana Iyengar, Fedor Kouranov, Charles Krasic, Jo Kulik, Adam Langley, Jim Roskind, Robbie Shade, Satyam Shekhar, Cherie Shi, Ian Swett, Raman Tenneti, Victor Vasiliev, Antonio Vicente, Patrik Westin, Alyssa Wilk, Dale Worley, Fan Yang, Dan Zhang, Daniel Ziegler.</p>
-<h1 id="rfc.appendix.B">
-<a href="#rfc.appendix.B">Appendix B.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
-</h1>
-<p id="rfc.section.B.p.1">Special thanks are due to the following for helping shape pre-IETF QUIC and its deployment: Chris Bentzel, Misha Efimov, Roberto Peon, Alistair Riddoch, Siddharth Vijayakrishnan, and Assar Westerlund.</p>
-<p id="rfc.section.B.p.2">This document has benefited immensely from various private discussions and public ones on the quic@ietf.org and proto-quic@chromium.org mailing lists. Our thanks to all.</p>
-<h1 id="rfc.appendix.C">
-<a href="#rfc.appendix.C">Appendix C.</a> <a href="#change-log" id="change-log">Change Log</a>
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#change-log" id="change-log">Change Log</a>
 </h1>
 <p></p>
 
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong> Please remove this section prior to publication of a final version of this document.</li></ul>
-<p id="rfc.section.C.p.2">Issue and pull request numbers are listed with a leading octothorp.</p>
-<h2 id="rfc.appendix.C.1">
-<a href="#rfc.appendix.C.1">C.1.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
+<p id="rfc.section.A.p.2">Issue and pull request numbers are listed with a leading octothorp.</p>
+<h2 id="rfc.appendix.A.1">
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
 </h2>
 <p></p>
 
@@ -3012,8 +3015,8 @@ ul.toc li {
 <li>Packet numbers use a variable-length encoding (#989, #1334)</li>
 <li>STREAM frames can now be empty (#1350)</li>
 </ul>
-<h2 id="rfc.appendix.C.2">
-<a href="#rfc.appendix.C.2">C.2.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
+<h2 id="rfc.appendix.A.2">
+<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
 </h2>
 <p></p>
 
@@ -3033,8 +3036,8 @@ ul.toc li {
 <li>Endpoints now become closing after an idle timeout (#1178, #1179)</li>
 <li>Remove implication that Version Negotiation is sent when a packet of the wrong version is received (#1197)</li>
 </ul>
-<h2 id="rfc.appendix.C.3">
-<a href="#rfc.appendix.C.3">C.3.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
+<h2 id="rfc.appendix.A.3">
+<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
 </h2>
 <p></p>
 
@@ -3048,8 +3051,8 @@ ul.toc li {
 <li>Added an error code for server busy signals (#1137)</li>
 <li>Endpoints now set the connection ID that their peer uses.  Connection IDs are variable length.  Removed the omit_connection_id transport parameter and the corresponding short header flag. (#1089, #1052, #1146, #821, #745, #821, #1166, #1151)</li>
 </ul>
-<h2 id="rfc.appendix.C.4">
-<a href="#rfc.appendix.C.4">C.4.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
+<h2 id="rfc.appendix.A.4">
+<a href="#rfc.appendix.A.4">A.4.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
 </h2>
 <p></p>
 
@@ -3066,8 +3069,8 @@ ul.toc li {
 <li>Ack Delay assumes a default value during the handshake (#1007, #1009)</li>
 <li>Removed transport parameters from NewSessionTicket (#1015)</li>
 </ul>
-<h2 id="rfc.appendix.C.5">
-<a href="#rfc.appendix.C.5">C.5.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
+<h2 id="rfc.appendix.A.5">
+<a href="#rfc.appendix.A.5">A.5.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
 </h2>
 <p></p>
 
@@ -3094,8 +3097,8 @@ ul.toc li {
 <li>negotiated_version is sent in server transport parameters (#710, #959)</li>
 <li>Increased the range over which packet numbers are randomized (#864, #850, #964)</li>
 </ul>
-<h2 id="rfc.appendix.C.6">
-<a href="#rfc.appendix.C.6">C.6.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
+<h2 id="rfc.appendix.A.6">
+<a href="#rfc.appendix.A.6">A.6.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
 </h2>
 <p></p>
 
@@ -3109,8 +3112,8 @@ ul.toc li {
 <li>Remove timestamps from the ACK frame (#841)</li>
 <li>Require transport parameters to only appear once (#792)</li>
 </ul>
-<h2 id="rfc.appendix.C.7">
-<a href="#rfc.appendix.C.7">C.7.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
+<h2 id="rfc.appendix.A.7">
+<a href="#rfc.appendix.A.7">A.7.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
 </h2>
 <p></p>
 
@@ -3122,8 +3125,8 @@ ul.toc li {
 <li>Renamed STREAM_ID_NEEDED to STREAM_ID_BLOCKED</li>
 <li>Clarify Keep-alive requirements (#729)</li>
 </ul>
-<h2 id="rfc.appendix.C.8">
-<a href="#rfc.appendix.C.8">C.8.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
+<h2 id="rfc.appendix.A.8">
+<a href="#rfc.appendix.A.8">A.8.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
 </h2>
 <p></p>
 
@@ -3142,8 +3145,8 @@ ul.toc li {
 <li>CONNECTION_CLOSE terminates the connection like TCP RST (#330, #328)</li>
 <li>Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)</li>
 </ul>
-<h2 id="rfc.appendix.C.9">
-<a href="#rfc.appendix.C.9">C.9.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
+<h2 id="rfc.appendix.A.9">
+<a href="#rfc.appendix.A.9">A.9.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
 </h2>
 <p></p>
 
@@ -3151,8 +3154,8 @@ ul.toc li {
 <li>Change STREAM and RST_STREAM layout</li>
 <li>Add MAX_STREAM_ID settings</li>
 </ul>
-<h2 id="rfc.appendix.C.10">
-<a href="#rfc.appendix.C.10">C.10.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
+<h2 id="rfc.appendix.A.10">
+<a href="#rfc.appendix.A.10">A.10.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
 </h2>
 <p></p>
 
@@ -3177,8 +3180,8 @@ ul.toc li {
 </li>
 <li>Expanded security considerations (#440, #444, #445, #448)</li>
 </ul>
-<h2 id="rfc.appendix.C.11">
-<a href="#rfc.appendix.C.11">C.11.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
+<h2 id="rfc.appendix.A.11">
+<a href="#rfc.appendix.A.11">A.11.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
 </h2>
 <p></p>
 
@@ -3220,8 +3223,8 @@ ul.toc li {
 <li>Error codes for RST_STREAM and CONNECTION_CLOSE are now at a consistent offset (#249)</li>
 <li>Defined priority as the responsibility of the application protocol (#104, #303)</li>
 </ul>
-<h2 id="rfc.appendix.C.12">
-<a href="#rfc.appendix.C.12">C.12.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
+<h2 id="rfc.appendix.A.12">
+<a href="#rfc.appendix.A.12">A.12.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
 </h2>
 <p></p>
 
@@ -3232,8 +3235,8 @@ ul.toc li {
 <li>Error code space is divided into regions for each component</li>
 <li>Use big endian for all numeric values</li>
 </ul>
-<h2 id="rfc.appendix.C.13">
-<a href="#rfc.appendix.C.13">C.13.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
+<h2 id="rfc.appendix.A.13">
+<a href="#rfc.appendix.A.13">A.13.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
 </h2>
 <p></p>
 
@@ -3243,6 +3246,12 @@ ul.toc li {
 <li>Added IANA Considerations section</li>
 <li>Moved Contributors and Acknowledgments to appendices</li>
 </ul>
+<h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.B.p.1">Special thanks are due to the following for helping shape pre-IETF QUIC and its deployment: Chris Bentzel, Misha Efimov, Roberto Peon, Alistair Riddoch, Siddharth Vijayakrishnan, and Assar Westerlund.</p>
+<p id="rfc.section.B.p.2">This document has benefited immensely from various private discussions and public ones on the quic@ietf.org and proto-quic@chromium.org mailing lists. Our thanks to all.</p>
+<h1 id="rfc.contributors"><a href="#rfc.contributors">Contributors</a></h1>
+<p id="rfc.section.C.p.1">The original authors of this specification were Ryan Hamilton, Jana Iyengar, Ian Swett, and Alyssa Wilk.</p>
+<p id="rfc.section.C.p.2">The original design and rationale behind this protocol draw significantly from work by Jim Roskind <a href="#EARLY-DESIGN" class="xref">[EARLY-DESIGN]</a>. In alphabetical order, the contributors to the pre-IETF QUIC project at Google are: Britt Cyr, Jeremy Dorfman, Ryan Hamilton, Jana Iyengar, Fedor Kouranov, Charles Krasic, Jo Kulik, Adam Langley, Jim Roskind, Robbie Shade, Satyam Shekhar, Cherie Shi, Ian Swett, Raman Tenneti, Victor Vasiliev, Antonio Vicente, Patrik Westin, Alyssa Wilk, Dale Worley, Fan Yang, Dan Zhang, Daniel Ziegler.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

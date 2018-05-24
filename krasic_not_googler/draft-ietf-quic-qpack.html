@@ -308,9 +308,9 @@ ul.toc li {
 <link href="#rfc.references" rel="Chapter" title="7 References">
 <link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-qcram-00">
 <link href="#rfc.acknowledgments" rel="Chapter">
-<link href="#rfc.change_log" rel="Chapter">
-<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Since draft-ietf-quic-qcram-00">
 <link href="#rfc.authors" rel="Chapter">
 
 
@@ -319,7 +319,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-23" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-24" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -343,7 +343,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: November 24, 2018</td>
+<td class="left">Expires: November 25, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -356,7 +356,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 23, 2018</td>
+<td class="right">May 24, 2018</td>
 </tr>
 
     	
@@ -375,7 +375,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 24, 2018.</p>
+<p>This Internet-Draft will expire on November 25, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -449,13 +449,13 @@ ul.toc li {
 </li>
 <li>7.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
+</li>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-qcram-00</a>
+</li>
 </ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
-<li><a href="#rfc.change_log">Change Log</a>
-</li>
-<ul><li>B.1.   <a href="#rfc.appendix.B.1">Since draft-ietf-quic-qcram-00</a>
-</li>
-</ul><li><a href="#rfc.authors">Authors' Addresses</a>
+<li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
 
@@ -927,27 +927,15 @@ return controlBuffer, prefixBuffer + streamBuffer
 <a>Belshe, M.</a>, <a>Peon, R.</a> and <a>M. Thomson</a>, "<a href="https://tools.ietf.org/html/rfc7540">Hypertext Transfer Protocol Version 2 (HTTP/2)</a>", RFC 7540, DOI 10.17487/RFC7540, May 2015.</td>
 </tr>
 </tbody></table>
-<h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
-<p id="rfc.section.A.p.1">This draft draws heavily on the text of <a href="#RFC7541" class="xref">[RFC7541]</a>.  The indirect input of those authors is gratefully acknowledged, as well as ideas from:</p>
-<p></p>
-
-<ul>
-<li>Ryan Hamilton</li>
-<li>Patrick McManus</li>
-<li>Kazuho Oku</li>
-<li>Biren Roy</li>
-<li>Ian Swett</li>
-<li>Dmitri Tikhonov</li>
-</ul>
-<p id="rfc.section.A.p.3">Buck&#8217;s contribution was supported by Google during his employment there.</p>
-<p id="rfc.section.A.p.4">A substantial portion of Mike&#8217;s contribution was supported by Microsoft during his employment there.</p>
-<h1 id="rfc.change_log"><a href="#rfc.change_log">Change Log</a></h1>
+<h1 id="rfc.appendix.A">
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#change-log" id="change-log">Change Log</a>
+</h1>
 <p></p>
 
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
-<h2 id="rfc.appendix.B.1">
-<a href="#rfc.appendix.B.1">B.1.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
+<h2 id="rfc.appendix.A.1">
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
 </h2>
 <p></p>
 
@@ -958,6 +946,20 @@ return controlBuffer, prefixBuffer + streamBuffer
 <li>Added a setting to control the number of blocked decoders (#238, #1140, #1143)</li>
 <li>Moved table updates and acknowledgments to dedicated streams (#1121, #1122, #1238)</li>
 </ul>
+<h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
+<p id="rfc.section.B.p.1">This draft draws heavily on the text of <a href="#RFC7541" class="xref">[RFC7541]</a>.  The indirect input of those authors is gratefully acknowledged, as well as ideas from:</p>
+<p></p>
+
+<ul>
+<li>Ryan Hamilton</li>
+<li>Patrick McManus</li>
+<li>Kazuho Oku</li>
+<li>Biren Roy</li>
+<li>Ian Swett</li>
+<li>Dmitri Tikhonov</li>
+</ul>
+<p id="rfc.section.B.p.3">Buck&#8217;s contribution was supported by Google during his employment there.</p>
+<p id="rfc.section.B.p.4">A substantial portion of Mike&#8217;s contribution was supported by Microsoft during his employment there.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

@@ -5,8 +5,8 @@
 QUIC                                                     M. Thomson, Ed.
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                          S. Turner, Ed.
-Expires: November 24, 2018                                         sn3rd
-                                                            May 23, 2018
+Expires: November 25, 2018                                         sn3rd
+                                                            May 24, 2018
 
 
           Using Transport Layer Security (TLS) to Secure QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 24, 2018.
+   This Internet-Draft will expire on November 25, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 1]
+Thomson & Turner        Expires November 25, 2018               [Page 1]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 2]
+Thomson & Turner        Expires November 25, 2018               [Page 2]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -147,25 +147,25 @@ Internet-Draft                QUIC over TLS                     May 2018
      13.1.  Normative References . . . . . . . . . . . . . . . . . .  38
      13.2.  Informative References . . . . . . . . . . . . . . . . .  39
      13.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  40
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  40
-   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  40
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  40
-     C.1.  Since draft-ietf-quic-tls-10  . . . . . . . . . . . . . .  41
-     C.2.  Since draft-ietf-quic-tls-09  . . . . . . . . . . . . . .  41
-     C.3.  Since draft-ietf-quic-tls-08  . . . . . . . . . . . . . .  41
-     C.4.  Since draft-ietf-quic-tls-07  . . . . . . . . . . . . . .  41
-     C.5.  Since draft-ietf-quic-tls-05  . . . . . . . . . . . . . .  41
-     C.6.  Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  41
-     C.7.  Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  41
-     C.8.  Since draft-ietf-quic-tls-02  . . . . . . . . . . . . . .  41
-     C.9.  Since draft-ietf-quic-tls-01  . . . . . . . . . . . . . .  41
-     C.10. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  42
-     C.11. Since draft-thomson-quic-tls-01 . . . . . . . . . . . . .  42
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  40
+     A.1.  Since draft-ietf-quic-tls-10  . . . . . . . . . . . . . .  40
+     A.2.  Since draft-ietf-quic-tls-09  . . . . . . . . . . . . . .  40
+     A.3.  Since draft-ietf-quic-tls-08  . . . . . . . . . . . . . .  41
+     A.4.  Since draft-ietf-quic-tls-07  . . . . . . . . . . . . . .  41
+     A.5.  Since draft-ietf-quic-tls-05  . . . . . . . . . . . . . .  41
+     A.6.  Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  41
+     A.7.  Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  41
+     A.8.  Since draft-ietf-quic-tls-02  . . . . . . . . . . . . . .  41
+     A.9.  Since draft-ietf-quic-tls-01  . . . . . . . . . . . . . .  41
+     A.10. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  42
+     A.11. Since draft-thomson-quic-tls-01 . . . . . . . . . . . . .  42
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  42
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  42
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  42
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 3]
+Thomson & Turner        Expires November 25, 2018               [Page 3]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 4]
+Thomson & Turner        Expires November 25, 2018               [Page 4]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 5]
+Thomson & Turner        Expires November 25, 2018               [Page 5]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 6]
+Thomson & Turner        Expires November 25, 2018               [Page 6]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 7]
+Thomson & Turner        Expires November 25, 2018               [Page 7]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 8]
+Thomson & Turner        Expires November 25, 2018               [Page 8]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018               [Page 9]
+Thomson & Turner        Expires November 25, 2018               [Page 9]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 10]
+Thomson & Turner        Expires November 25, 2018              [Page 10]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 11]
+Thomson & Turner        Expires November 25, 2018              [Page 11]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 12]
+Thomson & Turner        Expires November 25, 2018              [Page 12]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 13]
+Thomson & Turner        Expires November 25, 2018              [Page 13]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 14]
+Thomson & Turner        Expires November 25, 2018              [Page 14]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 15]
+Thomson & Turner        Expires November 25, 2018              [Page 15]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 16]
+Thomson & Turner        Expires November 25, 2018              [Page 16]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 17]
+Thomson & Turner        Expires November 25, 2018              [Page 17]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 18]
+Thomson & Turner        Expires November 25, 2018              [Page 18]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 19]
+Thomson & Turner        Expires November 25, 2018              [Page 19]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 20]
+Thomson & Turner        Expires November 25, 2018              [Page 20]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1160,9 +1160,9 @@ Internet-Draft                QUIC over TLS                     May 2018
    minimum expansion for the AEAD.  For example, the sampled ciphertext
    for a packet with a short header can be determined by:
 
-   "sample_offset = min(1 + connection_id_length + 4, packet_length -
-   aead_expansion) sample =
-   packet[sample_offset..sample_offset+sample_length] "
+   sample_offset = min(1 + connection_id_length + 4,
+                       packet_length - aead_expansion)
+   sample = packet[sample_offset..sample_offset+sample_length]
 
    To ensure that this process does not sample the packet number, packet
    number protection algorithms MUST NOT sample more ciphertext than the
@@ -1173,7 +1173,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 21]
+Thomson & Turner        Expires November 25, 2018              [Page 21]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 22]
+Thomson & Turner        Expires November 25, 2018              [Page 22]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 23]
+Thomson & Turner        Expires November 25, 2018              [Page 23]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 24]
+Thomson & Turner        Expires November 25, 2018              [Page 24]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 25]
+Thomson & Turner        Expires November 25, 2018              [Page 25]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 26]
+Thomson & Turner        Expires November 25, 2018              [Page 26]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1509,7 +1509,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 27]
+Thomson & Turner        Expires November 25, 2018              [Page 27]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1565,7 +1565,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 28]
+Thomson & Turner        Expires November 25, 2018              [Page 28]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1621,7 +1621,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 29]
+Thomson & Turner        Expires November 25, 2018              [Page 29]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1677,7 +1677,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 30]
+Thomson & Turner        Expires November 25, 2018              [Page 30]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1733,7 +1733,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 31]
+Thomson & Turner        Expires November 25, 2018              [Page 31]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1789,7 +1789,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 32]
+Thomson & Turner        Expires November 25, 2018              [Page 32]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1845,7 +1845,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 33]
+Thomson & Turner        Expires November 25, 2018              [Page 33]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1901,7 +1901,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 34]
+Thomson & Turner        Expires November 25, 2018              [Page 34]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1957,7 +1957,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 35]
+Thomson & Turner        Expires November 25, 2018              [Page 35]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -1990,7 +1990,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    The packet number protection algorithms defined in this document take
    the form:
 
-   "encrypted_pn = packet_number XOR PRF(pn_key, sample) "
+   encrypted_pn = packet_number XOR PRF(pn_key, sample)
 
    This construction is secure against chosen plaintext attacks (IND-
    CPA) [IMC].
@@ -2013,7 +2013,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 36]
+Thomson & Turner        Expires November 25, 2018              [Page 36]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -2069,7 +2069,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 37]
+Thomson & Turner        Expires November 25, 2018              [Page 37]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -2125,7 +2125,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires November 24, 2018              [Page 38]
+Thomson & Turner        Expires November 25, 2018              [Page 38]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -2153,9 +2153,10 @@ Internet-Draft                QUIC over TLS                     May 2018
               DOI 10.6028/nist.fips.180-4, July 2015.
 
    [TLS-REGISTRIES]
-              Salowey, J. and S. Turner, "IANA Registry Updates for TLS
-              and DTLS", draft-ietf-tls-iana-registry-updates-04 (work
-              in progress), February 2018.
+              Salowey, J. and S. Turner, "IANA Registry Updates for
+              Transport Layer Security (TLS) and Datagram Transport
+              Layer Security (DTLS)", draft-ietf-tls-iana-registry-
+              updates-05 (work in progress), May 2018.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", draft-ietf-tls-tls13-21 (work in progress),
@@ -2180,8 +2181,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-
-Thomson & Turner        Expires November 24, 2018              [Page 39]
+Thomson & Turner        Expires November 25, 2018              [Page 39]
 
 Internet-Draft                QUIC over TLS                     May 2018
 
@@ -2214,71 +2214,62 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-tls
 
-Appendix A.  Contributors
-
-   Ryan Hamilton was originally an author of this specification.
-
-Appendix B.  Acknowledgments
-
-   This document has benefited from input from Dragana Damjanovic,
-   Christian Huitema, Jana Iyengar, Adam Langley, Roberto Peon, Eric
-   Rescorla, Ian Swett, and many others.
-
-Appendix C.  Change Log
+Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
    Issue and pull request numbers are listed with a leading octothorp.
 
-
-
-
-
-
-
-Thomson & Turner        Expires November 24, 2018              [Page 40]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-C.1.  Since draft-ietf-quic-tls-10
+A.1.  Since draft-ietf-quic-tls-10
 
    o  No significant changes.
 
-C.2.  Since draft-ietf-quic-tls-09
+A.2.  Since draft-ietf-quic-tls-09
 
    o  Cleaned up key schedule and updated the salt used for handshake
       packet protection (#1077)
 
-C.3.  Since draft-ietf-quic-tls-08
+
+
+
+
+
+
+
+Thomson & Turner        Expires November 25, 2018              [Page 40]
+
+Internet-Draft                QUIC over TLS                     May 2018
+
+
+A.3.  Since draft-ietf-quic-tls-08
 
    o  Specify value for max_early_data_size to enable 0-RTT (#942)
 
    o  Update key derivation function (#1003, #1004)
 
-C.4.  Since draft-ietf-quic-tls-07
+A.4.  Since draft-ietf-quic-tls-07
 
    o  Handshake errors can be reported with CONNECTION_CLOSE (#608,
       #891)
 
-C.5.  Since draft-ietf-quic-tls-05
+A.5.  Since draft-ietf-quic-tls-05
 
    No significant changes.
 
-C.6.  Since draft-ietf-quic-tls-04
+A.6.  Since draft-ietf-quic-tls-04
 
    o  Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)
 
-C.7.  Since draft-ietf-quic-tls-03
+A.7.  Since draft-ietf-quic-tls-03
 
    No significant changes.
 
-C.8.  Since draft-ietf-quic-tls-02
+A.8.  Since draft-ietf-quic-tls-02
 
    o  Updates to match changes in transport draft
 
-C.9.  Since draft-ietf-quic-tls-01
+A.9.  Since draft-ietf-quic-tls-01
 
    o  Use TLS alerts to signal TLS errors (#272, #374)
 
@@ -2290,14 +2281,6 @@ C.9.  Since draft-ietf-quic-tls-01
    o  The QUIC header is included as AEAD Associated Data (#226, #243,
       #302)
 
-
-
-
-Thomson & Turner        Expires November 24, 2018              [Page 41]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
    o  Add interface necessary for client address validation (#275)
 
    o  Define peer authentication (#140)
@@ -2306,12 +2289,21 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    o  Define transport parameters as a TLS extension (#122)
 
+
+
+
+
+Thomson & Turner        Expires November 25, 2018              [Page 41]
+
+Internet-Draft                QUIC over TLS                     May 2018
+
+
    o  Define handling for protected packets before the handshake
       completes (#39)
 
    o  Decouple QUIC version and ALPN (#12)
 
-C.10.  Since draft-ietf-quic-tls-00
+A.10.  Since draft-ietf-quic-tls-00
 
    o  Changed bit used to signal key phase
 
@@ -2323,13 +2315,23 @@ C.10.  Since draft-ietf-quic-tls-00
 
    o  Moved TLS error code definitions into this document
 
-C.11.  Since draft-thomson-quic-tls-01
+A.11.  Since draft-thomson-quic-tls-01
 
    o  Adopted as base for draft-ietf-quic-tls
 
    o  Updated authors/editors list
 
    o  Added status note
+
+Acknowledgments
+
+   This document has benefited from input from Dragana Damjanovic,
+   Christian Huitema, Jana Iyengar, Adam Langley, Roberto Peon, Eric
+   Rescorla, Ian Swett, and many others.
+
+Contributors
+
+   Ryan Hamilton was originally an author of this specification.
 
 Authors' Addresses
 
@@ -2347,6 +2349,4 @@ Authors' Addresses
 
 
 
-
-
-Thomson & Turner        Expires November 24, 2018              [Page 42]
+Thomson & Turner        Expires November 25, 2018              [Page 42]
