@@ -359,7 +359,7 @@ ul.toc li {
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Retransmission of Information">
 <link href="#rfc.section.8.3" rel="Chapter" title="8.3 Packet Size">
 <link href="#rfc.section.8.4" rel="Chapter" title="8.4 Path Maximum Transmission Unit">
-<link href="#rfc.section.8.4.1" rel="Chapter" title="8.4.1 Special Considerations for PMTU Discovery">
+<link href="#rfc.section.8.4.1" rel="Chapter" title="8.4.1 IPv4 PMTU Discovery">
 <link href="#rfc.section.8.4.2" rel="Chapter" title="8.4.2 Special Considerations for Packetization Layer PMTU Discovery">
 <link href="#rfc.section.9" rel="Chapter" title="9 Streams: QUIC&#8217;s Data Structuring Abstraction">
 <link href="#rfc.section.9.1" rel="Chapter" title="9.1 Stream Identifiers">
@@ -386,11 +386,12 @@ ul.toc li {
 <link href="#rfc.section.11.3" rel="Chapter" title="11.3 Transport Error Codes">
 <link href="#rfc.section.11.4" rel="Chapter" title="11.4 Application Protocol Error Codes">
 <link href="#rfc.section.12" rel="Chapter" title="12 Security Considerations">
-<link href="#rfc.section.12.1" rel="Chapter" title="12.1 Spoofed ACK Attack">
-<link href="#rfc.section.12.2" rel="Chapter" title="12.2 Optimistic ACK Attack">
-<link href="#rfc.section.12.3" rel="Chapter" title="12.3 Slowloris Attacks">
-<link href="#rfc.section.12.4" rel="Chapter" title="12.4 Stream Fragmentation and Reassembly Attacks">
-<link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Commitment Attack">
+<link href="#rfc.section.12.1" rel="Chapter" title="12.1 Handshake Denial of Service">
+<link href="#rfc.section.12.2" rel="Chapter" title="12.2 Spoofed ACK Attack">
+<link href="#rfc.section.12.3" rel="Chapter" title="12.3 Optimistic ACK Attack">
+<link href="#rfc.section.12.4" rel="Chapter" title="12.4 Slowloris Attacks">
+<link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Fragmentation and Reassembly Attacks">
+<link href="#rfc.section.12.6" rel="Chapter" title="12.6 Stream Commitment Attack">
 <link href="#rfc.section.13" rel="Chapter" title="13 IANA Considerations">
 <link href="#rfc.section.13.1" rel="Chapter" title="13.1 QUIC Transport Parameter Registry">
 <link href="#rfc.section.13.2" rel="Chapter" title="13.2 QUIC Transport Error Codes Registry">
@@ -645,7 +646,7 @@ ul.toc li {
 </li>
 <li>8.4.   <a href="#rfc.section.8.4">Path Maximum Transmission Unit</a>
 </li>
-<ul><li>8.4.1.   <a href="#rfc.section.8.4.1">Special Considerations for PMTU Discovery</a>
+<ul><li>8.4.1.   <a href="#rfc.section.8.4.1">IPv4 PMTU Discovery</a>
 </li>
 <li>8.4.2.   <a href="#rfc.section.8.4.2">Special Considerations for Packetization Layer PMTU Discovery</a>
 </li>
@@ -699,15 +700,17 @@ ul.toc li {
 </li>
 </ul><li>12.   <a href="#rfc.section.12">Security Considerations</a>
 </li>
-<ul><li>12.1.   <a href="#rfc.section.12.1">Spoofed ACK Attack</a>
+<ul><li>12.1.   <a href="#rfc.section.12.1">Handshake Denial of Service</a>
 </li>
-<li>12.2.   <a href="#rfc.section.12.2">Optimistic ACK Attack</a>
+<li>12.2.   <a href="#rfc.section.12.2">Spoofed ACK Attack</a>
 </li>
-<li>12.3.   <a href="#rfc.section.12.3">Slowloris Attacks</a>
+<li>12.3.   <a href="#rfc.section.12.3">Optimistic ACK Attack</a>
 </li>
-<li>12.4.   <a href="#rfc.section.12.4">Stream Fragmentation and Reassembly Attacks</a>
+<li>12.4.   <a href="#rfc.section.12.4">Slowloris Attacks</a>
 </li>
-<li>12.5.   <a href="#rfc.section.12.5">Stream Commitment Attack</a>
+<li>12.5.   <a href="#rfc.section.12.5">Stream Fragmentation and Reassembly Attacks</a>
+</li>
+<li>12.6.   <a href="#rfc.section.12.6">Stream Commitment Attack</a>
 </li>
 </ul><li>13.   <a href="#rfc.section.13">IANA Considerations</a>
 </li>
@@ -2243,7 +2246,7 @@ ul.toc li {
 <p id="rfc.section.8.4.p.5">QUIC depends on the network path supporting a MTU of at least 1280 octets. This is the IPv6 minimum MTU and therefore also supported by most modern IPv4 networks.  An endpoint MUST NOT reduce its MTU below this number, even if it receives signals that indicate a smaller limit might exist.</p>
 <p id="rfc.section.8.4.p.6">If a QUIC endpoint determines that the PMTU between any pair of local and remote IP addresses has fallen below 1280 octets, it MUST immediately cease sending QUIC packets on the affected path.  This could result in termination of the connection if an alternative path cannot be found.</p>
 <h3 id="rfc.section.8.4.1">
-<a href="#rfc.section.8.4.1">8.4.1.</a> <a href="#special-considerations-for-pmtu-discovery" id="special-considerations-for-pmtu-discovery">Special Considerations for PMTU Discovery</a>
+<a href="#rfc.section.8.4.1">8.4.1.</a> <a href="#v4-pmtud" id="v4-pmtud">IPv4 PMTU Discovery</a>
 </h3>
 <p id="rfc.section.8.4.1.p.1">Traditional ICMP-based path MTU discovery in IPv4 <a href="#PMTUDv4" class="xref">[PMTUDv4]</a> is potentially vulnerable to off-path attacks that successfully guess the IP/port 4-tuple and reduce the MTU to a bandwidth-inefficient value. TCP connections mitigate this risk by using the (at minimum) 8 bytes of transport header echoed in the ICMP message to validate the TCP sequence number as valid for the current connection. However, as QUIC operates over UDP, in IPv4 the echoed information could consist only of the IP and UDP headers, which usually has insufficient entropy to mitigate off-path attacks.</p>
 <p id="rfc.section.8.4.1.p.2">As a result, endpoints that implement PMTUD in IPv4 SHOULD take steps to mitigate this risk. For instance, an application could:</p>
@@ -2651,32 +2654,42 @@ ul.toc li {
 <a href="#rfc.section.12">12.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
 <h2 id="rfc.section.12.1">
-<a href="#rfc.section.12.1">12.1.</a> <a href="#spoofed-ack-attack" id="spoofed-ack-attack">Spoofed ACK Attack</a>
+<a href="#rfc.section.12.1">12.1.</a> <a href="#handshake-denial-of-service" id="handshake-denial-of-service">Handshake Denial of Service</a>
 </h2>
-<p id="rfc.section.12.1.p.1">An attacker might be able to receive an address validation token (<a href="#address-validation" class="xref">Section 6.6</a>) from the server and then release the IP address it used to acquire that token.  The attacker may, in the future, spoof this same address (which now presumably addresses a different endpoint), and initiate a 0-RTT connection with a server on the victim&#8217;s behalf.  The attacker can then spoof ACK frames to the server which cause the server to send excessive amounts of data toward the new owner of the IP address.</p>
-<p id="rfc.section.12.1.p.2">There are two possible mitigations to this attack.  The simplest one is that a server can unilaterally create a gap in packet-number space.  In the non-attack scenario, the client will send an ACK frame with the larger value for largest acknowledged.  In the attack scenario, the attacker could acknowledge a packet in the gap.  If the server sees an acknowledgment for a packet that was never sent, the connection can be aborted.</p>
-<p id="rfc.section.12.1.p.3">The second mitigation is that the server can require that acknowledgments for sent packets match the encryption level of the sent packet.  This mitigation is useful if the connection has an ephemeral forward-secure key that is generated and used for every new connection.  If a packet sent is protected with a forward-secure key, then any acknowledgments that are received for them MUST also be forward-secure protected.  Since the attacker will not have the forward secure key, the attacker will not be able to generate forward-secure protected packets with ACK frames.</p>
+<p id="rfc.section.12.1.p.1">As an encrypted and authenticated transport QUIC provides a range of protections against denial of service.  Once the cryptographic handshake is complete, QUIC endpoints discard most packets that are not authenticated, greatly limiting the ability of an attacker to interfere with existing connections.</p>
+<p id="rfc.section.12.1.p.2">Once a connection is established QUIC endpoints might accept some unauthenticated ICMP packets (see <a href="#v4-pmtud" class="xref">Section 8.4.1</a>), but the use of these packets is extremely limited.  The only other type of packet that an endpoint might accept is a stateless reset (<a href="#stateless-reset" class="xref">Section 6.10.4</a>) which relies on the token being kept secret until it is used.</p>
+<p id="rfc.section.12.1.p.3">During the creation of a connection, QUIC only provides protection against attack from off the network path.  All QUIC packets contain proof that the recipient saw a preceding packet from its peer.</p>
+<p id="rfc.section.12.1.p.4">The first mechanism used is the source and destination connection IDs, which are required to match those set by a peer.  Except for an Initial and stateless reset packets, an endpoint only accepts packets that include a destination connection that matches a connection ID the endpoint previously chose.  This is the only protection offered for Version Negotiation packets.</p>
+<p id="rfc.section.12.1.p.5">The destination connection ID in an Initial packet is selected by a client to be unpredictable, which serves an additional purpose.  The packets that carry the cryptographic handshake are protected with a key that is derived from this connection ID and salt specific to the QUIC version.  This allows endpoints to use the same process for authenticating packets that they receive as they use after the cryptographic handshake completes.  Packets that cannot be authenticated are discarded.  Protecting packets in this fashion provides a strong assurance that the sender of the packet saw the Initial packet and understood it.</p>
+<p id="rfc.section.12.1.p.6">These protections are not intended to be effective against an attacker that is able to receive QUIC packets prior to the connection being established.  Such an attacker can potentially send packets that will be accepted by QUIC endpoints.  This version of QUIC attempts to detect this sort of attack, but it expects that endpoints will fail to establish a connection rather than recovering.  For the most part, the cryptographic handshake protocol <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> is responsible for detecting tampering during the handshake, though additional validation is required for version negotiation (see <a href="#version-validation" class="xref">Section 6.4.4</a>).</p>
+<p id="rfc.section.12.1.p.7">Endpoints are permitted to use other methods to detect and attempt to recover from interference with the handshake.  Invalid packets may be identified and discarded using other methods, but no specific method is mandated in this document.</p>
 <h2 id="rfc.section.12.2">
-<a href="#rfc.section.12.2">12.2.</a> <a href="#optimistic-ack-attack" id="optimistic-ack-attack">Optimistic ACK Attack</a>
+<a href="#rfc.section.12.2">12.2.</a> <a href="#spoofed-ack-attack" id="spoofed-ack-attack">Spoofed ACK Attack</a>
 </h2>
-<p id="rfc.section.12.2.p.1">An endpoint that acknowledges packets it has not received might cause a congestion controller to permit sending at rates beyond what the network supports.  An endpoint MAY skip packet numbers when sending packets to detect this behavior.  An endpoint can then immediately close the connection with a connection error of type PROTOCOL_VIOLATION (see <a href="#immediate-close" class="xref">Section 6.10.3</a>).</p>
+<p id="rfc.section.12.2.p.1">An attacker might be able to receive an address validation token (<a href="#address-validation" class="xref">Section 6.6</a>) from the server and then release the IP address it used to acquire that token.  The attacker may, in the future, spoof this same address (which now presumably addresses a different endpoint), and initiate a 0-RTT connection with a server on the victim&#8217;s behalf.  The attacker can then spoof ACK frames to the server which cause the server to send excessive amounts of data toward the new owner of the IP address.</p>
+<p id="rfc.section.12.2.p.2">There are two possible mitigations to this attack.  The simplest one is that a server can unilaterally create a gap in packet-number space.  In the non-attack scenario, the client will send an ACK frame with the larger value for largest acknowledged.  In the attack scenario, the attacker could acknowledge a packet in the gap.  If the server sees an acknowledgment for a packet that was never sent, the connection can be aborted.</p>
+<p id="rfc.section.12.2.p.3">The second mitigation is that the server can require that acknowledgments for sent packets match the encryption level of the sent packet.  This mitigation is useful if the connection has an ephemeral forward-secure key that is generated and used for every new connection.  If a packet sent is protected with a forward-secure key, then any acknowledgments that are received for them MUST also be forward-secure protected.  Since the attacker will not have the forward secure key, the attacker will not be able to generate forward-secure protected packets with ACK frames.</p>
 <h2 id="rfc.section.12.3">
-<a href="#rfc.section.12.3">12.3.</a> <a href="#slowloris-attacks" id="slowloris-attacks">Slowloris Attacks</a>
+<a href="#rfc.section.12.3">12.3.</a> <a href="#optimistic-ack-attack" id="optimistic-ack-attack">Optimistic ACK Attack</a>
 </h2>
-<p id="rfc.section.12.3.p.1">The attacks commonly known as Slowloris <a href="#SLOWLORIS" class="xref">[SLOWLORIS]</a> try to keep many connections to the target endpoint open and hold them open as long as possible.  These attacks can be executed against a QUIC endpoint by generating the minimum amount of activity necessary to avoid being closed for inactivity.  This might involve sending small amounts of data, gradually opening flow control windows in order to control the sender rate, or manufacturing ACK frames that simulate a high loss rate.</p>
-<p id="rfc.section.12.3.p.2">QUIC deployments SHOULD provide mitigations for the Slowloris attacks, such as increasing the maximum number of clients the server will allow, limiting the number of connections a single IP address is allowed to make, imposing restrictions on the minimum transfer speed a connection is allowed to have, and restricting the length of time an endpoint is allowed to stay connected.</p>
+<p id="rfc.section.12.3.p.1">An endpoint that acknowledges packets it has not received might cause a congestion controller to permit sending at rates beyond what the network supports.  An endpoint MAY skip packet numbers when sending packets to detect this behavior.  An endpoint can then immediately close the connection with a connection error of type PROTOCOL_VIOLATION (see <a href="#immediate-close" class="xref">Section 6.10.3</a>).</p>
 <h2 id="rfc.section.12.4">
-<a href="#rfc.section.12.4">12.4.</a> <a href="#stream-fragmentation-and-reassembly-attacks" id="stream-fragmentation-and-reassembly-attacks">Stream Fragmentation and Reassembly Attacks</a>
+<a href="#rfc.section.12.4">12.4.</a> <a href="#slowloris-attacks" id="slowloris-attacks">Slowloris Attacks</a>
 </h2>
-<p id="rfc.section.12.4.p.1">An adversarial endpoint might intentionally fragment the data on stream buffers in order to cause disproportionate memory commitment.  An adversarial endpoint could open a stream and send some STREAM frames containing arbitrary fragments of the stream content.</p>
-<p id="rfc.section.12.4.p.2">The attack is mitigated if flow control windows correspond to available memory.  However, some receivers will over-commit memory and advertise flow control offsets in the aggregate that exceed actual available memory.  The over-commitment strategy can lead to better performance when endpoints are well behaved, but renders endpoints vulnerable to the stream fragmentation attack.</p>
-<p id="rfc.section.12.4.p.3">QUIC deployments SHOULD provide mitigations against the stream fragmentation attack.  Mitigations could consist of avoiding over-committing memory, delaying reassembly of STREAM frames, implementing heuristics based on the age and duration of reassembly holes, or some combination.</p>
+<p id="rfc.section.12.4.p.1">The attacks commonly known as Slowloris <a href="#SLOWLORIS" class="xref">[SLOWLORIS]</a> try to keep many connections to the target endpoint open and hold them open as long as possible.  These attacks can be executed against a QUIC endpoint by generating the minimum amount of activity necessary to avoid being closed for inactivity.  This might involve sending small amounts of data, gradually opening flow control windows in order to control the sender rate, or manufacturing ACK frames that simulate a high loss rate.</p>
+<p id="rfc.section.12.4.p.2">QUIC deployments SHOULD provide mitigations for the Slowloris attacks, such as increasing the maximum number of clients the server will allow, limiting the number of connections a single IP address is allowed to make, imposing restrictions on the minimum transfer speed a connection is allowed to have, and restricting the length of time an endpoint is allowed to stay connected.</p>
 <h2 id="rfc.section.12.5">
-<a href="#rfc.section.12.5">12.5.</a> <a href="#stream-commitment-attack" id="stream-commitment-attack">Stream Commitment Attack</a>
+<a href="#rfc.section.12.5">12.5.</a> <a href="#stream-fragmentation-and-reassembly-attacks" id="stream-fragmentation-and-reassembly-attacks">Stream Fragmentation and Reassembly Attacks</a>
 </h2>
-<p id="rfc.section.12.5.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
-<p id="rfc.section.12.5.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
-<p id="rfc.section.12.5.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
+<p id="rfc.section.12.5.p.1">An adversarial endpoint might intentionally fragment the data on stream buffers in order to cause disproportionate memory commitment.  An adversarial endpoint could open a stream and send some STREAM frames containing arbitrary fragments of the stream content.</p>
+<p id="rfc.section.12.5.p.2">The attack is mitigated if flow control windows correspond to available memory.  However, some receivers will over-commit memory and advertise flow control offsets in the aggregate that exceed actual available memory.  The over-commitment strategy can lead to better performance when endpoints are well behaved, but renders endpoints vulnerable to the stream fragmentation attack.</p>
+<p id="rfc.section.12.5.p.3">QUIC deployments SHOULD provide mitigations against the stream fragmentation attack.  Mitigations could consist of avoiding over-committing memory, delaying reassembly of STREAM frames, implementing heuristics based on the age and duration of reassembly holes, or some combination.</p>
+<h2 id="rfc.section.12.6">
+<a href="#rfc.section.12.6">12.6.</a> <a href="#stream-commitment-attack" id="stream-commitment-attack">Stream Commitment Attack</a>
+</h2>
+<p id="rfc.section.12.6.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
+<p id="rfc.section.12.6.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
+<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
 <h1 id="rfc.section.13">
 <a href="#rfc.section.13">13.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
