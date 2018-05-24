@@ -987,10 +987,14 @@ client_pp_pn&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "pn", 12)
 <p id="rfc.section.5.6.p.1">QUIC packets are protected using a key that is derived from the current set of secrets.  The key derived using the &#8220;pn&#8221; label is used to protect the packet number from casual observation.  The packet number protection algorithm depends on the negotiated AEAD.</p>
 <p id="rfc.section.5.6.p.2">Packet number protection is applied after packet protection is applied (see <a href="#aead" class="xref">Section 5.4</a>).  The ciphertext of the packet is sampled and used as input to an encryption algorithm.</p>
 <p id="rfc.section.5.6.p.3">In sampling the packet ciphertext, the packet number length is assumed to be the smaller of the maximum possible packet number encoding (4 octets), or the size of the protected packet minus the minimum expansion for the AEAD.  For example, the sampled ciphertext for a packet with a short header can be determined by:</p>
-<p><samp>sample_offset = min(1 + connection_id_length + 4, packet_length - aead_expansion) sample = packet[sample_offset..sample_offset+sample_length] </samp></p>
-<p id="rfc.section.5.6.p.5">To ensure that this process does not sample the packet number, packet number protection algorithms MUST NOT sample more ciphertext than the minimum expansion of the corresponding AEAD.</p>
-<p id="rfc.section.5.6.p.6">Packet number protection is applied to the packet number encoded as described in Section 4.8 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. Since the length of the packet number is stored in the first octet of the encoded packet number, it may be necessary to progressively decrypt the packet number.</p>
-<p id="rfc.section.5.6.p.7">Before a TLS ciphersuite can be used with QUIC, a packet protection algorithm MUST be specifed for the AEAD used with that ciphersuite.  This document defines algorithms for AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs are defined in <a href="#RFC5116" class="xref">[RFC5116]</a>), and AEAD_CHACHA20_POLY1305 (<a href="#CHACHA" class="xref">[CHACHA]</a>).</p>
+<pre>
+sample_offset = min(1 + connection_id_length + 4,
+                    packet_length - aead_expansion)
+sample = packet[sample_offset..sample_offset+sample_length]
+</pre>
+<p id="rfc.section.5.6.p.4">To ensure that this process does not sample the packet number, packet number protection algorithms MUST NOT sample more ciphertext than the minimum expansion of the corresponding AEAD.</p>
+<p id="rfc.section.5.6.p.5">Packet number protection is applied to the packet number encoded as described in Section 4.8 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. Since the length of the packet number is stored in the first octet of the encoded packet number, it may be necessary to progressively decrypt the packet number.</p>
+<p id="rfc.section.5.6.p.6">Before a TLS ciphersuite can be used with QUIC, a packet protection algorithm MUST be specifed for the AEAD used with that ciphersuite.  This document defines algorithms for AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs are defined in <a href="#RFC5116" class="xref">[RFC5116]</a>), and AEAD_CHACHA20_POLY1305 (<a href="#CHACHA" class="xref">[CHACHA]</a>).</p>
 <h3 id="rfc.section.5.6.1">
 <a href="#rfc.section.5.6.1">5.6.1.</a> <a href="#aes-based-packet-number-protection" id="aes-based-packet-number-protection">AES-Based Packet Number Protection</a>
 </h3>
@@ -1242,18 +1246,20 @@ encrypted_pn = ChaCha20(pn_key, counter, nonce, packet_number)
 </h2>
 <p id="rfc.section.10.3.p.1">Packet number protection relies the packet protection AEAD being a pseudorandom function (PRF), which is not a property that AEAD algorithms guarantee. Therefore, no strong assurances about the general security of this mechanism can be shown in the general case. The AEAD algorithms described in this document are assumed to be PRFs.</p>
 <p id="rfc.section.10.3.p.2">The packet number protection algorithms defined in this document take the form:</p>
-<p><samp>encrypted_pn = packet_number XOR PRF(pn_key, sample) </samp></p>
-<p id="rfc.section.10.3.p.4">This construction is secure against chosen plaintext attacks (IND-CPA) <a href="#IMC" class="xref">[IMC]</a>.</p>
-<p id="rfc.section.10.3.p.5">Use of the same key and ciphertext sample more than once risks compromising packet number protection. Protecting two different packet numbers with the same key and ciphertext sample reveals the exclusive OR of those packet numbers.  Assuming that the AEAD acts as a PRF, if L bits are sampled, the odds of two ciphertext samples being identical approach 2^(-L/2), that is, the birthday bound. For the algorithms described in this document, that probability is one in 2^64.</p>
+<pre>
+encrypted_pn = packet_number XOR PRF(pn_key, sample)
+</pre>
+<p id="rfc.section.10.3.p.3">This construction is secure against chosen plaintext attacks (IND-CPA) <a href="#IMC" class="xref">[IMC]</a>.</p>
+<p id="rfc.section.10.3.p.4">Use of the same key and ciphertext sample more than once risks compromising packet number protection. Protecting two different packet numbers with the same key and ciphertext sample reveals the exclusive OR of those packet numbers.  Assuming that the AEAD acts as a PRF, if L bits are sampled, the odds of two ciphertext samples being identical approach 2^(-L/2), that is, the birthday bound. For the algorithms described in this document, that probability is one in 2^64.</p>
 <p></p>
 
 <dl>
 <dt>Note:</dt>
 <dd style="margin-left: 8">In some cases, inputs shorter than the full size required by the packet protection algorithm might be used.</dd>
 </dl>
-<p id="rfc.section.10.3.p.7">To prevent an attacker from modifying packet numbers, values of packet numbers are transitively authenticated using packet protection; packet numbers are part of the authenticated additional data.  A falsified or modified packet number can only be detected once the packet protection is removed.</p>
-<p id="rfc.section.10.3.p.8">An attacker can guess values for packet numbers and have an endpoint confirm guesses through timing side channels.  If the recipient of a packet discards packets with duplicate packet numbers without attempting to remove packet protection they could reveal through timing side-channels that the packet number matches a received packet.  For authentication to be free from side-channels, the entire process of packet number protection removal, packet number recovery, and packet protection removal MUST be applied together without timing and other side-channels.</p>
-<p id="rfc.section.10.3.p.9">For the sending of packets, construction and protection of packet payloads and packet numbers MUST be free from side-channels that would reveal the packet number or its encoded size.</p>
+<p id="rfc.section.10.3.p.6">To prevent an attacker from modifying packet numbers, values of packet numbers are transitively authenticated using packet protection; packet numbers are part of the authenticated additional data.  A falsified or modified packet number can only be detected once the packet protection is removed.</p>
+<p id="rfc.section.10.3.p.7">An attacker can guess values for packet numbers and have an endpoint confirm guesses through timing side channels.  If the recipient of a packet discards packets with duplicate packet numbers without attempting to remove packet protection they could reveal through timing side-channels that the packet number matches a received packet.  For authentication to be free from side-channels, the entire process of packet number protection removal, packet number recovery, and packet protection removal MUST be applied together without timing and other side-channels.</p>
+<p id="rfc.section.10.3.p.8">For the sending of packets, construction and protection of packet payloads and packet numbers MUST be free from side-channels that would reveal the packet number or its encoded size.</p>
 <h1 id="rfc.section.11">
 <a href="#rfc.section.11">11.</a> <a href="#errors" id="errors">Error Codes</a>
 </h1>
