@@ -421,7 +421,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-23" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-24" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -445,12 +445,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: November 24, 2018</td>
+<td class="left">Expires: November 25, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 23, 2018</td>
+<td class="right">May 24, 2018</td>
 </tr>
 
     	
@@ -469,7 +469,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 24, 2018.</p>
+<p>This Internet-Draft will expire on November 25, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1064,12 +1064,14 @@ ul.toc li {
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
 </h2>
-<p id="rfc.section.4.5.p.1">All QUIC packets are protected.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.</p>
-<p id="rfc.section.4.5.p.2">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
-<p id="rfc.section.4.5.p.3">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.7</a>.</p>
-<p id="rfc.section.4.5.p.4">The version field for protected packets is the current QUIC version.</p>
-<p id="rfc.section.4.5.p.5">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
-<p id="rfc.section.4.5.p.6">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
+<p id="rfc.section.4.5.p.1">All QUIC packets use packet protection.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.</p>
+<p id="rfc.section.4.5.p.2">Packets protected with handshake keys only use packet protection to ensure that the sender of the packet is on the network path.  This packet protection is not effective confidentiality protection; any entity that receives the Initial packet from a client can recover the keys necessary to remove packet protection or to generate packets that will be successfully authenticated.</p>
+<p id="rfc.section.4.5.p.3">Packets protected with 0-RTT and 1-RTT keys are expected to have confidentiality and data origin authentication; the cryptographic handshake ensures that only the communicating endpoints receive the corresponding keys.</p>
+<p id="rfc.section.4.5.p.4">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
+<p id="rfc.section.4.5.p.5">The client can send 0-RTT packets after receiving a Handshake packet (<a href="#packet-handshake" class="xref">Section 4.4.3</a>), if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id" class="xref">Section 4.7</a>.</p>
+<p id="rfc.section.4.5.p.6">The version field for protected packets is the current QUIC version.</p>
+<p id="rfc.section.4.5.p.7">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
+<p id="rfc.section.4.5.p.8">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
 <h2 id="rfc.section.4.6">
 <a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coalescing Packets</a>
 </h2>
