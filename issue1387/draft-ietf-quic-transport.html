@@ -861,7 +861,7 @@ ul.toc li {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                 Source Connection ID (0/32..144)            ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                       Payload Length (i)                    ...
+|                           Length (i)                        ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                     Packet Number (8/16/32)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -885,8 +885,8 @@ ul.toc li {
 <dd style="margin-left: 8">The Destination Connection ID field follows the connection ID lengths and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
 <dt>Source Connection ID:</dt>
 <dd style="margin-left: 8">The Source Connection ID field follows the Destination Connection ID and is either 0 octets in length or between 4 and 18 octets. <a href="#connection-id" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
-<dt>Payload Length:</dt>
-<dd style="margin-left: 8">The length of the Payload field in octets, encoded as a variable-length integer (<a href="#integer-encoding" class="xref">Section 7.1</a>).</dd>
+<dt>Length:</dt>
+<dd style="margin-left: 8">The length of the remainder of the packet (that is, the Packet Number and Payload fields) in octets, encoded as a variable-length integer (<a href="#integer-encoding" class="xref">Section 7.1</a>).</dd>
 <dt>Packet Number:</dt>
 <dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.6 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</dd>
 <dt>Payload:</dt>
@@ -927,7 +927,8 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
-<p id="rfc.section.4.1.p.6">The end of the Payload field (which is also the end of the long header packet) is determined by the value of the Payload Length field.  Senders can sometimes coalesce multiple packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
+<p id="rfc.section.4.1.p.6">The end of the packet is determined by the Length field.  The Length field covers the both the Packet Number and Payload fields, both of which are confidentiality protected and initially of unknown length.  The size of the Payload field is learned once the packet number protection is removed.</p>
+<p id="rfc.section.4.1.p.7">Senders can sometimes coalesce multiple packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
