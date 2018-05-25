@@ -986,22 +986,24 @@ client_pp_pn&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "pn", 12)
 </h2>
 <p id="rfc.section.5.6.p.1">QUIC packets are protected using a key that is derived from the current set of secrets.  The key derived using the &#8220;pn&#8221; label is used to protect the packet number from casual observation.  The packet number protection algorithm depends on the negotiated AEAD.</p>
 <p id="rfc.section.5.6.p.2">Packet number protection is applied after packet protection is applied (see <a href="#aead" class="xref">Section 5.4</a>).  The ciphertext of the packet is sampled and used as input to an encryption algorithm.</p>
-<p id="rfc.section.5.6.p.3">In sampling the packet ciphertext, the packet number length is assumed to be the smaller of the maximum possible packet number encoding (4 octets), or the remaining space in the packet when the minimum expansion for the AEAD is subtracted.  For example, the sampled ciphertext for a packet with a short header can be determined by:</p>
+<p id="rfc.section.5.6.p.3">In sampling the packet ciphertext, the packet number length is assumed to be either 4 octets (its maximum possible encoded length), unless there is insufficient space in the packet for sampling.  The sampled ciphertext starts after allowing for a 4 octet packet number unless this would cause the sample to extend past the end of the packet.  If the sample would extend past the end of the packet, the end of the packet is sampled.</p>
+<p id="rfc.section.5.6.p.4">For example, the sampled ciphertext for a packet with a short header can be determined by:</p>
 <pre>
-sample_offset = min(1 + len(connection_id) + 4,
-                    packet_length - aead_expansion)
+sample_offset = 1 + len(connection_id) + 4
+
+if sample_offset + sample_length &gt; packet_length then
+    sample_offset = packet_length - sample_length
 sample = packet[sample_offset..sample_offset+sample_length]
 </pre>
-<p id="rfc.section.5.6.p.4">A packet with a long header is sampled in the same way, noting that multiple QUIC packets might be included in the same UDP datagram and that each one is handled separately.</p>
+<p id="rfc.section.5.6.p.5">A packet with a long header is sampled in the same way, noting that multiple QUIC packets might be included in the same UDP datagram and that each one is handled separately.</p>
 <pre>
-sample_offset = min(6 + len(destination_connection_id) +
-                      len(source_connection_id) +
-                      len(payload_length) + 4,
-                    packet_length - aead_expansion)
+sample_offset = 6 + len(destination_connection_id) +
+                    len(source_connection_id) +
+                    len(payload_length) + 4
 </pre>
-<p id="rfc.section.5.6.p.5">To ensure that this process does not sample the packet number, packet number protection algorithms MUST NOT sample more ciphertext than the minimum expansion of the corresponding AEAD.</p>
-<p id="rfc.section.5.6.p.6">Packet number protection is applied to the packet number encoded as described in Section 4.8 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. Since the length of the packet number is stored in the first octet of the encoded packet number, it may be necessary to progressively decrypt the packet number.</p>
-<p id="rfc.section.5.6.p.7">Before a TLS ciphersuite can be used with QUIC, a packet protection algorithm MUST be specifed for the AEAD used with that ciphersuite.  This document defines algorithms for AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs are defined in <a href="#RFC5116" class="xref">[RFC5116]</a>), and AEAD_CHACHA20_POLY1305 (<a href="#CHACHA" class="xref">[CHACHA]</a>).</p>
+<p id="rfc.section.5.6.p.6">To ensure that this process does not sample the packet number, packet number protection algorithms MUST NOT sample more ciphertext than the minimum expansion of the corresponding AEAD.</p>
+<p id="rfc.section.5.6.p.7">Packet number protection is applied to the packet number encoded as described in Section 4.8 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. Since the length of the packet number is stored in the first octet of the encoded packet number, it may be necessary to progressively decrypt the packet number.</p>
+<p id="rfc.section.5.6.p.8">Before a TLS ciphersuite can be used with QUIC, a packet protection algorithm MUST be specifed for the AEAD used with that ciphersuite.  This document defines algorithms for AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs are defined in <a href="#RFC5116" class="xref">[RFC5116]</a>), and AEAD_CHACHA20_POLY1305 (<a href="#CHACHA" class="xref">[CHACHA]</a>).</p>
 <h3 id="rfc.section.5.6.1">
 <a href="#rfc.section.5.6.1">5.6.1.</a> <a href="#aes-based-packet-number-protection" id="aes-based-packet-number-protection">AES-Based Packet Number Protection</a>
 </h3>
