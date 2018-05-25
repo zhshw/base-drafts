@@ -1178,7 +1178,7 @@ Thomson & Turner        Expires November 26, 2018              [Page 21]
 Internet-Draft                QUIC over TLS                     May 2018
 
 
-   sample_offset = min(2 + len(destination_connection_id) +
+   sample_offset = min(6 + len(destination_connection_id) +
                          len(source_connection_id) +
                          len(payload_length) + 4,
                        packet_length - aead_expansion)

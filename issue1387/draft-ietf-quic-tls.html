@@ -994,7 +994,7 @@ sample = packet[sample_offset..sample_offset+sample_length]
 </pre>
 <p id="rfc.section.5.6.p.4">A packet with a long header is sampled in the same way, noting that multiple QUIC packets might be included in the same UDP datagram and that each one is handled separately.</p>
 <pre>
-sample_offset = min(2 + len(destination_connection_id) +
+sample_offset = min(6 + len(destination_connection_id) +
                       len(source_connection_id) +
                       len(payload_length) + 4,
                     packet_length - aead_expansion)
