@@ -287,8 +287,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    conveyed in the SETTINGS frame.  After the QUIC connection is
    established, a SETTINGS frame (Section 4.2.5) MUST be sent by each
    endpoint as the initial frame of their respective HTTP control stream
-   (Stream ID 2 or 3, see Section 3).  The server MUST NOT send data on
-   any other stream until the client's SETTINGS frame has been received.
+   (see Section 3.3.1).  The server MUST NOT send data on any other
+   stream until the client's SETTINGS frame has been received.
 
 2.2.1.  Draft Version Identification
 
@@ -1488,10 +1488,10 @@ Internet-Draft               HTTP over QUIC                     May 2018
    necessary if the encoding includes a Stream ID.
 
    Other than this issue, frame type HTTP/2 extensions are typically
-   portable to QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2
-   or 3 in HTTP/QUIC.  HTTP/QUIC extensions will not assume ordering,
-   but would not be harmed by ordering, and would be portable to HTTP/2
-   in the same manner.
+   portable to QUIC simply by replacing Stream 0 in HTTP/2 with a
+   control stream in HTTP/QUIC.  HTTP/QUIC extensions will not assume
+   ordering, but would not be harmed by ordering, and would be portable
+   to HTTP/2 in the same manner.
 
    Below is a listing of how each HTTP/2 frame type is mapped:
 
