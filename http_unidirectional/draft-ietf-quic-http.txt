@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                            May 29, 2018
-Expires: November 30, 2018
+Intended status: Standards Track                            May 30, 2018
+Expires: December 1, 2018
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 30, 2018.
+   This Internet-Draft will expire on December 1, 2018.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Bishop                  Expires November 30, 2018               [Page 1]
+Bishop                  Expires December 1, 2018                [Page 1]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bishop                  Expires November 30, 2018               [Page 2]
+Bishop                  Expires December 1, 2018                [Page 2]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -165,7 +165,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 3]
+Bishop                  Expires December 1, 2018                [Page 3]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -221,7 +221,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 4]
+Bishop                  Expires December 1, 2018                [Page 4]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -277,7 +277,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 5]
+Bishop                  Expires December 1, 2018                [Page 5]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -333,7 +333,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 6]
+Bishop                  Expires December 1, 2018                [Page 6]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -389,7 +389,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 7]
+Bishop                  Expires December 1, 2018                [Page 7]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 8]
+Bishop                  Expires December 1, 2018                [Page 8]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018               [Page 9]
+Bishop                  Expires December 1, 2018                [Page 9]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 10]
+Bishop                  Expires December 1, 2018               [Page 10]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -613,7 +613,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 11]
+Bishop                  Expires December 1, 2018               [Page 11]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -669,7 +669,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 12]
+Bishop                  Expires December 1, 2018               [Page 12]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -725,7 +725,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 13]
+Bishop                  Expires December 1, 2018               [Page 13]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -781,7 +781,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 14]
+Bishop                  Expires December 1, 2018               [Page 14]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 15]
+Bishop                  Expires December 1, 2018               [Page 15]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 16]
+Bishop                  Expires December 1, 2018               [Page 16]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -949,7 +949,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 17]
+Bishop                  Expires December 1, 2018               [Page 17]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 18]
+Bishop                  Expires December 1, 2018               [Page 18]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 19]
+Bishop                  Expires December 1, 2018               [Page 19]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 20]
+Bishop                  Expires December 1, 2018               [Page 20]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 21]
+Bishop                  Expires December 1, 2018               [Page 21]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 22]
+Bishop                  Expires December 1, 2018               [Page 22]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 23]
+Bishop                  Expires December 1, 2018               [Page 23]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 24]
+Bishop                  Expires December 1, 2018               [Page 24]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1367,8 +1367,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    HTTP_VERSION_FALLBACK (0x09):  The requested operation cannot be
       served over HTTP/QUIC.  The peer should retry over HTTP/2.
 
-   HTTP_WRONG_STREAM (0x0A):  A frame was received on stream where it is
-      not permitted.
+   HTTP_WRONG_STREAM (0x0A):  A frame was received on a stream where it
+      is not permitted.
 
    HTTP_PUSH_LIMIT_EXCEEDED (0x0B):  A Push ID greater than the current
       maximum Push ID was referenced.
@@ -1388,19 +1388,22 @@ Internet-Draft               HTTP over QUIC                     May 2018
    HTTP_WRONG_STREAM_DIRECTION (0x0010):  A unidirectional stream type
       was used by a peer which is not permitted to do so.
 
+   HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):  Peer violated protocol
+      requirements in a way which doesn't match a more specific error
+      code, or endpoint declines to use the more specific error code.
+
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
-      For example, an error in a MAX_PUSH_ID frame would be indicated
-      with the code (0x10D).
 
 
 
-
-
-Bishop                  Expires November 30, 2018              [Page 25]
+Bishop                  Expires December 1, 2018               [Page 25]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+      For example, an error in a MAX_PUSH_ID frame would be indicated
+      with the code (0x10D).
 
 7.  Considerations for Transitioning from HTTP/2
 
@@ -1446,18 +1449,18 @@ Internet-Draft               HTTP over QUIC                     May 2018
    HTTP/QUIC implementations.  However, even equivalent frames between
    the two mappings are not identical.
 
-   Many of the differences arise from the fact that HTTP/2 provides an
-   absolute ordering between frames across all streams, while QUIC
-   provides this guarantee on each stream only.  As a result, if a frame
 
 
 
 
-Bishop                  Expires November 30, 2018              [Page 26]
+Bishop                  Expires December 1, 2018               [Page 26]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   Many of the differences arise from the fact that HTTP/2 provides an
+   absolute ordering between frames across all streams, while QUIC
+   provides this guarantee on each stream only.  As a result, if a frame
    type makes assumptions that frames from different streams will still
    be received in the order sent, HTTP/QUIC will break them.
 
@@ -1502,17 +1505,18 @@ Internet-Draft               HTTP over QUIC                     May 2018
       not supported.  A separate PRIORITY frame MUST be used.  Padding
       is not defined in HTTP/QUIC frames.  See Section 4.2.2.
 
-   PRIORITY (0x2):  As described above, the PRIORITY frame is sent on
-      the control stream and can reference either a Stream ID or a Push
-      ID.  See Section 4.2.3.
 
 
 
 
-Bishop                  Expires November 30, 2018              [Page 27]
+Bishop                  Expires December 1, 2018               [Page 27]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   PRIORITY (0x2):  As described above, the PRIORITY frame is sent on
+      the control stream and can reference either a Stream ID or a Push
+      ID.  See Section 4.2.3.
 
    RST_STREAM (0x3):  RST_STREAM frames do not exist, since QUIC
       provides stream lifecycle management.  The same code point is used
@@ -1558,17 +1562,16 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    SETTINGS_HEADER_TABLE_SIZE:  See Section 4.2.5.2.
 
-   SETTINGS_ENABLE_PUSH:  This is removed in favor of the MAX_PUSH_ID
-      which provides a more granular control over server push.
 
 
 
-
-
-Bishop                  Expires November 30, 2018              [Page 28]
+Bishop                  Expires December 1, 2018               [Page 28]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   SETTINGS_ENABLE_PUSH:  This is removed in favor of the MAX_PUSH_ID
+      which provides a more granular control over server push.
 
    SETTINGS_MAX_CONCURRENT_STREAMS:  QUIC controls the largest open
       Stream ID as part of its flow control logic.  Specifying
@@ -1616,15 +1619,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
       management.  Would provoke a QUIC_STREAM_DATA_AFTER_TERMINATION
       from the QUIC layer.
 
-   FRAME_SIZE_ERROR (0x6):  No single mapping.  See new error codes
-      defined in Section 6.1.
 
 
-
-Bishop                  Expires November 30, 2018              [Page 29]
+Bishop                  Expires December 1, 2018               [Page 29]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   FRAME_SIZE_ERROR (0x6):  No single mapping.  See new error codes
+      defined in Section 6.1.
 
    REFUSED_STREAM (0x7):  Not applicable, since QUIC handles stream
       management.  Would provoke a QUIC_TOO_MANY_OPEN_STREAMS from the
@@ -1671,16 +1674,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Identification Sequence:  0x68 0x71 ("hq")
 
-   Specification:  This document
 
 
 
-
-
-Bishop                  Expires November 30, 2018              [Page 30]
+Bishop                  Expires December 1, 2018               [Page 30]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   Specification:  This document
 
 9.2.  Registration of QUIC Version Hint Alt-Svc Parameter
 
@@ -1731,9 +1733,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-
-
-Bishop                  Expires November 30, 2018              [Page 31]
+Bishop                  Expires December 1, 2018               [Page 31]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1789,7 +1789,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 32]
+Bishop                  Expires December 1, 2018               [Page 32]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1845,7 +1845,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 33]
+Bishop                  Expires December 1, 2018               [Page 33]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1901,7 +1901,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 34]
+Bishop                  Expires December 1, 2018               [Page 34]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -1957,7 +1957,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 35]
+Bishop                  Expires December 1, 2018               [Page 35]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -2013,7 +2013,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 30, 2018              [Page 36]
+Bishop                  Expires December 1, 2018               [Page 36]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -2069,7 +2069,7 @@ Appendix A.  Change Log
 
 
 
-Bishop                  Expires November 30, 2018              [Page 37]
+Bishop                  Expires December 1, 2018               [Page 37]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -2125,7 +2125,7 @@ A.7.  Since draft-ietf-quic-http-05
 
 
 
-Bishop                  Expires November 30, 2018              [Page 38]
+Bishop                  Expires December 1, 2018               [Page 38]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -2181,7 +2181,7 @@ A.11.  Since draft-ietf-quic-http-01
 
 
 
-Bishop                  Expires November 30, 2018              [Page 39]
+Bishop                  Expires December 1, 2018               [Page 39]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
@@ -2237,4 +2237,4 @@ Author's Address
 
 
 
-Bishop                  Expires November 30, 2018              [Page 40]
+Bishop                  Expires December 1, 2018               [Page 40]

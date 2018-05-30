@@ -346,7 +346,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Bishop, M., Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-http-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-29" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-30" />
   <meta name="dct.abstract" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
   <meta name="description" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
 
@@ -367,10 +367,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">May 29, 2018</td>
+<td class="right">May 30, 2018</td>
 </tr>
 <tr>
-<td class="left">Expires: November 30, 2018</td>
+<td class="left">Expires: December 1, 2018</td>
 <td class="right"></td>
 </tr>
 
@@ -390,7 +390,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on November 30, 2018.</p>
+<p>This Internet-Draft will expire on December 1, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -994,7 +994,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>HTTP_VERSION_FALLBACK (0x09):</dt>
 <dd style="margin-left: 8">The requested operation cannot be served over HTTP/QUIC.  The peer should retry over HTTP/2.</dd>
 <dt>HTTP_WRONG_STREAM (0x0A):</dt>
-<dd style="margin-left: 8">A frame was received on stream where it is not permitted.</dd>
+<dd style="margin-left: 8">A frame was received on a stream where it is not permitted.</dd>
 <dt>HTTP_PUSH_LIMIT_EXCEEDED (0x0B):</dt>
 <dd style="margin-left: 8">A Push ID greater than the current maximum Push ID was referenced.</dd>
 <dt>HTTP_DUPLICATE_PUSH (0x0C):</dt>
@@ -1007,6 +1007,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">A stream required by the connection was closed or reset.</dd>
 <dt>HTTP_WRONG_STREAM_DIRECTION (0x0010):</dt>
 <dd style="margin-left: 8">A unidirectional stream type was used by a peer which is not permitted to do so.</dd>
+<dt>HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):</dt>
+<dd style="margin-left: 8">Peer violated protocol requirements in a way which doesn&#8217;t match a more specific error code, or endpoint declines to use the more specific error code.</dd>
 <dt>HTTP_MALFORMED_FRAME (0x01XX):</dt>
 <dd style="margin-left: 8">An error in a specific frame type.  The frame type is included as the last octet of the error code.  For example, an error in a MAX_PUSH_ID frame would be indicated with the code (0x10D).</dd>
 </dl>
