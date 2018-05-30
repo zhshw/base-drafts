@@ -957,7 +957,7 @@ pn_key = QHKDF-Expand(S, "pn", pn_key_length)
 <pre>
 client_pp_key&lt;i&gt; = QHKDF-Expand(client_pp_secret&lt;i&gt;, "key", 16)
 client_pp_iv&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "iv", 12)
-client_pp_pn&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "pn", 12)
+client_pp_pn&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "pn", 16)
 </pre>
 <p id="rfc.section.5.3.6.p.7">The QUIC packet protection initially starts with keying material derived from handshake keys.  For a client, when the TLS state machine reports that the ClientHello has been sent, 0-RTT keys can be generated and installed for writing, if 0-RTT is available.  Finally, the TLS state machine reports completion of the handshake and 1-RTT keys can be generated and installed for writing.</p>
 <h2 id="rfc.section.5.4">
