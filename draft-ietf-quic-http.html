@@ -974,11 +974,13 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>HTTP_VERSION_FALLBACK (0x09):</dt>
 <dd style="margin-left: 8">The requested operation cannot be served over HTTP/QUIC.  The peer should retry over HTTP/2.</dd>
 <dt>HTTP_WRONG_STREAM (0x0A):</dt>
-<dd style="margin-left: 8">A frame was received on stream where it is not permitted.</dd>
+<dd style="margin-left: 8">A frame was received on a stream where it is not permitted.</dd>
 <dt>HTTP_PUSH_LIMIT_EXCEEDED (0x0B):</dt>
 <dd style="margin-left: 8">A Push ID greater than the current maximum Push ID was referenced.</dd>
 <dt>HTTP_DUPLICATE_PUSH (0x0C):</dt>
 <dd style="margin-left: 8">A Push ID was referenced in two different stream headers.</dd>
+<dt>HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):</dt>
+<dd style="margin-left: 8">Peer violated protocol requirements in a way which doesn&#8217;t match a more specific error code, or endpoint declines to use the more specific error code.</dd>
 <dt>HTTP_MALFORMED_FRAME (0x01XX):</dt>
 <dd style="margin-left: 8">An error in a specific frame type.  The frame type is included as the last octet of the error code.  For example, an error in a MAX_PUSH_ID frame would be indicated with the code (0x10D).</dd>
 </dl>

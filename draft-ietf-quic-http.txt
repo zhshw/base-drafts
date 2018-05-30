@@ -116,11 +116,11 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
      7.1.  Streams . . . . . . . . . . . . . . . . . . . . . . . . .  25
      7.2.  HTTP Frame Types  . . . . . . . . . . . . . . . . . . . .  25
-     7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  27
+     7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  28
      7.4.  HTTP/2 Error Codes  . . . . . . . . . . . . . . . . . . .  28
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  29
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  29
-     9.1.  Registration of HTTP/QUIC Identification String . . . . .  29
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  30
+     9.1.  Registration of HTTP/QUIC Identification String . . . . .  30
      9.2.  Registration of QUIC Version Hint Alt-Svc Parameter . . .  30
      9.3.  Frame Types . . . . . . . . . . . . . . . . . . . . . . .  30
      9.4.  Settings Parameters . . . . . . . . . . . . . . . . . . .  31
@@ -128,15 +128,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  34
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  34
      10.2.  Informative References . . . . . . . . . . . . . . . . .  35
-     10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  35
-   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  35
+     10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  36
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  36
      A.1.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  36
      A.2.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  36
      A.3.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  36
      A.4.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  36
      A.5.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  36
-     A.6.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  36
-     A.7.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  36
+     A.6.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  37
+     A.7.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  37
      A.8.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  37
      A.9.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  37
      A.10. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  37
@@ -144,7 +144,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
      A.12. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  38
      A.13. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  38
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  38
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  38
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  39
 
 1.  Introduction
 
@@ -1335,8 +1335,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    HTTP_VERSION_FALLBACK (0x09):  The requested operation cannot be
       served over HTTP/QUIC.  The peer should retry over HTTP/2.
 
-   HTTP_WRONG_STREAM (0x0A):  A frame was received on stream where it is
-      not permitted.
+   HTTP_WRONG_STREAM (0x0A):  A frame was received on a stream where it
+      is not permitted.
 
 
 
@@ -1351,6 +1351,10 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    HTTP_DUPLICATE_PUSH (0x0C):  A Push ID was referenced in two
       different stream headers.
+
+   HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):  Peer violated protocol
+      requirements in a way which doesn't match a more specific error
+      code, or endpoint declines to use the more specific error code.
 
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
@@ -1389,11 +1393,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    stream, they can omit the stream number.  Because frames do not block
    multiplexing (QUIC's multiplexing occurs below this layer), the
    support for variable-maximum-length packets can be removed.  Because
-   stream termination is handled by QUIC, an END_STREAM flag is not
-   required.
 
-   Frame payloads are largely drawn from [RFC7540].  However, QUIC
-   includes many features (e.g. flow control) which are also present in
 
 
 
@@ -1402,6 +1402,11 @@ Bishop                  Expires December 1, 2018               [Page 25]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+   stream termination is handled by QUIC, an END_STREAM flag is not
+   required.
+
+   Frame payloads are largely drawn from [RFC7540].  However, QUIC
+   includes many features (e.g. flow control) which are also present in
    HTTP/2.  In these cases, the HTTP mapping does not re-implement them.
    As a result, several HTTP/2 frame types are not required in HTTP/
    QUIC.  Where an HTTP/2-defined frame is no longer used, the frame ID
@@ -1444,11 +1449,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Other than this issue, frame type HTTP/2 extensions are typically
    portable to QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2
    or 3 in HTTP/QUIC.  HTTP/QUIC extensions will not assume ordering,
-   but would not be harmed by ordering, and would be portable to HTTP/2
-   in the same manner.
-
-   Below is a listing of how each HTTP/2 frame type is mapped:
-
 
 
 
@@ -1457,6 +1457,11 @@ Bishop                  Expires December 1, 2018               [Page 26]
 
 Internet-Draft               HTTP over QUIC                     May 2018
 
+
+   but would not be harmed by ordering, and would be portable to HTTP/2
+   in the same manner.
+
+   Below is a listing of how each HTTP/2 frame type is mapped:
 
    DATA (0x0):  Padding is not defined in HTTP/QUIC frames.  See
       Section 4.2.1.
@@ -1498,14 +1503,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
    defined in [RFC7540] have been reserved for simplicity.  See
    Section 9.3.
 
-7.3.  HTTP/2 SETTINGS Parameters
 
-   An important difference from HTTP/2 is that settings are sent once,
-   at the beginning of the connection, and thereafter cannot change.
-   This eliminates many corner cases around synchronization of changes.
 
-   Some transport-level options that HTTP/2 specifies via the SETTINGS
-   frame are superseded by QUIC transport parameters in HTTP/QUIC.  The
+
 
 
 
@@ -1514,6 +1514,14 @@ Bishop                  Expires December 1, 2018               [Page 27]
 Internet-Draft               HTTP over QUIC                     May 2018
 
 
+7.3.  HTTP/2 SETTINGS Parameters
+
+   An important difference from HTTP/2 is that settings are sent once,
+   at the beginning of the connection, and thereafter cannot change.
+   This eliminates many corner cases around synchronization of changes.
+
+   Some transport-level options that HTTP/2 specifies via the SETTINGS
+   frame are superseded by QUIC transport parameters in HTTP/QUIC.  The
    HTTP-level options that are retained in HTTP/QUIC have the same value
    as in HTTP/2.
 
@@ -1554,6 +1562,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    NO_ERROR (0x0):  HTTP_NO_ERROR in Section 6.1.
 
+
+
+
+Bishop                  Expires December 1, 2018               [Page 28]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    PROTOCOL_ERROR (0x1):  No single mapping.  See new
       HTTP_MALFORMED_FRAME error codes defined in Section 6.1.
 
@@ -1562,13 +1578,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    FLOW_CONTROL_ERROR (0x3):  Not applicable, since QUIC handles flow
       control.  Would provoke a QUIC_FLOW_CONTROL_RECEIVED_TOO_MUCH_DATA
       from the QUIC layer.
-
-
-
-Bishop                  Expires December 1, 2018               [Page 28]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    SETTINGS_TIMEOUT (0x4):  Not applicable, since no acknowledgement of
       SETTINGS is defined.
@@ -1608,6 +1617,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    The modified SETTINGS format contains nested length elements, which
    could pose a security risk to an uncautious implementer.  A SETTINGS
+
+
+
+
+Bishop                  Expires December 1, 2018               [Page 29]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    frame parser MUST ensure that the length of the frame exactly matches
    the length of the settings it contains.
 
@@ -1618,13 +1636,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    This document creates a new registration for the identification of
    HTTP/QUIC in the "Application Layer Protocol Negotiation (ALPN)
    Protocol IDs" registry established in [RFC7301].
-
-
-
-Bishop                  Expires December 1, 2018               [Page 29]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    The "hq" string identifies HTTP/QUIC:
 
@@ -1663,6 +1674,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Frame Type:  A name or label for the frame type.
 
+
+
+
+Bishop                  Expires December 1, 2018               [Page 30]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    Code:  The 8-bit code assigned to the frame type.
 
    Specification:  A reference to a specification that includes a
@@ -1671,16 +1690,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
       conditionally present based on the value of flags.
 
    The entries in the following table are registered by this document.
-
-
-
-
-
-
-Bishop                  Expires December 1, 2018               [Page 30]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
                   +--------------+------+---------------+
                   | Frame Type   | Code | Specification |
@@ -1721,6 +1730,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    While this registry is separate from the "HTTP/2 Settings" registry
    defined in [RFC7540], it is preferable that the assignments parallel
    each other.  If an entry is present in only one registry, every
+
+
+
+Bishop                  Expires December 1, 2018               [Page 31]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    effort SHOULD be made to avoid assigning the corresponding value to
    an unrelated operation.
 
@@ -1730,13 +1747,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
       optional.
 
    Code:  The 16-bit code assigned to the setting.
-
-
-
-Bishop                  Expires December 1, 2018               [Page 31]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    Specification:  An optional reference to a specification that
       describes the use of the setting.
@@ -1776,6 +1786,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Code:  The 16-bit error code value.
 
+
+
+
+Bishop                  Expires December 1, 2018               [Page 32]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    Description:  A brief description of the error code semantics, longer
       if no detailed specification is provided.
 
@@ -1786,14 +1804,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    +----------------------------+--------+------------+----------------+
    | Name                       | Code   | Descriptio | Specification  |
-
-
-
-Bishop                  Expires December 1, 2018               [Page 32]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    |                            |        | n          |                |
    +----------------------------+--------+------------+----------------+
    | STOPPING                   | 0x0000 | Reserved   | [QUIC-TRANSPOR |
@@ -1832,6 +1842,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                            |        | excessive  |                |
    |                            |        | load       |                |
    |                            |        |            |                |
+
+
+
+Bishop                  Expires December 1, 2018               [Page 33]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    | HTTP_VERSION_FALLBACK      | 0x0009 | Retry over | Section 6.1    |
    |                            |        | HTTP/2     |                |
    |                            |        |            |                |
@@ -1842,14 +1860,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                            |        | stream     |                |
    |                            |        |            |                |
    | HTTP_PUSH_LIMIT_EXCEEDED   | 0x000B | Maximum    | Section 6.1    |
-
-
-
-Bishop                  Expires December 1, 2018               [Page 33]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    |                            |        | Push ID    |                |
    |                            |        | exceeded   |                |
    |                            |        |            |                |
@@ -1887,6 +1897,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+
+
+Bishop                  Expires December 1, 2018               [Page 34]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
               Specifications: ABNF", STD 68, RFC 5234,
               DOI 10.17487/RFC5234, January 2008,
@@ -1896,15 +1915,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
               Extensions: Extension Definitions", RFC 6066,
               DOI 10.17487/RFC6066, January 2011,
               <https://www.rfc-editor.org/info/rfc6066>.
-
-
-
-
-
-Bishop                  Expires December 1, 2018               [Page 34]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Message Syntax and Routing",
@@ -1941,6 +1951,17 @@ Internet-Draft               HTTP over QUIC                     May 2018
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/info/rfc8126>.
 
+
+
+
+
+
+
+Bishop                  Expires December 1, 2018               [Page 35]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 10.3.  URIs
 
    [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
@@ -1953,14 +1974,6 @@ Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
-
-
-
-
-Bishop                  Expires December 1, 2018               [Page 35]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 A.1.  Since draft-ietf-quic-http-11
 
@@ -1995,6 +2008,16 @@ A.5.  Since draft-ietf-quic-http-07
 
    o  Improve description of server push usage (#947, #950, #957)
 
+
+
+
+
+
+Bishop                  Expires December 1, 2018               [Page 36]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 A.6.  Since draft-ietf-quic-http-06
 
    o  Track changes in QUIC error code usage (#485)
@@ -2007,16 +2030,6 @@ A.7.  Since draft-ietf-quic-http-05
    o  Guidance about keep-alive and QUIC PINGs (#729)
 
    o  Expanded text on GOAWAY and cancellation (#757)
-
-
-
-
-
-
-Bishop                  Expires December 1, 2018               [Page 36]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 A.8.  Since draft-ietf-quic-http-04
 
@@ -2054,6 +2067,13 @@ A.11.  Since draft-ietf-quic-http-01
 
       *  Settings can only occur in the SETTINGS frame a single time
 
+
+
+Bishop                  Expires December 1, 2018               [Page 37]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
       *  Boolean format updated
 
    o  Alt-Svc parameter changed from "v" to "quic"; format updated
@@ -2065,14 +2085,6 @@ A.11.  Since draft-ietf-quic-http-01
    o  HPACK Sequence counter can wrap (#173)
 
    o  0-RTT guidance added
-
-
-
-
-Bishop                  Expires December 1, 2018               [Page 37]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
@@ -2110,6 +2122,14 @@ Acknowledgements
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
 
+
+
+
+Bishop                  Expires December 1, 2018               [Page 38]
+
+Internet-Draft               HTTP over QUIC                     May 2018
+
+
 Author's Address
 
    Mike Bishop (editor)
@@ -2125,4 +2145,40 @@ Author's Address
 
 
 
-Bishop                  Expires December 1, 2018               [Page 38]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bishop                  Expires December 1, 2018               [Page 39]
