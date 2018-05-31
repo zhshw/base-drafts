@@ -747,7 +747,7 @@ d = count of entries dropped
 <h3 id="rfc.section.5.3.3">
 <a href="#rfc.section.5.3.3">5.3.3.</a> <a href="#stream-cancellation" id="stream-cancellation">Stream Cancellation</a>
 </h3>
-<p id="rfc.section.5.3.3.p.1">A stream that is reset might have multiple outstanding header blocks.  A decoder that receives a stream reset before the end of a stream generates a Stream Cancellation instruction on the decoder stream.  Similarly, a decoder that abandons reading of a stream need to signal this using the Stream Cancellation instruction.  This signals to the encoder that all references to the dynamic table on that stream are no longer outstanding.</p>
+<p id="rfc.section.5.3.3.p.1">A stream that is reset might have multiple outstanding header blocks.  A decoder that receives a stream reset before the end of a stream generates a Stream Cancellation instruction on the decoder stream.  Similarly, a decoder that abandons reading of a stream needs to signal this using the Stream Cancellation instruction.  This signals to the encoder that all references to the dynamic table on that stream are no longer outstanding.</p>
 <p id="rfc.section.5.3.3.p.2">An encoder cannot infer from this acknowledgement that any dynamic table entries referenced have been received.</p>
 <p id="rfc.section.5.3.3.p.3">The instruction begins with the &#8216;11&#8217; two-bit pattern. The instruction includes the stream ID of the affected stream - a request or push stream - encoded as a 6-bit prefix integer.</p>
 <div id="rfc.figure.5"></div>
