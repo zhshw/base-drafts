@@ -296,7 +296,7 @@ ul.toc li {
 <link href="#rfc.section.5.3" rel="Chapter" title="5.3 QPACK Decoder Stream">
 <link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 Table State Synchronize">
 <link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 Header Acknowledgement">
-<link href="#rfc.section.5.3.3" rel="Chapter" title="5.3.3 Stream Reset Acknowledgement">
+<link href="#rfc.section.5.3.3" rel="Chapter" title="5.3.3 Stream Cancellation">
 <link href="#rfc.section.5.4" rel="Chapter" title="5.4 Request and Push Streams">
 <link href="#rfc.section.5.4.1" rel="Chapter" title="5.4.1 Header Data Prefix">
 <link href="#rfc.section.5.4.2" rel="Chapter" title="5.4.2 Instructions">
@@ -325,7 +325,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-30" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-05-31" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -349,7 +349,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: December 1, 2018</td>
+<td class="left">Expires: December 2, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -362,7 +362,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 30, 2018</td>
+<td class="right">May 31, 2018</td>
 </tr>
 
     	
@@ -381,7 +381,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 1, 2018.</p>
+<p>This Internet-Draft will expire on December 2, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -431,7 +431,7 @@ ul.toc li {
 </li>
 <li>5.3.2.   <a href="#rfc.section.5.3.2">Header Acknowledgement</a>
 </li>
-<li>5.3.3.   <a href="#rfc.section.5.3.3">Stream Reset Acknowledgement</a>
+<li>5.3.3.   <a href="#rfc.section.5.3.3">Stream Cancellation</a>
 </li>
 </ul><li>5.4.   <a href="#rfc.section.5.4">Request and Push Streams</a>
 </li>
@@ -745,20 +745,20 @@ d = count of entries dropped
 <p class="figure">Figure 4: Header Acknowledgement</p>
 <p id="rfc.section.5.3.2.p.3">An encoder MUST treat receipt of a Header Acknowledgment as also acknowledging any dynamic table entries that the header block referenced.  That is, this instruction is also processed as a Table Size Synchronize instruction with a value matching the Largest Reference of the corresponding header block.</p>
 <h3 id="rfc.section.5.3.3">
-<a href="#rfc.section.5.3.3">5.3.3.</a> <a href="#stream-reset-acknowledgement" id="stream-reset-acknowledgement">Stream Reset Acknowledgement</a>
+<a href="#rfc.section.5.3.3">5.3.3.</a> <a href="#stream-cancellation" id="stream-cancellation">Stream Cancellation</a>
 </h3>
-<p id="rfc.section.5.3.3.p.1">A stream that is reset might have multiple outstanding header blocks.  A decoder that receives a stream reset before the end of a stream generates a Stream Reset Acknowledgment instruction on the decoder stream.  This signals to the encoder that any references to the dynamic table are no longer outstanding.</p>
+<p id="rfc.section.5.3.3.p.1">A stream that is reset might have multiple outstanding header blocks.  A decoder that receives a stream reset before the end of a stream generates a Stream Cancellation instruction on the decoder stream.  Similarly, a decoder that abandons reading of a stream need to signal this using the Stream Cancellation instruction.  This signals to the encoder that all references to the dynamic table on that stream are no longer outstanding.</p>
 <p id="rfc.section.5.3.3.p.2">An encoder cannot infer from this acknowledgement that any dynamic table entries referenced have been received.</p>
-<p id="rfc.section.5.3.3.p.3">The instruction begins with the &#8216;11&#8217; two-bit pattern. The instruction includes the request stream&#8217;s stream ID, encoded as a 6-bit prefix integer.</p>
+<p id="rfc.section.5.3.3.p.3">The instruction begins with the &#8216;11&#8217; two-bit pattern. The instruction includes the stream ID of the affected stream - a request or push stream - encoded as a 6-bit prefix integer.</p>
 <div id="rfc.figure.5"></div>
-<div id="fig-stream-reset"></div>
+<div id="fig-stream-cancel"></div>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
 | 1 | 1 |     Stream ID (6+)    |
 +---+---+-----------------------+
 </pre>
-<p class="figure">Figure 5: Stream Reset Acknowledgement</p>
+<p class="figure">Figure 5: Stream Cancellation</p>
 <h2 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#request-and-push-streams" id="request-and-push-streams">Request and Push Streams</a>
 </h2>
