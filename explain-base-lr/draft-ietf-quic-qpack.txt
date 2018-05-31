@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 1, 2018                            Akamai Technologies
+Expires: December 2, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                            May 30, 2018
+                                                            May 31, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 1, 2018.
+   This Internet-Draft will expire on December 2, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 1]
+Krasic, et al.          Expires December 2, 2018                [Page 1]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 2]
+Krasic, et al.          Expires December 2, 2018                [Page 2]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 3]
+Krasic, et al.          Expires December 2, 2018                [Page 3]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 4]
+Krasic, et al.          Expires December 2, 2018                [Page 4]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 5]
+Krasic, et al.          Expires December 2, 2018                [Page 5]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 6]
+Krasic, et al.          Expires December 2, 2018                [Page 6]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 7]
+Krasic, et al.          Expires December 2, 2018                [Page 7]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 8]
+Krasic, et al.          Expires December 2, 2018                [Page 8]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018                [Page 9]
+Krasic, et al.          Expires December 2, 2018                [Page 9]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 10]
+Krasic, et al.          Expires December 2, 2018               [Page 10]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 11]
+Krasic, et al.          Expires December 2, 2018               [Page 11]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 12]
+Krasic, et al.          Expires December 2, 2018               [Page 12]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -713,19 +713,19 @@ Internet-Draft                    QPACK                         May 2018
    "Base Index" is used to resolve references in the dynamic table as
    described in Section 2.2.1.
 
-   To save space, Base Index is encoded as a relative to the Base Index
-   using a one-bit sign and the "Delta Base Index" value.  A sign bit
-   set to 0 indicates that the Base Index has a greater absolute index
-   than the Largest Reference; the value of Delta Base Index is added to
-   the Largest Reference to determine the absolute value of the Base
-   Index.  A sign bit of 1 indicates that the Base Index is smaller than
-   the Base Index.
+   To save space, Base Index is encoded relative to Largest Reference
+   using a one-bit sign and the "Delta Base Index" value.  A sign bit of
+   0 indicates that the Base Index has a greater absolute index than the
+   Largest Reference; the value of Delta Base Index is added to the
+   Largest Reference to determine the absolute value of the Base Index.
+   A sign bit of 1 indicates that the Base Index is smaller than the
+   Base Index.
 
 
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 13]
+Krasic, et al.          Expires December 2, 2018               [Page 13]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -733,23 +733,24 @@ Internet-Draft                    QPACK                         May 2018
    That is, after turning a sign bit of 1 to -1 and 0 to 1, the absolute
    Base Index is:
 
-       baseIndex = largestReference + sign * deltaBaseIndex
+       baseIndex = largestReference + (sign * deltaBaseIndex)
 
-   If the encoder inserted entries to the table while the encoding the
-   header block, Largest Reference will be greater than Base Index, so
-   the encoded difference is negative and the sign bit will be 1.  If
-   the header block did not reference the most recent entry in the table
-   and did not insert any new entries, Base Index will be greater than
-   the Largest Reference, so the delta will be positive and the sign bit
-   will be 0.
+   An encoder is expected to determine the absolute value of Base Index
+   before encoding a header block.  If the encoder inserted entries in
+   the dynamic table while encoding the header block, Largest Reference
+   will be greater than Base Index, so the encoded difference is
+   negative and the sign bit will be 1.  If the header block did not
+   reference the most recent entry in the table and did not insert any
+   new entries, Base Index will be greater than the Largest Reference,
+   so the delta will be positive and the sign bit will be 0.
 
    When Largest Reference and Base Index are equal, the Delta Base Index
    is encoded with a zero sign bit.  A sign bit set to 1 when the Delta
    Base Index is 0 MUST be treated as a decoder error.
 
    A header block that does not reference the dynamic table can use any
-   value for Base Index and Largest Reference; sending zero values for
-   both fields is the most efficient.
+   value for Base Index; setting both Largest Reference and Base Index
+   to zero is the most efficient encoding.
 
 5.4.2.  Instructions
 
@@ -780,8 +781,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-
-Krasic, et al.          Expires December 1, 2018               [Page 14]
+Krasic, et al.          Expires December 2, 2018               [Page 14]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 15]
+Krasic, et al.          Expires December 2, 2018               [Page 15]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 16]
+Krasic, et al.          Expires December 2, 2018               [Page 16]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 17]
+Krasic, et al.          Expires December 2, 2018               [Page 17]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 18]
+Krasic, et al.          Expires December 2, 2018               [Page 18]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 19]
+Krasic, et al.          Expires December 2, 2018               [Page 19]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 20]
+Krasic, et al.          Expires December 2, 2018               [Page 20]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1173,7 +1173,7 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 21]
+Krasic, et al.          Expires December 2, 2018               [Page 21]
 
 Internet-Draft                    QPACK                         May 2018
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 1, 2018               [Page 22]
+Krasic, et al.          Expires December 2, 2018               [Page 22]
