@@ -741,6 +741,7 @@ d = count of entries dropped
 </pre>
 <p class="figure">Figure 4: Header Acknowledgement</p>
 <p id="rfc.section.5.3.2.p.3">An encoder MUST treat receipt of a Header Acknowledgment as also acknowledging any dynamic table entries that the header block referenced.  That is, this instruction is also processed as a Table Size Synchronize instruction with a value matching the Largest Reference of the corresponding header block.</p>
+<p id="rfc.section.5.3.2.p.4">A decoder MUST track increases to the largest acknowledged dynamic table entry caused by acknowledging a header block so that it can correctly generate the Table State Synchronize instruction.</p>
 <h2 id="rfc.section.5.4">
 <a href="#rfc.section.5.4">5.4.</a> <a href="#request-and-push-streams" id="request-and-push-streams">Request and Push Streams</a>
 </h2>

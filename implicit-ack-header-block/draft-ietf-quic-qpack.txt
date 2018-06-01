@@ -703,6 +703,10 @@ Internet-Draft                    QPACK                        June 2018
    Table Size Synchronize instruction with a value matching the Largest
    Reference of the corresponding header block.
 
+   A decoder MUST track increases to the largest acknowledged dynamic
+   table entry caused by acknowledging a header block so that it can
+   correctly generate the Table State Synchronize instruction.
+
 5.4.  Request and Push Streams
 
    HEADERS and PUSH_PROMISE frames on request and push streams reference
@@ -713,10 +717,6 @@ Internet-Draft                    QPACK                        June 2018
 
    Header data is prefixed with two integers, "Largest Reference" and
    "Base Index".
-
-
-
-
 
 
 
