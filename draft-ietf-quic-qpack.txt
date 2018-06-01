@@ -327,8 +327,8 @@ Internet-Draft                    QPACK                        June 2018
 
    If the decoder encounters a reference to an entry which has already
    been dropped from the table or which is greater than the declared
-   Largest Reference, this MUST be treated as a stream error of type
-   "HTTP_QPACK_DECOMPRESSION_FAILED" error code.  If this reference
+   Largest Reference (see Section 5.4.1), this MUST be treated as a
+   stream error of type "HTTP_QPACK_DECOMPRESSION_FAILED" error code.
 
 
 
@@ -338,8 +338,8 @@ Krasic, et al.          Expires December 3, 2018                [Page 6]
 Internet-Draft                    QPACK                        June 2018
 
 
-   occurs on the control stream, this MUST be treated as a session
-   error.
+   If this reference occurs on the control stream, this MUST be treated
+   as a session error.
 
 2.3.  Avoiding Head-of-Line Blocking in HTTP/QUIC
 
@@ -347,17 +347,16 @@ Internet-Draft                    QPACK                        June 2018
    streams, a header block might reference an entry in the dynamic table
    that has not yet been received.
 
-   Each header block contains a Largest Reference (see Section 5.4.1)
-   which identifies the table state necessary for decoding.  If the
-   greatest absolute index in the dynamic table is less than the value
-   of the Largest Reference, the stream is considered "blocked."  While
-   blocked, header field data should remain in the blocked stream's flow
-   control window.  When the Largest Reference is zero, the frame
-   contains no references to the dynamic table and can always be
-   processed immediately.  A stream becomes unblocked when the greatest
-   absolute index in the dynamic table becomes greater than or equal to
-   the Largest Reference for all header blocks the decoder has started
-   reading from the stream.
+   Each header block contains a Largest Reference which identifies the
+   table state necessary for decoding.  If the greatest absolute index
+   in the dynamic table is less than the value of the Largest Reference,
+   the stream is considered "blocked."  While blocked, header field data
+   should remain in the blocked stream's flow control window.  When the
+   Largest Reference is zero, the frame contains no references to the
+   dynamic table and can always be processed immediately.  A stream
+   becomes unblocked when the greatest absolute index in the dynamic
+   table becomes greater than or equal to the Largest Reference for all
+   header blocks the decoder has started reading from the stream.
 
    A decoder can permit the possibility of blocked streams by setting
    SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value (see Section 4).
@@ -386,6 +385,7 @@ Internet-Draft                    QPACK                        June 2018
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in BCP
+
 
 
 
