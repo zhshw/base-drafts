@@ -507,7 +507,7 @@ All frames have the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                           Length (i)                        ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Type (8)   |   Flags (8)   |       Frame Payload (*)     ...
+|    Type (8)   |               Frame Payload (*)             ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~~~~~~~~
 {: #fig-frame title="HTTP/QUIC frame format"}
@@ -521,10 +521,6 @@ A frame includes the following fields:
   Type:
   : An 8-bit type for the frame.
 
-  Flags:
-  : An 8-bit field containing flags.  The Type field determines the semantics of
-    flags.
-
   Frame Payload:
   : A payload, the semantics of which are determined by the Type field.
 
@@ -535,8 +531,6 @@ A frame includes the following fields:
 
 DATA frames (type=0x0) convey arbitrary, variable-length sequences of octets
 associated with an HTTP request or response payload.
-
-The DATA frame defines no flags.
 
 DATA frames MUST be associated with an HTTP request or response.  If a DATA
 frame is received on either control stream, the recipient MUST respond with a
@@ -560,8 +554,6 @@ with a payload length of zero, the recipient MUST respond with a stream error
 The HEADERS frame (type=0x1) is used to carry a header block, compressed using
 QPACK. See [QPACK] for more details.
 
-The HEADERS frame defines no flags.
-
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -575,39 +567,25 @@ HEADERS frames can only be sent on request / push streams.
 
 ### PRIORITY {#frame-priority}
 
-The PRIORITY (type=0x02) frame specifies the sender-advised priority of a stream
-and is substantially different in format from {{!RFC7540}}.  In order to ensure
-that prioritization is processed in a consistent order, PRIORITY frames MUST be
-sent on the control stream.  A PRIORITY frame sent on any other stream MUST be
-treated as a HTTP_WRONG_STREAM error.
+The PRIORITY (type=0x02) frame specifies the sender-advised priority of a
+request stream and is substantially different in format from {{!RFC7540}}.  In
+order to ensure that prioritization is processed in a consistent order, PRIORITY
+frames MUST be sent on the control stream.  A PRIORITY frame sent on any other
+stream MUST be treated as a HTTP_WRONG_STREAM error.
 
-The format has been modified to accommodate not being sent on a request stream,
-to allow for identification of server pushes, and the larger stream ID space of
-QUIC.  The semantics of the Stream Dependency, Weight, and E flag are otherwise
-the same as in HTTP/2.
-
-The flags defined are:
-
-  PUSH_PRIORITIZED (0x04):
-  : Indicates that the Prioritized Stream is a server push rather than a
-    request.
-
-  PUSH_DEPENDENT (0x02):
-  : Indicates a dependency on a server push.
-
-  E (0x01):
-  : Indicates that the stream dependency is exclusive (see {{!RFC7540}}, Section
-    5.3).
+The format has been modified to accommodate not being sent on a request stream
+and the larger stream ID space of QUIC.  The semantics of the Stream Dependency,
+Weight, and E flag are otherwise the same as in HTTP/2.
 
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                 Prioritized Request ID (i)                    |
+|                 Prioritized Request ID (i)                  ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                  Stream Dependency ID (i)                     |
+|                  Stream Dependency ID (i)                   ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   Weight (8)  |
+|E|  Weight (7) |
 +-+-+-+-+-+-+-+-+
 ~~~~~~~~~~
 {: #fig-priority title="PRIORITY frame payload"}
@@ -616,8 +594,72 @@ The PRIORITY frame payload has the following fields:
 
   Prioritized Request ID:
   : A variable-length integer that identifies a request.  This contains
-    the Stream ID of a request stream when the PUSH_PRIORITIZED flag is clear,
-    or a Push ID when the PUSH_PRIORITIZED flag is set.
+    the Stream ID of a request stream.
+
+  Stream Dependency ID:
+  : A variable-length integer that identifies a dependent request.  This
+    contains the Stream ID of a request stream.  A request Stream ID of 0
+    indicates a dependency on the root stream. For details of dependencies, see
+    {{priority}} and {{!RFC7540}}, Section 5.3.
+
+  E:
+  : Indicates that the stream dependency is exclusive (see {{!RFC7540}},
+    Section 5.3).
+
+Weight:
+  : An unsigned 7-bit integer representing a priority weight for the stream (see
+    {{!RFC7540}}, Section 5.3). Add one to the value to obtain a weight between
+    1 and 128.
+
+A PRIORITY frame identifies a request to prioritize, and a request upon which
+that request is dependent.  A Prioritized Request ID or Stream Dependency ID
+identifies a client-initiated request using the corresponding stream ID.
+
+A PRIORITY frame MAY identify a Stream Dependency ID using a Stream ID of 0; as
+in {{!RFC7540}}, this makes the request dependent on the root of the dependency
+tree.
+
+A PRIORITY frame MUST identify a client-initiated, bidirectional stream.  A
+server MUST treat receipt of PRIORITY frame with a Stream ID of any other type
+as a connection error of type HTTP_MALFORMED_FRAME.
+
+Stream ID 0 cannot be reprioritized. A Prioritized Request ID that identifies
+Stream 0 MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.
+
+A PRIORITY frame that does not reference a request MUST be treated as a
+HTTP_MALFORMED_FRAME error, unless it references Stream ID 0.
+
+A PRIORITY frame MUST contain only the identified fields.  A PRIORITY frame that
+contains more or fewer fields, or a PRIORITY frame that includes a truncated
+integer encoding MUST be treated as a connection error of type
+HTTP_MALFORMED_FRAME.
+
+### PUSH_PRIORITY {#frame-push-priority}
+
+The PUSH_PRIORITY (type=0x02) frame specifies the client-advised priority of a
+push stream, similar to PRIORITY.  In order to ensure that prioritization is
+processed in a consistent order, PUSH_PRIORITY frames MUST be sent on the
+control stream.  A PUSH_PRIORITY frame sent on any other stream MUST be treated
+as a HTTP_WRONG_STREAM error.
+
+~~~~~~~~~~  drawing
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                   Prioritized Push ID (i)                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                  Stream Dependency ID (i)                     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|E|  Weight (7) |
++-+-+-+-+-+-+-+-+
+~~~~~~~~~~
+{: #fig-push-priority title="PUSH_PRIORITY frame payload"}
+
+The PUSH_PRIORITY frame payload has the following fields:
+
+  Prioritized Request ID:
+  : A variable-length integer that identifies a request.  This contains
+    the Push ID of a promised resource.
 
   Stream Dependency ID:
   : A variable-length integer that identifies a dependent request.  This
@@ -626,8 +668,12 @@ The PRIORITY frame payload has the following fields:
     ID of 0 indicates a dependency on the root stream. For details of
     dependencies, see {{priority}} and {{!RFC7540}}, Section 5.3.
 
-  Weight:
-  : An unsigned 8-bit integer representing a priority weight for the stream (see
+  E:
+  : Indicates that the stream dependency is exclusive (see {{!RFC7540}},
+    Section 5.3).
+
+Weight:
+  : An unsigned 7-bit integer representing a priority weight for the stream (see
     {{!RFC7540}}, Section 5.3). Add one to the value to obtain a weight between
     1 and 256.
 
@@ -661,6 +707,7 @@ integer encoding MUST be treated as a connection error of type
 HTTP_MALFORMED_FRAME.
 
 
+
 ### CANCEL_PUSH {#frame-cancel-push}
 
 The CANCEL_PUSH frame (type=0x3) is used to request cancellation of server push
@@ -684,8 +731,6 @@ push response.
 A CANCEL_PUSH frame is sent on the control stream.  Sending a CANCEL_PUSH frame
 on a stream other than the control stream MUST be treated as a stream error of
 type HTTP_WRONG_STREAM.
-
-The CANCEL_PUSH frame has no defined flags.
 
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
@@ -729,8 +774,6 @@ while servers are more cautious about request size.
 Parameters MUST NOT occur more than once.  A receiver MAY treat the presence of
 the same parameter more than once as a connection error of type
 HTTP_MALFORMED_FRAME.
-
-The SETTINGS frame defines no flags.
 
 The payload of a SETTINGS frame consists of zero or more parameters, each
 consisting of an unsigned 16-bit setting identifier and a length-prefixed binary
@@ -802,7 +845,7 @@ prior to receiving and processing the server's SETTINGS frame.
 ### PUSH_PROMISE {#frame-push-promise}
 
 The PUSH_PROMISE frame (type=0x05) is used to carry a request header set from
-server to client, as in HTTP/2.  The PUSH_PROMISE frame defines no flags.
+server to client, as in HTTP/2.
 
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
@@ -859,8 +902,6 @@ connection by a server.  GOAWAY allows a server to stop accepting new requests
 while still finishing processing of previously received requests.  This enables
 administrative actions, like server maintenance.  GOAWAY by itself does not
 close a connection.
-
-The GOAWAY frame does not define any flags.
 
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
@@ -973,8 +1014,6 @@ cannot push until it receives a MAX_PUSH_ID frame.  A client that wishes to
 manage the number of promised server pushes can increase the maximum Push ID by
 sending a MAX_PUSH_ID frame as the server fulfills or cancels server pushes.
 
-The MAX_PUSH_ID frame has no defined flags.
-
 ~~~~~~~~~~  drawing
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1063,17 +1102,13 @@ HTTP_VERSION_FALLBACK (0x09):
   retry over HTTP/2.
 
 HTTP_WRONG_STREAM (0x0A):
-: A frame was received on a stream where it is not permitted.
+: A frame was received on stream where it is not permitted.
 
 HTTP_PUSH_LIMIT_EXCEEDED (0x0B):
 : A Push ID greater than the current maximum Push ID was referenced.
 
 HTTP_DUPLICATE_PUSH (0x0C):
 : A Push ID was referenced in two different stream headers.
-
-HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):
-: Peer violated protocol requirements in a way which doesn't match a more
-  specific error code, or endpoint declines to use the more specific error code.
 
 HTTP_MALFORMED_FRAME (0x01XX):
 : An error in a specific frame type.  The frame type is included as the last
@@ -1111,7 +1146,8 @@ transport deals with them. Because frames are already on a stream, they can omit
 the stream number. Because frames do not block multiplexing (QUIC's multiplexing
 occurs below this layer), the support for variable-maximum-length packets can be
 removed. Because stream termination is handled by QUIC, an END_STREAM flag is
-not required.
+not required.  This permits the removal of the Flags field from the generic
+frame layout.
 
 Frame payloads are largely drawn from {{!RFC7540}}. However, QUIC includes many
 features (e.g. flow control) which are also present in HTTP/2. In these cases,
@@ -1150,7 +1186,11 @@ HTTP/QUIC use an identifier rather than a Stream ID (e.g. Push IDs in PRIORITY
 frames). Redefinition of the encoding of extension frame types might be
 necessary if the encoding includes a Stream ID.
 
-Other than this issue, frame type HTTP/2 extensions are typically portable to
+Because the Flags field is not present in generic HTTP/QUIC frames, those frames
+which depend on the presence of flags need to allocate space for flags as part
+of their frame payload.
+
+Other than these issues, frame type HTTP/2 extensions are typically portable to
 QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2 or 3 in HTTP/QUIC.
 HTTP/QUIC extensions will not assume ordering, but would not be harmed by
 ordering, and would be portable to HTTP/2 in the same manner.
@@ -1364,9 +1404,9 @@ Code:
 : The 8-bit code assigned to the frame type.
 
 Specification:
-: A reference to a specification that includes a description of the frame
-  layout, its semantics, and flags that the frame type uses, including any parts
-  of the frame that are conditionally present based on the value of flags.
+: A reference to a specification that includes a description of the frame layout
+  and its semantics, including any parts of the frame that are conditionally
+  present.
 
 The entries in the following table are registered by this document.
 
