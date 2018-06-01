@@ -5,8 +5,8 @@
 QUIC                                                     M. Thomson, Ed.
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                          S. Turner, Ed.
-Expires: December 2, 2018                                          sn3rd
-                                                            May 31, 2018
+Expires: December 3, 2018                                          sn3rd
+                                                           June 01, 2018
 
 
           Using Transport Layer Security (TLS) to Secure QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 2, 2018.
+   This Internet-Draft will expire on December 3, 2018.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 1]
+Thomson & Turner        Expires December 3, 2018                [Page 1]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 2]
+Thomson & Turner        Expires December 3, 2018                [Page 2]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
        6.1.1.  Initial Key Transitions . . . . . . . . . . . . . . .  24
@@ -165,9 +165,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 3]
+Thomson & Turner        Expires December 3, 2018                [Page 3]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 1.  Introduction
@@ -221,9 +221,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 4]
+Thomson & Turner        Expires December 3, 2018                [Page 4]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    This document defines how QUIC interacts with TLS.  This includes a
@@ -277,9 +277,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 5]
+Thomson & Turner        Expires December 3, 2018                [Page 5]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    TLS features can be separated into two basic functions: an
@@ -333,9 +333,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 6]
+Thomson & Turner        Expires December 3, 2018                [Page 6]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
        Client                                             Server
@@ -389,9 +389,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 7]
+Thomson & Turner        Expires December 3, 2018                [Page 7]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    from the client.  This allows the TLS handshake to start with the
@@ -445,9 +445,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 8]
+Thomson & Turner        Expires December 3, 2018                [Page 8]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    o  "<" and ">" enclose stream numbers.
@@ -501,9 +501,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018                [Page 9]
+Thomson & Turner        Expires December 3, 2018                [Page 9]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    Additional functions might be needed to configure TLS.
@@ -557,9 +557,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 10]
+Thomson & Turner        Expires December 3, 2018               [Page 10]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
       server.  Even though 1-RTT keys are available to a server after
@@ -613,9 +613,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 11]
+Thomson & Turner        Expires December 3, 2018               [Page 11]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    new token is provided TLS generates a NewSessionTicket message, with
@@ -669,9 +669,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 12]
+Thomson & Turner        Expires December 3, 2018               [Page 12]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    Client                                                    Server
@@ -725,9 +725,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 13]
+Thomson & Turner        Expires December 3, 2018               [Page 13]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    this limit to be exceeded.  Implementations are reminded that large
@@ -781,9 +781,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 14]
+Thomson & Turner        Expires December 3, 2018               [Page 14]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 4.7.  TLS Errors
@@ -837,9 +837,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 15]
+Thomson & Turner        Expires December 3, 2018               [Page 15]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    the server.  A client MUST treat receipt of a NewSessionTicket that
@@ -893,9 +893,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 16]
+Thomson & Turner        Expires December 3, 2018               [Page 16]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 5.3.2.  Handshake Secrets
@@ -949,9 +949,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 17]
+Thomson & Turner        Expires December 3, 2018               [Page 17]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    client_0rtt_secret =
@@ -1005,9 +1005,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 18]
+Thomson & Turner        Expires December 3, 2018               [Page 18]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    The packet protection key and IV used to protect the 0-RTT packets
@@ -1054,16 +1054,16 @@ Internet-Draft                QUIC over TLS                     May 2018
 5.4.  QUIC AEAD Usage
 
    The Authentication Encryption with Associated Data (AEAD) [AEAD]
-   function used for QUIC packet protection is AEAD that is negotiated
-   for use with the TLS connection.  For example, if TLS is using the
-   TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is used.
+   function used for QUIC packet protection is the AEAD that is
+   negotiated for use with the TLS connection.  For example, if TLS is
+   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
+   used.
 
 
 
-
-Thomson & Turner        Expires December 2, 2018               [Page 19]
+Thomson & Turner        Expires December 3, 2018               [Page 19]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    QUIC packets are protected prior to applying packet number encryption
@@ -1117,9 +1117,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 20]
+Thomson & Turner        Expires December 3, 2018               [Page 20]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    additional packets under the old key (causing new packets to be
@@ -1173,9 +1173,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 21]
+Thomson & Turner        Expires December 3, 2018               [Page 21]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    A packet with a long header is sampled in the same way, noting that
@@ -1229,9 +1229,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 22]
+Thomson & Turner        Expires December 3, 2018               [Page 22]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    The encoded packet number is then encrypted with ChaCha20 directly.
@@ -1285,9 +1285,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 23]
+Thomson & Turner        Expires December 3, 2018               [Page 23]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 6.1.  Packet Protection for the TLS Handshake
@@ -1341,9 +1341,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 24]
+Thomson & Turner        Expires December 3, 2018               [Page 24]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    packets are therefore protected with 1-RTT keys.  Initially, these
@@ -1397,9 +1397,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 25]
+Thomson & Turner        Expires December 3, 2018               [Page 25]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 6.2.  Key Update
@@ -1453,9 +1453,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 26]
+Thomson & Turner        Expires December 3, 2018               [Page 26]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
       Initiating Peer                    Responding Peer
@@ -1509,9 +1509,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 27]
+Thomson & Turner        Expires December 3, 2018               [Page 27]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    An initial ClientHello never includes a cookie extension.  Thus, if a
@@ -1565,9 +1565,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 28]
+Thomson & Turner        Expires December 3, 2018               [Page 28]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    number that the server selects, and any opportunity to measure round
@@ -1621,9 +1621,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 29]
+Thomson & Turner        Expires December 3, 2018               [Page 29]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 7.3.  Address Validation Token Integrity
@@ -1677,9 +1677,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 30]
+Thomson & Turner        Expires December 3, 2018               [Page 30]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    o  Transport parameters are made usable and authenticated as part of
@@ -1733,9 +1733,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 31]
+Thomson & Turner        Expires December 3, 2018               [Page 31]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
       protection cannot be derived until the client receives all server
@@ -1789,9 +1789,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 32]
+Thomson & Turner        Expires December 3, 2018               [Page 32]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 8.1.6.  Denial of Service with Unprotected Packets
@@ -1845,9 +1845,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 33]
+Thomson & Turner        Expires December 3, 2018               [Page 33]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    A server MUST NOT use 0-RTT keys to protect packets.
@@ -1901,9 +1901,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 34]
+Thomson & Turner        Expires December 3, 2018               [Page 34]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    version downgrade prior to the completion of the handshake, though it
@@ -1957,9 +1957,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 35]
+Thomson & Turner        Expires December 3, 2018               [Page 35]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 10.1.  Packet Reflection Attack Mitigation
@@ -2006,16 +2006,16 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 10.3.  Packet Number Protection Analysis
 
-   Packet number protection relies the packet protection AEAD being a
+   Packet number protection relies on the packet protection AEAD being a
    pseudorandom function (PRF), which is not a property that AEAD
    algorithms guarantee.  Therefore, no strong assurances about the
    general security of this mechanism can be shown in the general case.
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 36]
+Thomson & Turner        Expires December 3, 2018               [Page 36]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    The AEAD algorithms described in this document are assumed to be
@@ -2069,9 +2069,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 37]
+Thomson & Turner        Expires December 3, 2018               [Page 37]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    The following error codes are defined when TLS is used for the crypto
@@ -2125,9 +2125,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 38]
+Thomson & Turner        Expires December 3, 2018               [Page 38]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 13.  References
@@ -2154,7 +2154,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), May 2018.
+              transport (work in progress), June 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2181,9 +2181,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 39]
+Thomson & Turner        Expires December 3, 2018               [Page 39]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
    [TLS-REGISTRIES]
@@ -2209,12 +2209,12 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http (work in progress), May 2018.
+              QUIC", draft-ietf-quic-http (work in progress), June 2018.
 
    [QUIC-RECOVERY]
               Iyengar, J., Ed. and I. Swett, Ed., "QUIC Loss Detection
               and Congestion Control", draft-ietf-quic-recovery (work in
-              progress), May 2018.
+              progress), June 2018.
 
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
@@ -2237,9 +2237,9 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 40]
+Thomson & Turner        Expires December 3, 2018               [Page 40]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 13.3.  URIs
@@ -2293,9 +2293,9 @@ A.7.  Since draft-ietf-quic-tls-03
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 41]
+Thomson & Turner        Expires December 3, 2018               [Page 41]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 A.8.  Since draft-ietf-quic-tls-02
@@ -2349,9 +2349,9 @@ A.11.  Since draft-thomson-quic-tls-01
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 42]
+Thomson & Turner        Expires December 3, 2018               [Page 42]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                    June 2018
 
 
 Acknowledgments
@@ -2405,4 +2405,4 @@ Authors' Addresses
 
 
 
-Thomson & Turner        Expires December 2, 2018               [Page 43]
+Thomson & Turner        Expires December 3, 2018               [Page 43]
