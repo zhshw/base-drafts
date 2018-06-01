@@ -16,7 +16,7 @@ body {
   font-size-adjust: 0.5;
   line-height: 24px;
   margin: 75px auto;
-  max-width: 724px;
+  max-width: 624px;
   padding: 0 5px;
 }
 
@@ -84,7 +84,7 @@ table.header td, table#rfc\.headerblock td {
 }
 
 samp, tt, code, pre {
-  font: 11pt consolas, monospace;
+  font: 15px Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -184,7 +184,7 @@ ul.toc li {
   margin: 0;
 }
 
-@media screen and (min-width: 1024px) {
+@media screen and (min-width: 924px) {
   body {
     padding-right: 350px;
   }
@@ -192,7 +192,7 @@ ul.toc li {
     position: fixed;
     bottom: 0;
     right: 0;
-    right: calc(50vw - 550px);
+    right: calc(50vw - 500px);
     width: 300px;
     z-index: 1;
     overflow: auto;
@@ -324,7 +324,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-05-31" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-01" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -348,7 +348,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: December 2, 2018</td>
+<td class="left">Expires: December 3, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -361,7 +361,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">May 31, 2018</td>
+<td class="right">June 01, 2018</td>
 </tr>
 
     	
@@ -380,7 +380,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 2, 2018.</p>
+<p>This Internet-Draft will expire on December 3, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -762,14 +762,16 @@ d = count of entries dropped
 <p class="figure">Figure 5: Frame Payload</p>
 <p><samp>Largest Reference</samp> identifies the largest absolute dynamic index referenced in the block.  Blocking decoders use the Largest Reference to determine when it is safe to process the rest of the block.</p>
 <p><samp>Base Index</samp> is used to resolve references in the dynamic table as described in <a href="#indexing" class="xref">Section 2.2.1</a>.</p>
-<p id="rfc.section.5.4.1.p.4">To save space, Base Index is encoded relative to Largest Reference using a one-bit sign and the <samp>Delta Base Index</samp> value.  A sign bit of 0 indicates that the Base Index has a greater absolute index than the Largest Reference; the value of Delta Base Index is added to the Largest Reference to determine the absolute value of the Base Index.  A sign bit of 1 indicates that the Base Index is smaller than the Base Index.</p>
-<p id="rfc.section.5.4.1.p.5">That is, after turning a sign bit of 1 to -1 and 0 to 1, the absolute Base Index is:</p>
+<p id="rfc.section.5.4.1.p.4">To save space, Base Index is encoded relative to Largest Reference using a one-bit sign and the <samp>Delta Base Index</samp> value.  A sign bit of 0 indicates that the Base Index has a greater absolute index than the Largest Reference; the value of Delta Base Index is added to the Largest Reference to determine the absolute value of the Base Index.  A sign bit of 1 indicates that the Base Index is smaller than the Base Index.  That is:</p>
 <pre>
-    baseIndex = largestReference + (sign * deltaBaseIndex)
+   if sign == 0:
+      baseIndex = largestReference + deltaBaseIndex
+   else:
+      baseIndex = largestReference - deltaBaseIndex
 </pre>
-<p id="rfc.section.5.4.1.p.6">An encoder is expected to determine the absolute value of Base Index before encoding a header block.  If the encoder inserted entries in the dynamic table while encoding the header block, Largest Reference will be greater than Base Index, so the encoded difference is negative and the sign bit will be 1.  If the header block did not reference the most recent entry in the table and did not insert any new entries, Base Index will be greater than the Largest Reference, so the delta will be positive and the sign bit will be 0.</p>
-<p id="rfc.section.5.4.1.p.7">When Largest Reference and Base Index are equal, the Delta Base Index is encoded with a zero sign bit.  A sign bit set to 1 when the Delta Base Index is 0 MUST be treated as a decoder error.</p>
-<p id="rfc.section.5.4.1.p.8">A header block that does not reference the dynamic table can use any value for Base Index; setting both Largest Reference and Base Index to zero is the most efficient encoding.</p>
+<p id="rfc.section.5.4.1.p.5">A single-pass encoder is expected to determine the absolute value of Base Index before encoding a header block.  If the encoder inserted entries in the dynamic table while encoding the header block, Largest Reference will be greater than Base Index, so the encoded difference is negative and the sign bit is set to 1.  If the header block did not reference the most recent entry in the table and did not insert any new entries, Base Index will be greater than the Largest Reference, so the delta will be positive and the sign bit is set to 0.</p>
+<p id="rfc.section.5.4.1.p.6">An encoder that produces table updates before encoding a header block might set Largest Reference and Base Index to the same value.  When Largest Reference and Base Index are equal, the Delta Base Index is encoded with a zero sign bit.  A sign bit set to 1 when the Delta Base Index is 0 MUST be treated as a decoder error.</p>
+<p id="rfc.section.5.4.1.p.7">A header block that does not reference the dynamic table can use any value for Base Index; setting both Largest Reference and Base Index to zero is the most efficient encoding.</p>
 <h3 id="rfc.section.5.4.2">
 <a href="#rfc.section.5.4.2">5.4.2.</a> <a href="#instructions" id="instructions">Instructions</a>
 </h3>
@@ -967,7 +969,7 @@ return controlBuffer, prefixBuffer + streamBuffer
 <tr>
 <td class="reference"><b id="QUIC-HTTP">[QUIC-HTTP]</b></td>
 <td class="top">
-<a title="Akamai Technologies">Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http, May 2018.</td>
+<a title="Akamai Technologies">Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http, June 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>

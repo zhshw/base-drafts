@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 2, 2018                            Akamai Technologies
+Expires: December 3, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                            May 31, 2018
+                                                           June 01, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 2, 2018.
+   This Internet-Draft will expire on December 3, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 1]
+Krasic, et al.          Expires December 3, 2018                [Page 1]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 2]
+Krasic, et al.          Expires December 3, 2018                [Page 2]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
@@ -165,9 +165,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 3]
+Krasic, et al.          Expires December 3, 2018                [Page 3]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    Unlike in HPACK, entries in the QPACK static and dynamic tables are
@@ -221,9 +221,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 4]
+Krasic, et al.          Expires December 3, 2018                [Page 4]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    by the SETTINGS_HEADER_TABLE_SIZE setting (see Section 4.2.5.2 of
@@ -277,9 +277,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 5]
+Krasic, et al.          Expires December 3, 2018                [Page 5]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    Section 5.4.1).  The Base Index is an absolute index.  When
@@ -333,9 +333,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 6]
+Krasic, et al.          Expires December 3, 2018                [Page 6]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    occurs on the control stream, this MUST be treated as a session
@@ -389,9 +389,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 7]
+Krasic, et al.          Expires December 3, 2018                [Page 7]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
@@ -445,9 +445,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 8]
+Krasic, et al.          Expires December 3, 2018                [Page 8]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
 5.  Wire Format
@@ -501,9 +501,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018                [Page 9]
+Krasic, et al.          Expires December 3, 2018                [Page 9]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    exist in the dynamic table, the full entry can also be used by
@@ -557,9 +557,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 10]
+Krasic, et al.          Expires December 3, 2018               [Page 10]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
         0   1   2   3   4   5   6   7
@@ -613,9 +613,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 11]
+Krasic, et al.          Expires December 3, 2018               [Page 11]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
@@ -669,9 +669,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 12]
+Krasic, et al.          Expires December 3, 2018               [Page 12]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    the encoder precise feedback on which header blocks within a stream
@@ -719,33 +719,36 @@ Internet-Draft                    QPACK                         May 2018
    Largest Reference; the value of Delta Base Index is added to the
    Largest Reference to determine the absolute value of the Base Index.
    A sign bit of 1 indicates that the Base Index is smaller than the
-   Base Index.
+   Base Index.  That is:
 
 
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 13]
+Krasic, et al.          Expires December 3, 2018               [Page 13]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
-   That is, after turning a sign bit of 1 to -1 and 0 to 1, the absolute
-   Base Index is:
+      if sign == 0:
+         baseIndex = largestReference + deltaBaseIndex
+      else:
+         baseIndex = largestReference - deltaBaseIndex
 
-       baseIndex = largestReference + (sign * deltaBaseIndex)
+   A single-pass encoder is expected to determine the absolute value of
+   Base Index before encoding a header block.  If the encoder inserted
+   entries in the dynamic table while encoding the header block, Largest
+   Reference will be greater than Base Index, so the encoded difference
+   is negative and the sign bit is set to 1.  If the header block did
+   not reference the most recent entry in the table and did not insert
+   any new entries, Base Index will be greater than the Largest
+   Reference, so the delta will be positive and the sign bit is set to
+   0.
 
-   An encoder is expected to determine the absolute value of Base Index
-   before encoding a header block.  If the encoder inserted entries in
-   the dynamic table while encoding the header block, Largest Reference
-   will be greater than Base Index, so the encoded difference is
-   negative and the sign bit will be 1.  If the header block did not
-   reference the most recent entry in the table and did not insert any
-   new entries, Base Index will be greater than the Largest Reference,
-   so the delta will be positive and the sign bit will be 0.
-
-   When Largest Reference and Base Index are equal, the Delta Base Index
-   is encoded with a zero sign bit.  A sign bit set to 1 when the Delta
+   An encoder that produces table updates before encoding a header block
+   might set Largest Reference and Base Index to the same value.  When
+   Largest Reference and Base Index are equal, the Delta Base Index is
+   encoded with a zero sign bit.  A sign bit set to 1 when the Delta
    Base Index is 0 MUST be treated as a decoder error.
 
    A header block that does not reference the dynamic table can use any
@@ -778,12 +781,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-
-
-
-Krasic, et al.          Expires December 2, 2018               [Page 14]
+Krasic, et al.          Expires December 3, 2018               [Page 14]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
 5.4.2.2.  Indexed Header Field With Post-Base Index
@@ -837,9 +837,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 15]
+Krasic, et al.          Expires December 3, 2018               [Page 15]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    For entries in the static table or in the dynamic table with an
@@ -893,9 +893,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 16]
+Krasic, et al.          Expires December 3, 2018               [Page 16]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
         0   1   2   3   4   5   6   7
@@ -949,9 +949,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 17]
+Krasic, et al.          Expires December 3, 2018               [Page 17]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
 6.3.1.  Blocked Eviction
@@ -1005,9 +1005,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 18]
+Krasic, et al.          Expires December 3, 2018               [Page 18]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    baseIndex = dynamicTable.baseIndex
@@ -1061,9 +1061,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 19]
+Krasic, et al.          Expires December 3, 2018               [Page 19]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
 7.  Security Considerations
@@ -1093,7 +1093,7 @@ Internet-Draft                    QPACK                         May 2018
 
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http (work in progress), May 2018.
+              QUIC", draft-ietf-quic-http (work in progress), June 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1117,9 +1117,9 @@ Internet-Draft                    QPACK                         May 2018
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 20]
+Krasic, et al.          Expires December 3, 2018               [Page 20]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    [RFC2360]  Scott, G., "Guide for Internet Standards Writers", BCP 22,
@@ -1173,9 +1173,9 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 21]
+Krasic, et al.          Expires December 3, 2018               [Page 21]
 
-Internet-Draft                    QPACK                         May 2018
+Internet-Draft                    QPACK                        June 2018
 
 
    o  Kazuho Oku
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 2, 2018               [Page 22]
+Krasic, et al.          Expires December 3, 2018               [Page 22]
