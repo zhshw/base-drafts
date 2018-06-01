@@ -946,7 +946,7 @@ server_pp_secret&lt;N+1&gt; =
 <p id="rfc.section.5.3.6.p.1">The complete key expansion uses a similar process for key expansion to that defined in Section 7.3 of <a href="#TLS13" class="xref">[TLS13]</a>, using QHKDF-Expand in place of HKDF-Expand-Label.  QUIC uses the AEAD function negotiated by TLS.</p>
 <p id="rfc.section.5.3.6.p.2">The packet protection key and IV used to protect the 0-RTT packets sent by a client are derived from the QUIC 0-RTT secret. The packet protection keys and IVs for 1-RTT packets sent by the client and server are derived from the current generation of client and server 1-RTT secrets (client_pp_secret&lt;i&gt; and server_pp_secret&lt;i&gt;) respectively.</p>
 <p id="rfc.section.5.3.6.p.3">The length of the QHKDF-Expand output is determined by the requirements of the AEAD function selected by TLS.  The key length is the AEAD key size.  As defined in Section 5.3 of <a href="#TLS13" class="xref">[TLS13]</a>, the IV length is the larger of 8 or N_MIN (see Section 4 of <a href="#AEAD" class="xref">[AEAD]</a>; all ciphersuites defined in <a href="#TLS13" class="xref">[TLS13]</a> have N_MIN set to 12).</p>
-<p id="rfc.section.5.3.6.p.4">The size of the packet protection key is determined by the packet protection algorithm, see <a href="#pn-encrypt" class="xref">Section 5.6</a>.</p>
+<p id="rfc.section.5.3.6.p.4">The size of the packet number protection key is determined by the packet number protection algorithm, see <a href="#pn-encrypt" class="xref">Section 5.6</a>.</p>
 <p id="rfc.section.5.3.6.p.5">For any secret S, the AEAD key uses a label of &#8220;key&#8221;, the IV uses a label of &#8220;iv&#8221;, packet number encryption uses a label of &#8220;pn&#8221;:</p>
 <pre>
 key = QHKDF-Expand(S, "key", key_length)
@@ -984,7 +984,7 @@ client_pp_pn&lt;i&gt;  = QHKDF-Expand(client_pp_secret&lt;i&gt;, "pn", 16)
 <h2 id="rfc.section.5.6">
 <a href="#rfc.section.5.6">5.6.</a> <a href="#pn-encrypt" id="pn-encrypt">Packet Number Protection</a>
 </h2>
-<p id="rfc.section.5.6.p.1">QUIC packets are protected using a key that is derived from the current set of secrets.  The key derived using the &#8220;pn&#8221; label is used to protect the packet number from casual observation.  The packet number protection algorithm depends on the negotiated AEAD.</p>
+<p id="rfc.section.5.6.p.1">QUIC packet numbers are protected using a key that is derived from the current set of secrets.  The key derived using the &#8220;pn&#8221; label is used to protect the packet number from casual observation.  The packet number protection algorithm depends on the negotiated AEAD.</p>
 <p id="rfc.section.5.6.p.2">Packet number protection is applied after packet protection is applied (see <a href="#aead" class="xref">Section 5.4</a>).  The ciphertext of the packet is sampled and used as input to an encryption algorithm.</p>
 <p id="rfc.section.5.6.p.3">In sampling the packet ciphertext, the packet number length is assumed to be 4 octets (its maximum possible encoded length), unless there is insufficient space in the packet for sampling.  The sampled ciphertext starts after allowing for a 4 octet packet number unless this would cause the sample to extend past the end of the packet.  If the sample would extend past the end of the packet, the end of the packet is sampled.</p>
 <p id="rfc.section.5.6.p.4">For example, the sampled ciphertext for a packet with a short header can be determined by:</p>

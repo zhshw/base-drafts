@@ -1023,8 +1023,8 @@ Internet-Draft                QUIC over TLS                    June 2018
    length is the larger of 8 or N_MIN (see Section 4 of [AEAD]; all
    ciphersuites defined in [TLS13] have N_MIN set to 12).
 
-   The size of the packet protection key is determined by the packet
-   protection algorithm, see Section 5.6.
+   The size of the packet number protection key is determined by the
+   packet number protection algorithm, see Section 5.6.
 
    For any secret S, the AEAD key uses a label of "key", the IV uses a
    label of "iv", packet number encryption uses a label of "pn":
@@ -1145,10 +1145,10 @@ Internet-Draft                QUIC over TLS                    June 2018
 
 5.6.  Packet Number Protection
 
-   QUIC packets are protected using a key that is derived from the
-   current set of secrets.  The key derived using the "pn" label is used
-   to protect the packet number from casual observation.  The packet
-   number protection algorithm depends on the negotiated AEAD.
+   QUIC packet numbers are protected using a key that is derived from
+   the current set of secrets.  The key derived using the "pn" label is
+   used to protect the packet number from casual observation.  The
+   packet number protection algorithm depends on the negotiated AEAD.
 
    Packet number protection is applied after packet protection is
    applied (see Section 5.4).  The ciphertext of the packet is sampled
