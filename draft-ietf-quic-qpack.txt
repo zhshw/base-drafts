@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 3, 2018                            Akamai Technologies
+Expires: December 6, 2018                            Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                           June 01, 2018
+                                                           June 04, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 3, 2018.
+   This Internet-Draft will expire on December 6, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 1]
+Krasic, et al.          Expires December 6, 2018                [Page 1]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -98,18 +98,18 @@ Table of Contents
      5.4.  Request and Push Streams  . . . . . . . . . . . . . . . .  13
        5.4.1.  Header Data Prefix  . . . . . . . . . . . . . . . . .  13
        5.4.2.  Instructions  . . . . . . . . . . . . . . . . . . . .  14
-   6.  Encoding Strategies . . . . . . . . . . . . . . . . . . . . .  16
-     6.1.  Single pass encoding  . . . . . . . . . . . . . . . . . .  17
+   6.  Encoding Strategies . . . . . . . . . . . . . . . . . . . . .  17
+     6.1.  Single Pass Encoding  . . . . . . . . . . . . . . . . . .  17
      6.2.  Preventing Eviction Races . . . . . . . . . . . . . . . .  17
      6.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  17
-       6.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  17
+       6.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  18
        6.3.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  18
      6.4.  Speculative table updates . . . . . . . . . . . . . . . .  18
      6.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  18
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 2]
+Krasic, et al.          Expires December 6, 2018                [Page 2]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 3]
+Krasic, et al.          Expires December 6, 2018                [Page 3]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 4]
+Krasic, et al.          Expires December 6, 2018                [Page 4]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 5]
+Krasic, et al.          Expires December 6, 2018                [Page 5]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 6]
+Krasic, et al.          Expires December 6, 2018                [Page 6]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 7]
+Krasic, et al.          Expires December 6, 2018                [Page 7]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 8]
+Krasic, et al.          Expires December 6, 2018                [Page 8]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018                [Page 9]
+Krasic, et al.          Expires December 6, 2018                [Page 9]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 10]
+Krasic, et al.          Expires December 6, 2018               [Page 10]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 11]
+Krasic, et al.          Expires December 6, 2018               [Page 11]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 12]
+Krasic, et al.          Expires December 6, 2018               [Page 12]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -713,27 +713,47 @@ Internet-Draft                    QPACK                        June 2018
    to determine when it is safe to process the rest of the block.
 
    "Base Index" is used to resolve references in the dynamic table as
-   described in Section 2.2.1.  To save space, Base Index is encoded
-   relative to Largest Reference using a one-bit sign flag.
+   described in Section 2.2.1.
 
-   baseIndex = largestReference + deltaBaseIndex
+   To save space, Base Index is encoded relative to Largest Reference
+   using a one-bit sign and the "Delta Base Index" value.  A sign bit of
+   0 indicates that the Base Index has an absolute index that is greater
+   than or equal to the Largest Reference; the value of Delta Base Index
+   is added to the Largest Reference to determine the absolute value of
+   the Base Index.  A sign bit of 1 indicates that the Base Index is
+   less than the Largest Reference.  That is:
 
-   If the encoder inserted entries to the table while the encoding the
-   block, Largest Reference will be greater than Base Index, so
-   deltaBaseIndex will be negative and encoded with S=1.  If the block
-   did not reference the most recent entry in the table and did not
 
 
-
-Krasic, et al.          Expires December 3, 2018               [Page 13]
+Krasic, et al.          Expires December 6, 2018               [Page 13]
 
 Internet-Draft                    QPACK                        June 2018
 
 
-   insert any new entries, Largest Reference will be less than Base
-   Index, so deltaBaseIndex will be positive and encoded with S=0.  When
-   Largest Reference and Base Index are equal, deltaBaseIndex is 0 and
-   encoded with S=0.
+      if sign == 0:
+         baseIndex = largestReference + deltaBaseIndex
+      else:
+         baseIndex = largestReference - deltaBaseIndex
+
+   A single-pass encoder is expected to determine the absolute value of
+   Base Index before encoding a header block.  If the encoder inserted
+   entries in the dynamic table while encoding the header block, Largest
+   Reference will be greater than Base Index, so the encoded difference
+   is negative and the sign bit is set to 1.  If the header block did
+   not reference the most recent entry in the table and did not insert
+   any new entries, Base Index will be greater than the Largest
+   Reference, so the delta will be positive and the sign bit is set to
+   0.
+
+   An encoder that produces table updates before encoding a header block
+   might set Largest Reference and Base Index to the same value.  When
+   Largest Reference and Base Index are equal, the Delta Base Index is
+   encoded with a zero sign bit.  A sign bit set to 1 when the Delta
+   Base Index is 0 MUST be treated as a decoder error.
+
+   A header block that does not reference the dynamic table can use any
+   value for Base Index; setting both Largest Reference and Base Index
+   to zero is the most efficient encoding.
 
 5.4.2.  Instructions
 
@@ -759,6 +779,13 @@ Internet-Draft                    QPACK                        June 2018
    represented as an integer with a 6-bit prefix (see Section 5.1 of
    [RFC7541]).
 
+
+
+Krasic, et al.          Expires December 6, 2018               [Page 14]
+
+Internet-Draft                    QPACK                        June 2018
+
+
 5.4.2.2.  Indexed Header Field With Post-Base Index
 
    If the entry is in the dynamic table with an absolute index greater
@@ -773,18 +800,6 @@ Internet-Draft                    QPACK                        June 2018
    +---+---+---+---+---------------+
 
                  Indexed Header Field with Post-Base Index
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires December 3, 2018               [Page 14]
-
-Internet-Draft                    QPACK                        June 2018
-
 
 5.4.2.3.  Literal Header Field With Name Reference
 
@@ -819,6 +834,14 @@ Internet-Draft                    QPACK                        June 2018
 
                  Literal Header Field With Name Reference
 
+
+
+
+Krasic, et al.          Expires December 6, 2018               [Page 15]
+
+Internet-Draft                    QPACK                        June 2018
+
+
    For entries in the static table or in the dynamic table with an
    absolute index less than or equal to Base Index, the header field
    name is represented using the relative index of that entry, which is
@@ -832,15 +855,6 @@ Internet-Draft                    QPACK                        June 2018
    Base Index, the header field name is represented using the post-base
    index of that entry (see Section 2.2.1) encoded as an integer with a
    3-bit prefix.
-
-
-
-
-
-Krasic, et al.          Expires December 3, 2018               [Page 15]
-
-Internet-Draft                    QPACK                        June 2018
-
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
@@ -872,6 +886,18 @@ Internet-Draft                    QPACK                        June 2018
    The name is represented as a 4-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
 
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 6, 2018               [Page 16]
+
+Internet-Draft                    QPACK                        June 2018
+
+
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
       | 0 | 1 | 1 | N | H |NameLen(3+)|
@@ -887,18 +913,7 @@ Internet-Draft                    QPACK                        June 2018
 
 6.  Encoding Strategies
 
-
-
-
-
-
-
-Krasic, et al.          Expires December 3, 2018               [Page 16]
-
-Internet-Draft                    QPACK                        June 2018
-
-
-6.1.  Single pass encoding
+6.1.  Single Pass Encoding
 
    An encoder making a single pass over a list of headers must choose
    Base Index before knowing Largest Reference.  When trying to
@@ -928,6 +943,17 @@ Internet-Draft                    QPACK                        June 2018
    (unacknowledged) header blocks and table updates using feedback
    received from the decoder.
 
+
+
+
+
+
+
+Krasic, et al.          Expires December 6, 2018               [Page 17]
+
+Internet-Draft                    QPACK                        June 2018
+
+
 6.3.1.  Blocked Eviction
 
    The encoder MUST NOT permit an entry to be evicted while a reference
@@ -945,14 +971,6 @@ Internet-Draft                    QPACK                        June 2018
    the oldest entries in the table is still actively used for
    references, the encoder SHOULD emit an Duplicate representation
    instead (see Section 5.2.3).
-
-
-
-
-Krasic, et al.          Expires December 3, 2018               [Page 17]
-
-Internet-Draft                    QPACK                        June 2018
-
 
 6.3.2.  Blocked Decoding
 
@@ -987,25 +1005,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires December 3, 2018               [Page 18]
+Krasic, et al.          Expires December 6, 2018               [Page 18]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 19]
+Krasic, et al.          Expires December 6, 2018               [Page 19]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 20]
+Krasic, et al.          Expires December 6, 2018               [Page 20]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1173,7 +1173,7 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 21]
+Krasic, et al.          Expires December 6, 2018               [Page 21]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1229,4 +1229,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 3, 2018               [Page 22]
+Krasic, et al.          Expires December 6, 2018               [Page 22]
