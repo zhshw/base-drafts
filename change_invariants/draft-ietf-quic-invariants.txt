@@ -4,8 +4,8 @@
 
 QUIC                                                          M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                           June 04, 2018
-Expires: December 6, 2018
+Intended status: Standards Track                           June 05, 2018
+Expires: December 7, 2018
 
 
                  Version-Independent Properties of QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 6, 2018.
+   This Internet-Draft will expire on December 7, 2018.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Thomson                 Expires December 6, 2018                [Page 1]
+Thomson                 Expires December 7, 2018                [Page 1]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -101,15 +101,15 @@ Table of Contents
    invariants are IP-version-independent.
 
    The primary goal of this document is to ensure that it is possible to
-   deploy new versions of QUIC.  By documenting the things that can't
-   change, this document aims to preserve the ability to change any
-   other aspect of the protocol.  Thus, unless specifically described in
-   this document, any aspect of the protocol can change between
-   different versions.
+   deploy new versions of QUIC.  By documenting the properties that
+   can't change, this document aims to preserve the ability to change
+   any other aspect of the protocol.  Thus, unless specifically
+   described in this document, any aspect of the protocol can change
+   between different versions.
 
 
 
-Thomson                 Expires December 6, 2018                [Page 2]
+Thomson                 Expires December 7, 2018                [Page 2]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -165,7 +165,7 @@ Internet-Draft               QUIC Invariants                   June 2018
 
 
 
-Thomson                 Expires December 6, 2018                [Page 3]
+Thomson                 Expires December 7, 2018                [Page 3]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -221,7 +221,7 @@ Internet-Draft               QUIC Invariants                   June 2018
 
 
 
-Thomson                 Expires December 6, 2018                [Page 4]
+Thomson                 Expires December 7, 2018                [Page 4]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -271,13 +271,13 @@ Internet-Draft               QUIC Invariants                   June 2018
    (see Section 5).  All other version numbers are potentially valid.
 
    The properties described in this document apply to all versions of
-   QUIC.  A protocol which does not conform to the properties described
+   QUIC.  A protocol that does not conform to the properties described
    in this document is not QUIC.  Future documents might describe
 
 
 
 
-Thomson                 Expires December 6, 2018                [Page 5]
+Thomson                 Expires December 7, 2018                [Page 5]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -333,7 +333,7 @@ Internet-Draft               QUIC Invariants                   June 2018
 
 
 
-Thomson                 Expires December 6, 2018                [Page 6]
+Thomson                 Expires December 7, 2018                [Page 6]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -389,7 +389,7 @@ Internet-Draft               QUIC Invariants                   June 2018
 
 
 
-Thomson                 Expires December 6, 2018                [Page 7]
+Thomson                 Expires December 7, 2018                [Page 7]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -445,7 +445,7 @@ Appendix A.  Incorrect Assumptions
 
 
 
-Thomson                 Expires December 6, 2018                [Page 8]
+Thomson                 Expires December 7, 2018                [Page 8]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -501,7 +501,7 @@ Internet-Draft               QUIC Invariants                   June 2018
 
 
 
-Thomson                 Expires December 6, 2018                [Page 9]
+Thomson                 Expires December 7, 2018                [Page 9]
 
 Internet-Draft               QUIC Invariants                   June 2018
 
@@ -557,4 +557,4 @@ Author's Address
 
 
 
-Thomson                 Expires December 6, 2018               [Page 10]
+Thomson                 Expires December 7, 2018               [Page 10]
