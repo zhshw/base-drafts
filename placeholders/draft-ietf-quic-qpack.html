@@ -300,7 +300,7 @@ ul.toc li {
 <link href="#rfc.section.5.4.1" rel="Chapter" title="5.4.1 Header Data Prefix">
 <link href="#rfc.section.5.4.2" rel="Chapter" title="5.4.2 Instructions">
 <link href="#rfc.section.6" rel="Chapter" title="6 Encoding Strategies">
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Single pass encoding">
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Single Pass Encoding">
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Preventing Eviction Races">
 <link href="#rfc.section.6.3" rel="Chapter" title="6.3 Reference Tracking">
 <link href="#rfc.section.6.3.1" rel="Chapter" title="6.3.1 Blocked Eviction">
@@ -438,7 +438,7 @@ ul.toc li {
 </li>
 </ul></ul><li>6.   <a href="#rfc.section.6">Encoding Strategies</a>
 </li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Single pass encoding</a>
+<ul><li>6.1.   <a href="#rfc.section.6.1">Single Pass Encoding</a>
 </li>
 <li>6.2.   <a href="#rfc.section.6.2">Preventing Eviction Races</a>
 </li>
@@ -556,12 +556,12 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Dynamic Table Indexing - Post-Base References</p>
-<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference, this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
+<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#overview-hol-avoidance" id="overview-hol-avoidance">Avoiding Head-of-Line Blocking in HTTP/QUIC</a>
 </h2>
 <p id="rfc.section.2.3.p.1">Because QUIC does not guarantee order between data on different streams, a header block might reference an entry in the dynamic table that has not yet been received.</p>
-<p id="rfc.section.2.3.p.2">Each header block contains a Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>) which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately. A stream becomes unblocked when the greatest absolute index in the dynamic table becomes greater than or equal to the Largest Reference for all header blocks the decoder has started reading from the stream.</p>
+<p id="rfc.section.2.3.p.2">Each header block contains a Largest Reference which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately. A stream becomes unblocked when the greatest absolute index in the dynamic table becomes greater than or equal to the Largest Reference for all header blocks the decoder has started reading from the stream.</p>
 <p id="rfc.section.2.3.p.3">A decoder can permit the possibility of blocked streams by setting SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value (see <a href="#configuration" class="xref">Section 4</a>).  This setting specifies an upper bound on the number of streams which can be blocked.</p>
 <p id="rfc.section.2.3.p.4">An encoder can decide whether to risk having a stream become blocked. If permitted by the value of SETTINGS_QPACK_BLOCKED_STREAMS, compression efficiency can be improved by referencing dynamic table entries that are still in transit, but if there is loss or reordering the stream can become blocked at the decoder.  An encoder avoids the risk of blocking by only referencing dynamic table entries which have been acknowledged, but this means using literals. Since literals make the header block larger, this can result in the encoder becoming blocked on congestion or flow control limits.</p>
 <p id="rfc.section.2.3.p.5">An encoder MUST limit the number of streams which could become blocked to the value of SETTINGS_QPACK_BLOCKED_STREAMS at all times. Note that the decoder might not actually become blocked on every stream which risks becoming blocked.  If the decoder encounters more blocked streams than it promised to support, it SHOULD treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.</p>
@@ -707,7 +707,7 @@ d = count of entries dropped
 </pre>
 <p class="figure">Figure 2: Maximum Dynamic Table Size Change</p>
 <p id="rfc.section.5.2.4.p.2">The new maximum size MUST be lower than or equal to the limit determined by the protocol using QPACK.  A value that exceeds this limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see <a href="#configuration" class="xref">Section 4</a>) received from the decoder.</p>
-<p id="rfc.section.5.2.4.p.3">Reducing the maximum size of the dynamic table can cause entries to be evicted (see Section 4.3 of <a href="#RFC7541" class="xref">[RFC7541]</a>).  This MUST NOT cause the eviction of entries with outstanding references (see <a href="#reference-tracking" class="xref">Section 6.3</a>).</p>
+<p id="rfc.section.5.2.4.p.3">Reducing the maximum size of the dynamic table can cause entries to be evicted (see Section 4.3 of <a href="#RFC7541" class="xref">[RFC7541]</a>).  This MUST NOT cause the eviction of entries with outstanding references (see <a href="#reference-tracking" class="xref">Section 6.3</a>).  Changing the size of the dynamic table is not acknowledged as this instruction does not insert an entry.</p>
 <h2 id="rfc.section.5.3">
 <a href="#rfc.section.5.3">5.3.</a> <a href="#feedback" id="feedback">QPACK Decoder Stream</a>
 </h2>
@@ -761,11 +761,17 @@ d = count of entries dropped
 </pre>
 <p class="figure">Figure 5: Frame Payload</p>
 <p><samp>Largest Reference</samp> identifies the largest absolute dynamic index referenced in the block.  Blocking decoders use the Largest Reference to determine when it is safe to process the rest of the block.</p>
-<p><samp>Base Index</samp> is used to resolve references in the dynamic table as described in <a href="#indexing" class="xref">Section 2.2.1</a>.  To save space, Base Index is encoded relative to Largest Reference using a one-bit sign flag.</p>
+<p><samp>Base Index</samp> is used to resolve references in the dynamic table as described in <a href="#indexing" class="xref">Section 2.2.1</a>.</p>
+<p id="rfc.section.5.4.1.p.4">To save space, Base Index is encoded relative to Largest Reference using a one-bit sign and the <samp>Delta Base Index</samp> value.  A sign bit of 0 indicates that the Base Index has an absolute index that is greater than or equal to the Largest Reference; the value of Delta Base Index is added to the Largest Reference to determine the absolute value of the Base Index.  A sign bit of 1 indicates that the Base Index is less than the Largest Reference.  That is:</p>
 <pre>
-baseIndex = largestReference + deltaBaseIndex
+   if sign == 0:
+      baseIndex = largestReference + deltaBaseIndex
+   else:
+      baseIndex = largestReference - deltaBaseIndex
 </pre>
-<p id="rfc.section.5.4.1.p.4">If the encoder inserted entries to the table while the encoding the block, Largest Reference will be greater than Base Index, so deltaBaseIndex will be negative and encoded with S=1.  If the block did not reference the most recent entry in the table and did not insert any new entries, Largest Reference will be less than Base Index, so deltaBaseIndex will be positive and encoded with S=0.  When Largest Reference and Base Index are equal, deltaBaseIndex is 0 and encoded with S=0.</p>
+<p id="rfc.section.5.4.1.p.5">A single-pass encoder is expected to determine the absolute value of Base Index before encoding a header block.  If the encoder inserted entries in the dynamic table while encoding the header block, Largest Reference will be greater than Base Index, so the encoded difference is negative and the sign bit is set to 1.  If the header block did not reference the most recent entry in the table and did not insert any new entries, Base Index will be greater than the Largest Reference, so the delta will be positive and the sign bit is set to 0.</p>
+<p id="rfc.section.5.4.1.p.6">An encoder that produces table updates before encoding a header block might set Largest Reference and Base Index to the same value.  When Largest Reference and Base Index are equal, the Delta Base Index is encoded with a zero sign bit.  A sign bit set to 1 when the Delta Base Index is 0 MUST be treated as a decoder error.</p>
+<p id="rfc.section.5.4.1.p.7">A header block that does not reference the dynamic table can use any value for Base Index; setting both Largest Reference and Base Index to zero is the most efficient encoding.</p>
 <h3 id="rfc.section.5.4.2">
 <a href="#rfc.section.5.4.2">5.4.2.</a> <a href="#instructions" id="instructions">Instructions</a>
 </h3>
@@ -848,7 +854,7 @@ baseIndex = largestReference + deltaBaseIndex
 <a href="#rfc.section.6">6.</a> <a href="#encoding-strategies" id="encoding-strategies">Encoding Strategies</a>
 </h1>
 <h2 id="rfc.section.6.1">
-<a href="#rfc.section.6.1">6.1.</a> <a href="#single-pass-encoding" id="single-pass-encoding">Single pass encoding</a>
+<a href="#rfc.section.6.1">6.1.</a> <a href="#single-pass-encoding" id="single-pass-encoding">Single Pass Encoding</a>
 </h2>
 <p id="rfc.section.6.1.p.1">An encoder making a single pass over a list of headers must choose Base Index before knowing Largest Reference.  When trying to reference a header inserted to the table after encoding has begun, the entry is encoded with different instructions that tell the decoder to use an absolute index greater than the Base Index.</p>
 <h2 id="rfc.section.6.2">

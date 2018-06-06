@@ -433,11 +433,11 @@ Internet-Draft               HTTP over QUIC                    June 2018
    the message headers of informational (1xx) HTTP responses (see
    [RFC7230], Section 3.2 and [RFC7231], Section 6.2).
 
-   PUSH_PROMISE frames MAY be interleaved with the frames of a response
-   message indicating a pushed resource related to the response.  These
-   PUSH_PROMISE frames are not part of the response, but carry the
-   headers of a separate HTTP request message.  See Section 3.4 for more
-   details.
+   PUSH_PROMISE frames (see Section 4.2.6) MAY be interleaved with the
+   frames of a response message indicating a pushed resource related to
+   the response.  These PUSH_PROMISE frames are not part of the
+   response, but carry the headers of a separate HTTP request message.
+   See Section 3.4 for more details.
 
    The "chunked" transfer encoding defined in Section 4.1 of [RFC7230]
    MUST NOT be used.
@@ -852,9 +852,9 @@ Internet-Draft               HTTP over QUIC                    June 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |PT |DT |Empty|E|
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                 Prioritized Element ID (i)                    |
+   |                 Prioritized Element ID (i)                  ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                  Dependency Element ID (i)                    |
+   |                 Element Dependency ID (i)                   ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |   Weight (8)  |
    +-+-+-+-+-+-+-+-+
@@ -881,7 +881,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
       the Push ID of a promised resource, or a Placeholder ID of a
       placeholder.
 
-   Dependency Element ID:  A variable-length integer that identifies the
+   Element Dependency ID:  A variable-length integer that identifies the
       element on which a dependency is being expressed.  Depending on
       the value of Dependency Type, this contains the Stream ID of a
       request stream, the Push ID of a promised resource, or a
@@ -1423,14 +1423,18 @@ Internet-Draft               HTTP over QUIC                    June 2018
    HTTP_VERSION_FALLBACK (0x09):  The requested operation cannot be
       served over HTTP/QUIC.  The peer should retry over HTTP/2.
 
-   HTTP_WRONG_STREAM (0x0A):  A frame was received on stream where it is
-      not permitted.
+   HTTP_WRONG_STREAM (0x0A):  A frame was received on a stream where it
+      is not permitted.
 
    HTTP_PUSH_LIMIT_EXCEEDED (0x0B):  A Push ID greater than the current
       maximum Push ID was referenced.
 
    HTTP_DUPLICATE_PUSH (0x0C):  A Push ID was referenced in two
       different stream headers.
+
+   HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):  Peer violated protocol
+      requirements in a way which doesn't match a more specific error
+      code, or endpoint declines to use the more specific error code.
 
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
@@ -1446,10 +1450,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
    feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
-   primarily where necessary to accommodate the differences in behavior
-   between QUIC and TCP (lack of ordering, support for streams).  We
-   intend to avoid gratuitous changes which make it difficult or
-
 
 
 
@@ -1458,6 +1458,9 @@ Bishop                  Expires December 8, 2018               [Page 26]
 Internet-Draft               HTTP over QUIC                    June 2018
 
 
+   primarily where necessary to accommodate the differences in behavior
+   between QUIC and TCP (lack of ordering, support for streams).  We
+   intend to avoid gratuitous changes which make it difficult or
    impossible to build extensions with the same semantics applicable to
    both protocols at once.
 
@@ -1503,9 +1506,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
    reparenting a subtree are not commutative, both sender and receiver
    must apply them in the same order to ensure that both sides have a
    consistent view of the stream dependency tree.  HTTP/2 specifies
-   priority assignments in PRIORITY frames and (optionally) in HEADERS
-   frames.  To achieve in-order delivery of priority changes in HTTP/
-
 
 
 
@@ -1514,6 +1514,8 @@ Bishop                  Expires December 8, 2018               [Page 27]
 Internet-Draft               HTTP over QUIC                    June 2018
 
 
+   priority assignments in PRIORITY frames and (optionally) in HEADERS
+   frames.  To achieve in-order delivery of priority changes in HTTP/
    QUIC, PRIORITY frames are sent on the control stream and the PRIORITY
    section is removed from the HEADERS frame.
 
@@ -1559,8 +1561,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
       provides stream lifecycle management.  The same code point is used
       for the CANCEL_PUSH frame (Section 4.2.4).
 
-   SETTINGS (0x4):  SETTINGS frames are sent only at the beginning of
-      the connection.  See Section 4.2.5 and Section 7.3.
 
 
 
@@ -1569,6 +1569,9 @@ Bishop                  Expires December 8, 2018               [Page 28]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   SETTINGS (0x4):  SETTINGS frames are sent only at the beginning of
+      the connection.  See Section 4.2.5 and Section 7.3.
 
    PUSH_PROMISE (0x5):  The PUSH_PROMISE does not reference a stream;
       instead the push stream references the PUSH_PROMISE frame using a
@@ -1614,10 +1617,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
       Stream ID as part of its flow control logic.  Specifying
       SETTINGS_MAX_CONCURRENT_STREAMS in the SETTINGS frame is an error.
 
-   SETTINGS_INITIAL_WINDOW_SIZE:  QUIC requires both stream and
-      connection flow control window sizes to be specified in the
-      initial transport handshake.  Specifying
-      SETTINGS_INITIAL_WINDOW_SIZE in the SETTINGS frame is an error.
+
 
 
 
@@ -1625,6 +1625,11 @@ Bishop                  Expires December 8, 2018               [Page 29]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   SETTINGS_INITIAL_WINDOW_SIZE:  QUIC requires both stream and
+      connection flow control window sizes to be specified in the
+      initial transport handshake.  Specifying
+      SETTINGS_INITIAL_WINDOW_SIZE in the SETTINGS frame is an error.
 
    SETTINGS_MAX_FRAME_SIZE:  This setting has no equivalent in HTTP/
       QUIC.  Specifying it in the SETTINGS frame is an error.
@@ -1670,17 +1675,17 @@ Internet-Draft               HTTP over QUIC                    June 2018
       management.  Would provoke a QUIC_TOO_MANY_OPEN_STREAMS from the
       QUIC layer.
 
-   CANCEL (0x8):  HTTP_REQUEST_CANCELLED in Section 6.1.
-
-   COMPRESSION_ERROR (0x9):  HTTP_HPACK_DECOMPRESSION_FAILED in
-      Section 6.1.
-
 
 
 Bishop                  Expires December 8, 2018               [Page 30]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   CANCEL (0x8):  HTTP_REQUEST_CANCELLED in Section 6.1.
+
+   COMPRESSION_ERROR (0x9):  HTTP_HPACK_DECOMPRESSION_FAILED in
+      Section 6.1.
 
    CONNECT_ERROR (0xa):  HTTP_CONNECT_ERROR in Section 6.1.
 
@@ -1726,17 +1731,16 @@ Internet-Draft               HTTP over QUIC                    June 2018
    hints in the "Hypertext Transfer Protocol (HTTP) Alt-Svc Parameter"
    registry established in [RFC7838].
 
-   Parameter:  "quic"
-
-   Specification:  This document, Section 2.1.1
-
-
 
 
 Bishop                  Expires December 8, 2018               [Page 31]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   Parameter:  "quic"
+
+   Specification:  This document, Section 2.1.1
 
 9.3.  Frame Types
 
@@ -1764,10 +1768,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
       parts of the frame that are conditionally present.
 
    The entries in the following table are registered by this document.
-
-
-
-
 
 
 
