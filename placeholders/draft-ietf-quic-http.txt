@@ -908,7 +908,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
    server push using a Push ID (see Section 4.2.6), or a placeholder
    using a Placeholder ID (see Section 3.3.1).
 
-   The values for the Prioritized Element Type and Dependency Element
+   The values for the Prioritized Element Type and Element Dependency
    Type imply the interpretation of the associated Element ID fields.
 
           +-----------+------------------+---------------------+
