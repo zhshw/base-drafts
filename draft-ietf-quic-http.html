@@ -344,7 +344,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Bishop, M., Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-http-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-05" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-06" />
   <meta name="dct.abstract" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
   <meta name="description" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
 
@@ -365,10 +365,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">June 05, 2018</td>
+<td class="right">June 06, 2018</td>
 </tr>
 <tr>
-<td class="left">Expires: December 7, 2018</td>
+<td class="left">Expires: December 8, 2018</td>
 <td class="right"></td>
 </tr>
 
@@ -388,7 +388,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 7, 2018.</p>
+<p>This Internet-Draft will expire on December 8, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -691,7 +691,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                           Length (i)                        ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Type (8)   |   Flags (8)   |       Frame Payload (*)     ...
+|    Type (8)   |               Frame Payload (*)             ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 2: HTTP/QUIC frame format</p>
@@ -703,8 +703,6 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">A variable-length integer that describes the length of the Frame Payload.  This length does not include the frame header.</dd>
 <dt>Type:</dt>
 <dd style="margin-left: 8">An 8-bit type for the frame.</dd>
-<dt>Flags:</dt>
-<dd style="margin-left: 8">An 8-bit field containing flags.  The Type field determines the semantics of flags.</dd>
 <dt>Frame Payload:</dt>
 <dd style="margin-left: 8">A payload, the semantics of which are determined by the Type field.</dd>
 </dl>
@@ -715,8 +713,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.4.2.1">4.2.1.</a> <a href="#frame-data" id="frame-data">DATA</a>
 </h3>
 <p id="rfc.section.4.2.1.p.1">DATA frames (type=0x0) convey arbitrary, variable-length sequences of octets associated with an HTTP request or response payload.</p>
-<p id="rfc.section.4.2.1.p.2">The DATA frame defines no flags.</p>
-<p id="rfc.section.4.2.1.p.3">DATA frames MUST be associated with an HTTP request or response.  If a DATA frame is received on either control stream, the recipient MUST respond with a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_WRONG_STREAM.</p>
+<p id="rfc.section.4.2.1.p.2">DATA frames MUST be associated with an HTTP request or response.  If a DATA frame is received on either control stream, the recipient MUST respond with a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_WRONG_STREAM.</p>
 <div id="rfc.figure.3"></div>
 <div id="fig-data"></div>
 <pre>
@@ -727,12 +724,11 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 3: DATA frame payload</p>
-<p id="rfc.section.4.2.1.p.4">DATA frames MUST contain a non-zero-length payload.  If a DATA frame is received with a payload length of zero, the recipient MUST respond with a stream error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.1.p.3">DATA frames MUST contain a non-zero-length payload.  If a DATA frame is received with a payload length of zero, the recipient MUST respond with a stream error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_MALFORMED_FRAME.</p>
 <h3 id="rfc.section.4.2.2">
 <a href="#rfc.section.4.2.2">4.2.2.</a> <a href="#frame-headers" id="frame-headers">HEADERS</a>
 </h3>
 <p id="rfc.section.4.2.2.p.1">The HEADERS frame (type=0x1) is used to carry a header block, compressed using QPACK. See <a href="#QPACK" class="xref">[QPACK]</a> for more details.</p>
-<p id="rfc.section.4.2.2.p.2">The HEADERS frame defines no flags.</p>
 <div id="rfc.figure.4"></div>
 <div id="fig-headers"></div>
 <pre>
@@ -743,28 +739,19 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 4: HEADERS frame payload</p>
-<p id="rfc.section.4.2.2.p.3">HEADERS frames can only be sent on request / push streams.</p>
+<p id="rfc.section.4.2.2.p.2">HEADERS frames can only be sent on request / push streams.</p>
 <h3 id="rfc.section.4.2.3">
 <a href="#rfc.section.4.2.3">4.2.3.</a> <a href="#frame-priority" id="frame-priority">PRIORITY</a>
 </h3>
 <p id="rfc.section.4.2.3.p.1">The PRIORITY (type=0x02) frame specifies the sender-advised priority of a stream and is substantially different in format from <a href="#RFC7540" class="xref">[RFC7540]</a>.  In order to ensure that prioritization is processed in a consistent order, PRIORITY frames MUST be sent on the control stream.  A PRIORITY frame sent on any other stream MUST be treated as a HTTP_WRONG_STREAM error.</p>
 <p id="rfc.section.4.2.3.p.2">The format has been modified to accommodate not being sent on a request stream, to allow for identification of server pushes, and the larger stream ID space of QUIC.  The semantics of the Stream Dependency, Weight, and E flag are otherwise the same as in HTTP/2.</p>
-<p id="rfc.section.4.2.3.p.3">The flags defined are:</p>
-<p></p>
-
-<dl>
-<dt>PUSH_PRIORITIZED (0x04):</dt>
-<dd style="margin-left: 8">Indicates that the Prioritized Stream is a server push rather than a request.</dd>
-<dt>PUSH_DEPENDENT (0x02):</dt>
-<dd style="margin-left: 8">Indicates a dependency on a server push.</dd>
-<dt>E (0x01):</dt>
-<dd style="margin-left: 8">Indicates that the stream dependency is exclusive (see <a href="#RFC7540" class="xref">[RFC7540]</a>, Section 5.3).</dd>
-</dl>
 <div id="rfc.figure.5"></div>
 <div id="fig-priority"></div>
 <pre>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|   Flags (8)   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                 Prioritized Request ID (i)                  ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -774,10 +761,21 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 5: PRIORITY frame payload</p>
-<p id="rfc.section.4.2.3.p.5">The PRIORITY frame payload has the following fields:</p>
+<p id="rfc.section.4.2.3.p.3">The PRIORITY frame payload has the following fields:</p>
 <p></p>
 
 <dl>
+<dt>Flags:</dt>
+<dd style="margin-left: 8">An eight-bit field containing flags.  The flags defined are: <dl>
+<dt>PUSH_PRIORITIZED (0x04):</dt>
+<dd style="margin-left: 8">Indicates that the Prioritized Stream is a server push rather than a request.</dd>
+<dt>PUSH_DEPENDENT (0x02):</dt>
+<dd style="margin-left: 8">Indicates a dependency on a server push.</dd>
+<dt>E (0x01):</dt>
+<dd style="margin-left: 8">Indicates that the stream dependency is exclusive (see <a href="#RFC7540" class="xref">[RFC7540]</a>, Section 5.3).</dd>
+</dl>
+<p> Undefined bits in the Flags field MUST be zero when sent, and ignored upon receipt.</p>
+</dd>
 <dt>Prioritized Request ID:</dt>
 <dd style="margin-left: 8">A variable-length integer that identifies a request.  This contains the Stream ID of a request stream when the PUSH_PRIORITIZED flag is clear, or a Push ID when the PUSH_PRIORITIZED flag is set.</dd>
 <dt>Stream Dependency ID:</dt>
@@ -785,12 +783,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>Weight:</dt>
 <dd style="margin-left: 8">An unsigned 8-bit integer representing a priority weight for the stream (see <a href="#RFC7540" class="xref">[RFC7540]</a>, Section 5.3). Add one to the value to obtain a weight between 1 and 256.</dd>
 </dl>
-<p id="rfc.section.4.2.3.p.7">A PRIORITY frame identifies a request to prioritize, and a request upon which that request is dependent.  A Prioritized Request ID or Stream Dependency ID identifies a client-initiated request using the corresponding stream ID when the corresponding PUSH_PRIORITIZED or PUSH_DEPENDENT flag is not set.  Setting the PUSH_PRIORITIZED or PUSH_DEPENDENT flag causes the Prioritized Request ID or Stream Dependency ID (respectively) to identify a server push using a Push ID (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a> for details).</p>
-<p id="rfc.section.4.2.3.p.8">A PRIORITY frame MAY identify a Stream Dependency ID using a Stream ID of 0; as in <a href="#RFC7540" class="xref">[RFC7540]</a>, this makes the request dependent on the root of the dependency tree.</p>
-<p id="rfc.section.4.2.3.p.9">A PRIORITY frame MUST identify a client-initiated, bidirectional stream.  A server MUST treat receipt of PRIORITY frame with a Stream ID of any other type as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.3.p.10">Stream ID 0 cannot be reprioritized. A Prioritized Request ID that identifies Stream 0 MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.3.p.11">A PRIORITY frame that does not reference a request MUST be treated as a HTTP_MALFORMED_FRAME error, unless it references Stream ID 0.  A PRIORITY that sets a PUSH_PRIORITIZED or PUSH_DEPENDENT flag, but then references a non-existent Push ID MUST be treated as a HTTP_MALFORMED_FRAME error.</p>
-<p id="rfc.section.4.2.3.p.12">A PRIORITY frame MUST contain only the identified fields.  A PRIORITY frame that contains more or fewer fields, or a PRIORITY frame that includes a truncated integer encoding MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.3.p.5">A PRIORITY frame identifies a request to prioritize, and a request upon which that request is dependent.  A Prioritized Request ID or Stream Dependency ID identifies a client-initiated request using the corresponding stream ID when the corresponding PUSH_PRIORITIZED or PUSH_DEPENDENT flag is not set.  Setting the PUSH_PRIORITIZED or PUSH_DEPENDENT flag causes the Prioritized Request ID or Stream Dependency ID (respectively) to identify a server push using a Push ID (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a> for details).</p>
+<p id="rfc.section.4.2.3.p.6">A PRIORITY frame MAY identify a Stream Dependency ID using a Stream ID of 0; as in <a href="#RFC7540" class="xref">[RFC7540]</a>, this makes the request dependent on the root of the dependency tree.</p>
+<p id="rfc.section.4.2.3.p.7">A PRIORITY frame MUST identify a client-initiated, bidirectional stream.  A server MUST treat receipt of PRIORITY frame with a Stream ID of any other type as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.3.p.8">Stream ID 0 cannot be reprioritized. A Prioritized Request ID that identifies Stream 0 MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.3.p.9">A PRIORITY frame that does not reference a request MUST be treated as a HTTP_MALFORMED_FRAME error, unless it references Stream ID 0.  A PRIORITY that sets a PUSH_PRIORITIZED or PUSH_DEPENDENT flag, but then references a non-existent Push ID MUST be treated as a HTTP_MALFORMED_FRAME error.</p>
+<p id="rfc.section.4.2.3.p.10">A PRIORITY frame MUST contain only the identified fields.  A PRIORITY frame that contains more or fewer fields, or a PRIORITY frame that includes a truncated integer encoding MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
 <h3 id="rfc.section.4.2.4">
 <a href="#rfc.section.4.2.4">4.2.4.</a> <a href="#frame-cancel-push" id="frame-cancel-push">CANCEL_PUSH</a>
 </h3>
@@ -798,7 +796,6 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.4.2.4.p.2">When a server receives this frame, it aborts sending the response for the identified server push.  If the server has not yet started to send the server push, it can use the receipt of a CANCEL_PUSH frame to avoid opening a stream.  If the push stream has been opened by the server, the server SHOULD sent a QUIC RST_STREAM frame on those streams and cease transmission of the response.</p>
 <p id="rfc.section.4.2.4.p.3">A server can send this frame to indicate that it won&#8217;t be sending a response prior to creation of a push stream.  Once the push stream has been created, sending CANCEL_PUSH has no effect on the state of the push stream.  A QUIC RST_STREAM frame SHOULD be used instead to cancel transmission of the server push response.</p>
 <p id="rfc.section.4.2.4.p.4">A CANCEL_PUSH frame is sent on the control stream.  Sending a CANCEL_PUSH frame on a stream other than the control stream MUST be treated as a stream error of type HTTP_WRONG_STREAM.</p>
-<p id="rfc.section.4.2.4.p.5">The CANCEL_PUSH frame has no defined flags.</p>
 <div id="rfc.figure.6"></div>
 <div id="fig-cancel-push"></div>
 <pre>
@@ -809,9 +806,9 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 6: CANCEL_PUSH frame payload</p>
-<p id="rfc.section.4.2.4.p.6">The CANCEL_PUSH frame carries a Push ID encoded as a variable-length integer.  The Push ID identifies the server push that is being cancelled (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a>).</p>
-<p id="rfc.section.4.2.4.p.7">If the client receives a CANCEL_PUSH frame, that frame might identify a Push ID that has not yet been mentioned by a PUSH_PROMISE frame.</p>
-<p id="rfc.section.4.2.4.p.8">An endpoint MUST treat a CANCEL_PUSH frame which does not contain exactly one properly-formatted variable-length integer as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.4.p.5">The CANCEL_PUSH frame carries a Push ID encoded as a variable-length integer.  The Push ID identifies the server push that is being cancelled (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a>).</p>
+<p id="rfc.section.4.2.4.p.6">If the client receives a CANCEL_PUSH frame, that frame might identify a Push ID that has not yet been mentioned by a PUSH_PROMISE frame.</p>
+<p id="rfc.section.4.2.4.p.7">An endpoint MUST treat a CANCEL_PUSH frame which does not contain exactly one properly-formatted variable-length integer as a connection error of type HTTP_MALFORMED_FRAME.</p>
 <h3 id="rfc.section.4.2.5">
 <a href="#rfc.section.4.2.5">4.2.5.</a> <a href="#frame-settings" id="frame-settings">SETTINGS</a>
 </h3>
@@ -819,8 +816,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.4.2.5.p.2">SETTINGS parameters are not negotiated; they describe characteristics of the sending peer, which can be used by the receiving peer. However, a negotiation can be implied by the use of SETTINGS &#8211; a peer uses SETTINGS to advertise a set of supported values. The recipient can then choose which entries from this list are also acceptable and proceed with the value it has chosen. (This choice could be announced in a field of an extension frame, or in its own value in SETTINGS.)</p>
 <p id="rfc.section.4.2.5.p.3">Different values for the same parameter can be advertised by each peer. For example, a client might be willing to consume very large response headers, while servers are more cautious about request size.</p>
 <p id="rfc.section.4.2.5.p.4">Parameters MUST NOT occur more than once.  A receiver MAY treat the presence of the same parameter more than once as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.5.p.5">The SETTINGS frame defines no flags.</p>
-<p id="rfc.section.4.2.5.p.6">The payload of a SETTINGS frame consists of zero or more parameters, each consisting of an unsigned 16-bit setting identifier and a length-prefixed binary value.</p>
+<p id="rfc.section.4.2.5.p.5">The payload of a SETTINGS frame consists of zero or more parameters, each consisting of an unsigned 16-bit setting identifier and a length-prefixed binary value.</p>
 <div id="rfc.figure.7"></div>
 <div id="fig-ext-settings"></div>
 <pre>
@@ -833,11 +829,11 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 7: SETTINGS value format</p>
-<p id="rfc.section.4.2.5.p.7">A zero-length content indicates that the setting value is a Boolean and true.  False is indicated by the absence of the setting.</p>
-<p id="rfc.section.4.2.5.p.8">Non-zero-length values MUST be compared against the remaining length of the SETTINGS frame.  Any value which purports to cross the end of the frame MUST cause the SETTINGS frame to be considered malformed and trigger a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.5.p.9">An implementation MUST ignore the contents for any SETTINGS identifier it does not understand.</p>
-<p id="rfc.section.4.2.5.p.10">SETTINGS frames always apply to a connection, never a single stream.  A SETTINGS frame MUST be sent as the first frame of either control stream (see <a href="#stream-mapping" class="xref">Section 3</a>) by each peer, and MUST NOT be sent subsequently or on any other stream. If an endpoint receives an SETTINGS frame on a different stream, the endpoint MUST respond with a connection error of type HTTP_WRONG_STREAM.  If an endpoint receives a second SETTINGS frame, the endpoint MUST respond with a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.5.p.11">The SETTINGS frame affects connection state. A badly formed or incomplete SETTINGS frame MUST be treated as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.5.p.6">A zero-length content indicates that the setting value is a Boolean and true.  False is indicated by the absence of the setting.</p>
+<p id="rfc.section.4.2.5.p.7">Non-zero-length values MUST be compared against the remaining length of the SETTINGS frame.  Any value which purports to cross the end of the frame MUST cause the SETTINGS frame to be considered malformed and trigger a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.5.p.8">An implementation MUST ignore the contents for any SETTINGS identifier it does not understand.</p>
+<p id="rfc.section.4.2.5.p.9">SETTINGS frames always apply to a connection, never a single stream.  A SETTINGS frame MUST be sent as the first frame of either control stream (see <a href="#stream-mapping" class="xref">Section 3</a>) by each peer, and MUST NOT be sent subsequently or on any other stream. If an endpoint receives an SETTINGS frame on a different stream, the endpoint MUST respond with a connection error of type HTTP_WRONG_STREAM.  If an endpoint receives a second SETTINGS frame, the endpoint MUST respond with a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.5.p.10">The SETTINGS frame affects connection state. A badly formed or incomplete SETTINGS frame MUST be treated as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_MALFORMED_FRAME.</p>
 <h4 id="rfc.section.4.2.5.1">
 <a href="#rfc.section.4.2.5.1">4.2.5.1.</a> <a href="#integer-encoding" id="integer-encoding">Integer encoding</a>
 </h4>
@@ -862,7 +858,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h3 id="rfc.section.4.2.6">
 <a href="#rfc.section.4.2.6">4.2.6.</a> <a href="#frame-push-promise" id="frame-push-promise">PUSH_PROMISE</a>
 </h3>
-<p id="rfc.section.4.2.6.p.1">The PUSH_PROMISE frame (type=0x05) is used to carry a request header set from server to client, as in HTTP/2.  The PUSH_PROMISE frame defines no flags.</p>
+<p id="rfc.section.4.2.6.p.1">The PUSH_PROMISE frame (type=0x05) is used to carry a request header set from server to client, as in HTTP/2.</p>
 <div id="rfc.figure.8"></div>
 <div id="fig-push-promise"></div>
 <pre>
@@ -892,7 +888,6 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.4.2.7">4.2.7.</a> <a href="#frame-goaway" id="frame-goaway">GOAWAY</a>
 </h3>
 <p id="rfc.section.4.2.7.p.1">The GOAWAY frame (type=0x7) is used to initiate graceful shutdown of a connection by a server.  GOAWAY allows a server to stop accepting new requests while still finishing processing of previously received requests.  This enables administrative actions, like server maintenance.  GOAWAY by itself does not close a connection.</p>
-<p id="rfc.section.4.2.7.p.2">The GOAWAY frame does not define any flags.</p>
 <div id="rfc.figure.9"></div>
 <div id="fig-goaway"></div>
 <pre>
@@ -903,19 +898,19 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 9: GOAWAY frame payload</p>
-<p id="rfc.section.4.2.7.p.3">The GOAWAY frame carries a QUIC Stream ID for a client-initiated, bidirectional stream encoded as a variable-length integer.  A client MUST treat receipt of a GOAWAY frame containing a Stream ID of any other type as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.7.p.4">Clients do not need to send GOAWAY to initiate a graceful shutdown; they simply stop making new requests.  A server MUST treat receipt of a GOAWAY frame as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_UNEXPECTED_GOAWAY.</p>
-<p id="rfc.section.4.2.7.p.5">The GOAWAY frame applies to the connection, not a specific stream.  An endpoint MUST treat a GOAWAY frame on a stream other than the control stream as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_WRONG_STREAM.</p>
-<p id="rfc.section.4.2.7.p.6">New client requests might already have been sent before the client receives the server&#8217;s GOAWAY frame.  The GOAWAY frame contains the Stream ID of the last client-initiated request that was or might be processed in this connection, which enables client and server to agree on which requests were accepted prior to the connection shutdown.  This identifier MAY be lower than the stream limit identified by a QUIC MAX_STREAM_ID frame, and MAY be zero if no requests were processed.  Servers SHOULD NOT increase the MAX_STREAM_ID limit after sending a GOAWAY frame.</p>
-<p id="rfc.section.4.2.7.p.7">Once sent, the server MUST cancel requests sent on streams with an identifier higher than the included last Stream ID.  Clients MUST NOT send new requests on the connection after receiving GOAWAY, although requests might already be in transit. A new connection can be established for new requests.</p>
-<p id="rfc.section.4.2.7.p.8">If the client has sent requests on streams with a higher Stream ID than indicated in the GOAWAY frame, those requests are considered cancelled (<a href="#request-cancellation" class="xref">Section 3.2.3</a>).  Clients SHOULD reset any streams above this ID with the error code HTTP_REQUEST_CANCELLED.  Servers MAY also cancel requests on streams below the indicated ID if these requests were not processed.</p>
-<p id="rfc.section.4.2.7.p.9">Requests on Stream IDs less than or equal to the Stream ID in the GOAWAY frame might have been processed; their status cannot be known until they are completed successfully, reset individually, or the connection terminates.</p>
-<p id="rfc.section.4.2.7.p.10">Servers SHOULD send a GOAWAY frame when the closing of a connection is known in advance, even if the advance notice is small, so that the remote peer can know whether a stream has been partially processed or not.  For example, if an HTTP client sends a POST at the same time that a server closes a QUIC connection, the client cannot know if the server started to process that POST request if the server does not send a GOAWAY frame to indicate what streams it might have acted on.</p>
-<p id="rfc.section.4.2.7.p.11">For unexpected closures caused by error conditions, a QUIC CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST be used.  However, a GOAWAY MAY be sent first to provide additional detail to clients and to allow the client to retry requests.  Including the GOAWAY frame in the same packet as the QUIC CONNECTION_CLOSE or APPLICATION_CLOSE frame improves the chances of the frame being received by clients.</p>
-<p id="rfc.section.4.2.7.p.12">If a connection terminates without a GOAWAY frame, the last Stream ID is effectively the highest possible Stream ID (as determined by QUIC&#8217;s MAX_STREAM_ID).</p>
-<p id="rfc.section.4.2.7.p.13">An endpoint MAY send multiple GOAWAY frames if circumstances change. For instance, an endpoint that sends GOAWAY without an error code during graceful shutdown could subsequently encounter an error condition.  The last stream identifier from the last GOAWAY frame received indicates which streams could have been acted upon.  A server MUST NOT increase the value they send in the last Stream ID, since clients might already have retried unprocessed requests on another connection.</p>
-<p id="rfc.section.4.2.7.p.14">A client that is unable to retry requests loses all requests that are in flight when the server closes the connection.  A server that is attempting to gracefully shut down a connection SHOULD send an initial GOAWAY frame with the last Stream ID set to the current value of QUIC&#8217;s MAX_STREAM_ID and SHOULD NOT increase the MAX_STREAM_ID thereafter.  This signals to the client that a shutdown is imminent and that initiating further requests is prohibited.  After allowing time for any in-flight requests (at least one round-trip time), the server MAY send another GOAWAY frame with an updated last Stream ID.  This ensures that a connection can be cleanly shut down without losing requests.</p>
-<p id="rfc.section.4.2.7.p.15">Once all requests on streams at or below the identified stream number have been completed or cancelled, and all promised server push responses associated with those requests have been completed or cancelled, the connection can be closed using an Immediate Close (see <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>).  An endpoint that completes a graceful shutdown SHOULD use the QUIC APPLICATION_CLOSE frame with the HTTP_NO_ERROR code.</p>
+<p id="rfc.section.4.2.7.p.2">The GOAWAY frame carries a QUIC Stream ID for a client-initiated, bidirectional stream encoded as a variable-length integer.  A client MUST treat receipt of a GOAWAY frame containing a Stream ID of any other type as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.7.p.3">Clients do not need to send GOAWAY to initiate a graceful shutdown; they simply stop making new requests.  A server MUST treat receipt of a GOAWAY frame as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_UNEXPECTED_GOAWAY.</p>
+<p id="rfc.section.4.2.7.p.4">The GOAWAY frame applies to the connection, not a specific stream.  An endpoint MUST treat a GOAWAY frame on a stream other than the control stream as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_WRONG_STREAM.</p>
+<p id="rfc.section.4.2.7.p.5">New client requests might already have been sent before the client receives the server&#8217;s GOAWAY frame.  The GOAWAY frame contains the Stream ID of the last client-initiated request that was or might be processed in this connection, which enables client and server to agree on which requests were accepted prior to the connection shutdown.  This identifier MAY be lower than the stream limit identified by a QUIC MAX_STREAM_ID frame, and MAY be zero if no requests were processed.  Servers SHOULD NOT increase the MAX_STREAM_ID limit after sending a GOAWAY frame.</p>
+<p id="rfc.section.4.2.7.p.6">Once sent, the server MUST cancel requests sent on streams with an identifier higher than the included last Stream ID.  Clients MUST NOT send new requests on the connection after receiving GOAWAY, although requests might already be in transit. A new connection can be established for new requests.</p>
+<p id="rfc.section.4.2.7.p.7">If the client has sent requests on streams with a higher Stream ID than indicated in the GOAWAY frame, those requests are considered cancelled (<a href="#request-cancellation" class="xref">Section 3.2.3</a>).  Clients SHOULD reset any streams above this ID with the error code HTTP_REQUEST_CANCELLED.  Servers MAY also cancel requests on streams below the indicated ID if these requests were not processed.</p>
+<p id="rfc.section.4.2.7.p.8">Requests on Stream IDs less than or equal to the Stream ID in the GOAWAY frame might have been processed; their status cannot be known until they are completed successfully, reset individually, or the connection terminates.</p>
+<p id="rfc.section.4.2.7.p.9">Servers SHOULD send a GOAWAY frame when the closing of a connection is known in advance, even if the advance notice is small, so that the remote peer can know whether a stream has been partially processed or not.  For example, if an HTTP client sends a POST at the same time that a server closes a QUIC connection, the client cannot know if the server started to process that POST request if the server does not send a GOAWAY frame to indicate what streams it might have acted on.</p>
+<p id="rfc.section.4.2.7.p.10">For unexpected closures caused by error conditions, a QUIC CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST be used.  However, a GOAWAY MAY be sent first to provide additional detail to clients and to allow the client to retry requests.  Including the GOAWAY frame in the same packet as the QUIC CONNECTION_CLOSE or APPLICATION_CLOSE frame improves the chances of the frame being received by clients.</p>
+<p id="rfc.section.4.2.7.p.11">If a connection terminates without a GOAWAY frame, the last Stream ID is effectively the highest possible Stream ID (as determined by QUIC&#8217;s MAX_STREAM_ID).</p>
+<p id="rfc.section.4.2.7.p.12">An endpoint MAY send multiple GOAWAY frames if circumstances change. For instance, an endpoint that sends GOAWAY without an error code during graceful shutdown could subsequently encounter an error condition.  The last stream identifier from the last GOAWAY frame received indicates which streams could have been acted upon.  A server MUST NOT increase the value they send in the last Stream ID, since clients might already have retried unprocessed requests on another connection.</p>
+<p id="rfc.section.4.2.7.p.13">A client that is unable to retry requests loses all requests that are in flight when the server closes the connection.  A server that is attempting to gracefully shut down a connection SHOULD send an initial GOAWAY frame with the last Stream ID set to the current value of QUIC&#8217;s MAX_STREAM_ID and SHOULD NOT increase the MAX_STREAM_ID thereafter.  This signals to the client that a shutdown is imminent and that initiating further requests is prohibited.  After allowing time for any in-flight requests (at least one round-trip time), the server MAY send another GOAWAY frame with an updated last Stream ID.  This ensures that a connection can be cleanly shut down without losing requests.</p>
+<p id="rfc.section.4.2.7.p.14">Once all requests on streams at or below the identified stream number have been completed or cancelled, and all promised server push responses associated with those requests have been completed or cancelled, the connection can be closed using an Immediate Close (see <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>).  An endpoint that completes a graceful shutdown SHOULD use the QUIC APPLICATION_CLOSE frame with the HTTP_NO_ERROR code.</p>
 <h3 id="rfc.section.4.2.8">
 <a href="#rfc.section.4.2.8">4.2.8.</a> <a href="#frame-max-push-id" id="frame-max-push-id">MAX_PUSH_ID</a>
 </h3>
@@ -923,7 +918,6 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.4.2.8.p.2">The MAX_PUSH_ID frame is always sent on a control stream.  Receipt of a MAX_PUSH_ID frame on any other stream MUST be treated as a connection error of type HTTP_WRONG_STREAM.</p>
 <p id="rfc.section.4.2.8.p.3">A server MUST NOT send a MAX_PUSH_ID frame.  A client MUST treat the receipt of a MAX_PUSH_ID frame as a connection error of type HTTP_MALFORMED_FRAME.</p>
 <p id="rfc.section.4.2.8.p.4">The maximum Push ID is unset when a connection is created, meaning that a server cannot push until it receives a MAX_PUSH_ID frame.  A client that wishes to manage the number of promised server pushes can increase the maximum Push ID by sending a MAX_PUSH_ID frame as the server fulfills or cancels server pushes.</p>
-<p id="rfc.section.4.2.8.p.5">The MAX_PUSH_ID frame has no defined flags.</p>
 <div id="rfc.figure.10"></div>
 <div id="fig-max-push"></div>
 <pre>
@@ -934,8 +928,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 10: MAX_PUSH_ID frame payload</p>
-<p id="rfc.section.4.2.8.p.6">The MAX_PUSH_ID frame carries a single variable-length integer that identifies the maximum value for a Push ID that the server can use (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a>).  A MAX_PUSH_ID frame cannot reduce the maximum Push ID; receipt of a MAX_PUSH_ID that contains a smaller value than previously received MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
-<p id="rfc.section.4.2.8.p.7">A server MUST treat a MAX_PUSH_ID frame payload that does not contain a single variable-length integer as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.8.p.5">The MAX_PUSH_ID frame carries a single variable-length integer that identifies the maximum value for a Push ID that the server can use (see <a href="#frame-push-promise" class="xref">Section 4.2.6</a>).  A MAX_PUSH_ID frame cannot reduce the maximum Push ID; receipt of a MAX_PUSH_ID that contains a smaller value than previously received MUST be treated as a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.8.p.6">A server MUST treat a MAX_PUSH_ID frame payload that does not contain a single variable-length integer as a connection error of type HTTP_MALFORMED_FRAME.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#connection-management" id="connection-management">Connection Management</a>
 </h1>
@@ -997,14 +991,15 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h2 id="rfc.section.7.2">
 <a href="#rfc.section.7.2">7.2.</a> <a href="#h2-frames" id="h2-frames">HTTP Frame Types</a>
 </h2>
-<p id="rfc.section.7.2.p.1">Many framing concepts from HTTP/2 can be elided away on QUIC, because the transport deals with them. Because frames are already on a stream, they can omit the stream number. Because frames do not block multiplexing (QUIC&#8217;s multiplexing occurs below this layer), the support for variable-maximum-length packets can be removed. Because stream termination is handled by QUIC, an END_STREAM flag is not required.</p>
+<p id="rfc.section.7.2.p.1">Many framing concepts from HTTP/2 can be elided away on QUIC, because the transport deals with them. Because frames are already on a stream, they can omit the stream number. Because frames do not block multiplexing (QUIC&#8217;s multiplexing occurs below this layer), the support for variable-maximum-length packets can be removed. Because stream termination is handled by QUIC, an END_STREAM flag is not required.  This permits the removal of the Flags field from the generic frame layout.</p>
 <p id="rfc.section.7.2.p.2">Frame payloads are largely drawn from <a href="#RFC7540" class="xref">[RFC7540]</a>. However, QUIC includes many features (e.g. flow control) which are also present in HTTP/2. In these cases, the HTTP mapping does not re-implement them. As a result, several HTTP/2 frame types are not required in HTTP/QUIC. Where an HTTP/2-defined frame is no longer used, the frame ID has been reserved in order to maximize portability between HTTP/2 and HTTP/QUIC implementations. However, even equivalent frames between the two mappings are not identical.</p>
 <p id="rfc.section.7.2.p.3">Many of the differences arise from the fact that HTTP/2 provides an absolute ordering between frames across all streams, while QUIC provides this guarantee on each stream only.  As a result, if a frame type makes assumptions that frames from different streams will still be received in the order sent, HTTP/QUIC will break them.</p>
 <p id="rfc.section.7.2.p.4">For example, implicit in the HTTP/2 prioritization scheme is the notion of in-order delivery of priority changes (i.e., dependency tree mutations): since operations on the dependency tree such as reparenting a subtree are not commutative, both sender and receiver must apply them in the same order to ensure that both sides have a consistent view of the stream dependency tree.  HTTP/2 specifies priority assignments in PRIORITY frames and (optionally) in HEADERS frames. To achieve in-order delivery of priority changes in HTTP/QUIC, PRIORITY frames are sent on the control stream and the PRIORITY section is removed from the HEADERS frame.</p>
 <p id="rfc.section.7.2.p.5">Likewise, HPACK was designed with the assumption of in-order delivery. A sequence of encoded header blocks must arrive (and be decoded) at an endpoint in the same order in which they were encoded. This ensures that the dynamic state at the two endpoints remains in sync.  As a result, HTTP/QUIC uses a modified version of HPACK, described in <a href="#QPACK" class="xref">[QPACK]</a>.</p>
 <p id="rfc.section.7.2.p.6">Frame type definitions in HTTP/QUIC often use the QUIC variable-length integer encoding.  In particular, Stream IDs use this encoding, which allow for a larger range of possible values than the encoding used in HTTP/2.  Some frames in HTTP/QUIC use an identifier rather than a Stream ID (e.g. Push IDs in PRIORITY frames). Redefinition of the encoding of extension frame types might be necessary if the encoding includes a Stream ID.</p>
-<p id="rfc.section.7.2.p.7">Other than this issue, frame type HTTP/2 extensions are typically portable to QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2 or 3 in HTTP/QUIC.  HTTP/QUIC extensions will not assume ordering, but would not be harmed by ordering, and would be portable to HTTP/2 in the same manner.</p>
-<p id="rfc.section.7.2.p.8">Below is a listing of how each HTTP/2 frame type is mapped:</p>
+<p id="rfc.section.7.2.p.7">Because the Flags field is not present in generic HTTP/QUIC frames, those frames which depend on the presence of flags need to allocate space for flags as part of their frame payload.</p>
+<p id="rfc.section.7.2.p.8">Other than these issues, frame type HTTP/2 extensions are typically portable to QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2 or 3 in HTTP/QUIC.  HTTP/QUIC extensions will not assume ordering, but would not be harmed by ordering, and would be portable to HTTP/2 in the same manner.</p>
+<p id="rfc.section.7.2.p.9">Below is a listing of how each HTTP/2 frame type is mapped:</p>
 <p></p>
 
 <dl>
@@ -1029,7 +1024,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>CONTINUATION (0x9):</dt>
 <dd style="margin-left: 8">CONTINUATION frames do not exist; instead, larger HEADERS/PUSH_PROMISE frames than HTTP/2 are permitted, and HEADERS frames can be used in series.</dd>
 </dl>
-<p id="rfc.section.7.2.p.10">Frame types defined by extensions to HTTP/2 need to be separately registered for HTTP/QUIC if still applicable.  The IDs of frames defined in <a href="#RFC7540" class="xref">[RFC7540]</a> have been reserved for simplicity.  See <a href="#iana-frames" class="xref">Section 9.3</a>.</p>
+<p id="rfc.section.7.2.p.11">Frame types defined by extensions to HTTP/2 need to be separately registered for HTTP/QUIC if still applicable.  The IDs of frames defined in <a href="#RFC7540" class="xref">[RFC7540]</a> have been reserved for simplicity.  See <a href="#iana-frames" class="xref">Section 9.3</a>.</p>
 <h2 id="rfc.section.7.3">
 <a href="#rfc.section.7.3">7.3.</a> <a href="#h2-settings" id="h2-settings">HTTP/2 SETTINGS Parameters</a>
 </h2>
@@ -1141,7 +1136,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>Code:</dt>
 <dd style="margin-left: 8">The 8-bit code assigned to the frame type.</dd>
 <dt>Specification:</dt>
-<dd style="margin-left: 8">A reference to a specification that includes a description of the frame layout, its semantics, and flags that the frame type uses, including any parts of the frame that are conditionally present based on the value of flags.</dd>
+<dd style="margin-left: 8">A reference to a specification that includes a description of the frame layout and its semantics, including any parts of the frame that are conditionally present.</dd>
 </dl>
 <p id="rfc.section.9.3.p.5">The entries in the following table are registered by this document.</p>
 <table cellpadding="3" cellspacing="0" class="tt full center">
