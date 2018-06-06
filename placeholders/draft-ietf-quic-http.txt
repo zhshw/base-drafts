@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                            May 07, 2018
-Expires: November 8, 2018
+Intended status: Standards Track                           June 06, 2018
+Expires: December 8, 2018
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 8, 2018.
+   This Internet-Draft will expire on December 8, 2018.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Bishop                  Expires November 8, 2018                [Page 1]
+Bishop                  Expires December 8, 2018                [Page 1]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
 Copyright Notice
@@ -90,61 +90,63 @@ Table of Contents
        3.2.2.  The CONNECT Method  . . . . . . . . . . . . . . . . .   9
        3.2.3.  Request Cancellation  . . . . . . . . . . . . . . . .  10
      3.3.  Request Prioritization  . . . . . . . . . . . . . . . . .  11
-     3.4.  Server Push . . . . . . . . . . . . . . . . . . . . . . .  11
-   4.  HTTP Framing Layer  . . . . . . . . . . . . . . . . . . . . .  12
-     4.1.  Frame Layout  . . . . . . . . . . . . . . . . . . . . . .  12
-     4.2.  Frame Definitions . . . . . . . . . . . . . . . . . . . .  13
-       4.2.1.  DATA  . . . . . . . . . . . . . . . . . . . . . . . .  13
-       4.2.2.  HEADERS . . . . . . . . . . . . . . . . . . . . . . .  14
-       4.2.3.  PRIORITY  . . . . . . . . . . . . . . . . . . . . . .  14
-       4.2.4.  CANCEL_PUSH . . . . . . . . . . . . . . . . . . . . .  16
-       4.2.5.  SETTINGS  . . . . . . . . . . . . . . . . . . . . . .  17
-       4.2.6.  PUSH_PROMISE  . . . . . . . . . . . . . . . . . . . .  19
-       4.2.7.  GOAWAY  . . . . . . . . . . . . . . . . . . . . . . .  20
-       4.2.8.  HEADER_ACK  . . . . . . . . . . . . . . . . . . . . .  22
-       4.2.9.  MAX_PUSH_ID . . . . . . . . . . . . . . . . . . . . .  23
-   5.  Connection Management . . . . . . . . . . . . . . . . . . . .  24
-   6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  24
-     6.1.  HTTP/QUIC Error Codes . . . . . . . . . . . . . . . . . .  25
+       3.3.1.  Placeholders  . . . . . . . . . . . . . . . . . . . .  11
+       3.3.2.  Priority Tree Maintenance . . . . . . . . . . . . . .  12
+     3.4.  Server Push . . . . . . . . . . . . . . . . . . . . . . .  13
+   4.  HTTP Framing Layer  . . . . . . . . . . . . . . . . . . . . .  14
+     4.1.  Frame Layout  . . . . . . . . . . . . . . . . . . . . . .  14
+     4.2.  Frame Definitions . . . . . . . . . . . . . . . . . . . .  15
+       4.2.1.  DATA  . . . . . . . . . . . . . . . . . . . . . . . .  15
+       4.2.2.  HEADERS . . . . . . . . . . . . . . . . . . . . . . .  15
+       4.2.3.  PRIORITY  . . . . . . . . . . . . . . . . . . . . . .  15
+       4.2.4.  CANCEL_PUSH . . . . . . . . . . . . . . . . . . . . .  18
+       4.2.5.  SETTINGS  . . . . . . . . . . . . . . . . . . . . . .  18
+       4.2.6.  PUSH_PROMISE  . . . . . . . . . . . . . . . . . . . .  20
+       4.2.7.  GOAWAY  . . . . . . . . . . . . . . . . . . . . . . .  22
+       4.2.8.  MAX_PUSH_ID . . . . . . . . . . . . . . . . . . . . .  24
+   5.  Connection Management . . . . . . . . . . . . . . . . . . . .  25
+   6.  Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 
 
-Bishop                  Expires November 8, 2018                [Page 2]
+Bishop                  Expires December 8, 2018                [Page 2]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
+     6.1.  HTTP/QUIC Error Codes . . . . . . . . . . . . . . . . . .  25
    7.  Considerations for Transitioning from HTTP/2  . . . . . . . .  26
-     7.1.  Streams . . . . . . . . . . . . . . . . . . . . . . . . .  26
-     7.2.  HTTP Frame Types  . . . . . . . . . . . . . . . . . . . .  26
-     7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  28
-     7.4.  HTTP/2 Error Codes  . . . . . . . . . . . . . . . . . . .  29
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  30
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  30
-     9.1.  Registration of HTTP/QUIC Identification String . . . . .  30
+     7.1.  Streams . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     7.2.  HTTP Frame Types  . . . . . . . . . . . . . . . . . . . .  27
+     7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  29
+     7.4.  HTTP/2 Error Codes  . . . . . . . . . . . . . . . . . . .  30
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  31
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  31
+     9.1.  Registration of HTTP/QUIC Identification String . . . . .  31
      9.2.  Registration of QUIC Version Hint Alt-Svc Parameter . . .  31
-     9.3.  Frame Types . . . . . . . . . . . . . . . . . . . . . . .  31
-     9.4.  Settings Parameters . . . . . . . . . . . . . . . . . . .  32
-     9.5.  Error Codes . . . . . . . . . . . . . . . . . . . . . . .  33
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  35
-     10.1.  Normative References . . . . . . . . . . . . . . . . . .  35
-     10.2.  Informative References . . . . . . . . . . . . . . . . .  36
-     10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  36
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  36
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . .  37
-     B.1.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  37
-     B.2.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  37
-     B.3.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  37
-     B.4.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  37
-     B.5.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  37
-     B.6.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  37
-     B.7.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  38
-     B.8.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  38
-     B.9.  Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  38
-     B.10. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  38
-     B.11. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  39
-     B.12. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  39
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  39
+     9.3.  Frame Types . . . . . . . . . . . . . . . . . . . . . . .  32
+     9.4.  Settings Parameters . . . . . . . . . . . . . . . . . . .  33
+     9.5.  Error Codes . . . . . . . . . . . . . . . . . . . . . . .  34
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  36
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  36
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  37
+     10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  37
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  37
+     A.1.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  38
+     A.2.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  38
+     A.3.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  38
+     A.4.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  38
+     A.5.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  38
+     A.6.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  38
+     A.7.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  38
+     A.8.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  39
+     A.9.  Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  39
+     A.10. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  39
+     A.11. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  39
+     A.12. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  40
+     A.13. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  40
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  40
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  40
 
 1.  Introduction
 
@@ -163,11 +165,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-
-
-Bishop                  Expires November 8, 2018                [Page 3]
+Bishop                  Expires December 8, 2018                [Page 3]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
 1.1.  Notational Conventions
@@ -221,9 +221,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018                [Page 4]
+Bishop                  Expires December 8, 2018                [Page 4]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
 2.1.1.  QUIC Version Hints
@@ -277,9 +277,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018                [Page 5]
+Bishop                  Expires December 8, 2018                [Page 5]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
    While connection-level options pertaining to the core QUIC protocol
@@ -333,9 +333,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018                [Page 6]
+Bishop                  Expires December 8, 2018                [Page 6]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
    A server that does not wish clients to reuse connections for a
@@ -356,10 +356,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    (Stream 0) for cryptographic operations.  HTTP over QUIC reserves the
    first unidirectional stream sent by either peer (Streams 2 and 3) for
    sending and receiving HTTP control frames.  This pair of
-   unidirectional streams is analogous to HTTP/2's Stream 0.  The data
-   sent on these streams is critical to the HTTP connection.  If either
-   control stream is closed for any reason, this MUST be treated as a
-   connection error of type QUIC_CLOSED_CRITICAL_STREAM.
+   unidirectional streams is analogous to HTTP/2's Stream 0.  HTTP over
+   QUIC also reserves the second and third unidirectional streams for
+   each peer's QPACK encoder and decoder.  The client's QPACK encoder
+   uses stream 6 and decoder uses stream 10.  The server's encoder and
+   decoder use streams 7 and 11, respectively.  The data sent on these
+   streams is critical to the HTTP connection.  If any control stream is
+   closed for any reason, this MUST be treated as a connection error of
+   type QUIC_CLOSED_CRITICAL_STREAM.
 
    When HTTP headers and data are sent over QUIC, the QUIC layer handles
    most of the stream management.
@@ -382,17 +386,18 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Streams SHOULD be used sequentially, with no gaps.
 
+
+
+
+Bishop                  Expires December 8, 2018                [Page 7]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    HTTP does not need to do any separate multiplexing when using QUIC -
    data sent over a QUIC stream always maps to a particular HTTP
    transaction.  Requests and responses are considered complete when the
    corresponding QUIC stream is closed in the appropriate direction.
-
-
-
-Bishop                  Expires November 8, 2018                [Page 7]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
 3.1.  Control Streams
 
@@ -437,18 +442,19 @@ Internet-Draft               HTTP over QUIC                     May 2018
    The "chunked" transfer encoding defined in Section 4.1 of [RFC7230]
    MUST NOT be used.
 
+
+
+
+Bishop                  Expires December 8, 2018                [Page 8]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    Trailing header fields are carried in an additional header block
    following the body.  Such a header block is a sequence of HEADERS
    frames with End Header Block set on the last frame.  Senders MUST
    send only one header block in the trailers section; receivers MUST
    discard any subsequent header blocks.
-
-
-
-Bishop                  Expires November 8, 2018                [Page 8]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    An HTTP request/response exchange fully consumes a QUIC stream.
    After sending a request, a client closes the stream for sending;
@@ -492,20 +498,20 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    A proxy that supports CONNECT establishes a TCP connection
    ([RFC0793]) to the server identified in the ":authority" pseudo-
+
+
+
+Bishop                  Expires December 8, 2018                [Page 9]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    header field.  Once this connection is successfully established, the
    proxy sends a HEADERS frame containing a 2xx series status code to
    the client, as defined in [RFC7231], Section 4.3.6.
 
    All DATA frames on the request stream correspond to data sent on the
    TCP connection.  Any DATA frame sent by the client is transmitted by
-
-
-
-Bishop                  Expires November 8, 2018                [Page 9]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    the proxy to the TCP server; data received from the TCP server is
    packaged into DATA frames by the proxy.  Note that the size and
    number of TCP segments is not guaranteed to map predictably to the
@@ -548,6 +554,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
       stream was passed to some higher layer of software that might have
       taken some action as a result.
 
+
+
+
+Bishop                  Expires December 8, 2018               [Page 10]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    If a stream is cancelled after receiving a complete response, the
    client MAY ignore the cancellation and use the response.  However, if
    a stream is cancelled after receiving a partial response, the
@@ -555,18 +569,11 @@ Internet-Draft               HTTP over QUIC                     May 2018
    not possible, unless this is otherwise permitted (e.g., idempotent
    actions like GET, PUT, or DELETE).
 
-
-
-Bishop                  Expires November 8, 2018               [Page 10]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
 3.3.  Request Prioritization
 
-   HTTP/QUIC uses the priority scheme described in [RFC7540],
-   Section 5.3.  In this priority scheme, a given request can be
-   designated as dependent upon another request, which expresses the
+   HTTP/QUIC uses a priority scheme similar to that described in
+   [RFC7540], Section 5.3.  In this priority scheme, a given stream can
+   be designated as dependent upon another request, which expresses the
    preference that the latter stream (the "parent" request) be allocated
    resources before the former stream (the "dependent" request).  Taken
    together, the dependencies across all requests in a connection form a
@@ -574,19 +581,109 @@ Internet-Draft               HTTP over QUIC                     May 2018
    PRIORITY frames add, remove, or change the dependency links between
    requests.
 
-   The PRIORITY frame Section 4.2.3 identifies a request either by
-   identifying the stream that carries a request or by using a Push ID
-   (Section 4.2.6).
+   The PRIORITY frame Section 4.2.3 identifies a prioritized element.
+   The elements which can be prioritized are:
+
+   o  Requests, identified by the ID of the request stream
+
+   o  Pushes, identified by the Push ID of the promised resource
+      (Section 4.2.6)
+
+   o  Placeholders, identified by a Placeholder ID
+
+   A reference to zero indicates a dependency on the root of the tree.
+   A reference to an element which is no longer in the tree is treated
+   as a reference to the root of the tree.
 
    Only a client can send PRIORITY frames.  A server MUST NOT send a
    PRIORITY frame.
+
+3.3.1.  Placeholders
+
+   In HTTP/2, certain implementations used closed or unused streams as
+   placeholders in describing the relative priority of requests.
+   However, this created confusion as servers could not reliably
+   identify which elements of the priority tree could safely be
+   discarded.  Clients could potentially reference closed streams long
+   after the server had discarded state, leading to disparate views of
+   the prioritization the client had attempted to express.
+
+   In HTTP/QUIC, a number of placeholders are explicitly permitted by
+   the server using the "SETTINGS_NUM_PLACEHOLDERS" setting.  Because
+
+
+
+Bishop                  Expires December 8, 2018               [Page 11]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
+   the server commits to maintain these IDs in the tree, clients can use
+   them with confidence that the server will not have discarded the
+   state.
+
+   Placeholders are identified by an ID between zero and one less than
+   the number of placeholders the server has permitted.
+
+3.3.2.  Priority Tree Maintenance
+
+   Servers can aggressively prune inactive regions from the priority
+   tree, because placeholders will be used to "root" any persistent
+   structure of the tree which the client cares about retaining.  For
+   prioritization purposes, a node in the tree is considered "inactive"
+   when the corresponding stream has been closed for at least two round-
+   trip times (using any reasonable estimate available on the server).
+   This delay helps mitigate race conditions where the server has pruned
+   a node the client believed was still active and used as a Stream
+   Dependency.
+
+   Specifically, the server MAY at any time:
+
+   o  Identify and discard branches of the tree containing only inactive
+      nodes (i.e. a node with only other inactive nodes as descendants,
+      along with those descendants)
+
+   o  Identify and condense interior regions of the tree containing only
+      inactive nodes, allocating weight appropriately
+
+       x                x                 x
+       |                |                 |
+       P                P                 P
+      / \               |                 |
+     I   I     ==>      I      ==>        A
+        / \             |                 |
+       A   I            A                 A
+       |                |
+       A                A
+
+                Figure 1: Example of Priority Tree Pruning
+
+   In the example in Figure 1, "P" represents a Placeholder, "A"
+   represents an active node, and "I" represents an inactive node.  In
+   the first step, the server discards two inactive branches (each a
+   single node).  In the second step, the server condenses an interior
+   inactive node.  Note that these transformations will result in no
+   change in the resources allocated to a particular active stream.
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 12]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
+   Clients SHOULD assume the server is actively performing such pruning
+   and SHOULD NOT declare a dependency on a stream it knows to have been
+   closed.
 
 3.4.  Server Push
 
    HTTP/QUIC supports server push in a similar manner to [RFC7540], but
    uses different mechanisms.  During connection establishment, the
    client enables server push by sending a MAX_PUSH_ID frame (see
-   Section 4.2.9).  A server cannot use server push until it receives a
+   Section 4.2.8).  A server cannot use server push until it receives a
    MAX_PUSH_ID frame.
 
    As with server push for HTTP/2, the server initiates a server push by
@@ -610,16 +707,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    unidirectional stream.  A push stream identifies the Push ID of the
    promise that it fulfills, encoded as a variable-length integer.
 
-
-
-
-Bishop                  Expires November 8, 2018               [Page 11]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    A server SHOULD use Push IDs sequentially, starting at 0.  A client
-   uses the MAX_PUSH_ID frame (Section 4.2.9) to limit the number of
+   uses the MAX_PUSH_ID frame (Section 4.2.8) to limit the number of
    pushes that a server can promise.  A client MUST treat receipt of a
    push stream with a Push ID that is greater than the maximum Push ID
    as a connection error of type HTTP_PUSH_LIMIT_EXCEEDED.
@@ -631,13 +720,23 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Section 6).  This asks the server not to transfer the data and
    indicates that it will be discarded upon receipt.
 
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 13]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                         Push ID (i)                         ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                       Figure 1: Push Stream Header
+                       Figure 2: Push Stream Header
 
    Push streams always begin with a header containing the Push ID.  Each
    Push ID MUST only be used once in a push stream header.  If a push
@@ -660,29 +759,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    All frames have the following format:
 
-
-
-
-
-
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 12]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                           Length (i)                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    Type (8)   |   Flags (8)   |       Frame Payload (*)     ...
+   |    Type (8)   |               Frame Payload (*)             ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                     Figure 2: HTTP/QUIC frame format
+                     Figure 3: HTTP/QUIC frame format
 
    A frame includes the following fields:
 
@@ -691,11 +776,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Type:  An 8-bit type for the frame.
 
-   Flags:  An 8-bit field containing flags.  The Type field determines
-      the semantics of flags.
-
    Frame Payload:  A payload, the semantics of which are determined by
       the Type field.
+
+
+
+Bishop                  Expires December 8, 2018               [Page 14]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
 4.2.  Frame Definitions
 
@@ -703,8 +792,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    DATA frames (type=0x0) convey arbitrary, variable-length sequences of
    octets associated with an HTTP request or response payload.
-
-   The DATA frame defines no flags.
 
    DATA frames MUST be associated with an HTTP request or response.  If
    a DATA frame is received on either control stream, the recipient MUST
@@ -717,25 +804,16 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                         Payload (*)                         ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                       Figure 3: DATA frame payload
+                       Figure 4: DATA frame payload
 
    DATA frames MUST contain a non-zero-length payload.  If a DATA frame
    is received with a payload length of zero, the recipient MUST respond
    with a stream error (Section 6) of type HTTP_MALFORMED_FRAME.
 
-
-
-Bishop                  Expires November 8, 2018               [Page 13]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
 4.2.2.  HEADERS
 
    The HEADERS frame (type=0x1) is used to carry a header block,
    compressed using QPACK.  See [QPACK] for more details.
-
-   The HEADERS frame defines no flags.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -743,10 +821,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                       Header Block (*)                      ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                      Figure 4: HEADERS frame payload
+                      Figure 5: HEADERS frame payload
 
-   HEADERS frames can be sent on the Control Stream as well as on
-   request / push streams.
+   HEADERS frames can only be sent on request / push streams.
 
 4.2.3.  PRIORITY
 
@@ -757,105 +834,125 @@ Internet-Draft               HTTP over QUIC                     May 2018
    PRIORITY frame sent on any other stream MUST be treated as a
    HTTP_WRONG_STREAM error.
 
+
+
+
+Bishop                  Expires December 8, 2018               [Page 15]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    The format has been modified to accommodate not being sent on a
    request stream, to allow for identification of server pushes, and the
    larger stream ID space of QUIC.  The semantics of the Stream
    Dependency, Weight, and E flag are otherwise the same as in HTTP/2.
 
-   The flags defined are:
-
-   PUSH_PRIORITIZED (0x04):  Indicates that the Prioritized Stream is a
-      server push rather than a request.
-
-   PUSH_DEPENDENT (0x02):  Indicates a dependency on a server push.
-
-   E (0x01):  Indicates that the stream dependency is exclusive (see
-      [RFC7540], Section 5.3).
-
-
-
-
-
-
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 14]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                 Prioritized Request ID (i)                    |
+   |PT |DT |Empty|E|
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                  Stream Dependency ID (i)                     |
+   |                 Prioritized Element ID (i)                    |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                  Dependency Element ID (i)                    |
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |   Weight (8)  |
    +-+-+-+-+-+-+-+-+
 
-                     Figure 5: PRIORITY frame payload
+                     Figure 6: PRIORITY frame payload
 
    The PRIORITY frame payload has the following fields:
 
-   Prioritized Request ID:  A variable-length integer that identifies a
-      request.  This contains the Stream ID of a request stream when the
-      PUSH_PRIORITIZED flag is clear, or a Push ID when the
-      PUSH_PRIORITIZED flag is set.
+   Prioritized Type:  A two-bit field indicating the type of element
+      being prioritized.
 
-   Stream Dependency ID:  A variable-length integer that identifies a
-      dependent request.  This contains the Stream ID of a request
-      stream when the PUSH_DEPENDENT flag is clear, or a Push ID when
-      the PUSH_DEPENDENT flag is set.  A request Stream ID of 0
-      indicates a dependency on the root stream.  For details of
-      dependencies, see Section 3.3 and [RFC7540], Section 5.3.
+   Dependency Type:  A two-bit field indicating the type of element
+      being depended on.
+
+   Empty:  A three-bit field which MUST be zero when sent and MUST be
+      ignored on receipt.
+
+   Exclusive:  A flag which indicates that the stream dependency is
+      exclusive (see [RFC7540], Section 5.3).
+
+   Prioritized Element ID:  A variable-length integer that identifies
+      the element being prioritized.  Depending on the value of
+      Prioritized Type, this contains the Stream ID of a request stream,
+      the Push ID of a promised resource, or a Placeholder ID of a
+      placeholder.
+
+   Dependency Element ID:  A variable-length integer that identifies the
+      element on which a dependency is being expressed.  Depending on
+      the value of Dependency Type, this contains the Stream ID of a
+      request stream, the Push ID of a promised resource, or a
+      Placeholder ID of a placeholder.  For details of dependencies, see
+      Section 3.3 and [RFC7540], Section 5.3.
+
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 16]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    Weight:  An unsigned 8-bit integer representing a priority weight for
       the stream (see [RFC7540], Section 5.3).  Add one to the value to
       obtain a weight between 1 and 256.
 
-   A PRIORITY frame identifies a request to prioritize, and a request
-   upon which that request is dependent.  A Prioritized Request ID or
-   Stream Dependency ID identifies a client-initiated request using the
-   corresponding stream ID when the corresponding PUSH_PRIORITIZED or
-   PUSH_DEPENDENT flag is not set.  Setting the PUSH_PRIORITIZED or
-   PUSH_DEPENDENT flag causes the Prioritized Request ID or Stream
-   Dependency ID (respectively) to identify a server push using a Push
-   ID (see Section 4.2.6 for details).
+   A PRIORITY frame identifies an element to prioritize, and an element
+   upon which it depends.  A Prioritized ID or Dependency ID identifies
+   a client-initiated request using the corresponding stream ID, a
+   server push using a Push ID (see Section 4.2.6), or a placeholder
+   using a Placeholder ID (see Section 3.3.1).
 
-   A PRIORITY frame MAY identify a Stream Dependency ID using a Stream
-   ID of 0; as in [RFC7540], this makes the request dependent on the
-   root of the dependency tree.
+   The values for the Prioritized Element Type and Dependency Element
+   Type imply the interpretation of the associated Element ID fields.
 
-   A PRIORITY frame MUST identify a client-initiated, bidirectional
-   stream.  A server MUST treat receipt of PRIORITY frame with a Stream
-   ID of any other type as a connection error of type
-   HTTP_MALFORMED_FRAME.
+          +-----------+------------------+---------------------+
+          | Type Bits | Type Description | Element ID Contents |
+          +-----------+------------------+---------------------+
+          | 00        | Request stream   | Stream ID           |
+          |           |                  |                     |
+          | 01        | Push stream      | Push ID             |
+          |           |                  |                     |
+          | 10        | Placeholder      | Placeholder ID      |
+          |           |                  |                     |
+          | 11        | Root of the tree | Ignored             |
+          +-----------+------------------+---------------------+
 
+   The root of the tree MAY also be referenced using a Stream ID of 0,
+   as in [RFC7540].  The root of the tree cannot be reprioritized.  A
+   PRIORITY frame that prioritizes the root of the tree MUST be treated
+   as a connection error of type HTTP_MALFORMED_FRAME.
 
+   When a PRIORITY frame claims to reference a request, the associated
+   ID MUST identify a client-initiated bidirectional stream.  A server
+   MUST treat receipt of PRIORITY frame with a Stream ID of any other
+   type as a connection error of type HTTP_MALFORMED_FRAME.
 
-
-Bishop                  Expires November 8, 2018               [Page 15]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
-   Stream ID 0 cannot be reprioritized.  A Prioritized Request ID that
-   identifies Stream 0 MUST be treated as a connection error of type
-   HTTP_MALFORMED_FRAME.
-
-   A PRIORITY frame that does not reference a request MUST be treated as
-   a HTTP_MALFORMED_FRAME error, unless it references Stream ID 0.  A
-   PRIORITY that sets a PUSH_PRIORITIZED or PUSH_DEPENDENT flag, but
-   then references a non-existent Push ID MUST be treated as a
+   A PRIORITY frame that references a non-existent Push ID or a
+   Placeholder ID greater than the server's limit MUST be treated as a
    HTTP_MALFORMED_FRAME error.
 
    A PRIORITY frame MUST contain only the identified fields.  A PRIORITY
    frame that contains more or fewer fields, or a PRIORITY frame that
    includes a truncated integer encoding MUST be treated as a connection
    error of type HTTP_MALFORMED_FRAME.
+
+
+
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 17]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
 4.2.4.  CANCEL_PUSH
 
@@ -881,22 +978,13 @@ Internet-Draft               HTTP over QUIC                     May 2018
    CANCEL_PUSH frame on a stream other than the control stream MUST be
    treated as a stream error of type HTTP_WRONG_STREAM.
 
-   The CANCEL_PUSH frame has no defined flags.
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Push ID (i)                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                    Figure 6: CANCEL_PUSH frame payload
-
-
-
-Bishop                  Expires November 8, 2018               [Page 16]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
+                    Figure 7: CANCEL_PUSH frame payload
 
    The CANCEL_PUSH frame carries a Push ID encoded as a variable-length
    integer.  The Push ID identifies the server push that is being
@@ -913,6 +1001,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    The SETTINGS frame (type=0x4) conveys configuration parameters that
    affect how endpoints communicate, such as preferences and constraints
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 18]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    on peer behavior, and is different from [RFC7540].  Individually, a
    SETTINGS parameter can also be referred to as a "setting".
 
@@ -933,26 +1030,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
    presence of the same parameter more than once as a connection error
    of type HTTP_MALFORMED_FRAME.
 
-   The SETTINGS frame defines no flags.
-
    The payload of a SETTINGS frame consists of zero or more parameters,
    each consisting of an unsigned 16-bit setting identifier and a
    length-prefixed binary value.
-
-
-
-
-
-
-
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 17]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -962,7 +1042,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                          Contents (?)                       ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                      Figure 7: SETTINGS value format
+                      Figure 8: SETTINGS value format
 
    A zero-length content indicates that the setting value is a Boolean
    and true.  False is indicated by the absence of the setting.
@@ -978,6 +1058,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    SETTINGS frames always apply to a connection, never a single stream.
    A SETTINGS frame MUST be sent as the first frame of either control
    stream (see Section 3) by each peer, and MUST NOT be sent
+
+
+
+Bishop                  Expires December 8, 2018               [Page 19]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    subsequently or on any other stream.  If an endpoint receives an
    SETTINGS frame on a different stream, the endpoint MUST respond with
    a connection error of type HTTP_WRONG_STREAM.  If an endpoint
@@ -995,20 +1083,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 4.2.5.2.  Defined SETTINGS Parameters
 
-   The following settings are defined in HTTP/QUIC:
+   The following setting is defined in HTTP/QUIC:
 
-   SETTINGS_HEADER_TABLE_SIZE (0x1):  An integer with a maximum value of
-      2^30 - 1.
+   SETTINGS_NUM_PLACEHOLDERS (0x3):  An integer with a maximum value of
+      2^16 - 1.  The value SHOULD be non-zero.  The default value is 16.
 
    SETTINGS_MAX_HEADER_LIST_SIZE (0x6):  An integer with a maximum value
-      of 2^30 - 1
+      of 2^30 - 1.  The default value is unlimited.
 
-
-
-Bishop                  Expires November 8, 2018               [Page 18]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
+   Additional settings MAY be defined by extensions to HTTP/QUIC.
 
 4.2.5.3.  Initial SETTINGS Values
 
@@ -1029,8 +1112,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 4.2.6.  PUSH_PROMISE
 
    The PUSH_PROMISE frame (type=0x05) is used to carry a request header
-   set from server to client, as in HTTP/2.  The PUSH_PROMISE frame
-   defines no flags.
+   set from server to client, as in HTTP/2.
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 20]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1040,7 +1130,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                       Header Block (*)                      ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                   Figure 8: PUSH_PROMISE frame payload
+                   Figure 9: PUSH_PROMISE frame payload
 
    The payload consists of:
 
@@ -1053,18 +1143,10 @@ Internet-Draft               HTTP over QUIC                     May 2018
       response.  See [QPACK] for more details.
 
    A server MUST NOT use a Push ID that is larger than the client has
-   provided in a MAX_PUSH_ID frame (Section 4.2.9).  A client MUST treat
+   provided in a MAX_PUSH_ID frame (Section 4.2.8).  A client MUST treat
    receipt of a PUSH_PROMISE that contains a larger Push ID than the
    client has advertised as a connection error of type
    HTTP_MALFORMED_FRAME.
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 19]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    A server MAY use the same Push ID in multiple PUSH_PROMISE frames.
    This allows the server to use the same server push in response to
@@ -1088,6 +1170,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    have since consumed and discarded are forced to ignore the
    PUSH_PROMISE.
 
+
+
+
+Bishop                  Expires December 8, 2018               [Page 21]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
 4.2.7.  GOAWAY
 
    The GOAWAY frame (type=0x7) is used to initiate graceful shutdown of
@@ -1096,15 +1186,13 @@ Internet-Draft               HTTP over QUIC                     May 2018
    requests.  This enables administrative actions, like server
    maintenance.  GOAWAY by itself does not close a connection.
 
-   The GOAWAY frame does not define any flags.
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Stream ID (i)                      ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                      Figure 9: GOAWAY frame payload
+                      Figure 10: GOAWAY frame payload
 
    The GOAWAY frame carries a QUIC Stream ID for a client-initiated,
    bidirectional stream encoded as a variable-length integer.  A client
@@ -1113,15 +1201,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Clients do not need to send GOAWAY to initiate a graceful shutdown;
    they simply stop making new requests.  A server MUST treat receipt of
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 20]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    a GOAWAY frame as a connection error (Section 6) of type
    HTTP_UNEXPECTED_GOAWAY.
 
@@ -1145,6 +1224,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    send new requests on the connection after receiving GOAWAY, although
    requests might already be in transit.  A new connection can be
    established for new requests.
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 22]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    If the client has sent requests on streams with a higher Stream ID
    than indicated in the GOAWAY frame, those requests are considered
@@ -1170,14 +1258,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST be used.  However, a
    GOAWAY MAY be sent first to provide additional detail to clients and
    to allow the client to retry requests.  Including the GOAWAY frame in
-
-
-
-Bishop                  Expires November 8, 2018               [Page 21]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    the same packet as the QUIC CONNECTION_CLOSE or APPLICATION_CLOSE
    frame improves the chances of the frame being received by clients.
 
@@ -1202,6 +1282,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    thereafter.  This signals to the client that a shutdown is imminent
    and that initiating further requests is prohibited.  After allowing
    time for any in-flight requests (at least one round-trip time), the
+
+
+
+Bishop                  Expires December 8, 2018               [Page 23]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    server MAY send another GOAWAY frame with an updated last Stream ID.
    This ensures that a connection can be cleanly shut down without
    losing requests.
@@ -1214,50 +1302,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
    SHOULD use the QUIC APPLICATION_CLOSE frame with the HTTP_NO_ERROR
    code.
 
-4.2.8.  HEADER_ACK
-
-   The HEADER_ACK frame (type=0x8) is used by header compression to
-   ensure consistency.  The frames are sent from the QPACK decoder to
-   the QPACK encoder; that is, the server sends them to the client to
-   acknowledge processing of the client's header blocks, and the client
-   sends them to the server to acknowledge processing of the server's
-   header blocks.
-
-   The HEADER_ACK frame is sent on the Control Stream when the QPACK
-   decoder has fully processed a header block.  It is used by the peer's
-   QPACK encoder to determine whether subsequent indexed representations
-
-
-
-Bishop                  Expires November 8, 2018               [Page 22]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
-   that might reference that block are vulnerable to head-of-line
-   blocking, and to prevent eviction races.  See [QPACK] for more
-   details on the use of this information.
-
-   The HEADER_ACK frame indicates the stream on which the header block
-   was processed by encoding the Stream ID as a variable-length integer.
-   The same Stream ID can be identified multiple times, as multiple
-   header-containing blocks can be sent on a single stream in the case
-   of intermediate responses, trailers, pushed requests, etc. as well as
-   on the Control Streams.  Since header frames on each stream are
-   received and processed in order, this gives the encoder precise
-   feedback on which header blocks within a stream have been fully
-   processed.
-
-     0   1   2   3   4   5   6   7
-   +---+---+---+---+---+---+---+---+
-   |        Stream ID (i)        ...
-   +---+---+---+---+---+---+---+---+
-
-                             HEADER_ACK frame
-
-   The HEADER_ACK frame does not define any flags.
-
-4.2.9.  MAX_PUSH_ID
+4.2.8.  MAX_PUSH_ID
 
    The MAX_PUSH_ID frame (type=0xD) is used by clients to control the
    number of server pushes that the server can initiate.  This sets the
@@ -1280,28 +1325,27 @@ Internet-Draft               HTTP over QUIC                     May 2018
    increase the maximum Push ID by sending a MAX_PUSH_ID frame as the
    server fulfills or cancels server pushes.
 
-   The MAX_PUSH_ID frame has no defined flags.
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 23]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                          Push ID (i)                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                   Figure 10: MAX_PUSH_ID frame payload
+                   Figure 11: MAX_PUSH_ID frame payload
 
    The MAX_PUSH_ID frame carries a single variable-length integer that
    identifies the maximum value for a Push ID that the server can use
    (see Section 4.2.6).  A MAX_PUSH_ID frame cannot reduce the maximum
    Push ID; receipt of a MAX_PUSH_ID that contains a smaller value than
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 24]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    previously received MUST be treated as a connection error of type
    HTTP_MALFORMED_FRAME.
 
@@ -1335,17 +1379,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    This section describes HTTP-specific error codes which can be used to
    express the cause of a connection or stream error.
 
-
-
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 24]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
 6.1.  HTTP/QUIC Error Codes
 
    The following error codes are defined for use in QUIC RST_STREAM,
@@ -1359,6 +1392,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    HTTP_PUSH_REFUSED (0x02):  The server has attempted to push content
       which the client will not accept on this connection.
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 25]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    HTTP_INTERNAL_ERROR (0x03):  An internal error has occurred in the
       HTTP stack.
@@ -1395,13 +1437,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
       For example, an error in a MAX_PUSH_ID frame would be indicated
       with the code (0x10D).
 
-
-
-Bishop                  Expires November 8, 2018               [Page 25]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
 7.  Considerations for Transitioning from HTTP/2
 
    HTTP/QUIC is strongly informed by HTTP/2, and bears many
@@ -1414,6 +1449,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    primarily where necessary to accommodate the differences in behavior
    between QUIC and TCP (lack of ordering, support for streams).  We
    intend to avoid gratuitous changes which make it difficult or
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 26]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    impossible to build extensions with the same semantics applicable to
    both protocols at once.
 
@@ -1435,7 +1479,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    multiplexing (QUIC's multiplexing occurs below this layer), the
    support for variable-maximum-length packets can be removed.  Because
    stream termination is handled by QUIC, an END_STREAM flag is not
-   required.
+   required.  This permits the removal of the Flags field from the
+   generic frame layout.
 
    Frame payloads are largely drawn from [RFC7540].  However, QUIC
    includes many features (e.g. flow control) which are also present in
@@ -1449,15 +1494,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Many of the differences arise from the fact that HTTP/2 provides an
    absolute ordering between frames across all streams, while QUIC
    provides this guarantee on each stream only.  As a result, if a frame
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 26]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    type makes assumptions that frames from different streams will still
    be received in the order sent, HTTP/QUIC will break them.
 
@@ -1469,6 +1505,15 @@ Internet-Draft               HTTP over QUIC                     May 2018
    consistent view of the stream dependency tree.  HTTP/2 specifies
    priority assignments in PRIORITY frames and (optionally) in HEADERS
    frames.  To achieve in-order delivery of priority changes in HTTP/
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 27]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    QUIC, PRIORITY frames are sent on the control stream and the PRIORITY
    section is removed from the HEADERS frame.
 
@@ -1487,7 +1532,11 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Redefinition of the encoding of extension frame types might be
    necessary if the encoding includes a Stream ID.
 
-   Other than this issue, frame type HTTP/2 extensions are typically
+   Because the Flags field is not present in generic HTTP/QUIC frames,
+   those frames which depend on the presence of flags need to allocate
+   space for flags as part of their frame payload.
+
+   Other than these issues, frame type HTTP/2 extensions are typically
    portable to QUIC simply by replacing Stream 0 in HTTP/2 with Stream 2
    or 3 in HTTP/QUIC.  HTTP/QUIC extensions will not assume ordering,
    but would not be harmed by ordering, and would be portable to HTTP/2
@@ -1506,20 +1555,20 @@ Internet-Draft               HTTP over QUIC                     May 2018
       the control stream and can reference either a Stream ID or a Push
       ID.  See Section 4.2.3.
 
-
-
-
-Bishop                  Expires November 8, 2018               [Page 27]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    RST_STREAM (0x3):  RST_STREAM frames do not exist, since QUIC
       provides stream lifecycle management.  The same code point is used
       for the CANCEL_PUSH frame (Section 4.2.4).
 
    SETTINGS (0x4):  SETTINGS frames are sent only at the beginning of
       the connection.  See Section 4.2.5 and Section 7.3.
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 28]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    PUSH_PROMISE (0x5):  The PUSH_PROMISE does not reference a stream;
       instead the push stream references the PUSH_PROMISE frame using a
@@ -1561,15 +1610,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
    SETTINGS_ENABLE_PUSH:  This is removed in favor of the MAX_PUSH_ID
       which provides a more granular control over server push.
 
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 28]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    SETTINGS_MAX_CONCURRENT_STREAMS:  QUIC controls the largest open
       Stream ID as part of its flow control logic.  Specifying
       SETTINGS_MAX_CONCURRENT_STREAMS in the SETTINGS frame is an error.
@@ -1578,6 +1618,13 @@ Internet-Draft               HTTP over QUIC                     May 2018
       connection flow control window sizes to be specified in the
       initial transport handshake.  Specifying
       SETTINGS_INITIAL_WINDOW_SIZE in the SETTINGS frame is an error.
+
+
+
+Bishop                  Expires December 8, 2018               [Page 29]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    SETTINGS_MAX_FRAME_SIZE:  This setting has no equivalent in HTTP/
       QUIC.  Specifying it in the SETTINGS frame is an error.
@@ -1616,15 +1663,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
       management.  Would provoke a QUIC_STREAM_DATA_AFTER_TERMINATION
       from the QUIC layer.
 
-   FRAME_SIZE_ERROR (0x6)  No single mapping.  See new error codes
+   FRAME_SIZE_ERROR (0x6):  No single mapping.  See new error codes
       defined in Section 6.1.
-
-
-
-Bishop                  Expires November 8, 2018               [Page 29]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
 
    REFUSED_STREAM (0x7):  Not applicable, since QUIC handles stream
       management.  Would provoke a QUIC_TOO_MANY_OPEN_STREAMS from the
@@ -1634,6 +1674,13 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    COMPRESSION_ERROR (0x9):  HTTP_HPACK_DECOMPRESSION_FAILED in
       Section 6.1.
+
+
+
+Bishop                  Expires December 8, 2018               [Page 30]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
    CONNECT_ERROR (0xa):  HTTP_CONNECT_ERROR in Section 6.1.
 
@@ -1650,7 +1697,7 @@ Internet-Draft               HTTP over QUIC                     May 2018
 8.  Security Considerations
 
    The security considerations of HTTP over QUIC should be comparable to
-   those of HTTP/2.
+   those of HTTP/2 with TLS.
 
    The modified SETTINGS format contains nested length elements, which
    could pose a security risk to an uncautious implementer.  A SETTINGS
@@ -1673,15 +1720,6 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    Specification:  This document
 
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 30]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
 9.2.  Registration of QUIC Version Hint Alt-Svc Parameter
 
    This document creates a new registration for version-negotiation
@@ -1691,6 +1729,14 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Parameter:  "quic"
 
    Specification:  This document, Section 2.1.1
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 31]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
 
 9.3.  Frame Types
 
@@ -1714,9 +1760,8 @@ Internet-Draft               HTTP over QUIC                     May 2018
    Code:  The 8-bit code assigned to the frame type.
 
    Specification:  A reference to a specification that includes a
-      description of the frame layout, its semantics, and flags that the
-      frame type uses, including any parts of the frame that are
-      conditionally present based on the value of flags.
+      description of the frame layout and its semantics, including any
+      parts of the frame that are conditionally present.
 
    The entries in the following table are registered by this document.
 
@@ -1733,9 +1778,20 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018               [Page 31]
+
+
+
+
+
+
+
+
+
+
+
+Bishop                  Expires December 8, 2018               [Page 32]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
                   +--------------+------+---------------+
@@ -1757,11 +1813,11 @@ Internet-Draft               HTTP over QUIC                     May 2018
                   |              |      |               |
                   | GOAWAY       | 0x7  | Section 4.2.7 |
                   |              |      |               |
-                  | HEADER_ACK   | 0x8  | Section 4.2.8 |
+                  | Reserved     | 0x8  | N/A           |
                   |              |      |               |
                   | Reserved     | 0x9  | N/A           |
                   |              |      |               |
-                  | MAX_PUSH_ID  | 0xD  | Section 4.2.9 |
+                  | MAX_PUSH_ID  | 0xD  | Section 4.2.8 |
                   +--------------+------+---------------+
 
 9.4.  Settings Parameters
@@ -1789,9 +1845,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018               [Page 32]
+Bishop                  Expires December 8, 2018               [Page 33]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
    Specification:  An optional reference to a specification that
@@ -1802,11 +1858,9 @@ Internet-Draft               HTTP over QUIC                     May 2018
              +----------------------+------+-----------------+
              | Setting Name         | Code | Specification   |
              +----------------------+------+-----------------+
-             | HEADER_TABLE_SIZE    | 0x1  | Section 4.2.5.2 |
-             |                      |      |                 |
              | Reserved             | 0x2  | N/A             |
              |                      |      |                 |
-             | Reserved             | 0x3  | N/A             |
+             | NUM_PLACEHOLDERS     | 0x3  | Section 4.2.5.2 |
              |                      |      |                 |
              | Reserved             | 0x4  | N/A             |
              |                      |      |                 |
@@ -1842,16 +1896,16 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    The entries in the following table are registered by this document.
 
-
-
-
-Bishop                  Expires November 8, 2018               [Page 33]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    +----------------------------+--------+------------+----------------+
    | Name                       | Code   | Descriptio | Specification  |
+
+
+
+Bishop                  Expires December 8, 2018               [Page 34]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    |                            |        | n          |                |
    +----------------------------+--------+------------+----------------+
    | STOPPING                   | 0x0000 | Reserved   | [QUIC-TRANSPOR |
@@ -1898,16 +1952,16 @@ Internet-Draft               HTTP over QUIC                     May 2018
    |                            |        | on the     |                |
    |                            |        | wrong      |                |
    |                            |        | stream     |                |
-
-
-
-Bishop                  Expires November 8, 2018               [Page 34]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
    |                            |        |            |                |
    | HTTP_PUSH_LIMIT_EXCEEDED   | 0x000B | Maximum    | Section 6.1    |
+
+
+
+Bishop                  Expires December 8, 2018               [Page 35]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
    |                            |        | Push ID    |                |
    |                            |        | exceeded   |                |
    |                            |        |            |                |
@@ -1929,12 +1983,12 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
               Header Compression for HTTP over QUIC", draft-ietf-quic-
-              qpack (work in progress), May 2018.
+              qpack (work in progress), June 2018.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), May 2018.
+              transport (work in progress), June 2018.
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
               RFC 793, DOI 10.17487/RFC0793, September 1981,
@@ -1957,9 +2011,11 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
 
 
-Bishop                  Expires November 8, 2018               [Page 35]
+
+
+Bishop                  Expires December 8, 2018               [Page 36]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
@@ -2005,33 +2061,30 @@ Internet-Draft               HTTP over QUIC                     May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-http
 
-Appendix A.  Contributors
-
-   The original authors of this specification were Robbie Shade and Mike
-   Warres.
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 36]
-
-Internet-Draft               HTTP over QUIC                     May 2018
-
-
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
-
-Appendix B.  Change Log
+Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-B.1.  Since draft-ietf-quic-http-10
+
+
+
+Bishop                  Expires December 8, 2018               [Page 37]
+
+Internet-Draft               HTTP over QUIC                    June 2018
+
+
+A.1.  Since draft-ietf-quic-http-11
+
+   o  Moved QPACK table updates and acknowledgments to dedicated streams
+      (#1121, #1122, #1238)
+
+A.2.  Since draft-ietf-quic-http-10
 
    o  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
 
-B.2.  Since draft-ietf-quic-http-09
+A.3.  Since draft-ietf-quic-http-09
 
    o  Selected QCRAM for header compression (#228, #1117)
 
@@ -2040,11 +2093,11 @@ B.2.  Since draft-ietf-quic-http-09
    o  Specified handling of unsupported versions in Alt-Svc (#1093,
       #1097)
 
-B.3.  Since draft-ietf-quic-http-08
+A.4.  Since draft-ietf-quic-http-08
 
    o  Clarified connection coalescing rules (#940, #1024)
 
-B.4.  Since draft-ietf-quic-http-07
+A.5.  Since draft-ietf-quic-http-07
 
    o  Changes for integer encodings in QUIC (#595,#905)
 
@@ -2054,11 +2107,11 @@ B.4.  Since draft-ietf-quic-http-07
 
    o  Improve description of server push usage (#947, #950, #957)
 
-B.5.  Since draft-ietf-quic-http-06
+A.6.  Since draft-ietf-quic-http-06
 
    o  Track changes in QUIC error code usage (#485)
 
-B.6.  Since draft-ietf-quic-http-05
+A.7.  Since draft-ietf-quic-http-05
 
    o  Made push ID sequential, add MAX_PUSH_ID, remove
       SETTINGS_ENABLE_PUSH (#709)
@@ -2069,12 +2122,15 @@ B.6.  Since draft-ietf-quic-http-05
 
 
 
-Bishop                  Expires November 8, 2018               [Page 37]
+
+
+
+Bishop                  Expires December 8, 2018               [Page 38]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
-B.7.  Since draft-ietf-quic-http-04
+A.8.  Since draft-ietf-quic-http-04
 
    o  Cite RFC 5234 (#404)
 
@@ -2091,15 +2147,15 @@ B.7.  Since draft-ietf-quic-http-04
 
    o  DATA frames cannot be empty (#700)
 
-B.8.  Since draft-ietf-quic-http-03
+A.9.  Since draft-ietf-quic-http-03
 
    None.
 
-B.9.  Since draft-ietf-quic-http-02
+A.10.  Since draft-ietf-quic-http-02
 
    o  Track changes in transport draft
 
-B.10.  Since draft-ietf-quic-http-01
+A.11.  Since draft-ietf-quic-http-01
 
    o  SETTINGS changes (#181):
 
@@ -2125,15 +2181,15 @@ B.10.  Since draft-ietf-quic-http-01
 
 
 
-Bishop                  Expires November 8, 2018               [Page 38]
+Bishop                  Expires December 8, 2018               [Page 39]
 
-Internet-Draft               HTTP over QUIC                     May 2018
+Internet-Draft               HTTP over QUIC                    June 2018
 
 
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
-B.11.  Since draft-ietf-quic-http-00
+A.12.  Since draft-ietf-quic-http-00
 
    o  Changed "HTTP/2-over-QUIC" to "HTTP/QUIC" throughout (#11,#29)
 
@@ -2152,11 +2208,19 @@ B.11.  Since draft-ietf-quic-http-00
 
    o  Application-layer-defined error codes (#19,#74)
 
-B.12.  Since draft-shade-quic-http2-mapping-00
+A.13.  Since draft-shade-quic-http2-mapping-00
 
    o  Adopted as base for draft-ietf-quic-http
 
    o  Updated authors/editors list
+
+Acknowledgements
+
+   The original authors of this specification were Robbie Shade and Mike
+   Warres.
+
+   A substantial portion of Mike's contribution was supported by
+   Microsoft during his employment there.
 
 Author's Address
 
@@ -2173,12 +2237,4 @@ Author's Address
 
 
 
-
-
-
-
-
-
-
-
-Bishop                  Expires November 8, 2018               [Page 39]
+Bishop                  Expires December 8, 2018               [Page 40]
