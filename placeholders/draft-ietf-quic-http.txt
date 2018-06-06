@@ -923,10 +923,11 @@ Internet-Draft               HTTP over QUIC                    June 2018
           | 11        | Root of the tree | Ignored             |
           +-----------+------------------+---------------------+
 
-   The root of the tree MAY also be referenced using a Stream ID of 0,
-   as in [RFC7540].  The root of the tree cannot be reprioritized.  A
-   PRIORITY frame that prioritizes the root of the tree MUST be treated
-   as a connection error of type HTTP_MALFORMED_FRAME.
+   Note that the root of the tree cannot be referenced using a Stream ID
+   of 0, as in [RFC7540]; QUIC stream 0 carries a valid HTTP request.
+   The root of the tree cannot be reprioritized.  A PRIORITY frame that
+   prioritizes the root of the tree MUST be treated as a connection
+   error of type HTTP_MALFORMED_FRAME.
 
    When a PRIORITY frame claims to reference a request, the associated
    ID MUST identify a client-initiated bidirectional stream.  A server
@@ -941,7 +942,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
    frame that contains more or fewer fields, or a PRIORITY frame that
    includes a truncated integer encoding MUST be treated as a connection
    error of type HTTP_MALFORMED_FRAME.
-
 
 
 
