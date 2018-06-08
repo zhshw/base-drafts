@@ -422,7 +422,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-08" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -446,12 +446,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: December 8, 2018</td>
+<td class="left">Expires: December 10, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 06, 2018</td>
+<td class="right">June 08, 2018</td>
 </tr>
 
     	
@@ -470,7 +470,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 8, 2018.</p>
+<p>This Internet-Draft will expire on December 10, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1081,7 +1081,7 @@ ul.toc li {
 <p id="rfc.section.4.6.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards.</p>
 <p id="rfc.section.4.6.p.2">Senders SHOULD coalesce packets in order of increasing encryption levels (Initial, Handshake, 0-RTT, 1-RTT).  A packet with a short header does not include a length, so it will always be the last packet included in a UDP datagram.</p>
 <p id="rfc.section.4.6.p.3">The sender MUST NOT coalesce QUIC packets belonging to different QUIC connections into a single UDP datagram.</p>
-<p id="rfc.section.4.6.p.4">Every QUIC packet that is coalesced into a single UDP datagram is separate and complete.  Though the values of some fields in the packet header might be redundant, no fields are omitted.  The receiver of coalesced QUIC packets MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.  If the keys required to process one or more packets in a datagram are not available, the receiver MUST attempt to process the remaining packets.  The skipped packets MAY either be discarded or buffered for later processing, just as if the packets were received out-of-order in separate datagrams.</p>
+<p id="rfc.section.4.6.p.4">Every QUIC packet that is coalesced into a single UDP datagram is separate and complete.  Though the values of some fields in the packet header might be redundant, no fields are omitted.  The receiver of coalesced QUIC packets MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.  If one or more packets in a datagram cannot be processed, either because the keys are not yet available or because decryption fails, the receiver MUST still attempt to process the remaining packets.  The skipped packets MAY either be discarded or buffered for later processing, just as if the packets were received out-of-order in separate datagrams.</p>
 <h2 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
 </h2>
