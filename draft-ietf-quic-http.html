@@ -279,11 +279,11 @@ ul.toc li {
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions">
 <link href="#rfc.section.2" rel="Chapter" title="2 Connection Setup and Management">
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Discovering an HTTP/QUIC Endpoint">
-<link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 QUIC Version Hints">
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Connection Establishment">
-<link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Draft Version Identification">
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Connection Reuse">
+<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Draft Version Identification">
+<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Discovering an HTTP/QUIC Endpoint">
+<link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 QUIC Version Hints">
+<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Connection Establishment">
+<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Connection Reuse">
 <link href="#rfc.section.3" rel="Chapter" title="3 Stream Mapping and Usage">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Control Streams">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 HTTP Message Exchanges">
@@ -404,15 +404,15 @@ ul.toc li {
 </li>
 </ul><li>2.   <a href="#rfc.section.2">Connection Setup and Management</a>
 </li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">Discovering an HTTP/QUIC Endpoint</a>
+<ul><li>2.1.   <a href="#rfc.section.2.1">Draft Version Identification</a>
 </li>
-<ul><li>2.1.1.   <a href="#rfc.section.2.1.1">QUIC Version Hints</a>
+<li>2.2.   <a href="#rfc.section.2.2">Discovering an HTTP/QUIC Endpoint</a>
 </li>
-</ul><li>2.2.   <a href="#rfc.section.2.2">Connection Establishment</a>
+<ul><li>2.2.1.   <a href="#rfc.section.2.2.1">QUIC Version Hints</a>
 </li>
-<ul><li>2.2.1.   <a href="#rfc.section.2.2.1">Draft Version Identification</a>
+</ul><li>2.3.   <a href="#rfc.section.2.3">Connection Establishment</a>
 </li>
-</ul><li>2.3.   <a href="#rfc.section.2.3">Connection Reuse</a>
+<li>2.4.   <a href="#rfc.section.2.4">Connection Reuse</a>
 </li>
 </ul><li>3.   <a href="#rfc.section.3">Stream Mapping and Usage</a>
 </li>
@@ -540,54 +540,54 @@ ul.toc li {
 <a href="#rfc.section.2">2.</a> <a href="#connection-setup-and-management" id="connection-setup-and-management">Connection Setup and Management</a>
 </h1>
 <h2 id="rfc.section.2.1">
-<a href="#rfc.section.2.1">2.1.</a> <a href="#discovering-an-httpquic-endpoint" id="discovering-an-httpquic-endpoint">Discovering an HTTP/QUIC Endpoint</a>
+<a href="#rfc.section.2.1">2.1.</a> <a href="#draft-version-identification" id="draft-version-identification">Draft Version Identification</a>
 </h2>
-<p id="rfc.section.2.1.p.1">An HTTP origin advertises the availability of an equivalent HTTP/QUIC endpoint via the Alt-Svc HTTP response header or the HTTP/2 ALTSVC frame (<a href="#RFC7838" class="xref">[RFC7838]</a>), using the ALPN token defined in <a href="#connection-establishment" class="xref">Section 2.2</a>.</p>
-<p id="rfc.section.2.1.p.2">For example, an origin could indicate in an HTTP/1.1 or HTTP/2 response that HTTP/QUIC was available on UDP port 50781 at the same hostname by including the following header in any response:</p>
-<pre>
-Alt-Svc: hq=":50781"
-</pre>
-<p id="rfc.section.2.1.p.3">On receipt of an Alt-Svc record indicating HTTP/QUIC support, a client MAY attempt to establish a QUIC connection to the indicated host and port and, if successful, send HTTP requests using the mapping described in this document.</p>
-<p id="rfc.section.2.1.p.4">Connectivity problems (e.g. firewall blocking UDP) can result in QUIC connection establishment failure, in which case the client SHOULD continue using the existing connection or try another alternative endpoint offered by the origin.</p>
-<p id="rfc.section.2.1.p.5">Servers MAY serve HTTP/QUIC on any UDP port, since an alternative always includes an explicit port.</p>
-<h3 id="rfc.section.2.1.1">
-<a href="#rfc.section.2.1.1">2.1.1.</a> <a href="#alt-svc-version-hint" id="alt-svc-version-hint">QUIC Version Hints</a>
-</h3>
-<p id="rfc.section.2.1.1.p.1">This document defines the &#8220;quic&#8221; parameter for Alt-Svc, which MAY be used to provide version-negotiation hints to HTTP/QUIC clients. QUIC versions are four-octet sequences with no additional constraints on format.  Leading zeros SHOULD be omitted for brevity.</p>
-<p id="rfc.section.2.1.1.p.2">Syntax:</p>
-<pre>
-quic = DQUOTE version-number [ "," version-number ] * DQUOTE
-version-number = 1*8HEXDIG; hex-encoded QUIC version
-</pre>
-<p id="rfc.section.2.1.1.p.3">Where multiple versions are listed, the order of the values reflects the server&#8217;s preference (with the first value being the most preferred version).  Reserved versions MAY be listed, but unreserved versions which are not supported by the alternative SHOULD NOT be present in the list. Origins MAY omit supported versions for any reason.</p>
-<p id="rfc.section.2.1.1.p.4">Clients MUST ignore any included versions which they do not support.  The &#8220;quic&#8221; parameter MUST NOT occur more than once; clients SHOULD process only the first occurrence.</p>
-<p id="rfc.section.2.1.1.p.5">For example, suppose a server supported both version 0x00000001 and the version rendered in ASCII as &#8220;Q034&#8221;.  If it opted to include the reserved versions (from Section 4 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>) 0x0 and 0x1abadaba, it could specify the following header:</p>
-<pre>
-Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
-</pre>
-<p id="rfc.section.2.1.1.p.6">A client acting on this header would drop the reserved versions (because it does not support them), then attempt to connect to the alternative using the first version in the list which it does support.</p>
-<h2 id="rfc.section.2.2">
-<a href="#rfc.section.2.2">2.2.</a> <a href="#connection-establishment" id="connection-establishment">Connection Establishment</a>
-</h2>
-<p id="rfc.section.2.2.p.1">HTTP/QUIC relies on QUIC as the underlying transport.  The QUIC version being used MUST use TLS version 1.3 or greater as its handshake protocol.  The Server Name Indication (SNI) extension <a href="#RFC6066" class="xref">[RFC6066]</a> MUST be included in the TLS handshake.</p>
-<p id="rfc.section.2.2.p.2">QUIC connections are established as described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. During connection establishment, HTTP/QUIC support is indicated by selecting the ALPN token &#8220;hq&#8221; in the TLS handshake.  Support for other application-layer protocols MAY be offered in the same handshake.</p>
-<p id="rfc.section.2.2.p.3">While connection-level options pertaining to the core QUIC protocol are set in the initial crypto handshake, HTTP/QUIC-specific settings are conveyed in the SETTINGS frame. After the QUIC connection is established, a SETTINGS frame (<a href="#frame-settings" class="xref">Section 4.2.5</a>) MUST be sent by each endpoint as the initial frame of their respective HTTP control stream (Stream ID 2 or 3, see <a href="#stream-mapping" class="xref">Section 3</a>). The server MUST NOT send data on any other stream until the client&#8217;s SETTINGS frame has been received.</p>
-<h3 id="rfc.section.2.2.1">
-<a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#draft-version-identification" id="draft-version-identification">Draft Version Identification</a>
-</h3>
 <p></p>
 
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
-<p id="rfc.section.2.2.1.p.2">Only implementations of the final, published RFC can identify themselves as &#8220;hq&#8221;. Until such an RFC exists, implementations MUST NOT identify themselves using this string.</p>
-<p id="rfc.section.2.2.1.p.3">Implementations of draft versions of the protocol MUST add the string &#8220;-&#8220; and the corresponding draft number to the identifier. For example, draft-ietf-quic-http-01 is identified using the string &#8220;hq-01&#8221;.</p>
-<p id="rfc.section.2.2.1.p.4">Non-compatible experiments that are based on these draft versions MUST append the string &#8220;-&#8220; and an experiment name to the identifier. For example, an experimental implementation based on draft-ietf-quic-http-09 which reserves an extra stream for unsolicited transmission of 1980s pop music might identify itself as &#8220;hq-09-rickroll&#8221;. Note that any label MUST conform to the &#8220;token&#8221; syntax defined in Section 3.2.6 of <a href="#RFC7230" class="xref">[RFC7230]</a>. Experimenters are encouraged to coordinate their experiments on the quic@ietf.org mailing list.</p>
-<h2 id="rfc.section.2.3">
-<a href="#rfc.section.2.3">2.3.</a> <a href="#connection-reuse" id="connection-reuse">Connection Reuse</a>
+<p id="rfc.section.2.1.p.2">HTTP/QUIC uses the token &#8220;hq&#8221; to identify itself in ALPN and Alt-Svc.  Only implementations of the final, published RFC can identify themselves as &#8220;hq&#8221;.  Until such an RFC exists, implementations MUST NOT identify themselves using this string.</p>
+<p id="rfc.section.2.1.p.3">Implementations of draft versions of the protocol MUST add the string &#8220;-&#8220; and the corresponding draft number to the identifier. For example, draft-ietf-quic-http-01 is identified using the string &#8220;hq-01&#8221;.</p>
+<p id="rfc.section.2.1.p.4">Non-compatible experiments that are based on these draft versions MUST append the string &#8220;-&#8220; and an experiment name to the identifier. For example, an experimental implementation based on draft-ietf-quic-http-09 which reserves an extra stream for unsolicited transmission of 1980s pop music might identify itself as &#8220;hq-09-rickroll&#8221;. Note that any label MUST conform to the &#8220;token&#8221; syntax defined in Section 3.2.6 of <a href="#RFC7230" class="xref">[RFC7230]</a>. Experimenters are encouraged to coordinate their experiments on the quic@ietf.org mailing list.</p>
+<h2 id="rfc.section.2.2">
+<a href="#rfc.section.2.2">2.2.</a> <a href="#discovering-an-httpquic-endpoint" id="discovering-an-httpquic-endpoint">Discovering an HTTP/QUIC Endpoint</a>
 </h2>
-<p id="rfc.section.2.3.p.1">Once a connection exists to a server endpoint, this connection MAY be reused for requests with multiple different URI authority components.  The client MAY send any requests for which the client considers the server authoritative.</p>
-<p id="rfc.section.2.3.p.2">An authoritative HTTP/QUIC endpoint is typically discovered because the client has received an Alt-Svc record from the request&#8217;s origin which nominates the endpoint as a valid HTTP Alternative Service for that origin.  As required by <a href="#RFC7838" class="xref">[RFC7838]</a>, clients MUST check that the nominated server can present a valid certificate for the origin before considering it authoritative. Clients MUST NOT assume that an HTTP/QUIC endpoint is authoritative for other origins without an explicit signal.</p>
-<p id="rfc.section.2.3.p.3">A server that does not wish clients to reuse connections for a particular origin can indicate that it is not authoritative for a request by sending a 421 (Misdirected Request) status code in response to the request (see Section 9.1.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>).</p>
+<p id="rfc.section.2.2.p.1">An HTTP origin advertises the availability of an equivalent HTTP/QUIC endpoint via the Alt-Svc HTTP response header or the HTTP/2 ALTSVC frame (<a href="#RFC7838" class="xref">[RFC7838]</a>), using the ALPN token defined in <a href="#connection-establishment" class="xref">Section 2.3</a>.</p>
+<p id="rfc.section.2.2.p.2">For example, an origin could indicate in an HTTP/1.1 or HTTP/2 response that HTTP/QUIC was available on UDP port 50781 at the same hostname by including the following header in any response:</p>
+<pre>
+Alt-Svc: hq=":50781"
+</pre>
+<p id="rfc.section.2.2.p.3">On receipt of an Alt-Svc record indicating HTTP/QUIC support, a client MAY attempt to establish a QUIC connection to the indicated host and port and, if successful, send HTTP requests using the mapping described in this document.</p>
+<p id="rfc.section.2.2.p.4">Connectivity problems (e.g. firewall blocking UDP) can result in QUIC connection establishment failure, in which case the client SHOULD continue using the existing connection or try another alternative endpoint offered by the origin.</p>
+<p id="rfc.section.2.2.p.5">Servers MAY serve HTTP/QUIC on any UDP port, since an alternative always includes an explicit port.</p>
+<h3 id="rfc.section.2.2.1">
+<a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#alt-svc-version-hint" id="alt-svc-version-hint">QUIC Version Hints</a>
+</h3>
+<p id="rfc.section.2.2.1.p.1">This document defines the &#8220;quic&#8221; parameter for Alt-Svc, which MAY be used to provide version-negotiation hints to HTTP/QUIC clients. QUIC versions are four-octet sequences with no additional constraints on format.  Leading zeros SHOULD be omitted for brevity.</p>
+<p id="rfc.section.2.2.1.p.2">Syntax:</p>
+<pre>
+quic = DQUOTE version-number [ "," version-number ] * DQUOTE
+version-number = 1*8HEXDIG; hex-encoded QUIC version
+</pre>
+<p id="rfc.section.2.2.1.p.3">Where multiple versions are listed, the order of the values reflects the server&#8217;s preference (with the first value being the most preferred version).  Reserved versions MAY be listed, but unreserved versions which are not supported by the alternative SHOULD NOT be present in the list. Origins MAY omit supported versions for any reason.</p>
+<p id="rfc.section.2.2.1.p.4">Clients MUST ignore any included versions which they do not support.  The &#8220;quic&#8221; parameter MUST NOT occur more than once; clients SHOULD process only the first occurrence.</p>
+<p id="rfc.section.2.2.1.p.5">For example, suppose a server supported both version 0x00000001 and the version rendered in ASCII as &#8220;Q034&#8221;.  If it opted to include the reserved versions (from Section 4 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>) 0x0 and 0x1abadaba, it could specify the following header:</p>
+<pre>
+Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
+</pre>
+<p id="rfc.section.2.2.1.p.6">A client acting on this header would drop the reserved versions (because it does not support them), then attempt to connect to the alternative using the first version in the list which it does support.</p>
+<h2 id="rfc.section.2.3">
+<a href="#rfc.section.2.3">2.3.</a> <a href="#connection-establishment" id="connection-establishment">Connection Establishment</a>
+</h2>
+<p id="rfc.section.2.3.p.1">HTTP/QUIC relies on QUIC as the underlying transport.  The QUIC version being used MUST use TLS version 1.3 or greater as its handshake protocol.  The Server Name Indication (SNI) extension <a href="#RFC6066" class="xref">[RFC6066]</a> MUST be included in the TLS handshake.</p>
+<p id="rfc.section.2.3.p.2">QUIC connections are established as described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. During connection establishment, HTTP/QUIC support is indicated by selecting the ALPN token &#8220;hq&#8221; in the TLS handshake.  Support for other application-layer protocols MAY be offered in the same handshake.</p>
+<p id="rfc.section.2.3.p.3">While connection-level options pertaining to the core QUIC protocol are set in the initial crypto handshake, HTTP/QUIC-specific settings are conveyed in the SETTINGS frame. After the QUIC connection is established, a SETTINGS frame (<a href="#frame-settings" class="xref">Section 4.2.5</a>) MUST be sent by each endpoint as the initial frame of their respective HTTP control stream (Stream ID 2 or 3, see <a href="#stream-mapping" class="xref">Section 3</a>). The server MUST NOT send data on any other stream until the client&#8217;s SETTINGS frame has been received.</p>
+<h2 id="rfc.section.2.4">
+<a href="#rfc.section.2.4">2.4.</a> <a href="#connection-reuse" id="connection-reuse">Connection Reuse</a>
+</h2>
+<p id="rfc.section.2.4.p.1">Once a connection exists to a server endpoint, this connection MAY be reused for requests with multiple different URI authority components.  The client MAY send any requests for which the client considers the server authoritative.</p>
+<p id="rfc.section.2.4.p.2">An authoritative HTTP/QUIC endpoint is typically discovered because the client has received an Alt-Svc record from the request&#8217;s origin which nominates the endpoint as a valid HTTP Alternative Service for that origin.  As required by <a href="#RFC7838" class="xref">[RFC7838]</a>, clients MUST check that the nominated server can present a valid certificate for the origin before considering it authoritative. Clients MUST NOT assume that an HTTP/QUIC endpoint is authoritative for other origins without an explicit signal.</p>
+<p id="rfc.section.2.4.p.3">A server that does not wish clients to reuse connections for a particular origin can indicate that it is not authoritative for a request by sending a 421 (Misdirected Request) status code in response to the request (see Section 9.1.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>).</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#stream-mapping" id="stream-mapping">Stream Mapping and Usage</a>
 </h1>
@@ -1119,7 +1119,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dt>Parameter:</dt>
 <dd style="margin-left: 8">&#8220;quic&#8221;</dd>
 <dt>Specification:</dt>
-<dd style="margin-left: 8">This document, <a href="#alt-svc-version-hint" class="xref">Section 2.1.1</a>
+<dd style="margin-left: 8">This document, <a href="#alt-svc-version-hint" class="xref">Section 2.2.1</a>
 </dd>
 </dl>
 <h2 id="rfc.section.9.3">
