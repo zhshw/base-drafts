@@ -90,7 +90,7 @@ Table of Contents
      4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  17
      4.6.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  18
      4.7.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  18
-     4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  19
+     4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  20
    5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  21
    6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  23
      6.1.  Matching Packets to Connections . . . . . . . . . . . . .  24
@@ -970,9 +970,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    application data during the handshake and immediately afterwards.
 
    Senders SHOULD coalesce packets in order of increasing encryption
-   levels (Initial, Handshake, 0-RTT, 1-RTT).  A packet with a short
-   header does not include a length, so it will always be the last
-   packet included in a UDP datagram.
+   levels (Initial, Handshake, 0-RTT, 1-RTT), as this makes it more
+   likely the receiver will be able to process all the packets in a
+   single pass.  A packet with a short header does not include a length,
+   so it will always be the last packet included in a UDP datagram.
 
    Senders MUST NOT coalesce QUIC packets with different Destination
    Connection IDs into a single UDP datagram.  Receivers SHOULD ignore
@@ -1000,8 +1001,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    consistent routing; the Source Connection ID is used to set the
    Destination Connection ID used by the peer.
 
-   During the handshake, packets with the long header are used to
-   establish the connection ID that each endpoint uses.  Each endpoint
+
 
 
 
@@ -1010,6 +1010,8 @@ Iyengar & Thomson       Expires December 14, 2018              [Page 18]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+   During the handshake, packets with the long header are used to
+   establish the connection ID that each endpoint uses.  Each endpoint
    uses the Source Connection ID field to specify the connection ID that
    is used in the Destination Connection ID field of packets being sent
    to them.  Upon receiving a packet, each endpoint sets the Destination
@@ -1053,11 +1055,9 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    NEW_CONNECTION_ID frames (Section 7.13) are used to provide new
    connection ID values.
 
-4.8.  Packet Numbers
 
-   The packet number is an integer in the range 0 to 2^62-1.  The value
-   is used in determining the cryptographic nonce for packet encryption.
-   Each endpoint maintains a separate packet number for sending and
+
+
 
 
 
@@ -1066,6 +1066,11 @@ Iyengar & Thomson       Expires December 14, 2018              [Page 19]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+4.8.  Packet Numbers
+
+   The packet number is an integer in the range 0 to 2^62-1.  The value
+   is used in determining the cryptographic nonce for packet encryption.
+   Each endpoint maintains a separate packet number for sending and
    receiving.  The packet number for sending MUST start at zero for the
    first packet sent and MUST increase by at least one after sending a
    packet.
@@ -1109,11 +1114,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Once packet number protection is removed, the packet number is
    decoded by finding the packet number value that is closest to the
    next expected packet.  The next expected packet is the highest
-   received packet number plus one.  For example, if the highest
-   successfully authenticated packet had a packet number of 0xaa82f30e,
-   then a packet containing a 14-bit value of 0x1f94 will be decoded as
-   0xaa831f94.
-
 
 
 
@@ -1121,6 +1121,11 @@ Iyengar & Thomson       Expires December 14, 2018              [Page 20]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   received packet number plus one.  For example, if the highest
+   successfully authenticated packet had a packet number of 0xaa82f30e,
+   then a packet containing a 14-bit value of 0x1f94 will be decoded as
+   0xaa831f94.
 
    The sender MUST use a packet number size able to represent more than
    twice as large a range than the difference between the largest
@@ -1166,17 +1171,15 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
                   Figure 4: Contents of Protected Payload
 
-   Protected payloads MUST contain at least one frame, and MAY contain
-   multiple frames and multiple frame types.
-
-
-
 
 
 Iyengar & Thomson       Expires December 14, 2018              [Page 21]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   Protected payloads MUST contain at least one frame, and MAY contain
+   multiple frames and multiple frame types.
 
    Frames MUST fit within a single QUIC packet and MUST NOT span a QUIC
    packet boundary.  Each frame begins with a Frame Type byte,
@@ -1195,9 +1198,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    other frames, the Frame Type byte simply identifies the frame.  These
    frames are explained in more detail as they are referenced later in
    the document.
-
-
-
 
 
 
