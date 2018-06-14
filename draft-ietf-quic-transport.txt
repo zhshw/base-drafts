@@ -92,10 +92,10 @@ Table of Contents
      4.7.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  18
      4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  20
    5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  21
-   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  23
+   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  24
      6.1.  Matching Packets to Connections . . . . . . . . . . . . .  24
        6.1.1.  Client Packet Handling  . . . . . . . . . . . . . . .  24
-       6.1.2.  Server Packet Handling  . . . . . . . . . . . . . . .  24
+       6.1.2.  Server Packet Handling  . . . . . . . . . . . . . . .  25
      6.2.  Version Negotiation . . . . . . . . . . . . . . . . . . .  25
        6.2.1.  Sending Version Negotiation Packets . . . . . . . . .  26
        6.2.2.  Handling Version Negotiation Packets  . . . . . . . .  26
@@ -1274,14 +1274,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
                            Table 3: Frame Types
 
-6.  Life of a Connection
+   All QUIC frames are idempotent.  That is, a valid frame does not
+   cause undesirable side effects or errors when received more than
+   once.
 
-   A QUIC connection is a single conversation between two QUIC
-   endpoints.  QUIC's connection establishment intertwines version
-   negotiation with the cryptographic and transport handshakes to reduce
-   connection establishment latency, as described in Section 6.3.  Once
-   established, a connection may migrate to a different IP or port at
-   either endpoint, due to NAT rebinding or mobility, as described in
+
+
+
+
 
 
 
@@ -1290,6 +1290,14 @@ Iyengar & Thomson       Expires December 16, 2018              [Page 23]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+6.  Life of a Connection
+
+   A QUIC connection is a single conversation between two QUIC
+   endpoints.  QUIC's connection establishment intertwines version
+   negotiation with the cryptographic and transport handshakes to reduce
+   connection establishment latency, as described in Section 6.3.  Once
+   established, a connection may migrate to a different IP or port at
+   either endpoint, due to NAT rebinding or mobility, as described in
    Section 6.8.  Finally a connection may be terminated by either
    endpoint, as described in Section 6.10.
 
@@ -1328,6 +1336,16 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    If a client receives a packet that has an unsupported version, it
    MUST discard that packet.
 
+
+
+
+
+
+Iyengar & Thomson       Expires December 16, 2018              [Page 24]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
 6.1.2.  Server Packet Handling
 
    If a server receives a packet that has an unsupported version and
@@ -1338,14 +1356,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The first packet for an unsupported version can use different
    semantics and encodings for any version-specific field.  In
-
-
-
-Iyengar & Thomson       Expires December 16, 2018              [Page 24]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    particular, different packet protection keys might be used for
    different versions.  Servers that do not support a particular version
    are unlikely to be able to decrypt the content of the packet.
@@ -1384,16 +1394,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Negotiation packet in response to each packet that might initiate a
    new connection, see Section 6.1 for details.
 
-   The size of the first packet sent by a client will determine whether
-   a server sends a Version Negotiation packet.  Clients that support
-   multiple QUIC versions SHOULD pad their Initial packets to reflect
-   the largest minimum Initial packet size of all their versions.  This
-   ensures that the server responds if there are any mutually supported
-   versions.
-
-
-
-
 
 
 
@@ -1401,6 +1401,13 @@ Iyengar & Thomson       Expires December 16, 2018              [Page 25]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   The size of the first packet sent by a client will determine whether
+   a server sends a Version Negotiation packet.  Clients that support
+   multiple QUIC versions SHOULD pad their Initial packets to reflect
+   the largest minimum Initial packet size of all their versions.  This
+   ensures that the server responds if there are any mutually supported
+   versions.
 
 6.2.1.  Sending Version Negotiation Packets
 
@@ -1443,13 +1450,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    packet if it has already received and acted on a Version Negotiation
    packet.
 
-   A client MUST ignore a Version Negotiation packet that lists the
-   client's chosen version.
-
-   Version negotiation packets have no cryptographic protection.  The
-   result of the negotiation MUST be revalidated as part of the
-   cryptographic handshake (see Section 6.4.4).
-
 
 
 
@@ -1457,6 +1457,13 @@ Iyengar & Thomson       Expires December 16, 2018              [Page 26]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   A client MUST ignore a Version Negotiation packet that lists the
+   client's chosen version.
+
+   Version negotiation packets have no cryptographic protection.  The
+   result of the negotiation MUST be revalidated as part of the
+   cryptographic handshake (see Section 6.4.4).
 
 6.2.3.  Using Reserved Versions
 
@@ -1500,19 +1507,18 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
       *  1-RTT keys have forward secrecy
 
-   o  authenticated values for the transport parameters of the peer (see
-      Section 6.4)
-
-   o  authenticated confirmation of version negotiation (see
-      Section 6.4.4)
-
-
 
 
 Iyengar & Thomson       Expires December 16, 2018              [Page 27]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   o  authenticated values for the transport parameters of the peer (see
+      Section 6.4)
+
+   o  authenticated confirmation of version negotiation (see
+      Section 6.4.4)
 
    o  authenticated negotiation of an application protocol (TLS uses
       ALPN [RFC7301] for this purpose)
@@ -1547,12 +1553,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The format of the transport parameters is the TransportParameters
    struct from Figure 6.  This is described using the presentation
    language from Section 3 of [I-D.ietf-tls-tls13].
-
-
-
-
-
-
 
 
 
