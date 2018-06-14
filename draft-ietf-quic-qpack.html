@@ -288,6 +288,8 @@ ul.toc li {
 <link href="#rfc.section.4" rel="Chapter" title="4 Configuration">
 <link href="#rfc.section.5" rel="Chapter" title="5 Wire Format">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Primitives">
+<link href="#rfc.section.5.1.1" rel="Chapter" title="5.1.1 Prefixed Integers">
+<link href="#rfc.section.5.1.2" rel="Chapter" title="5.1.2 String Literals">
 <link href="#rfc.section.5.2" rel="Chapter" title="5.2 QPACK Encoder Stream">
 <link href="#rfc.section.5.2.1" rel="Chapter" title="5.2.1 Insert With Name Reference">
 <link href="#rfc.section.5.2.2" rel="Chapter" title="5.2.2 Insert Without Name Reference">
@@ -324,7 +326,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-13" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-14" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -348,7 +350,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: December 15, 2018</td>
+<td class="left">Expires: December 16, 2018</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -361,7 +363,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 13, 2018</td>
+<td class="right">June 14, 2018</td>
 </tr>
 
     	
@@ -380,7 +382,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 15, 2018.</p>
+<p>This Internet-Draft will expire on December 16, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -414,7 +416,11 @@ ul.toc li {
 </li>
 <ul><li>5.1.   <a href="#rfc.section.5.1">Primitives</a>
 </li>
-<li>5.2.   <a href="#rfc.section.5.2">QPACK Encoder Stream</a>
+<ul><li>5.1.1.   <a href="#rfc.section.5.1.1">Prefixed Integers</a>
+</li>
+<li>5.1.2.   <a href="#rfc.section.5.1.2">String Literals</a>
+</li>
+</ul><li>5.2.   <a href="#rfc.section.5.2">QPACK Encoder Stream</a>
 </li>
 <ul><li>5.2.1.   <a href="#rfc.section.5.2.1">Insert With Name Reference</a>
 </li>
@@ -627,10 +633,17 @@ d = count of entries dropped
 <h2 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#primitives" id="primitives">Primitives</a>
 </h2>
-<p id="rfc.section.5.1.p.1">The prefixed integer from Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> is used heavily throughout this document.  The string literal, defined by Section 5.2 of <a href="#RFC7541" class="xref">[RFC7541]</a>, is used with the following modification.</p>
-<p id="rfc.section.5.1.p.2">HPACK defines string literals to begin on a byte boundary.  They begin with a single flag (indicating whether the string is Huffman-coded), followed by the Length encoded as a 7-bit prefix integer, and finally Length octets of data.</p>
-<p id="rfc.section.5.1.p.3">QPACK permits strings to begin other than on a byte boundary.  An &#8220;N-bit prefix string literal&#8221; begins with the same Huffman flag, followed by the length encoded as an (N-1)-bit prefix integer.  The remainder of the string literal is unmodified.</p>
-<p id="rfc.section.5.1.p.4">A string literal without a prefix length noted is an 8-bit prefix string literal and follows the definitions in <a href="#RFC7541" class="xref">[RFC7541]</a> without modification.</p>
+<h3 id="rfc.section.5.1.1">
+<a href="#rfc.section.5.1.1">5.1.1.</a> <a href="#prefixed-integers" id="prefixed-integers">Prefixed Integers</a>
+</h3>
+<p id="rfc.section.5.1.1.p.1">The prefixed integer from Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> is used heavily throughout this document.  The format from <a href="#RFC7541" class="xref">[RFC7541]</a> is used unmodified.</p>
+<h3 id="rfc.section.5.1.2">
+<a href="#rfc.section.5.1.2">5.1.2.</a> <a href="#string-literals" id="string-literals">String Literals</a>
+</h3>
+<p id="rfc.section.5.1.2.p.1">The string literal defined by Section 5.2 of <a href="#RFC7541" class="xref">[RFC7541]</a> is also used throughout.  This string format includes optional Huffman encoding.</p>
+<p id="rfc.section.5.1.2.p.2">HPACK defines string literals to begin on a byte boundary.  They begin with a single flag (indicating whether the string is Huffman-coded), followed by the Length encoded as a 7-bit prefix integer, and finally Length octets of data.  When Huffman encoding is enabled, the Huffman table from Appendix B of <a href="#RFC7541" class="xref">[RFC7541]</a> is used without modification.</p>
+<p id="rfc.section.5.1.2.p.3">This document expands the definition of string literals and permits them to begin other than on a byte boundary.  An &#8220;N-bit prefix string literal&#8221; begins with the same Huffman flag, followed by the length encoded as an (N-1)-bit prefix integer.  The remainder of the string literal is unmodified.</p>
+<p id="rfc.section.5.1.2.p.4">A string literal without a prefix length noted is an 8-bit prefix string literal and follows the definitions in <a href="#RFC7541" class="xref">[RFC7541]</a> without modification.</p>
 <h2 id="rfc.section.5.2">
 <a href="#rfc.section.5.2">5.2.</a> <a href="#encoder-stream" id="encoder-stream">QPACK Encoder Stream</a>
 </h2>

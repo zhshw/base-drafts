@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 15, 2018                           Akamai Technologies
+Expires: December 16, 2018                           Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                           June 13, 2018
+                                                           June 14, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 15, 2018.
+   This Internet-Draft will expire on December 16, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 1]
+Krasic, et al.          Expires December 16, 2018               [Page 1]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -87,44 +87,46 @@ Table of Contents
    4.  Configuration . . . . . . . . . . . . . . . . . . . . . . . .   8
    5.  Wire Format . . . . . . . . . . . . . . . . . . . . . . . . .   9
      5.1.  Primitives  . . . . . . . . . . . . . . . . . . . . . . .   9
-     5.2.  QPACK Encoder Stream  . . . . . . . . . . . . . . . . . .   9
+       5.1.1.  Prefixed Integers . . . . . . . . . . . . . . . . . .   9
+       5.1.2.  String Literals . . . . . . . . . . . . . . . . . . .   9
+     5.2.  QPACK Encoder Stream  . . . . . . . . . . . . . . . . . .  10
        5.2.1.  Insert With Name Reference  . . . . . . . . . . . . .  10
-       5.2.2.  Insert Without Name Reference . . . . . . . . . . . .  10
+       5.2.2.  Insert Without Name Reference . . . . . . . . . . . .  11
        5.2.3.  Duplicate . . . . . . . . . . . . . . . . . . . . . .  11
-       5.2.4.  Dynamic Table Size Update . . . . . . . . . . . . . .  11
+       5.2.4.  Dynamic Table Size Update . . . . . . . . . . . . . .  12
      5.3.  QPACK Decoder Stream  . . . . . . . . . . . . . . . . . .  12
        5.3.1.  Table State Synchronize . . . . . . . . . . . . . . .  12
-       5.3.2.  Header Acknowledgement  . . . . . . . . . . . . . . .  12
+       5.3.2.  Header Acknowledgement  . . . . . . . . . . . . . . .  13
      5.4.  Request and Push Streams  . . . . . . . . . . . . . . . .  13
        5.4.1.  Header Data Prefix  . . . . . . . . . . . . . . . . .  13
-       5.4.2.  Instructions  . . . . . . . . . . . . . . . . . . . .  14
+       5.4.2.  Instructions  . . . . . . . . . . . . . . . . . . . .  15
    6.  Encoding Strategies . . . . . . . . . . . . . . . . . . . . .  17
-     6.1.  Single Pass Encoding  . . . . . . . . . . . . . . . . . .  17
-     6.2.  Preventing Eviction Races . . . . . . . . . . . . . . . .  17
-     6.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  17
+     6.1.  Single Pass Encoding  . . . . . . . . . . . . . . . . . .  18
+     6.2.  Preventing Eviction Races . . . . . . . . . . . . . . . .  18
+     6.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  18
        6.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  18
-       6.3.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  18
-     6.4.  Speculative table updates . . . . . . . . . . . . . . . .  18
-     6.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  18
+       6.3.2.  Blocked Decoding  . . . . . . . . . . . . . . . . . .  19
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 2]
+Krasic, et al.          Expires December 16, 2018               [Page 2]
 
 Internet-Draft                    QPACK                        June 2018
 
 
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
-   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
-     8.1.  Settings Registration . . . . . . . . . . . . . . . . . .  20
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  20
-     9.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  21
-   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  21
-     A.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  21
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  21
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  22
+     6.4.  Speculative table updates . . . . . . . . . . . . . . . .  19
+     6.5.  Sample One Pass Encoding Algorithm  . . . . . . . . . . .  19
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  21
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  21
+     8.1.  Settings Registration . . . . . . . . . . . . . . . . . .  21
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  21
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+     9.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  22
+     A.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  22
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
 
 1.  Introduction
 
@@ -163,9 +165,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-
-
-Krasic, et al.          Expires December 15, 2018               [Page 3]
+Krasic, et al.          Expires December 16, 2018               [Page 3]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 4]
+Krasic, et al.          Expires December 16, 2018               [Page 4]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 5]
+Krasic, et al.          Expires December 16, 2018               [Page 5]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 6]
+Krasic, et al.          Expires December 16, 2018               [Page 6]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 7]
+Krasic, et al.          Expires December 16, 2018               [Page 7]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018               [Page 8]
+Krasic, et al.          Expires December 16, 2018               [Page 8]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -473,19 +473,38 @@ Internet-Draft                    QPACK                        June 2018
 
 5.1.  Primitives
 
+5.1.1.  Prefixed Integers
+
    The prefixed integer from Section 5.1 of [RFC7541] is used heavily
-   throughout this document.  The string literal, defined by Section 5.2
-   of [RFC7541], is used with the following modification.
+   throughout this document.  The format from [RFC7541] is used
+   unmodified.
+
+5.1.2.  String Literals
+
+   The string literal defined by Section 5.2 of [RFC7541] is also used
+   throughout.  This string format includes optional Huffman encoding.
 
    HPACK defines string literals to begin on a byte boundary.  They
    begin with a single flag (indicating whether the string is Huffman-
    coded), followed by the Length encoded as a 7-bit prefix integer, and
-   finally Length octets of data.
+   finally Length octets of data.  When Huffman encoding is enabled, the
+   Huffman table from Appendix B of [RFC7541] is used without
+   modification.
 
-   QPACK permits strings to begin other than on a byte boundary.  An
-   "N-bit prefix string literal" begins with the same Huffman flag,
-   followed by the length encoded as an (N-1)-bit prefix integer.  The
-   remainder of the string literal is unmodified.
+   This document expands the definition of string literals and permits
+   them to begin other than on a byte boundary.  An "N-bit prefix string
+   literal" begins with the same Huffman flag, followed by the length
+   encoded as an (N-1)-bit prefix integer.  The remainder of the string
+   literal is unmodified.
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018               [Page 9]
+
+Internet-Draft                    QPACK                        June 2018
+
 
    A string literal without a prefix length noted is an 8-bit prefix
    string literal and follows the definitions in [RFC7541] without
@@ -497,15 +516,6 @@ Internet-Draft                    QPACK                        June 2018
    to avoid transmitting redundant information.  The name can be
    transmitted as a reference to an existing entry in the static or the
    dynamic table or as a string literal.  For entries which already
-
-
-
-
-Krasic, et al.          Expires December 15, 2018               [Page 9]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    exist in the dynamic table, the full entry can also be used by
    reference, creating a duplicate entry.
 
@@ -535,6 +545,23 @@ Internet-Draft                    QPACK                        June 2018
    The header name reference is followed by the header field value
    represented as a string literal (see Section 5.2 of [RFC7541]).
 
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 10]
+
+Internet-Draft                    QPACK                        June 2018
+
+
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
       | 1 | S |    Name Index (6+)    |
@@ -554,13 +581,6 @@ Internet-Draft                    QPACK                        June 2018
 
    The name is represented as a 6-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 10]
-
-Internet-Draft                    QPACK                        June 2018
-
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
@@ -590,6 +610,14 @@ Internet-Draft                    QPACK                        June 2018
 
    The existing entry is re-inserted into the dynamic table without
    resending either the name or the value.  This is useful to mitigate
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 11]
+
+Internet-Draft                    QPACK                        June 2018
+
+
    the eviction of older entries which are frequently referenced, both
    to avoid the need to resend the header and to avoid the entry in the
    table blocking the ability to insert new headers.
@@ -610,14 +638,6 @@ Internet-Draft                    QPACK                        June 2018
 
    The new maximum size MUST be lower than or equal to the limit
    determined by the protocol using QPACK.  A value that exceeds this
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 11]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
    is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see
    Section 4) received from the decoder.
@@ -645,6 +665,15 @@ Internet-Draft                    QPACK                        June 2018
    The instruction specifies the total number of dynamic table inserts
    and duplications since the last Table State Synchronize, encoded as a
    7-bit prefix integer.  The encoder uses this value to determine which
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 12]
+
+Internet-Draft                    QPACK                        June 2018
+
+
    table entries are vulnerable to head-of-line blocking.  A decoder MAY
    coalesce multiple synchronization updates into a single update.
 
@@ -666,14 +695,6 @@ Internet-Draft                    QPACK                        June 2018
 
    The same Stream ID can be identified multiple times, as multiple
    header blocks can be sent on a single stream in the case of
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 12]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    intermediate responses, trailers, and pushed requests.  Since header
    frames on each stream are received and processed in order, this gives
    the encoder precise feedback on which header blocks within a stream
@@ -696,6 +717,18 @@ Internet-Draft                    QPACK                        June 2018
 
    Header data is prefixed with two integers, "Largest Reference" and
    "Base Index".
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 13]
+
+Internet-Draft                    QPACK                        June 2018
+
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -723,13 +756,6 @@ Internet-Draft                    QPACK                        June 2018
    the Base Index.  A sign bit of 1 indicates that the Base Index is
    less than the Largest Reference.  That is:
 
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 13]
-
-Internet-Draft                    QPACK                        June 2018
-
-
       if sign == 0:
          baseIndex = largestReference + deltaBaseIndex
       else:
@@ -750,6 +776,15 @@ Internet-Draft                    QPACK                        June 2018
    Largest Reference and Base Index are equal, the Delta Base Index is
    encoded with a zero sign bit.  A sign bit set to 1 when the Delta
    Base Index is 0 MUST be treated as a decoder error.
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 14]
+
+Internet-Draft                    QPACK                        June 2018
+
 
    A header block that does not reference the dynamic table can use any
    value for Base Index; setting both Largest Reference and Base Index
@@ -779,13 +814,6 @@ Internet-Draft                    QPACK                        June 2018
    represented as an integer with a 6-bit prefix (see Section 5.1 of
    [RFC7541]).
 
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 14]
-
-Internet-Draft                    QPACK                        June 2018
-
-
 5.4.2.2.  Indexed Header Field With Post-Base Index
 
    If the entry is in the dynamic table with an absolute index greater
@@ -806,6 +834,13 @@ Internet-Draft                    QPACK                        June 2018
    A literal header field with a name reference represents a header
    where the header field name matches the header field name of an entry
    stored in the static table or the dynamic table.
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 15]
+
+Internet-Draft                    QPACK                        June 2018
+
 
    If the entry is in the static table, or in the dynamic table with an
    absolute index less than or equal to Base Index, this representation
@@ -834,14 +869,6 @@ Internet-Draft                    QPACK                        June 2018
 
                  Literal Header Field With Name Reference
 
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 15]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    For entries in the static table or in the dynamic table with an
    absolute index less than or equal to Base Index, the header field
    name is represented using the relative index of that entry, which is
@@ -855,6 +882,21 @@ Internet-Draft                    QPACK                        June 2018
    Base Index, the header field name is represented using the post-base
    index of that entry (see Section 2.2.1) encoded as an integer with a
    3-bit prefix.
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 16]
+
+Internet-Draft                    QPACK                        June 2018
+
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
@@ -886,18 +928,6 @@ Internet-Draft                    QPACK                        June 2018
    The name is represented as a 4-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
 
-
-
-
-
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 16]
-
-Internet-Draft                    QPACK                        June 2018
-
-
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
       | 0 | 1 | 1 | N | H |NameLen(3+)|
@@ -912,6 +942,17 @@ Internet-Draft                    QPACK                        June 2018
                 Literal Header Field Without Name Reference
 
 6.  Encoding Strategies
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 17]
+
+Internet-Draft                    QPACK                        June 2018
+
 
 6.1.  Single Pass Encoding
 
@@ -943,17 +984,6 @@ Internet-Draft                    QPACK                        June 2018
    (unacknowledged) header blocks and table updates using feedback
    received from the decoder.
 
-
-
-
-
-
-
-Krasic, et al.          Expires December 15, 2018              [Page 17]
-
-Internet-Draft                    QPACK                        June 2018
-
-
 6.3.1.  Blocked Eviction
 
    The encoder MUST NOT permit an entry to be evicted while a reference
@@ -971,6 +1001,14 @@ Internet-Draft                    QPACK                        June 2018
    the oldest entries in the table is still actively used for
    references, the encoder SHOULD emit an Duplicate representation
    instead (see Section 5.2.3).
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 18]
+
+Internet-Draft                    QPACK                        June 2018
+
 
 6.3.2.  Blocked Decoding
 
@@ -1005,7 +1043,25 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018              [Page 18]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 16, 2018              [Page 19]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1061,7 +1117,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018              [Page 19]
+Krasic, et al.          Expires December 16, 2018              [Page 20]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1117,7 +1173,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 15, 2018              [Page 20]
+Krasic, et al.          Expires December 16, 2018              [Page 21]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1173,7 +1229,7 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires December 15, 2018              [Page 21]
+Krasic, et al.          Expires December 16, 2018              [Page 22]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1229,4 +1285,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 15, 2018              [Page 22]
+Krasic, et al.          Expires December 16, 2018              [Page 23]
