@@ -717,8 +717,8 @@ Internet-Draft                    QPACK                        June 2018
    to the encoder that all references to the dynamic table on that
    stream are no longer outstanding.
 
-   An encoder cannot infer from this acknowledgement that any updates to
-   the dynamic table have been received.
+   An encoder cannot infer from this instruction that any updates to the
+   dynamic table have been received.
 
 
 
