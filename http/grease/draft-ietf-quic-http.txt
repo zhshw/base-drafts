@@ -1829,8 +1829,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    Name:  Reserved - GREASE
 
-   Initial Value:  (undefined)
-
    Specification:  Section 4.2.5.2
 
 9.5.  Error Codes
@@ -1842,6 +1840,8 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    Registrations for error codes are required to include a description
    of the error code.  An expert reviewer is advised to examine new
+   registrations for possible duplication with existing error codes.
+   Use of existing registrations is to be encouraged, but not mandated.
 
 
 
@@ -1849,9 +1849,6 @@ Bishop                  Expires December 16, 2018              [Page 33]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
-
-   registrations for possible duplication with existing error codes.
-   Use of existing registrations is to be encouraged, but not mandated.
 
    New registrations are advised to provide the following information:
 
@@ -1898,6 +1895,9 @@ Internet-Draft               HTTP over QUIC                    June 2018
    | AILED                      |        | cannot     |                |
    |                            |        | continue   |                |
    |                            |        |            |                |
+   | HTTP_CONNECT_ERROR         | 0x0007 | TCP reset  | Section 6.1    |
+   |                            |        | or error   |                |
+   |                            |        | on CONNECT |                |
 
 
 
@@ -1906,9 +1906,6 @@ Bishop                  Expires December 16, 2018              [Page 34]
 Internet-Draft               HTTP over QUIC                    June 2018
 
 
-   | HTTP_CONNECT_ERROR         | 0x0007 | TCP reset  | Section 6.1    |
-   |                            |        | or error   |                |
-   |                            |        | on CONNECT |                |
    |                            |        | request    |                |
    |                            |        |            |                |
    | HTTP_EXCESSIVE_LOAD        | 0x0008 | Peer       | Section 6.1    |
@@ -1954,6 +1951,9 @@ Internet-Draft               HTTP over QUIC                    June 2018
               Multiplexed and Secure Transport", draft-ietf-quic-
               transport (work in progress), June 2018.
 
+   [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
+              RFC 793, DOI 10.17487/RFC0793, September 1981,
+              <https://www.rfc-editor.org/info/rfc793>.
 
 
 
@@ -1961,10 +1961,6 @@ Bishop                  Expires December 16, 2018              [Page 35]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
-
-   [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
-              RFC 793, DOI 10.17487/RFC0793, September 1981,
-              <https://www.rfc-editor.org/info/rfc793>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -2010,6 +2006,10 @@ Internet-Draft               HTTP over QUIC                    June 2018
               "Transport Layer Security (TLS) Application-Layer Protocol
               Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
               July 2014, <https://www.rfc-editor.org/info/rfc7301>.
+
+
+
+
 
 
 
