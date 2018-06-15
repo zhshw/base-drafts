@@ -1724,11 +1724,11 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       to effect a change in server address at the end of the handshake,
       as described in Section 6.9.
 
-   disable_migration (0x0009):  The server does not support migration of
-      connections to a different IP address.  Clients MUST NOT send any
-      packets, including probing packets, from an IP address other than
-      that used to perform the handshake.  This parameter is a zero-
-      length value.
+   disable_migration (0x0009):  The server does not support connection
+      migration (Section 6.8).  Clients MUST NOT send any packets,
+      including probing packets (Section 6.8.1), from a local address
+      other than that used to perform the handshake.  This parameter is
+      a zero-length value.
 
 
 

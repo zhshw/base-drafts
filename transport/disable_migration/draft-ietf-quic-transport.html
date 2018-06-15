@@ -1429,7 +1429,7 @@ ul.toc li {
 <dt>preferred_address (0x0004):</dt>
 <dd style="margin-left: 8">The server&#8217;s Preferred Address is used to effect a change in server address at the end of the handshake, as described in <a href="#preferred-address" class="xref">Section 6.9</a>.</dd>
 <dt>disable_migration (0x0009):</dt>
-<dd style="margin-left: 8">The server does not support migration of connections to a different IP address. Clients MUST NOT send any packets, including probing packets, from an IP address other than that used to perform the handshake.  This parameter is a zero-length value.</dd>
+<dd style="margin-left: 8">The server does not support connection migration (<a href="#migration" class="xref">Section 6.8</a>). Clients MUST NOT send any packets, including probing packets (<a href="#probing" class="xref">Section 6.8.1</a>), from a local address other than that used to perform the handshake.  This parameter is a zero-length value.</dd>
 </dl>
 <p id="rfc.section.6.4.1.p.7">A client MUST NOT include a stateless reset token or a preferred address.  A server MUST treat receipt of either transport parameter as a connection error of type TRANSPORT_PARAMETER_ERROR.</p>
 <h3 id="rfc.section.6.4.2">
