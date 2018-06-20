@@ -132,20 +132,20 @@ Internet-Draft           QUIC Transport Protocol               June 2018
        6.8.5.  Privacy Implications of Connection Migration  . . . .  43
      6.9.  Server's Preferred Address  . . . . . . . . . . . . . . .  45
        6.9.1.  Communicating A Preferred Address . . . . . . . . . .  45
-       6.9.2.  Responding to Connection Migration  . . . . . . . . .  46
+       6.9.2.  Responding to Connection Migration  . . . . . . . . .  45
        6.9.3.  Interaction of Client Migration and Preferred Address  46
-     6.10. Connection Termination  . . . . . . . . . . . . . . . . .  47
+     6.10. Connection Termination  . . . . . . . . . . . . . . . . .  46
        6.10.1.  Closing and Draining Connection States . . . . . . .  47
        6.10.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . .  48
        6.10.3.  Immediate Close  . . . . . . . . . . . . . . . . . .  48
        6.10.4.  Stateless Reset  . . . . . . . . . . . . . . . . . .  49
-   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  53
+   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  52
      7.1.  Variable-Length Integer Encoding  . . . . . . . . . . . .  53
-     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  54
+     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  53
      7.3.  RST_STREAM Frame  . . . . . . . . . . . . . . . . . . . .  54
-     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  55
+     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  54
      7.5.  APPLICATION_CLOSE frame . . . . . . . . . . . . . . . . .  55
-     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  56
+     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  55
      7.7.  MAX_STREAM_DATA Frame . . . . . . . . . . . . . . . . . .  56
      7.8.  MAX_STREAM_ID Frame . . . . . . . . . . . . . . . . . . .  57
      7.9.  PING Frame  . . . . . . . . . . . . . . . . . . . . . . .  58
@@ -2419,7 +2419,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    receiving any response from its peer.  To ensure that the endpoint is
    not linkable across each of these changes, a new connection ID is
    needed for each network.  To support this, multiple NEW_CONNECTION_ID
-   messages are needed.
+   messages are needed.  Each NEW_CONNECTION_ID is marked with a
+   sequence number.  Connection IDs MUST be used on only one local
+   address, and each local address MUST advance to a connection ID with
+   a later sequence number each time the connection ID changes.  Once a
+   connection ID has been used, connection IDs with an earlier sequence
+   number MUST NOT be used for packets with a greater packet number from
+   that local address.
 
    Upon changing networks an endpoint MUST use a previously unused
    connection ID provided by its peer.  This eliminates the use of the
@@ -2429,9 +2435,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    other properties of packets, such as timing and size, from being used
    to correlate activity.
 
-   Clients MAY change connection ID at any time based on implementation-
-   specific concerns.  For example, after a period of network inactivity
-   NAT rebinding might occur when the client begins sending data again.
+   Clients MAY move to a new connection ID at any time based on
+   implementation-specific concerns.  For example, after a period of
+   network inactivity NAT rebinding might occur when the client begins
+   sending data again.
 
    A client might wish to reduce linkability by employing a new
    connection ID and source UDP port when sending traffic after a period
@@ -2443,21 +2450,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    reset its congestion state (see Section 6.8.4), so the port SHOULD
    only be changed infrequently.
 
-   Implementations need not retain all connection IDs used in either
-   direction over the lifetime of the connection, but MUST count the
-   number of connection IDs used by each endpoint after the handshake
-   completes.  Separate counts are maintained for probing and non-
-   probing packets.  If all packets sent with a particular connection ID
-   are declared lost and the connection ID is no longer in use, the
-   counter is updated to ignore that connection ID.
-
-   If the number of connection IDs used by the peer in either context
-   becomes greater than the endpoint's own number of used connection IDs
-   for that context, the endpoint MUST begin using a new connection ID
-   for any future packets of that type it sends to that address.  If no
-   new connection IDs are available, the endpoint MUST NOT send
-   additional packets until a NEW_CONNECTION_ID frame is received.  A
-
+   An endpoint that receives a successfully authenticated packet with a
+   previously unused connection ID MUST advance to a connection ID with
+   an equal or greater sequence number for any future packets it sends
+   to that address.  Failing to do this could allow for use of that
+   connection ID to link activity on new paths.  There is no need to
+   move to a new connection ID if the address of a peer changes without
+   also changing the connection ID.  If no new connection IDs are
+   available, the endpoint MUST NOT send additional packets until a
 
 
 
@@ -2466,14 +2466,11 @@ Iyengar & Thomson       Expires December 22, 2018              [Page 44]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-   connection ID used for probing packets MAY subsequently be used for
-   non-probing packets on the same path.
-
-   This causes a change of connection ID by one endpoint to provoke a
-   corresponding change of connection ID by the peer.  Failing to do
-   this could allow for use of that connection ID to link activity on
-   new paths.  There is no need to move to a new connection ID if the
-   address of a peer changes without also changing the connection ID.
+   NEW_CONNECTION_ID frame is received.  However, an implementation need
+   not stop sending packets due to a gap in sequence numbers; it simply
+   advances to the next currently-available connection ID it has
+   received.  Connection IDs with earlier sequence numbers which arrive
+   later MAY be retained for use on other local addresses or discarded.
 
    Implementations SHOULD ensure that peers have at least one unused
    connection ID available when changing the connection ID.  An
@@ -2511,8 +2508,11 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    validation fails, the client MUST continue sending all future packets
    to the server's original IP address.
 
+6.9.2.  Responding to Connection Migration
 
-
+   A server might receive a packet addressed to its preferred IP address
+   at any time after the handshake is completed.  If this packet
+   contains a PATH_CHALLENGE frame, the server sends a PATH_RESPONSE
 
 
 
@@ -2522,11 +2522,6 @@ Iyengar & Thomson       Expires December 22, 2018              [Page 45]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-6.9.2.  Responding to Connection Migration
-
-   A server might receive a packet addressed to its preferred IP address
-   at any time after the handshake is completed.  If this packet
-   contains a PATH_CHALLENGE frame, the server sends a PATH_RESPONSE
    frame as per Section 6.7, but the server MUST continue sending all
    other packets from its original IP address.
 
@@ -2568,16 +2563,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    NOT send more than a minimum congestion window's worth of non-probing
    packets to the new address before path validation is complete.
 
-
-
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 46]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
 6.10.  Connection Termination
 
    Connections should remain open until they become idle for a pre-
@@ -2585,6 +2570,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    be terminated in one of three ways:
 
    o  idle timeout (Section 6.10.2)
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 46]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    o  immediate close (Section 6.10.3)
 
@@ -2625,15 +2617,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    period would have ended.  In other words, the endpoint can use the
    same end time, but cease retransmission of the closing packet.
 
-
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 47]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    Disposing of connection state prior to the end of the closing or
    draining period could cause delayed or reordered packets to be
    handled poorly.  Endpoints that have some alternative means to ensure
@@ -2642,6 +2625,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    an abbreviated draining period which can allow for faster resource
    recovery.  Servers that retain an open socket for accepting new
    connections SHOULD NOT exit the closing or draining period early.
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 47]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    Once the closing or draining period has ended, an endpoint SHOULD
    discard all connection state.  This results in new packets on the
@@ -2682,14 +2673,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    After sending a closing frame, endpoints immediately enter the
    closing state.  During the closing period, an endpoint that sends a
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 48]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    closing frame SHOULD respond to any packet that it receives with
    another packet containing a closing frame.  To minimize the state
    that an endpoint maintains for a closing connection, endpoints MAY
@@ -2698,6 +2681,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    instance, an endpoint could progressively increase the number of
    packets that it receives before sending additional packets or
    increase the time between packets.
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 48]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    Note:  Allowing retransmission of a packet contradicts other advice
       in this document that recommends the creation of new packet
@@ -2739,15 +2730,21 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    parameters don't have confidentiality protection).  This value is
    protected by encryption, so only client and server know this value.
 
+   An endpoint that receives packets that it cannot process sends a
+   packet in the following layout:
+
+
+
+
+
+
+
 
 
 Iyengar & Thomson       Expires December 22, 2018              [Page 49]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-   An endpoint that receives packets that it cannot process sends a
-   packet in the following layout:
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -2793,7 +2790,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Connection ID in the stateless reset packet.  The destination
    connection ID will therefore differ from the value used in previous
    packets.  A random Destination Connection ID makes the connection ID
+   appear to be the result of moving to a new connection ID that was
+   provided using a NEW_CONNECTION_ID frame (Section 7.13).
 
+   Using a randomized connection ID results in two problems:
 
 
 
@@ -2801,11 +2801,6 @@ Iyengar & Thomson       Expires December 22, 2018              [Page 50]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-   appear to be the result of moving to a new connection ID that was
-   provided using a NEW_CONNECTION_ID frame (Section 7.13).
-
-   Using a randomized connection ID results in two problems:
 
    o  The packet might not reach the peer.  If the Destination
       Connection ID is critical for routing toward the peer, then this
@@ -2847,8 +2842,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    period and not send any further packets on this connection.  If the
    comparison fails, the packet can be discarded.
 
+6.10.4.2.  Calculating a Stateless Reset Token
 
-
+   The stateless reset token MUST be difficult to guess.  In order to
+   create a Stateless Reset Token, an endpoint could randomly generate
+   [RFC4086] a secret for every connection that it creates.  However,
+   this presents a coordination problem when there are multiple
+   instances in a cluster or a storage problem for a endpoint that might
 
 
 
@@ -2858,13 +2858,6 @@ Iyengar & Thomson       Expires December 22, 2018              [Page 51]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-6.10.4.2.  Calculating a Stateless Reset Token
-
-   The stateless reset token MUST be difficult to guess.  In order to
-   create a Stateless Reset Token, an endpoint could randomly generate
-   [RFC4086] a secret for every connection that it creates.  However,
-   this presents a coordination problem when there are multiple
-   instances in a cluster or a storage problem for a endpoint that might
    lose state.  Stateless reset specifically exists to handle the case
    where state is lost, so this approach is suboptimal.
 
@@ -2905,6 +2898,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Note that Stateless Reset messages do not have any cryptographic
    protection.
 
+7.  Frame Types and Formats
+
+   As described in Section 5, packets contain one or more frames.  This
+   section describes the format and semantics of the core QUIC frame
+   types.
+
+
 
 
 
@@ -2913,12 +2913,6 @@ Iyengar & Thomson       Expires December 22, 2018              [Page 52]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-7.  Frame Types and Formats
-
-   As described in Section 5, packets contain one or more frames.  This
-   section describes the format and semantics of the core QUIC frame
-   types.
 
 7.1.  Variable-Length Integer Encoding
 
@@ -2958,18 +2952,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Error codes (Section 11.3) are described using integers, but do not
    use this encoding.
 
-
-
-
-
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 53]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
 7.2.  PADDING Frame
 
    The PADDING frame (type=0x00) has no semantic value.  PADDING frames
@@ -2979,6 +2961,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    A PADDING frame has no content.  That is, a PADDING frame consists of
    the single octet that identifies the frame as a PADDING frame.
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 53]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
 7.3.  RST_STREAM Frame
 
@@ -3018,14 +3008,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       offset of the end of data written on this stream by the RST_STREAM
       sender.
 
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 54]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
 7.4.  CONNECTION_CLOSE frame
 
    An endpoint sends a CONNECTION_CLOSE frame (type=0x02) to notify its
@@ -3035,6 +3017,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    If there are open streams that haven't been explicitly closed, they
    are implicitly closed when the connection is closed.
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 54]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    The CONNECTION_CLOSE frame is as follows:
 
@@ -3074,14 +3064,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Other than the error code space, the format and semantics of the
    APPLICATION_CLOSE frame are identical to the CONNECTION_CLOSE frame.
 
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 55]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
 7.6.  MAX_DATA Frame
 
    The MAX_DATA frame (type=0x04) is used in flow control to inform the
@@ -3089,6 +3071,16 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    as a whole.
 
    The frame is as follows:
+
+
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 55]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -3129,15 +3121,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The frame is as follows:
 
-
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 56]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -3147,6 +3130,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
    The fields in the MAX_STREAM_DATA frame are as follows:
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 56]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    Stream ID:  The stream ID of the stream that is affected encoded as a
       variable-length integer.
@@ -3186,14 +3176,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Maximum Stream ID:  ID of the maximum unidirectional or bidirectional
       peer-initiated stream ID for the connection encoded as a variable-
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 57]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
       length integer.  The limit applies to unidirectional steams if the
       second least signification bit of the stream ID is 1, and applies
       to bidirectional streams if it is 0.
@@ -3202,6 +3184,15 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    received which states a lower stream limit than the client has
    previously received.  MAX_STREAM_ID frames which do not increase the
    maximum stream ID MUST be ignored.
+
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 57]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    A peer MUST NOT initiate a stream with a higher stream ID than the
    greatest maximum stream ID it has received.  An endpoint MUST
@@ -3243,13 +3234,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Section 10.2.1).  BLOCKED frames can be used as input to tuning of
    flow control algorithms (see Section 10.1.2).
 
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 58]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    The BLOCKED frame is as follows:
 
     0                   1                   2                   3
@@ -3257,6 +3241,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                         Offset (i)                         ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 58]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    The BLOCKED frame contains a single field.
 
@@ -3298,14 +3290,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    stream, but informs the peer that a new stream was needed, but the
    stream limit prevented the creation of the stream.
 
-
-
-
-Iyengar & Thomson       Expires December 22, 2018              [Page 59]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    The STREAM_ID_BLOCKED frame is as follows:
 
     0                   1                   2                   3
@@ -3313,6 +3297,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                        Stream ID (i)                        ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+
+
+
+Iyengar & Thomson       Expires December 22, 2018              [Page 59]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
 
    The STREAM_ID_BLOCKED frame contains a single field.
 
@@ -3330,6 +3322,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Sequence (i)                       ...
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |   Length (8)  |          Connection ID (32..144)            ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                                                               |
@@ -3343,6 +3337,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The fields are:
 
+   Sequence:  A variable-length integer.  This value starts at 0 and
+      increases by 1 for each connection ID that is provided by the
+      server.  The connection ID that is assigned during the handshake
+      is assumed to have a sequence of -1.  That is, the value selected
+      during the handshake comes immediately before the first value that
+      a server can send.
+
    Length:  An 8-bit unsigned integer containing the length of the
       connection ID.  Values less than 4 and greater than 18 are invalid
       and MUST be treated as a connection error of type
@@ -3353,7 +3354,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Stateless Reset Token:  A 128-bit value that will be used to for a
       stateless reset when the associated connection ID is used (see
       Section 6.10.4).
-
 
 
 
