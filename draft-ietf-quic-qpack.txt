@@ -358,7 +358,10 @@ Internet-Draft                    QPACK                        June 2018
    dynamic table and can always be processed immediately.  A stream
    becomes unblocked when the greatest absolute index in the dynamic
    table becomes greater than or equal to the Largest Reference for all
-   header blocks the decoder has started reading from the stream.
+   header blocks the decoder has started reading from the stream.  If a
+   decoder encounters a header block where the actual largest reference
+   is not equal to the largest reference declared in the prefix, it MAY
+   treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
 
    A decoder can permit the possibility of blocked streams by setting
    SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value (see Section 4).
@@ -381,9 +384,6 @@ Internet-Draft                    QPACK                        June 2018
    stream which risks becoming blocked.  If the decoder encounters more
    blocked streams than it promised to support, it SHOULD treat this as
    a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
-
-
-
 
 
 
