@@ -1476,7 +1476,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    matching sequence number available when changing to a new connection
    ID.  An implementation could do this by always supplying a
    corresponding connection ID to a peer for each connection ID received
-   from that peer.k
+   from that peer.
 
    While endpoints select connection IDs as appropriate for their
    implementation, the connection ID MUST NOT include the unprotected
