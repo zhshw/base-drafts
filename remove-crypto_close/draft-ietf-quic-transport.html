@@ -1782,7 +1782,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <h3 id="rfc.section.6.11.3">
 <a href="#rfc.section.6.11.3">6.11.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
 </h3>
-<p id="rfc.section.6.11.3.p.1">An endpoint sends a closing frame, (CONNECTION_CLOSE or APPLICATION_CLOSE) to terminate the connection immediately.  Any closing frame causes all streams to immediately become closed; open streams can be assumed to be implicitly reset.</p>
+<p id="rfc.section.6.11.3.p.1">An endpoint sends a closing frame (CONNECTION_CLOSE or APPLICATION_CLOSE) to terminate the connection immediately.  Any closing frame causes all streams to immediately become closed; open streams can be assumed to be implicitly reset.</p>
 <p id="rfc.section.6.11.3.p.2">After sending a closing frame, endpoints immediately enter the closing state.  During the closing period, an endpoint that sends a closing frame SHOULD respond to any packet that it receives with another packet containing a closing frame.  To minimize the state that an endpoint maintains for a closing connection, endpoints MAY send the exact same packet.  However, endpoints SHOULD limit the number of packets they generate containing a closing frame.  For instance, an endpoint could progressively increase the number of packets that it receives before sending additional packets or increase the time between packets.</p>
 <p></p>
 

@@ -2843,7 +2843,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
 6.11.3.  Immediate Close
 
-   An endpoint sends a closing frame, (CONNECTION_CLOSE or
+   An endpoint sends a closing frame (CONNECTION_CLOSE or
    APPLICATION_CLOSE) to terminate the connection immediately.  Any
    closing frame causes all streams to immediately become closed; open
    streams can be assumed to be implicitly reset.
