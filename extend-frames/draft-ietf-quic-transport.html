@@ -419,12 +419,12 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-25" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-06-26" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -448,12 +448,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: December 27, 2018</td>
+<td class="left">Expires: December 28, 2018</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 25, 2018</td>
+<td class="right">June 26, 2018</td>
 </tr>
 
     	
@@ -472,7 +472,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 27, 2018.</p>
+<p>This Internet-Draft will expire on December 28, 2018.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1272,7 +1272,7 @@ ul.toc li {
 </tbody>
 </table>
 <p id="rfc.section.5.p.5">All QUIC frames are idempotent.  That is, a valid frame does not cause undesirable side effects or errors when received more than once.</p>
-<p id="rfc.section.5.p.6">The Frame Type field uses a variable length integer encoding (see <a href="#integer-encoding" class="xref">Section 7.1</a>) with one exception.  To ensure simple and efficient implementations of frame parsing, a frame type MUST use the shortest possible encoding.  Though a two-, four- or eight-octet encoding of the frame types defined in this document is possible, the Frame Type field for these frames are encoded on a single octet.  For instance, though 0x4007 is a legitimate two-octet encoding for a variable-length integer with a value of 7, PING frames are always encoded as a single octet with the value 0x07.</p>
+<p id="rfc.section.5.p.6">The Frame Type field uses a variable length integer encoding (see <a href="#integer-encoding" class="xref">Section 7.1</a>) with one exception.  To ensure simple and efficient implementations of frame parsing, a frame type MUST use the shortest possible encoding.  Though a two-, four- or eight-octet encoding of the frame types defined in this document is possible, the Frame Type field for these frames are encoded on a single octet.  For instance, though 0x4007 is a legitimate two-octet encoding for a variable-length integer with a value of 7, PING frames are always encoded as a single octet with the value 0x07.  An endpoint MUST treat the receipt of a frame type that uses a longer encoding than necessary as a connection error of type PROTOCOL_VIOLATION.</p>
 <h2 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#extension-frames" id="extension-frames">Extension Frames</a>
 </h2>
@@ -1813,7 +1813,11 @@ ul.toc li {
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|           Error Code (16)     |   Reason Phrase Length (i)  ...
+|           Error Code (16)     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Frame Type (i)                      ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reason Phrase Length (i)                 ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        Reason Phrase (*)                    ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1824,6 +1828,8 @@ ul.toc li {
 <dl>
 <dt>Error Code:</dt>
 <dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  CONNECTION_CLOSE uses codes from the space defined in <a href="#error-codes" class="xref">Section 11.3</a> (APPLICATION_CLOSE uses codes from the application protocol error code space, see <a href="#app-error-codes" class="xref">Section 11.4</a>).</dd>
+<dt>Frame Type:</dt>
+<dd style="margin-left: 8">The type of frame that triggered the error.</dd>
 <dt>Reason Phrase Length:</dt>
 <dd style="margin-left: 8">A variable-length integer specifying the length of the reason phrase in bytes.  Note that a CONNECTION_CLOSE frame cannot be split between packets, so in practice any limits on packet size will also limit the space available for a reason phrase.</dd>
 <dt>Reason Phrase:</dt>
@@ -2104,7 +2110,7 @@ ul.toc li {
 <pre>
   largest = previous_smallest - gap - 2
 </pre>
-<p id="rfc.section.7.15.1.p.8">If the calculated value for largest or smallest packet number for any ACK Block is negative, an endpoint MUST generate a connection error of type FRAME_ERROR indicating an error in an ACK frame (that is, 0x10d).</p>
+<p id="rfc.section.7.15.1.p.8">If the calculated value for largest or smallest packet number for any ACK Block is negative, an endpoint MUST generate a connection error of type FRAME_FORMAT_ERROR indicating an error in an ACK frame.</p>
 <p id="rfc.section.7.15.1.p.9">The fields in the ACK Block Section are:</p>
 <p></p>
 
@@ -2653,8 +2659,6 @@ ul.toc li {
 <dd style="margin-left: 8">An endpoint detected an error with protocol compliance that was not covered by more specific error codes.</dd>
 <dt>UNSOLICITED_PATH_RESPONSE (0xB):</dt>
 <dd style="margin-left: 8">An endpoint received a PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE frame that it previously sent.</dd>
-<dt>FRAME_ERROR (0x1XX):</dt>
-<dd style="margin-left: 8">An endpoint detected an error in a specific frame type.  The frame type is included as the last octet of the error code.  For example, an error in a MAX_STREAM_ID frame would be indicated with the code (0x106).</dd>
 </dl>
 <p id="rfc.section.11.3.p.4">Codes for errors occuring when TLS is used for the crypto handshake are defined in Section 11 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. See <a href="#iana-error-codes" class="xref">Section 13.3</a> for details of registering new error codes.</p>
 <h2 id="rfc.section.11.4">
@@ -2817,7 +2821,7 @@ ul.toc li {
 <dt>Specification:</dt>
 <dd style="margin-left: 8">A reference to a publicly available specification for the value.</dd>
 </dl>
-<p id="rfc.section.13.3.p.5">The initial contents of this registry are shown in <a href="#iana-error-table" class="xref">Table 8</a>.  Note that FRAME_ERROR takes the range from 0x100 to 0x1FF and private use occupies the range from 0xFE00 to 0xFFFF.</p>
+<p id="rfc.section.13.3.p.5">The initial contents of this registry are shown in <a href="#iana-error-table" class="xref">Table 8</a>.</p>
 <div id="rfc.table.8"></div>
 <div id="iana-error-table"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -2899,12 +2903,6 @@ ul.toc li {
 <td class="left">0xB</td>
 <td class="left">UNSOLICITED_PATH_RESPONSE</td>
 <td class="left">Unsolicited PATH_RESPONSE frame</td>
-<td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
-</tr>
-<tr>
-<td class="left">0x100-0x1FF</td>
-<td class="left">FRAME_ERROR</td>
-<td class="left">Specific frame format error</td>
 <td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
 </tr>
 </tbody>
