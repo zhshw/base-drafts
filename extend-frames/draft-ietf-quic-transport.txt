@@ -201,14 +201,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
      11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  90
      11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  91
      11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . .  91
-     11.4.  Application Protocol Error Codes . . . . . . . . . . . .  93
+     11.4.  Application Protocol Error Codes . . . . . . . . . . . .  92
    12. Security Considerations . . . . . . . . . . . . . . . . . . .  93
      12.1.  Handshake Denial of Service  . . . . . . . . . . . . . .  93
      12.2.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . .  94
-     12.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . .  95
+     12.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . .  94
      12.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . .  95
      12.5.  Stream Fragmentation and Reassembly Attacks  . . . . . .  95
-     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . .  96
+     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . .  95
    13. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  96
      13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . .  96
      13.2.  QUIC Frame Type Registry . . . . . . . . . . . . . . . .  97
@@ -1301,7 +1301,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 5.1.  Extension Frames
 
    QUIC frames do not use a self-describing encoding.  An endpoint
-   therefore needs to understand the syntax of all frame before it can
+   therefore needs to understand the syntax of all frames before it can
    successfully process a packet.  This allows for efficient encoding of
    frames, but it means that an endpoint cannot send a frame of a type
    that is unknown to its peer.
@@ -3103,7 +3103,9 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       space defined in Section 11.3 (APPLICATION_CLOSE uses codes from
       the application protocol error code space, see Section 11.4).
 
-   Frame Type:  The type of frame that triggered the error.
+   Frame Type:  The type of frame that triggered the error.  A value of
+      0 (equivalent to the mention of the PADDING frame) is used when
+      the frame type is unknown.
 
    Reason Phrase Length:  A variable-length integer specifying the
       length of the reason phrase in bytes.  Note that a
@@ -3125,8 +3127,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Other than the error code space, the format and semantics of the
    APPLICATION_CLOSE frame are identical to the CONNECTION_CLOSE frame.
-
-
 
 
 
@@ -3608,7 +3608,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    If the calculated value for largest or smallest packet number for any
    ACK Block is negative, an endpoint MUST generate a connection error
-   of type FRAME_FORMAT_ERROR indicating an error in an ACK frame.
+   of type FRAME_ENCODING_ERROR indicating an error in an ACK frame.
 
    The fields in the ACK Block Section are:
 
@@ -5113,12 +5113,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       containing a different final offset to the one already
       established.
 
-   FRAME_FORMAT_ERROR (0x7):  An endpoint received a frame that was
+   FRAME_ENCODING_ERROR (0x7):  An endpoint received a frame that was
       badly formatted.  For instance, an empty STREAM frame that omitted
       the FIN flag, or an ACK frame that has more acknowledgment ranges
-      than the remainder of the packet could carry.  This is a generic
-      error code; an endpoint SHOULD use the more specific frame format
-      error codes (0x1XX) if possible.
+      than the remainder of the packet could carry.
 
    TRANSPORT_PARAMETER_ERROR (0x8):  An endpoint received transport
       parameters that were badly formatted, included an invalid value,
@@ -5142,10 +5140,12 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    are defined in Section 11 of [QUIC-TLS].  See Section 13.3 for
    details of registering new error codes.
 
+11.4.  Application Protocol Error Codes
 
-
-
-
+   Application protocol error codes are 16-bit unsigned integers, but
+   the management of application error codes are left to application
+   protocols.  Application protocol error codes are used for the
+   RST_STREAM (Section 7.3) and APPLICATION_CLOSE (Section 7.5) frames.
 
 
 
@@ -5153,13 +5153,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 92]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-11.4.  Application Protocol Error Codes
-
-   Application protocol error codes are 16-bit unsigned integers, but
-   the management of application error codes are left to application
-   protocols.  Application protocol error codes are used for the
-   RST_STREAM (Section 7.3) and APPLICATION_CLOSE (Section 7.5) frames.
 
    There is no restriction on the use of the 16-bit error code space for
    application protocols.  However, QUIC reserves the error code with a
@@ -5202,6 +5195,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    authenticating packets that they receive as they use after the
    cryptographic handshake completes.  Packets that cannot be
    authenticated are discarded.  Protecting packets in this fashion
+   provides a strong assurance that the sender of the packet saw the
+   Initial packet and understood it.
+
+   These protections are not intended to be effective against an
+   attacker that is able to receive QUIC packets prior to the connection
+   being established.  Such an attacker can potentially send packets
+   that will be accepted by QUIC endpoints.  This version of QUIC
 
 
 
@@ -5210,13 +5210,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 93]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-   provides a strong assurance that the sender of the packet saw the
-   Initial packet and understood it.
-
-   These protections are not intended to be effective against an
-   attacker that is able to receive QUIC packets prior to the connection
-   being established.  Such an attacker can potentially send packets
-   that will be accepted by QUIC endpoints.  This version of QUIC
    attempts to detect this sort of attack, but it expects that endpoints
    will fail to establish a connection rather than recovering.  For the
    most part, the cryptographic handshake protocol [QUIC-TLS] is
@@ -5258,6 +5251,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    forward secure key, the attacker will not be able to generate
    forward-secure protected packets with ACK frames.
 
+12.3.  Optimistic ACK Attack
+
+   An endpoint that acknowledges packets it has not received might cause
+   a congestion controller to permit sending at rates beyond what the
+   network supports.  An endpoint MAY skip packet numbers when sending
+   packets to detect this behavior.  An endpoint can then immediately
+
 
 
 
@@ -5266,12 +5266,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 94]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-12.3.  Optimistic ACK Attack
-
-   An endpoint that acknowledges packets it has not received might cause
-   a congestion controller to permit sending at rates beyond what the
-   network supports.  An endpoint MAY skip packet numbers when sending
-   packets to detect this behavior.  An endpoint can then immediately
    close the connection with a connection error of type
    PROTOCOL_VIOLATION (see Section 6.10.3).
 
@@ -5313,6 +5307,12 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    heuristics based on the age and duration of reassembly holes, or some
    combination.
 
+12.6.  Stream Commitment Attack
+
+   An adversarial endpoint can open lots of streams, exhausting state on
+   an endpoint.  The adversarial endpoint could repeat the process on a
+   large number of connections, in a manner similar to SYN flooding
+   attacks in TCP.
 
 
 
@@ -5321,13 +5321,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 95]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-12.6.  Stream Commitment Attack
-
-   An adversarial endpoint can open lots of streams, exhausting state on
-   an endpoint.  The adversarial endpoint could repeat the process on a
-   large number of connections, in a manner similar to SYN flooding
-   attacks in TCP.
 
    Normally, clients will open streams sequentially, as explained in
    Section 9.1.  However, when several streams are initiated at short
@@ -5370,6 +5363,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The nominated expert(s) verify that a specification exists and is
    readily accessible.  Expert(s) are encouraged to be biased towards
    approving registrations unless they are abusive, frivolous, or
+   actively harmful (not merely aesthetically displeasing, or
+   architecturally dubious).
+
+   The initial contents of this registry are shown in Table 7.
+
+
+
 
 
 
@@ -5377,11 +5377,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 96]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-   actively harmful (not merely aesthetically displeasing, or
-   architecturally dubious).
-
-   The initial contents of this registry are shown in Table 7.
 
            +--------+--------------------------+---------------+
            | Value  | Parameter Name           | Specification |
@@ -5426,6 +5421,11 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Frame Name:  A short mnemonic for the frame type.
 
+   Specification:  A reference to a publicly available specification for
+      the value.
+
+   The nominated expert(s) verify that a specification exists and is
+   readily accessible.  Specifications for new registrations need to
 
 
 
@@ -5434,11 +5434,6 @@ Iyengar & Thomson       Expires December 28, 2018              [Page 97]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-   Specification:  A reference to a publicly available specification for
-      the value.
-
-   The nominated expert(s) verify that a specification exists and is
-   readily accessible.  Specifications for new registrations need to
    describe the means by which an endpoint might determine that it can
    send the identified type of frame.  An accompanying transport
    parameter registration (see Section 13.1) is expected for most
@@ -5476,7 +5471,12 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Specification:  A reference to a publicly available specification for
       the value.
 
-   The initial contents of this registry are shown in Table 8.
+   The initial contents of this registry are shown in Table 8.  Values
+   from 0xFF00 to 0xFFFF are reserved for Private Use [RFC8126].
+
+
+
+
 
 
 
@@ -5516,8 +5516,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    |      |                           | final stream   |               |
    |      |                           | offset         |               |
    |      |                           |                |               |
-   | 0x7  | FRAME_FORMAT_ERROR        | Generic frame  | Section 11.3  |
-   |      |                           | format error   |               |
+   | 0x7  | FRAME_ENCODING_ERROR      | Frame encoding | Section 11.3  |
+   |      |                           | error          |               |
    |      |                           |                |               |
    | 0x8  | TRANSPORT_PARAMETER_ERROR | Error in       | Section 11.3  |
    |      |                           | transport      |               |

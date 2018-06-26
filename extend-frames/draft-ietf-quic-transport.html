@@ -1276,7 +1276,7 @@ ul.toc li {
 <h2 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#extension-frames" id="extension-frames">Extension Frames</a>
 </h2>
-<p id="rfc.section.5.1.p.1">QUIC frames do not use a self-describing encoding.  An endpoint therefore needs to understand the syntax of all frame before it can successfully process a packet.  This allows for efficient encoding of frames, but it means that an endpoint cannot send a frame of a type that is unknown to its peer.</p>
+<p id="rfc.section.5.1.p.1">QUIC frames do not use a self-describing encoding.  An endpoint therefore needs to understand the syntax of all frames before it can successfully process a packet.  This allows for efficient encoding of frames, but it means that an endpoint cannot send a frame of a type that is unknown to its peer.</p>
 <p id="rfc.section.5.1.p.2">An extension to QUIC that wishes to use a new type of frame MUST first ensure that a peer is able to understand the frame.  An endpoint can use a transport parameter to signal its willingness to receive a new type of frame, or even multiple types of frame with the one transport parameter.</p>
 <p id="rfc.section.5.1.p.3">An IANA registry is used to manage the assignment of frame types, see <a href="#iana-frames" class="xref">Section 13.2</a>.</p>
 <h1 id="rfc.section.6">
@@ -1829,7 +1829,7 @@ ul.toc li {
 <dt>Error Code:</dt>
 <dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  CONNECTION_CLOSE uses codes from the space defined in <a href="#error-codes" class="xref">Section 11.3</a> (APPLICATION_CLOSE uses codes from the application protocol error code space, see <a href="#app-error-codes" class="xref">Section 11.4</a>).</dd>
 <dt>Frame Type:</dt>
-<dd style="margin-left: 8">The type of frame that triggered the error.</dd>
+<dd style="margin-left: 8">The type of frame that triggered the error.  A value of 0 (equivalent to the mention of the PADDING frame) is used when the frame type is unknown.</dd>
 <dt>Reason Phrase Length:</dt>
 <dd style="margin-left: 8">A variable-length integer specifying the length of the reason phrase in bytes.  Note that a CONNECTION_CLOSE frame cannot be split between packets, so in practice any limits on packet size will also limit the space available for a reason phrase.</dd>
 <dt>Reason Phrase:</dt>
@@ -2110,7 +2110,7 @@ ul.toc li {
 <pre>
   largest = previous_smallest - gap - 2
 </pre>
-<p id="rfc.section.7.15.1.p.8">If the calculated value for largest or smallest packet number for any ACK Block is negative, an endpoint MUST generate a connection error of type FRAME_FORMAT_ERROR indicating an error in an ACK frame.</p>
+<p id="rfc.section.7.15.1.p.8">If the calculated value for largest or smallest packet number for any ACK Block is negative, an endpoint MUST generate a connection error of type FRAME_ENCODING_ERROR indicating an error in an ACK frame.</p>
 <p id="rfc.section.7.15.1.p.9">The fields in the ACK Block Section are:</p>
 <p></p>
 
@@ -2649,8 +2649,8 @@ ul.toc li {
 <dd style="margin-left: 8">An endpoint received a frame for a stream that was not in a state that permitted that frame (see <a href="#stream-states" class="xref">Section 9.2</a>).</dd>
 <dt>FINAL_OFFSET_ERROR (0x6):</dt>
 <dd style="margin-left: 8">An endpoint received a STREAM frame containing data that exceeded the previously established final offset.  Or an endpoint received a RST_STREAM frame containing a final offset that was lower than the maximum offset of data that was already received.  Or an endpoint received a RST_STREAM frame containing a different final offset to the one already established.</dd>
-<dt>FRAME_FORMAT_ERROR (0x7):</dt>
-<dd style="margin-left: 8">An endpoint received a frame that was badly formatted.  For instance, an empty STREAM frame that omitted the FIN flag, or an ACK frame that has more acknowledgment ranges than the remainder of the packet could carry.  This is a generic error code; an endpoint SHOULD use the more specific frame format error codes (0x1XX) if possible.</dd>
+<dt>FRAME_ENCODING_ERROR (0x7):</dt>
+<dd style="margin-left: 8">An endpoint received a frame that was badly formatted.  For instance, an empty STREAM frame that omitted the FIN flag, or an ACK frame that has more acknowledgment ranges than the remainder of the packet could carry.</dd>
 <dt>TRANSPORT_PARAMETER_ERROR (0x8):</dt>
 <dd style="margin-left: 8">An endpoint received transport parameters that were badly formatted, included an invalid value, was absent even though it is mandatory, was present though it is forbidden, or is otherwise in error.</dd>
 <dt>VERSION_NEGOTIATION_ERROR (0x9):</dt>
@@ -2821,7 +2821,7 @@ ul.toc li {
 <dt>Specification:</dt>
 <dd style="margin-left: 8">A reference to a publicly available specification for the value.</dd>
 </dl>
-<p id="rfc.section.13.3.p.5">The initial contents of this registry are shown in <a href="#iana-error-table" class="xref">Table 8</a>.</p>
+<p id="rfc.section.13.3.p.5">The initial contents of this registry are shown in <a href="#iana-error-table" class="xref">Table 8</a>.  Values from 0xFF00 to 0xFFFF are reserved for Private Use <a href="#RFC8126" class="xref">[RFC8126]</a>.</p>
 <div id="rfc.table.8"></div>
 <div id="iana-error-table"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -2877,8 +2877,8 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">0x7</td>
-<td class="left">FRAME_FORMAT_ERROR</td>
-<td class="left">Generic frame format error</td>
+<td class="left">FRAME_ENCODING_ERROR</td>
+<td class="left">Frame encoding error</td>
 <td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
 </tr>
 <tr>
