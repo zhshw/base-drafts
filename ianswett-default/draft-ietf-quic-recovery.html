@@ -723,21 +723,21 @@ ul.toc li {
 <p></p>
 
 <dl>
-<dt>kMaxTLPs (recommended 2):</dt>
+<dt>kMaxTLPs (RECOMMENDED 2):</dt>
 <dd style="margin-left: 8">Maximum number of tail loss probes before an RTO fires.</dd>
-<dt>kReorderingThreshold (recommended 3):</dt>
+<dt>kReorderingThreshold (RECOMMENDED 3):</dt>
 <dd style="margin-left: 8">Maximum reordering in packet number space before FACK style loss detection considers a packet lost.</dd>
-<dt>kTimeReorderingFraction (recommended 1/8):</dt>
+<dt>kTimeReorderingFraction (RECOMMENDED 1/8):</dt>
 <dd style="margin-left: 8">Maximum reordering in time space before time based loss detection considers a packet lost.  In fraction of an RTT.</dd>
-<dt>kUsingTimeLossDetection (recommended false):</dt>
+<dt>kUsingTimeLossDetection (RECOMMENDED false):</dt>
 <dd style="margin-left: 8">Whether time based loss detection is in use.  If false, uses FACK style loss detection.</dd>
-<dt>kMinTLPTimeout (recommended 10ms):</dt>
+<dt>kMinTLPTimeout (RECOMMENDED 10ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future a tail loss probe alarm may be set for.</dd>
-<dt>kMinRTOTimeout (recommended 200ms):</dt>
+<dt>kMinRTOTimeout (RECOMMENDED 200ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future an RTO alarm may be set for.</dd>
-<dt>kDelayedAckTimeout (recommended 25ms):</dt>
+<dt>kDelayedAckTimeout (RECOMMENDED 25ms):</dt>
 <dd style="margin-left: 8">The length of the peer&#8217;s delayed ack timer.</dd>
-<dt>kInitialRtt (recommended 100ms):</dt>
+<dt>kInitialRtt (RECOMMENDED 100ms):</dt>
 <dd style="margin-left: 8">The RTT used before an RTT sample is taken.</dd>
 </dl>
 <h3 id="rfc.section.3.5.2">
@@ -1075,13 +1075,13 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kInitialMss (recommended 1460 bytes):</dt>
+<dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
 <dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
-<dt>kInitialWindow (recommended 10 * kInitialMss):</dt>
+<dt>kInitialWindow (RECOMMENDED 10 * kInitialMss):</dt>
 <dd style="margin-left: 8">Limit on the initial amount of outstanding data in bytes.</dd>
-<dt>kMinimumWindow (recommended 2 * kInitialMss):</dt>
+<dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
 <dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
-<dt>kLossReductionFactor (recommended 0.5):</dt>
+<dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
 </dl>
 <h3 id="rfc.section.4.7.2">
