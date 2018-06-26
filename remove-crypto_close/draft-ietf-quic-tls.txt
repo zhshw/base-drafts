@@ -744,7 +744,7 @@ Internet-Draft                QUIC over TLS                    June 2018
    range reserved for CRYPTO_ERROR.  The resulting value is sent in a
    QUIC CONNECTION_CLOSE frame.
 
-   The alert level of all TLS alerts is "fatal", a TLS stack MUST NOT
+   The alert level of all TLS alerts is "fatal"; a TLS stack MUST NOT
    generate alerts at the "warning" level.
 
 5.  QUIC Packet Protection
