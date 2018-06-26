@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 24, 2018                           Akamai Technologies
+Expires: December 28, 2018                           Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                           June 22, 2018
+                                                           June 26, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 24, 2018.
+   This Internet-Draft will expire on December 28, 2018.
 
 
 
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 1]
+Krasic, et al.          Expires December 28, 2018               [Page 1]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 2]
+Krasic, et al.          Expires December 28, 2018               [Page 2]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 3]
+Krasic, et al.          Expires December 28, 2018               [Page 3]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 4]
+Krasic, et al.          Expires December 28, 2018               [Page 4]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 5]
+Krasic, et al.          Expires December 28, 2018               [Page 5]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 6]
+Krasic, et al.          Expires December 28, 2018               [Page 6]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -358,7 +358,10 @@ Internet-Draft                    QPACK                        June 2018
    dynamic table and can always be processed immediately.  A stream
    becomes unblocked when the greatest absolute index in the dynamic
    table becomes greater than or equal to the Largest Reference for all
-   header blocks the decoder has started reading from the stream.
+   header blocks the decoder has started reading from the stream.  If a
+   decoder encounters a header block where the actual largest reference
+   is not equal to the largest reference declared in the prefix, it MAY
+   treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
 
    A decoder can permit the possibility of blocked streams by setting
    SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value (see Section 4).
@@ -386,10 +389,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-
-
-
-Krasic, et al.          Expires December 24, 2018               [Page 7]
+Krasic, et al.          Expires December 28, 2018               [Page 7]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 8]
+Krasic, et al.          Expires December 28, 2018               [Page 8]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018               [Page 9]
+Krasic, et al.          Expires December 28, 2018               [Page 9]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 10]
+Krasic, et al.          Expires December 28, 2018              [Page 10]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 11]
+Krasic, et al.          Expires December 28, 2018              [Page 11]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 12]
+Krasic, et al.          Expires December 28, 2018              [Page 12]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -695,7 +695,7 @@ Internet-Draft                    QPACK                        June 2018
 
 5.3.1.  Table State Synchronize
 
-   The Table State Synchronize instruction begins with the '10' two-bit
+   The Table State Synchronize instruction begins with the '00' two-bit
    pattern.  The instruction specifies the total number of dynamic table
    inserts and duplications since the last Table State Synchronize or
    Header Acknowledgement that increased the Largest Known Received
@@ -705,7 +705,7 @@ Internet-Draft                    QPACK                        June 2018
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 1 | 0 |   Insert Count (6+)   |
+   | 0 | 0 |   Insert Count (6+)   |
    +---+---+-----------------------+
 
                      Figure 3: Table State Synchronize
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 13]
+Krasic, et al.          Expires December 28, 2018              [Page 13]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -734,7 +734,7 @@ Internet-Draft                    QPACK                        June 2018
 
    After processing a header block on a request or push stream, the
    decoder emits a Header Acknowledgement instruction on the decoder
-   stream.  The instruction begins with the '0' one-bit pattern and
+   stream.  The instruction begins with the '1' one-bit pattern and
    includes the request stream's stream ID, encoded as a 7-bit prefix
    integer.  It is used by the peer's QPACK encoder to know when it is
    safe to evict an entry.
@@ -748,7 +748,7 @@ Internet-Draft                    QPACK                        June 2018
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 |      Stream ID (7+)       |
+   | 1 |      Stream ID (7+)       |
    +---+---------------------------+
 
                      Figure 4: Header Acknowledgement
@@ -775,20 +775,20 @@ Internet-Draft                    QPACK                        June 2018
    An encoder cannot infer from this instruction that any updates to the
    dynamic table have been received.
 
-   The instruction begins with the '11' two-bit pattern.  The
+   The instruction begins with the '01' two-bit pattern.  The
    instruction includes the stream ID of the affected stream - a request
    or push stream - encoded as a 6-bit prefix integer.
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 14]
+Krasic, et al.          Expires December 28, 2018              [Page 14]
 
 Internet-Draft                    QPACK                        June 2018
 
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 1 | 1 |     Stream ID (6+)    |
+   | 0 | 1 |     Stream ID (6+)    |
    +---+---+-----------------------+
 
                        Figure 5: Stream Cancellation
@@ -837,7 +837,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 15]
+Krasic, et al.          Expires December 28, 2018              [Page 15]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 16]
+Krasic, et al.          Expires December 28, 2018              [Page 16]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -901,14 +901,14 @@ Internet-Draft                    QPACK                        June 2018
 5.4.2.2.  Indexed Header Field With Post-Base Index
 
    If the entry is in the dynamic table with an absolute index greater
-   than Base Index, the representation starts with the '0100' 4-bit
+   than Base Index, the representation starts with the '0001' 4-bit
    pattern, followed by the post-base index (see Section 2.2.1) of the
    matching header field, represented as an integer with a 4-bit prefix
    (see Section 5.1 of [RFC7541]).
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 1 | 0 | 0 |  Index (4+)   |
+   | 0 | 0 | 0 | 1 |  Index (4+)   |
    +---+---+---+---+---------------+
 
                  Indexed Header Field with Post-Base Index
@@ -921,9 +921,9 @@ Internet-Draft                    QPACK                        June 2018
 
    If the entry is in the static table, or in the dynamic table with an
    absolute index less than or equal to Base Index, this representation
-   starts with the '00' two-bit pattern.  If the entry is in the dynamic
+   starts with the '01' two-bit pattern.  If the entry is in the dynamic
    table with an absolute index greater than Base Index, the
-   representation starts with the '0101' four-bit pattern.
+   representation starts with the '0000' four-bit pattern.
 
    The following bit, 'N', indicates whether an intermediary is
    permitted to add this header to the dynamic header table on
@@ -937,7 +937,7 @@ Internet-Draft                    QPACK                        June 2018
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 0 | N | S |Name Index (4+)|
+      | 0 | 1 | N | S |Name Index (4+)|
       +---+---+---+---+---------------+
       | H |     Value Length (7+)     |
       +---+---------------------------+
@@ -949,7 +949,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 17]
+Krasic, et al.          Expires December 28, 2018              [Page 17]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -970,7 +970,7 @@ Internet-Draft                    QPACK                        June 2018
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 1 | 0 | 1 | N |NameIdx(3+)|
+      | 0 | 0 | 0 | 0 | N |NameIdx(3+)|
       +---+---+---+---+---+-----------+
       | H |     Value Length (7+)     |
       +---+---------------------------+
@@ -983,7 +983,7 @@ Internet-Draft                    QPACK                        June 2018
 
    An addition to the header table where both the header field name and
    the header field value are represented as string literals (see
-   Section 5.1) starts with the '011' three-bit pattern.
+   Section 5.1) starts with the '001' three-bit pattern.
 
    The fourth bit, 'N', indicates whether an intermediary is permitted
    to add this header to the dynamic header table on subsequent hops.
@@ -1005,14 +1005,14 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 18]
+Krasic, et al.          Expires December 28, 2018              [Page 18]
 
 Internet-Draft                    QPACK                        June 2018
 
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 1 | 1 | N | H |NameLen(3+)|
+      | 0 | 0 | 1 | N | H |NameLen(3+)|
       +---+---+---+---+---+-----------+
       |  Name String (Length octets)  |
       +---+---------------------------+
@@ -1061,7 +1061,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 19]
+Krasic, et al.          Expires December 28, 2018              [Page 19]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 20]
+Krasic, et al.          Expires December 28, 2018              [Page 20]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1160,9 +1160,11 @@ Internet-Draft                    QPACK                        June 2018
 
    # encode the prefix
    encodeInteger(prefixBuffer, 0x00, largestReference, 8)
-   delta = largestReference - baseIndex
-   sign = delta > 0 ? 0x80 : 0
-   encodeInteger(prefixBuffer, sign, delta, 7)
+   if baseIndex >= largestReference:
+     encodeInteger(prefixBuffer, 0, baseIndex - largestReference, 7)
+   else:
+     encodeInteger(prefixBuffer, 0x80,
+                   largestReference  - baseIndex, 7)
 
    return controlBuffer, prefixBuffer + streamBuffer
 
@@ -1171,9 +1173,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-
-
-Krasic, et al.          Expires December 24, 2018              [Page 21]
+Krasic, et al.          Expires December 28, 2018              [Page 21]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 22]
+Krasic, et al.          Expires December 28, 2018              [Page 22]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1285,7 +1285,7 @@ Acknowledgments
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 23]
+Krasic, et al.          Expires December 28, 2018              [Page 23]
 
 Internet-Draft                    QPACK                        June 2018
 
@@ -1341,4 +1341,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 24, 2018              [Page 24]
+Krasic, et al.          Expires December 28, 2018              [Page 24]
