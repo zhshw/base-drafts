@@ -323,7 +323,7 @@ ul.toc li {
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.8 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
@@ -749,13 +749,13 @@ d = count of entries dropped
 <h3 id="rfc.section.5.3.1">
 <a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#table-state-synchronize" id="table-state-synchronize">Table State Synchronize</a>
 </h3>
-<p id="rfc.section.5.3.1.p.1">The Table State Synchronize instruction begins with the &#8216;10&#8217; two-bit pattern.  The instruction specifies the total number of dynamic table inserts and duplications since the last Table State Synchronize or Header Acknowledgement that increased the Largest Known Received dynamic table entry.  This is encoded as a 6-bit prefix integer. The encoder uses this value to determine which table entries might cause a stream to become blocked, as described in <a href="#state-synchronization" class="xref">Section 2.3.1</a>.</p>
+<p id="rfc.section.5.3.1.p.1">The Table State Synchronize instruction begins with the &#8216;00&#8217; two-bit pattern.  The instruction specifies the total number of dynamic table inserts and duplications since the last Table State Synchronize or Header Acknowledgement that increased the Largest Known Received dynamic table entry.  This is encoded as a 6-bit prefix integer. The encoder uses this value to determine which table entries might cause a stream to become blocked, as described in <a href="#state-synchronization" class="xref">Section 2.3.1</a>.</p>
 <div id="rfc.figure.3"></div>
 <div id="fig-size-sync"></div>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
-| 1 | 0 |   Insert Count (6+)   |
+| 0 | 0 |   Insert Count (6+)   |
 +---+---+-----------------------+
 </pre>
 <p class="figure">Figure 3: Table State Synchronize</p>
@@ -763,14 +763,14 @@ d = count of entries dropped
 <h3 id="rfc.section.5.3.2">
 <a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#header-acknowledgement" id="header-acknowledgement">Header Acknowledgement</a>
 </h3>
-<p id="rfc.section.5.3.2.p.1">After processing a header block on a request or push stream, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;0&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
+<p id="rfc.section.5.3.2.p.1">After processing a header block on a request or push stream, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;1&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
 <p id="rfc.section.5.3.2.p.2">The same Stream ID can be identified multiple times, as multiple header blocks can be sent on a single stream in the case of intermediate responses, trailers, and pushed requests.  Since header frames on each stream are received and processed in order, this gives the encoder precise feedback on which header blocks within a stream have been fully processed.</p>
 <div id="rfc.figure.4"></div>
 <div id="fig-header-ack"></div>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
-| 0 |      Stream ID (7+)       |
+| 1 |      Stream ID (7+)       |
 +---+---------------------------+
 </pre>
 <p class="figure">Figure 4: Header Acknowledgement</p>
@@ -780,13 +780,13 @@ d = count of entries dropped
 </h3>
 <p id="rfc.section.5.3.3.p.1">A stream that is reset might have multiple outstanding header blocks.  A decoder that receives a stream reset before the end of a stream generates a Stream Cancellation instruction on the decoder stream.  Similarly, a decoder that abandons reading of a stream needs to signal this using the Stream Cancellation instruction.  This signals to the encoder that all references to the dynamic table on that stream are no longer outstanding.</p>
 <p id="rfc.section.5.3.3.p.2">An encoder cannot infer from this instruction that any updates to the dynamic table have been received.</p>
-<p id="rfc.section.5.3.3.p.3">The instruction begins with the &#8216;11&#8217; two-bit pattern. The instruction includes the stream ID of the affected stream - a request or push stream - encoded as a 6-bit prefix integer.</p>
+<p id="rfc.section.5.3.3.p.3">The instruction begins with the &#8216;01&#8217; two-bit pattern. The instruction includes the stream ID of the affected stream - a request or push stream - encoded as a 6-bit prefix integer.</p>
 <div id="rfc.figure.5"></div>
 <div id="fig-stream-cancel"></div>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
-| 1 | 1 |     Stream ID (6+)    |
+| 0 | 1 |     Stream ID (6+)    |
 +---+---+-----------------------+
 </pre>
 <p class="figure">Figure 5: Stream Cancellation</p>
@@ -841,11 +841,11 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.2">
 <a href="#rfc.section.5.4.2.2">5.4.2.2.</a> <a href="#indexed-header-field-with-post-base-index" id="indexed-header-field-with-post-base-index">Indexed Header Field With Post-Base Index</a>
 </h4>
-<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0100&#8217; 4-bit pattern, followed by the post-base index (see <a href="#indexing" class="xref">Section 2.2.1</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0001&#8217; 4-bit pattern, followed by the post-base index (see <a href="#indexing" class="xref">Section 2.2.1</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
-| 0 | 1 | 0 | 0 |  Index (4+)   |
+| 0 | 0 | 0 | 1 |  Index (4+)   |
 +---+---+---+---+---------------+
 </pre>
 <p class="figure">Indexed Header Field with Post-Base Index</p>
@@ -853,12 +853,12 @@ d = count of entries dropped
 <a href="#rfc.section.5.4.2.3">5.4.2.3.</a> <a href="#literal-header-field-with-name-reference" id="literal-header-field-with-name-reference">Literal Header Field With Name Reference</a>
 </h4>
 <p id="rfc.section.5.4.2.3.p.1">A literal header field with a name reference represents a header where the header field name matches the header field name of an entry stored in the static table or the dynamic table.</p>
-<p id="rfc.section.5.4.2.3.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;00&#8217; two-bit pattern.  If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0101&#8217; four-bit pattern.</p>
+<p id="rfc.section.5.4.2.3.p.2">If the entry is in the static table, or in the dynamic table with an absolute index less than or equal to Base Index, this representation starts with the &#8216;01&#8217; two-bit pattern.  If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0000&#8217; four-bit pattern.</p>
 <p id="rfc.section.5.4.2.3.p.3">The following bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 0 | N | S |Name Index (4+)|
+   | 0 | 1 | N | S |Name Index (4+)|
    +---+---+---+---+---------------+
    | H |     Value Length (7+)     |
    +---+---------------------------+
@@ -874,7 +874,7 @@ d = count of entries dropped
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 1 | 0 | 1 | N |NameIdx(3+)|
+   | 0 | 0 | 0 | 0 | N |NameIdx(3+)|
    +---+---+---+---+---+-----------+
    | H |     Value Length (7+)     |
    +---+---------------------------+
@@ -885,13 +885,13 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.5">
 <a href="#rfc.section.5.4.2.5">5.4.2.5.</a> <a href="#literal-header-field-without-name-reference" id="literal-header-field-without-name-reference">Literal Header Field Without Name Reference</a>
 </h4>
-<p id="rfc.section.5.4.2.5.p.1">An addition to the header table where both the header field name and the header field value are represented as string literals (see <a href="#primitives" class="xref">Section 5.1</a>) starts with the &#8216;011&#8217; three-bit pattern.</p>
+<p id="rfc.section.5.4.2.5.p.1">An addition to the header table where both the header field name and the header field value are represented as string literals (see <a href="#primitives" class="xref">Section 5.1</a>) starts with the &#8216;001&#8217; three-bit pattern.</p>
 <p id="rfc.section.5.4.2.5.p.2">The fourth bit, &#8216;N&#8217;, indicates whether an intermediary is permitted to add this header to the dynamic header table on subsequent hops. When the &#8216;N&#8217; bit is set, the encoded header MUST always be encoded with a literal representation. In particular, when a peer sends a header field that it received represented as a literal header field with the &#8216;N&#8217; bit set, it MUST use a literal representation to forward this header field.  This bit is intended for protecting header field values that are not to be put at risk by compressing them (see Section 7.1 of <a href="#RFC7541" class="xref">[RFC7541]</a> for more details).</p>
 <p id="rfc.section.5.4.2.5.p.3">The name is represented as a 4-bit prefix string literal, while the value is represented as an 8-bit prefix string literal.</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 1 | 1 | N | H |NameLen(3+)|
+   | 0 | 0 | 1 | N | H |NameLen(3+)|
    +---+---+---+---+---+-----------+
    |  Name String (Length octets)  |
    +---+---------------------------+

@@ -695,7 +695,7 @@ Internet-Draft                    QPACK                        June 2018
 
 5.3.1.  Table State Synchronize
 
-   The Table State Synchronize instruction begins with the '10' two-bit
+   The Table State Synchronize instruction begins with the '00' two-bit
    pattern.  The instruction specifies the total number of dynamic table
    inserts and duplications since the last Table State Synchronize or
    Header Acknowledgement that increased the Largest Known Received
@@ -705,7 +705,7 @@ Internet-Draft                    QPACK                        June 2018
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 1 | 0 |   Insert Count (6+)   |
+   | 0 | 0 |   Insert Count (6+)   |
    +---+---+-----------------------+
 
                      Figure 3: Table State Synchronize
@@ -734,7 +734,7 @@ Internet-Draft                    QPACK                        June 2018
 
    After processing a header block on a request or push stream, the
    decoder emits a Header Acknowledgement instruction on the decoder
-   stream.  The instruction begins with the '0' one-bit pattern and
+   stream.  The instruction begins with the '1' one-bit pattern and
    includes the request stream's stream ID, encoded as a 7-bit prefix
    integer.  It is used by the peer's QPACK encoder to know when it is
    safe to evict an entry.
@@ -748,7 +748,7 @@ Internet-Draft                    QPACK                        June 2018
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 |      Stream ID (7+)       |
+   | 1 |      Stream ID (7+)       |
    +---+---------------------------+
 
                      Figure 4: Header Acknowledgement
@@ -775,7 +775,7 @@ Internet-Draft                    QPACK                        June 2018
    An encoder cannot infer from this instruction that any updates to the
    dynamic table have been received.
 
-   The instruction begins with the '11' two-bit pattern.  The
+   The instruction begins with the '01' two-bit pattern.  The
    instruction includes the stream ID of the affected stream - a request
    or push stream - encoded as a 6-bit prefix integer.
 
@@ -788,7 +788,7 @@ Internet-Draft                    QPACK                        June 2018
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 1 | 1 |     Stream ID (6+)    |
+   | 0 | 1 |     Stream ID (6+)    |
    +---+---+-----------------------+
 
                        Figure 5: Stream Cancellation
@@ -901,14 +901,14 @@ Internet-Draft                    QPACK                        June 2018
 5.4.2.2.  Indexed Header Field With Post-Base Index
 
    If the entry is in the dynamic table with an absolute index greater
-   than Base Index, the representation starts with the '0100' 4-bit
+   than Base Index, the representation starts with the '0001' 4-bit
    pattern, followed by the post-base index (see Section 2.2.1) of the
    matching header field, represented as an integer with a 4-bit prefix
    (see Section 5.1 of [RFC7541]).
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
-   | 0 | 1 | 0 | 0 |  Index (4+)   |
+   | 0 | 0 | 0 | 1 |  Index (4+)   |
    +---+---+---+---+---------------+
 
                  Indexed Header Field with Post-Base Index
@@ -921,9 +921,9 @@ Internet-Draft                    QPACK                        June 2018
 
    If the entry is in the static table, or in the dynamic table with an
    absolute index less than or equal to Base Index, this representation
-   starts with the '00' two-bit pattern.  If the entry is in the dynamic
+   starts with the '01' two-bit pattern.  If the entry is in the dynamic
    table with an absolute index greater than Base Index, the
-   representation starts with the '0101' four-bit pattern.
+   representation starts with the '0000' four-bit pattern.
 
    The following bit, 'N', indicates whether an intermediary is
    permitted to add this header to the dynamic header table on
@@ -937,7 +937,7 @@ Internet-Draft                    QPACK                        June 2018
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 0 | N | S |Name Index (4+)|
+      | 0 | 1 | N | S |Name Index (4+)|
       +---+---+---+---+---------------+
       | H |     Value Length (7+)     |
       +---+---------------------------+
@@ -970,7 +970,7 @@ Internet-Draft                    QPACK                        June 2018
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 1 | 0 | 1 | N |NameIdx(3+)|
+      | 0 | 0 | 0 | 0 | N |NameIdx(3+)|
       +---+---+---+---+---+-----------+
       | H |     Value Length (7+)     |
       +---+---------------------------+
@@ -983,7 +983,7 @@ Internet-Draft                    QPACK                        June 2018
 
    An addition to the header table where both the header field name and
    the header field value are represented as string literals (see
-   Section 5.1) starts with the '011' three-bit pattern.
+   Section 5.1) starts with the '001' three-bit pattern.
 
    The fourth bit, 'N', indicates whether an intermediary is permitted
    to add this header to the dynamic header table on subsequent hops.
@@ -1012,7 +1012,7 @@ Internet-Draft                    QPACK                        June 2018
 
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
-      | 0 | 1 | 1 | N | H |NameLen(3+)|
+      | 0 | 0 | 1 | N | H |NameLen(3+)|
       +---+---+---+---+---+-----------+
       |  Name String (Length octets)  |
       +---+---------------------------+
