@@ -811,8 +811,8 @@ Handshake Received
 <a href="#rfc.section.4.8">4.8.</a> <a href="#tls-errors" id="tls-errors">TLS Errors</a>
 </h2>
 <p id="rfc.section.4.8.p.1">If TLS experiences an error, it generates an appropriate alert as defined in Section 6 of <a href="#TLS13" class="xref">[TLS13]</a>.</p>
-<p id="rfc.section.4.8.p.2">A TLS alert is turned into a QUIC connection error by converting the alert description into a QUIC error code.  The alert description is added to 0x200 to produce a QUIC error code from the range reserved for CRYPTO_ERROR.  The resulting value is sent in a QUIC CONNECTION_CLOSE frame.</p>
-<p id="rfc.section.4.8.p.3">The alert level of all TLS alerts is &#8220;fatal&#8221;, a TLS stack does not generate alerts at the &#8220;warning&#8221; level.</p>
+<p id="rfc.section.4.8.p.2">A TLS alert is turned into a QUIC connection error by converting the one-octet alert description into a QUIC error code.  The alert description is added to 0x200 to produce a QUIC error code from the range reserved for CRYPTO_ERROR.  The resulting value is sent in a QUIC CONNECTION_CLOSE frame.</p>
+<p id="rfc.section.4.8.p.3">The alert level of all TLS alerts is &#8220;fatal&#8221;, a TLS stack MUST NOT generate alerts at the &#8220;warning&#8221; level.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#packet-protection" id="packet-protection">QUIC Packet Protection</a>
 </h1>
