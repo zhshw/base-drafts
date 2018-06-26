@@ -620,7 +620,7 @@ ul.toc li {
 </h3>
 <p id="rfc.section.3.2.1.p.1">An unacknowledged packet is marked as lost when an acknowledgment is received for a packet that was sent a threshold number of packets (kReorderingThreshold) after the unacknowledged packet. Receipt of the ack indicates that a later packet was received, while kReorderingThreshold provides some tolerance for reordering of packets in the network.</p>
 <p id="rfc.section.3.2.1.p.2">The RECOMMENDED initial value for kReorderingThreshold is 3.</p>
-<p id="rfc.section.3.2.1.p.3">We derive this default from recommendations for TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. It is possible for networks to exhibit higher degrees of reordering, causing a sender to detect spurious losses. Detecting spurious losses leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience, though care should be taken to map TCP specifics to QUIC correctly. Similarly, using time-based loss detection to deal with reordering, such as in PR-TCP, should be more readily usable in QUIC. Making QUIC deal with such networks is important open research, and implementers are encouraged to explore this space.</p>
+<p id="rfc.section.3.2.1.p.3">We derive this recommendation from TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. It is possible for networks to exhibit higher degrees of reordering, causing a sender to detect spurious losses. Detecting spurious losses leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience, though care should be taken to map TCP specifics to QUIC correctly. Similarly, using time-based loss detection to deal with reordering, such as in PR-TCP, should be more readily usable in QUIC. Making QUIC deal with such networks is important open research, and implementers are encouraged to explore this space.</p>
 <h3 id="rfc.section.3.2.2">
 <a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#early-retransmit" id="early-retransmit">Early Retransmit</a>
 </h3>
@@ -694,7 +694,7 @@ ul.toc li {
 <h2 id="rfc.section.3.4">
 <a href="#rfc.section.3.4">3.4.</a> <a href="#generating-acknowledgements" id="generating-acknowledgements">Generating Acknowledgements</a>
 </h2>
-<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing non-ack frames.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The default maximum ack delay in QUIC is 25ms.</p>
+<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing non-ack frames.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
 <p id="rfc.section.3.4.p.2">An acknowledgement MAY be sent for every second full-sized packet, as TCP does <a href="#RFC5681" class="xref">[RFC5681]</a>, or may be sent less frequently, as long as the delay does not exceed the maximum ack delay.  QUIC recovery algorithms do not assume the peer generates an acknowledgement immediately when receiving a second full-sized packet.</p>
 <p id="rfc.section.3.4.p.3">Out-of-order packets SHOULD be acknowledged more quickly, in order to accelerate loss recovery.  The receiver SHOULD send an immediate ACK when it receives a new packet which is not one greater than the largest received packet number.</p>
 <p id="rfc.section.3.4.p.4">As an optimization, a receiver MAY process multiple packets before sending any ACK frames in response.  In this case they can determine whether an immediate or delayed acknowledgement should be generated after processing incoming packets.</p>
@@ -723,22 +723,22 @@ ul.toc li {
 <p></p>
 
 <dl>
-<dt>kMaxTLPs (default 2):</dt>
+<dt>kMaxTLPs (RECOMMENDED 2):</dt>
 <dd style="margin-left: 8">Maximum number of tail loss probes before an RTO fires.</dd>
-<dt>kReorderingThreshold (default 3):</dt>
+<dt>kReorderingThreshold (RECOMMENDED 3):</dt>
 <dd style="margin-left: 8">Maximum reordering in packet number space before FACK style loss detection considers a packet lost.</dd>
-<dt>kTimeReorderingFraction (default 1/8):</dt>
+<dt>kTimeReorderingFraction (RECOMMENDED 1/8):</dt>
 <dd style="margin-left: 8">Maximum reordering in time space before time based loss detection considers a packet lost.  In fraction of an RTT.</dd>
-<dt>kUsingTimeLossDetection (default false):</dt>
+<dt>kUsingTimeLossDetection (RECOMMENDED false):</dt>
 <dd style="margin-left: 8">Whether time based loss detection is in use.  If false, uses FACK style loss detection.</dd>
-<dt>kMinTLPTimeout (default 10ms):</dt>
+<dt>kMinTLPTimeout (RECOMMENDED 10ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future a tail loss probe alarm may be set for.</dd>
-<dt>kMinRTOTimeout (default 200ms):</dt>
+<dt>kMinRTOTimeout (RECOMMENDED 200ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future an RTO alarm may be set for.</dd>
-<dt>kDelayedAckTimeout (default 25ms):</dt>
+<dt>kDelayedAckTimeout (RECOMMENDED 25ms):</dt>
 <dd style="margin-left: 8">The length of the peer&#8217;s delayed ack timer.</dd>
-<dt>kDefaultInitialRtt (default 100ms):</dt>
-<dd style="margin-left: 8">The default RTT used before an RTT sample is taken.</dd>
+<dt>kInitialRtt (RECOMMENDED 100ms):</dt>
+<dd style="margin-left: 8">The RTT used before an RTT sample is taken.</dd>
 </dl>
 <h3 id="rfc.section.3.5.2">
 <a href="#rfc.section.3.5.2">3.5.2.</a> <a href="#variables-of-interest" id="variables-of-interest">Variables of interest</a>
@@ -933,7 +933,7 @@ ul.toc li {
     if (handshake packets are outstanding):
       // Handshake retransmission alarm.
       if (smoothed_rtt == 0):
-        alarm_duration = 2 * kDefaultInitialRtt
+        alarm_duration = 2 * kInitialRtt
       else:
         alarm_duration = 2 * smoothed_rtt
       alarm_duration = max(alarm_duration + max_ack_delay,
@@ -1075,13 +1075,13 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kDefaultMss (default 1460 bytes):</dt>
-<dd style="margin-left: 8">The default max packet size used for calculating default and minimum congestion windows.</dd>
-<dt>kInitialWindow (default 10 * kDefaultMss):</dt>
-<dd style="margin-left: 8">Default limit on the amount of outstanding data in bytes.</dd>
-<dt>kMinimumWindow (default 2 * kDefaultMss):</dt>
-<dd style="margin-left: 8">Default minimum congestion window.</dd>
-<dt>kLossReductionFactor (default 0.5):</dt>
+<dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
+<dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
+<dt>kInitialWindow (RECOMMENDED 10 * kInitialMss):</dt>
+<dd style="margin-left: 8">Limit on the initial amount of outstanding data in bytes.</dd>
+<dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
+<dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
+<dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
 </dl>
 <h3 id="rfc.section.4.7.2">
@@ -1138,7 +1138,7 @@ DetectLostPackets(largest_acked):
      else:
        // Congestion avoidance.
        congestion_window +=
-         kDefaultMss * acked_packet.bytes / congestion_window
+         kInitialMss * acked_packet.bytes / congestion_window
 </pre>
 <h3 id="rfc.section.4.7.6">
 <a href="#rfc.section.4.7.6">4.7.6.</a> <a href="#on-packets-lost" id="on-packets-lost">On Packets Lost</a>
