@@ -1277,7 +1277,7 @@ ul.toc li {
 <a href="#rfc.section.5.1">5.1.</a> <a href="#extension-frames" id="extension-frames">Extension Frames</a>
 </h2>
 <p id="rfc.section.5.1.p.1">QUIC frames do not use a self-describing encoding.  An endpoint therefore needs to understand the syntax of all frames before it can successfully process a packet.  This allows for efficient encoding of frames, but it means that an endpoint cannot send a frame of a type that is unknown to its peer.</p>
-<p id="rfc.section.5.1.p.2">An extension to QUIC that wishes to use a new type of frame MUST first ensure that a peer is able to understand the frame.  An endpoint can use a transport parameter to signal its willingness to receive a new type of frame, or even multiple types of frame with the one transport parameter.</p>
+<p id="rfc.section.5.1.p.2">An extension to QUIC that wishes to use a new type of frame MUST first ensure that a peer is able to understand the frame.  An endpoint can use a transport parameter to signal its willingness to receive one or more extension frame types with the one transport parameter.</p>
 <p id="rfc.section.5.1.p.3">An IANA registry is used to manage the assignment of frame types, see <a href="#iana-frames" class="xref">Section 13.2</a>.</p>
 <h1 id="rfc.section.6">
 <a href="#rfc.section.6">6.</a> <a href="#life-of-a-connection" id="life-of-a-connection">Life of a Connection</a>
