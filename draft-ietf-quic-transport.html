@@ -358,7 +358,6 @@ ul.toc li {
 <link href="#rfc.section.7.18" rel="Chapter" title="7.18 NEW_TOKEN frame">
 <link href="#rfc.section.7.19" rel="Chapter" title="7.19 STREAM Frames">
 <link href="#rfc.section.7.20" rel="Chapter" title="7.20 CRYPTO_HS Frame">
-<link href="#rfc.section.7.21" rel="Chapter" title="7.21 CRYPTO_CLOSE Frame">
 <link href="#rfc.section.8" rel="Chapter" title="8 Packetization and Reliability">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Packet Processing and Acknowledgment">
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Retransmission of Information">
@@ -649,8 +648,6 @@ ul.toc li {
 <li>7.19.   <a href="#rfc.section.7.19">STREAM Frames</a>
 </li>
 <li>7.20.   <a href="#rfc.section.7.20">CRYPTO_HS Frame</a>
-</li>
-<li>7.21.   <a href="#rfc.section.7.21">CRYPTO_CLOSE Frame</a>
 </li>
 </ul><li>8.   <a href="#rfc.section.8">Packetization and Reliability</a>
 </li>
@@ -1092,7 +1089,7 @@ ul.toc li {
 
 <dl>
 <dt>Note:</dt>
-<dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN message, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.</dd>
+<dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.</dd>
 </dl>
 <h4 id="rfc.section.4.4.1.3">
 <a href="#rfc.section.4.4.1.3">4.4.1.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
@@ -1141,7 +1138,7 @@ ul.toc li {
 <p id="rfc.section.4.4.3.p.3">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id-encoding" class="xref">Section 4.7</a>).</p>
 <p id="rfc.section.4.4.3.p.4">The first Handshake packet sent by a server contains a packet number of 0.  Handshake packets are their own packet number space.  Packet numbers are incremented normally for other Handshake packets.</p>
 <p id="rfc.section.4.4.3.p.5">Servers MUST NOT send more than three datagrams including Initial and Handshake packets without receiving a packet from a verified source address.  Source addresses can be verified through an address validation token (delivered via a Retry packet or a NEW_TOKEN frame) or by receiving any message from the client encrypted using the Handshake keys.</p>
-<p id="rfc.section.4.4.3.p.6">The payload of this packet contains CRYPTO_HS frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CRYPTO_CLOSE or CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
+<p id="rfc.section.4.4.3.p.6">The payload of this packet contains CRYPTO_HS frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
 </h2>
@@ -1358,11 +1355,6 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">0x19</td>
-<td class="left">CRYPTO_CLOSE</td>
-<td class="left"><a href="#frame-crypto-close" class="xref">Section 7.21</a></td>
-</tr>
-<tr>
-<td class="left">0x20</td>
 <td class="left">NEW_TOKEN</td>
 <td class="left"><a href="#frame-new-token" class="xref">Section 7.18</a></td>
 </tr>
@@ -1786,7 +1778,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <a href="#rfc.section.6.12.1">6.12.1.</a> <a href="#draining" id="draining">Closing and Draining Connection States</a>
 </h3>
 <p id="rfc.section.6.12.1.p.1">The closing and draining connection states exist to ensure that connections close cleanly and that delayed or reordered packets are properly discarded.  These states SHOULD persist for three times the current Retransmission Timeout (RTO) interval as defined in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
-<p id="rfc.section.6.12.1.p.2">An endpoint enters a closing period after initiating an immediate close (<a href="#immediate-close" class="xref">Section 6.12.3</a>).  While closing, an endpoint MUST NOT send packets unless they contain a CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE frame (see <a href="#immediate-close" class="xref">Section 6.12.3</a> for details).</p>
+<p id="rfc.section.6.12.1.p.2">An endpoint enters a closing period after initiating an immediate close (<a href="#immediate-close" class="xref">Section 6.12.3</a>).  While closing, an endpoint MUST NOT send packets unless they contain a CONNECTION_CLOSE or APPLICATION_CLOSE frame (see <a href="#immediate-close" class="xref">Section 6.12.3</a> for details).</p>
 <p id="rfc.section.6.12.1.p.3">In the closing state, only a packet containing a closing frame can be sent.  An endpoint retains only enough information to generate a packet containing a closing frame and to identify packets as belonging to the connection.  The connection ID and QUIC version is sufficient information to identify packets for a closing connection; an endpoint can discard all other connection state.  An endpoint MAY retain packet protection keys for incoming packets to allow it to read and process a closing frame.</p>
 <p id="rfc.section.6.12.1.p.4">The draining state is entered once an endpoint receives a signal that its peer is closing or draining.  While otherwise identical to the closing state, an endpoint in the draining state MUST NOT send any packets.  Retaining packet protection keys is unnecessary once a connection is in the draining state.</p>
 <p id="rfc.section.6.12.1.p.5">An endpoint MAY transition from the closing period to the draining period if it can confirm that its peer is also closing or draining.  Receiving a closing frame is sufficient confirmation, as is receiving a stateless reset.  The draining period SHOULD end when the closing period would have ended.  In other words, the endpoint can use the same end time, but cease retransmission of the closing packet.</p>
@@ -1803,7 +1795,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <h3 id="rfc.section.6.12.3">
 <a href="#rfc.section.6.12.3">6.12.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
 </h3>
-<p id="rfc.section.6.12.3.p.1">An endpoint sends a closing frame, (CONNECTION_CLOSE, CRYPTO_CLOSE or APPLICATION_CLOSE) to terminate the connection immediately.  Any closing frame causes all streams to immediately become closed; open streams can be assumed to be implicitly reset.</p>
+<p id="rfc.section.6.12.3.p.1">An endpoint sends a closing frame (CONNECTION_CLOSE or APPLICATION_CLOSE) to terminate the connection immediately.  Any closing frame causes all streams to immediately become closed; open streams can be assumed to be implicitly reset.</p>
 <p id="rfc.section.6.12.3.p.2">After sending a closing frame, endpoints immediately enter the closing state.  During the closing period, an endpoint that sends a closing frame SHOULD respond to any packet that it receives with another packet containing a closing frame.  To minimize the state that an endpoint maintains for a closing connection, endpoints MAY send the exact same packet.  However, endpoints SHOULD limit the number of packets they generate containing a closing frame.  For instance, an endpoint could progressively increase the number of packets that it receives before sending additional packets or increase the time between packets.</p>
 <p></p>
 
@@ -1849,7 +1841,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <li>The randomly generated connection ID can be used by entities other than the peer to identify this as a potential stateless reset.  An endpoint that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
 </ul>
 <p id="rfc.section.6.12.4.p.11">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
-<p id="rfc.section.6.12.4.p.12">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
+<p id="rfc.section.6.12.4.p.12">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
 <p id="rfc.section.6.12.4.p.13">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
 <h4 id="rfc.section.6.12.4.1">
 <a href="#rfc.section.6.12.4.1">6.12.4.1.</a> <a href="#detecting-a-stateless-reset" id="detecting-a-stateless-reset">Detecting a Stateless Reset</a>
@@ -2310,7 +2302,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <h2 id="rfc.section.7.18">
 <a href="#rfc.section.7.18">7.18.</a> <a href="#frame-new-token" id="frame-new-token">NEW_TOKEN frame</a>
 </h2>
-<p id="rfc.section.7.18.p.1">A server sends a NEW_TOKEN frame (type=0x21) to provide the client a token to send in a the header of an Initial packet for a future connection.</p>
+<p id="rfc.section.7.18.p.1">A server sends a NEW_TOKEN frame (type=0x19) to provide the client a token to send in a the header of an Initial packet for a future connection.</p>
 <p id="rfc.section.7.18.p.2">The NEW_TOKEN frame is as follows:</p>
 <pre>
  0                   1                   2                   3
@@ -2408,11 +2400,6 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 </dl>
 <p id="rfc.section.7.20.p.5">There is a separate flow of cryptographic handshake data in each encryption level, each of which starts at an offset of 0. This implies that each encryption level is treated as a separate CRYPTO_HS stream of data.</p>
 <p id="rfc.section.7.20.p.6">Unlike STREAM frames, which include a Stream ID indicating to which stream the data belongs, the CRYPTO_HS frame carries data for a single stream per encryption level. The stream does not have an explicit end, so CRYPTO_HS frames do not have a FIN bit.</p>
-<h2 id="rfc.section.7.21">
-<a href="#rfc.section.7.21">7.21.</a> <a href="#frame-crypto-close" id="frame-crypto-close">CRYPTO_CLOSE Frame</a>
-</h2>
-<p id="rfc.section.7.21.p.1">The CRYPTO_CLOSE frame (type=0x20) is used to indicate connection failures caused by the crypto handshake. It uses the same format as the CONNECTION_CLOSE frame (<a href="#frame-connection-close" class="xref">Section 7.4</a>), except that the error codes are specific to the crypto protocol in use. For TLS 1.3, the error code is simply the one-byte TLS alert number left-padded with zeroes.</p>
-<p id="rfc.section.7.21.p.2">Other than the error code space, the format and semantics of the CRYPTO_CLOSE frame are identical to the CONNECTION_CLOSE frame.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#packetization" id="packetization">Packetization and Reliability</a>
 </h1>
@@ -2437,7 +2424,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <li>The most recent set of acknowledgments are sent in ACK frames.  An ACK frame SHOULD contain all unacknowledged acknowledgments, as described in <a href="#sending-ack-frames" class="xref">Section 7.15.2</a>.</li>
 <li>Cancellation of stream transmission, as carried in a RST_STREAM frame, is sent until acknowledged or until all stream data is acknowledged by the peer (that is, either the &#8220;Reset Recvd&#8221; or &#8220;Data Recvd&#8221; state is reached on the send stream). The content of a RST_STREAM frame MUST NOT change when it is sent again.</li>
 <li>Similarly, a request to cancel stream transmission, as encoded in a STOP_SENDING frame, is sent until the receive stream enters either a &#8220;Data Recvd&#8221; or &#8220;Reset Recvd&#8221; state, see <a href="#solicited-state-transitions" class="xref">Section 9.3</a>.</li>
-<li>Connection close signals, including those that use CONNECTION_CLOSE, CRYPTO_CLOSE, and APPLICATION_CLOSE frames, are not sent again when packet loss is detected, but as described in <a href="#termination" class="xref">Section 6.12</a>.</li>
+<li>Connection close signals, including those that use CONNECTION_CLOSE and APPLICATION_CLOSE frames, are not sent again when packet loss is detected, but as described in <a href="#termination" class="xref">Section 6.12</a>.</li>
 <li>The current connection maximum data is sent in MAX_DATA frames. An updated value is sent in a MAX_DATA frame if the packet containing the most recently sent MAX_DATA frame is declared lost, or when the endpoint decides to update the limit.  Care is necessary to avoid sending this frame too often as the limit can increase frequently and cause an unnecessarily large number of MAX_DATA frames to be sent.</li>
 <li>The current maximum stream data offset is sent in MAX_STREAM_DATA frames.  Like MAX_DATA, an updated value is sent when the packet containing the most recent MAX_STREAM_DATA frame for a stream is lost or when the limit is updated, with care taken to prevent the frame from being sent too often. An endpoint SHOULD stop sending MAX_STREAM_DATA frames when the receive stream enters a &#8220;Size Known&#8221; state.</li>
 <li>The maximum stream ID for a stream of a given type is sent in MAX_STREAM_ID frames.  Like MAX_DATA, an updated value is sent when a packet containing the most recent MAX_STREAM_ID for a stream type frame is declared lost or when the limit is updated, with care taken to prevent the frame from being sent too often.</li>
@@ -2812,15 +2799,15 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 </h1>
 <p id="rfc.section.11.p.1">An endpoint that detects an error SHOULD signal the existence of that error to its peer.  Both transport-level and application-level errors can affect an entire connection (see <a href="#connection-errors" class="xref">Section 11.1</a>), while only application-level errors can be isolated to a single stream (see <a href="#stream-errors" class="xref">Section 11.2</a>).</p>
 <p id="rfc.section.11.p.2">The most appropriate error code (<a href="#error-codes" class="xref">Section 11.3</a>) SHOULD be included in the frame that signals the error.  Where this specification identifies error conditions, it also identifies the error code that is used.</p>
-<p id="rfc.section.11.p.3">A stateless reset (<a href="#stateless-reset" class="xref">Section 6.12.4</a>) is not suitable for any error that can be signaled with a CONNECTION_CLOSE, CRYPTO_CLOSE, APPLICATION_CLOSE, or RST_STREAM frame.  A stateless reset MUST NOT be used by an endpoint that has the state necessary to send a frame on the connection.</p>
+<p id="rfc.section.11.p.3">A stateless reset (<a href="#stateless-reset" class="xref">Section 6.12.4</a>) is not suitable for any error that can be signaled with a CONNECTION_CLOSE, APPLICATION_CLOSE, or RST_STREAM frame.  A stateless reset MUST NOT be used by an endpoint that has the state necessary to send a frame on the connection.</p>
 <h2 id="rfc.section.11.1">
 <a href="#rfc.section.11.1">11.1.</a> <a href="#connection-errors" id="connection-errors">Connection Errors</a>
 </h2>
-<p id="rfc.section.11.1.p.1">Errors that result in the connection being unusable, such as an obvious violation of protocol semantics or corruption of state that affects an entire connection, MUST be signaled using a CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE frame (<a href="#frame-connection-close" class="xref">Section 7.4</a>, <a href="#frame-crypto-close" class="xref">Section 7.21</a>, <a href="#frame-application-close" class="xref">Section 7.5</a>). An endpoint MAY close the connection in this manner even if the error only affects a single stream.</p>
+<p id="rfc.section.11.1.p.1">Errors that result in the connection being unusable, such as an obvious violation of protocol semantics or corruption of state that affects an entire connection, MUST be signaled using a CONNECTION_CLOSE or APPLICATION_CLOSE frame (<a href="#frame-connection-close" class="xref">Section 7.4</a>, <a href="#frame-application-close" class="xref">Section 7.5</a>). An endpoint MAY close the connection in this manner even if the error only affects a single stream.</p>
 <p id="rfc.section.11.1.p.2">Application protocols can signal application-specific protocol errors using the APPLICATION_CLOSE frame.  Errors that are specific to the transport, including all those described in this document, are carried in a CONNECTION_CLOSE frame.  Other than the type of error code they carry, these frames are identical in format and semantics.</p>
-<p id="rfc.section.11.1.p.3">A CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE frame could be sent in a packet that is lost.  An endpoint SHOULD be prepared to retransmit a packet containing either frame type if it receives more packets on a terminated connection.  Limiting the number of retransmissions and the time over which this final packet is sent limits the effort expended on terminated connections.</p>
-<p id="rfc.section.11.1.p.4">An endpoint that chooses not to retransmit packets containing CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE risks a peer missing the first such packet.  The only mechanism available to an endpoint that continues to receive data for a terminated connection is to use the stateless reset process (<a href="#stateless-reset" class="xref">Section 6.12.4</a>).</p>
-<p id="rfc.section.11.1.p.5">An endpoint that receives an invalid CONNECTION_CLOSE, CRYPTO_CLOSE, or APPLICATION_CLOSE frame MUST NOT signal the existence of the error to its peer.</p>
+<p id="rfc.section.11.1.p.3">A CONNECTION_CLOSE or APPLICATION_CLOSE frame could be sent in a packet that is lost.  An endpoint SHOULD be prepared to retransmit a packet containing either frame type if it receives more packets on a terminated connection.  Limiting the number of retransmissions and the time over which this final packet is sent limits the effort expended on terminated connections.</p>
+<p id="rfc.section.11.1.p.4">An endpoint that chooses not to retransmit packets containing CONNECTION_CLOSE or APPLICATION_CLOSE risks a peer missing the first such packet.  The only mechanism available to an endpoint that continues to receive data for a terminated connection is to use the stateless reset process (<a href="#stateless-reset" class="xref">Section 6.12.4</a>).</p>
+<p id="rfc.section.11.1.p.5">An endpoint that receives an invalid CONNECTION_CLOSE or APPLICATION_CLOSE frame MUST NOT signal the existence of the error to its peer.</p>
 <h2 id="rfc.section.11.2">
 <a href="#rfc.section.11.2">11.2.</a> <a href="#stream-errors" id="stream-errors">Stream Errors</a>
 </h2>
@@ -2862,8 +2849,10 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
 <dt>FRAME_ERROR (0x1XX):</dt>
 <dd style="margin-left: 8">An endpoint detected an error in a specific frame type.  The frame type is included as the last octet of the error code.  For example, an error in a MAX_STREAM_ID frame would be indicated with the code (0x106).</dd>
+<dt>CRYPTO_ERROR (0x2XX):</dt>
+<dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occuring when TLS is used for the crypto handshake are defined in Section 11 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
 </dl>
-<p id="rfc.section.11.3.p.4">Codes for errors occuring when TLS is used for the crypto handshake are defined in Section 11 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. See <a href="#iana-error-codes" class="xref">Section 13.2</a> for details of registering new error codes.</p>
+<p id="rfc.section.11.3.p.4">See <a href="#iana-error-codes" class="xref">Section 13.2</a> for details of registering new error codes.</p>
 <h2 id="rfc.section.11.4">
 <a href="#rfc.section.11.4">11.4.</a> <a href="#app-error-codes" id="app-error-codes">Application Protocol Error Codes</a>
 </h2>
@@ -3239,7 +3228,6 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <ul>
 <li>Enable server to transition connections to a preferred address (#560,#1251).</li>
 <li>Moved the cryptographic handshake off stream 0 and into CRYPTO_HS frames.</li>
-<li>CRYPTO_HS, and CRYPTO_CLOSE frames</li>
 <li>Move stateless retry to the QUIC layer.</li>
 <li>Added token fields to Initial packet header.</li>
 <li>Added NEW_TOKEN frame.</li>
