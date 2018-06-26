@@ -97,7 +97,7 @@ Table of Contents
        5.2.4.  Dynamic Table Size Update . . . . . . . . . . . . . .  12
      5.3.  QPACK Decoder Stream  . . . . . . . . . . . . . . . . . .  13
        5.3.1.  Table State Synchronize . . . . . . . . . . . . . . .  13
-       5.3.2.  Header Acknowledgement  . . . . . . . . . . . . . . .  14
+       5.3.2.  Header Acknowledgement  . . . . . . . . . . . . . . .  13
        5.3.3.  Stream Cancellation . . . . . . . . . . . . . . . . .  14
      5.4.  Request and Push Streams  . . . . . . . . . . . . . . . .  15
        5.4.1.  Header Data Prefix  . . . . . . . . . . . . . . . . .  15
@@ -551,9 +551,9 @@ Internet-Draft                    QPACK                        June 2018
    exist in the dynamic table, the full entry can also be used by
    reference, creating a duplicate entry.
 
-   Each set of encoder instructions is prefaced by its length, encoded
-   as a variable length integer with an 8-bit prefix.  Instructions MUST
-   NOT span more than one block.
+   The contents of the encoder stream are an unframed sequence of the
+   following instructions.
+
 
 
 
@@ -561,15 +561,6 @@ Krasic, et al.          Expires December 28, 2018              [Page 10]
 
 Internet-Draft                    QPACK                        June 2018
 
-
-        0   1   2   3   4   5   6   7
-      +---+---+---+---+---+---+---+---+
-      |       Block Length (8+)       |
-      +-------------------------------+
-      |     Instruction Block (*)   ...
-      +-------------------------------+
-
-                         Encoder instruction block
 
 5.2.1.  Insert With Name Reference
 
@@ -604,20 +595,6 @@ Internet-Draft                    QPACK                        June 2018
    The name is represented as a 6-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
 
-
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires December 28, 2018              [Page 11]
-
-Internet-Draft                    QPACK                        June 2018
-
-
         0   1   2   3   4   5   6   7
       +---+---+---+---+---+---+---+---+
       | 0 | 1 | H | Name Length (5+)  |
@@ -630,6 +607,16 @@ Internet-Draft                    QPACK                        June 2018
       +-------------------------------+
 
                       Insert Header Field -- New Name
+
+
+
+
+
+
+Krasic, et al.          Expires December 28, 2018              [Page 11]
+
+Internet-Draft                    QPACK                        June 2018
+
 
 5.2.3.  Duplicate
 
@@ -666,14 +653,6 @@ Internet-Draft                    QPACK                        June 2018
 
    The new maximum size MUST be lower than or equal to the limit
    determined by the protocol using QPACK.  A value that exceeds this
-
-
-
-Krasic, et al.          Expires December 28, 2018              [Page 12]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
    is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see
    Section 4) received from the decoder.
@@ -684,6 +663,17 @@ Internet-Draft                    QPACK                        June 2018
    Changing the size of the dynamic table is not acknowledged as this
    instruction does not insert an entry.
 
+
+
+
+
+
+
+Krasic, et al.          Expires December 28, 2018              [Page 12]
+
+Internet-Draft                    QPACK                        June 2018
+
+
 5.3.  QPACK Decoder Stream
 
    The decoder stream carries information used to ensure consistency of
@@ -692,6 +682,9 @@ Internet-Draft                    QPACK                        June 2018
    processing of the client's header blocks and table updates, and the
    client informs the server about the processing of the server's header
    blocks and table updates.
+
+   The contents of the decoder stream are an unframed sequence of the
+   following instructions.
 
 5.3.1.  Table State Synchronize
 
@@ -720,16 +713,6 @@ Internet-Draft                    QPACK                        June 2018
    compression inefficiencies if the encoder waits for an entry to be
    acknowledged before using it.
 
-
-
-
-
-
-Krasic, et al.          Expires December 28, 2018              [Page 13]
-
-Internet-Draft                    QPACK                        June 2018
-
-
 5.3.2.  Header Acknowledgement
 
    After processing a header block on a request or push stream, the
@@ -738,6 +721,14 @@ Internet-Draft                    QPACK                        June 2018
    includes the request stream's stream ID, encoded as a 7-bit prefix
    integer.  It is used by the peer's QPACK encoder to know when it is
    safe to evict an entry.
+
+
+
+
+Krasic, et al.          Expires December 28, 2018              [Page 13]
+
+Internet-Draft                    QPACK                        June 2018
+
 
    The same Stream ID can be identified multiple times, as multiple
    header blocks can be sent on a single stream in the case of
@@ -779,19 +770,21 @@ Internet-Draft                    QPACK                        June 2018
    instruction includes the stream ID of the affected stream - a request
    or push stream - encoded as a 6-bit prefix integer.
 
-
-
-Krasic, et al.          Expires December 28, 2018              [Page 14]
-
-Internet-Draft                    QPACK                        June 2018
-
-
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
    | 0 | 1 |     Stream ID (6+)    |
    +---+---+-----------------------+
 
                        Figure 5: Stream Cancellation
+
+
+
+
+
+Krasic, et al.          Expires December 28, 2018              [Page 14]
+
+Internet-Draft                    QPACK                        June 2018
+
 
 5.4.  Request and Push Streams
 
@@ -835,6 +828,13 @@ Internet-Draft                    QPACK                        June 2018
       else:
          baseIndex = largestReference - deltaBaseIndex
 
+   A single-pass encoder is expected to determine the absolute value of
+   Base Index before encoding a header block.  If the encoder inserted
+   entries in the dynamic table while encoding the header block, Largest
+   Reference will be greater than Base Index, so the encoded difference
+   is negative and the sign bit is set to 1.  If the header block did
+   not reference the most recent entry in the table and did not insert
+
 
 
 Krasic, et al.          Expires December 28, 2018              [Page 15]
@@ -842,12 +842,6 @@ Krasic, et al.          Expires December 28, 2018              [Page 15]
 Internet-Draft                    QPACK                        June 2018
 
 
-   A single-pass encoder is expected to determine the absolute value of
-   Base Index before encoding a header block.  If the encoder inserted
-   entries in the dynamic table while encoding the header block, Largest
-   Reference will be greater than Base Index, so the encoded difference
-   is negative and the sign bit is set to 1.  If the header block did
-   not reference the most recent entry in the table and did not insert
    any new entries, Base Index will be greater than the Largest
    Reference, so the delta will be positive and the sign bit is set to
    0.
@@ -886,7 +880,13 @@ Internet-Draft                    QPACK                        June 2018
    represented as an integer with a 6-bit prefix (see Section 5.1 of
    [RFC7541]).
 
+5.4.2.2.  Indexed Header Field With Post-Base Index
 
+   If the entry is in the dynamic table with an absolute index greater
+   than Base Index, the representation starts with the '0001' 4-bit
+   pattern, followed by the post-base index (see Section 2.2.1) of the
+   matching header field, represented as an integer with a 4-bit prefix
+   (see Section 5.1 of [RFC7541]).
 
 
 
@@ -897,14 +897,6 @@ Krasic, et al.          Expires December 28, 2018              [Page 16]
 
 Internet-Draft                    QPACK                        June 2018
 
-
-5.4.2.2.  Indexed Header Field With Post-Base Index
-
-   If the entry is in the dynamic table with an absolute index greater
-   than Base Index, the representation starts with the '0001' 4-bit
-   pattern, followed by the post-base index (see Section 2.2.1) of the
-   matching header field, represented as an integer with a 4-bit prefix
-   (see Section 5.1 of [RFC7541]).
 
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -946,6 +938,14 @@ Internet-Draft                    QPACK                        June 2018
 
                  Literal Header Field With Name Reference
 
+   For entries in the static table or in the dynamic table with an
+   absolute index less than or equal to Base Index, the header field
+   name is represented using the relative index of that entry, which is
+   represented as an integer with a 4-bit prefix (see Section 5.1 of
+   [RFC7541]).  The "S" bit indicates whether the reference is to the
+   static (S=1) or dynamic (S=0) table.
+
+
 
 
 
@@ -953,13 +953,6 @@ Krasic, et al.          Expires December 28, 2018              [Page 17]
 
 Internet-Draft                    QPACK                        June 2018
 
-
-   For entries in the static table or in the dynamic table with an
-   absolute index less than or equal to Base Index, the header field
-   name is represented using the relative index of that entry, which is
-   represented as an integer with a 4-bit prefix (see Section 5.1 of
-   [RFC7541]).  The "S" bit indicates whether the reference is to the
-   static (S=1) or dynamic (S=0) table.
 
 5.4.2.4.  Literal Header Field With Post-Base Name Reference
 
@@ -997,6 +990,13 @@ Internet-Draft                    QPACK                        June 2018
 
    The name is represented as a 4-bit prefix string literal, while the
    value is represented as an 8-bit prefix string literal.
+
+
+
+
+
+
+
 
 
 

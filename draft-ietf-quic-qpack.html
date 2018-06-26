@@ -669,16 +669,7 @@ d = count of entries dropped
 <a href="#rfc.section.5.2">5.2.</a> <a href="#encoder-stream" id="encoder-stream">QPACK Encoder Stream</a>
 </h2>
 <p id="rfc.section.5.2.p.1">Table updates can add a table entry, possibly using existing entries to avoid transmitting redundant information.  The name can be transmitted as a reference to an existing entry in the static or the dynamic table or as a string literal.  For entries which already exist in the dynamic table, the full entry can also be used by reference, creating a duplicate entry.</p>
-<p id="rfc.section.5.2.p.2">Each set of encoder instructions is prefaced by its length, encoded as a variable length integer with an 8-bit prefix.  Instructions MUST NOT span more than one block.</p>
-<pre>
-     0   1   2   3   4   5   6   7
-   +---+---+---+---+---+---+---+---+
-   |       Block Length (8+)       |
-   +-------------------------------+
-   |     Instruction Block (*)   ...
-   +-------------------------------+
-</pre>
-<p class="figure">Encoder instruction block</p>
+<p id="rfc.section.5.2.p.2">The contents of the encoder stream are an unframed sequence of the following instructions.</p>
 <h3 id="rfc.section.5.2.1">
 <a href="#rfc.section.5.2.1">5.2.1.</a> <a href="#insert-with-name-reference" id="insert-with-name-reference">Insert With Name Reference</a>
 </h3>
@@ -746,6 +737,7 @@ d = count of entries dropped
 <a href="#rfc.section.5.3">5.3.</a> <a href="#feedback" id="feedback">QPACK Decoder Stream</a>
 </h2>
 <p id="rfc.section.5.3.p.1">The decoder stream carries information used to ensure consistency of the dynamic table. Information is sent from the QPACK decoder to the QPACK encoder; that is, the server informs the client about the processing of the client&#8217;s header blocks and table updates, and the client informs the server about the processing of the server&#8217;s header blocks and table updates.</p>
+<p id="rfc.section.5.3.p.2">The contents of the decoder stream are an unframed sequence of the following instructions.</p>
 <h3 id="rfc.section.5.3.1">
 <a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#table-state-synchronize" id="table-state-synchronize">Table State Synchronize</a>
 </h3>
