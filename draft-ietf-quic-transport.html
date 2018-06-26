@@ -1523,6 +1523,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
       stateless_reset_token(6),
       ack_delay_exponent(7),
       initial_max_uni_streams(8),
+      disable_migration(9),
       (65535)
    } TransportParameterId;
 
@@ -1581,6 +1582,8 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <dd style="margin-left: 8">The maximum packet size parameter places a limit on the size of packets that the endpoint is willing to receive, encoded as an unsigned 16-bit integer.  This indicates that packets larger than this limit will be dropped.  The default for this parameter is the maximum permitted UDP payload of 65527.  Values below 1200 are invalid.  This limit only applies to protected packets (<a href="#packet-protected" class="xref">Section 4.5</a>).</dd>
 <dt>ack_delay_exponent (0x0007):</dt>
 <dd style="margin-left: 8">An 8-bit unsigned integer value indicating an exponent used to decode the ACK Delay field in the ACK frame, see <a href="#frame-ack" class="xref">Section 7.15</a>.  If this value is absent, a default value of 3 is assumed (indicating a multiplier of 8).  The default value is also used for ACK frames that are sent in Initial and Handshake packets.  Values above 20 are invalid.</dd>
+<dt>disable_migration (0x0009):</dt>
+<dd style="margin-left: 8">The endpoint does not support connection migration (<a href="#migration" class="xref">Section 6.10</a>). Peers MUST NOT send any packets, including probing packets (<a href="#probing" class="xref">Section 6.10.1</a>), from a local address other than that used to perform the handshake.  This parameter is a zero-length value.</dd>
 </dl>
 <p id="rfc.section.6.6.1.p.5">A server MAY include the following transport parameters:</p>
 <p></p>
@@ -1690,7 +1693,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <a href="#rfc.section.6.10">6.10.</a> <a href="#migration" id="migration">Connection Migration</a>
 </h2>
 <p id="rfc.section.6.10.p.1">QUIC allows connections to survive changes to endpoint addresses (that is, IP address and/or port), such as those caused by a endpoint migrating to a new network.  This section describes the process by which an endpoint migrates to a new address.</p>
-<p id="rfc.section.6.10.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.</p>
+<p id="rfc.section.6.10.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.  An endpoint also MUST NOT initiate connection migration if the peer sent the <samp>disable_migration</samp> transport parameter during the handshake.  An endpoint which has sent this transport parameter, but detects that a peer has nonetheless migrated to a different network MAY treat this as a connection error of type INVALID_MIGRATION. However, note that not all changes of peer address are intentional migrations. The peer could experience an unintended change of address due to NAT rebinding; endpoints SHOULD perform path validation (<a href="#migrate-validate" class="xref">Section 6.9</a>) if the rebinding does not cause the connection to fail.</p>
 <p id="rfc.section.6.10.p.3">This document limits migration of connections to new client addresses, except as described in <a href="#preferred-address" class="xref">Section 6.11</a>. Clients are responsible for initiating all migrations.  Servers do not send non-probing packets (see <a href="#probing" class="xref">Section 6.10.1</a>) toward a client address until it sees a non-probing packet from that address.  If a client receives packets from an unknown server address, the client MAY discard these packets.</p>
 <h3 id="rfc.section.6.10.1">
 <a href="#rfc.section.6.10.1">6.10.1.</a> <a href="#probing" id="probing">Probing a New Path</a>
@@ -2855,6 +2858,8 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <dd style="margin-left: 8">An endpoint detected an error with protocol compliance that was not covered by more specific error codes.</dd>
 <dt>UNSOLICITED_PATH_RESPONSE (0xB):</dt>
 <dd style="margin-left: 8">An endpoint received a PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE frame that it previously sent.</dd>
+<dt>INVALID_MIGRATION (0xC):</dt>
+<dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
 <dt>FRAME_ERROR (0x1XX):</dt>
 <dd style="margin-left: 8">An endpoint detected an error in a specific frame type.  The frame type is included as the last octet of the error code.  For example, an error in a MAX_STREAM_ID frame would be indicated with the code (0x106).</dd>
 </dl>
@@ -3082,6 +3087,12 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <td class="left">0xB</td>
 <td class="left">UNSOLICITED_PATH_RESPONSE</td>
 <td class="left">Unsolicited PATH_RESPONSE frame</td>
+<td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
+</tr>
+<tr>
+<td class="left">0xC</td>
+<td class="left">INVALID_MIGRATION</td>
+<td class="left">Violated disabled migration</td>
 <td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
 </tr>
 <tr>
