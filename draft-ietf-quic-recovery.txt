@@ -1668,11 +1668,11 @@ Appendix A.  Change Log
 
 A.1.  Since draft-ietf-quic-recovery-12
 
-   o  Updated to match the Stream0 design team proposal.
+   o  Changes to manage separate packet number spaces and encryption
+      levels (#1190, #1242, #1413, #1450)
 
-   o  Text on multiple packet number spaces.
-
-
+   o  Added ECN feedback mechanisms and handling; new ACK_ECN frame
+      (#804, #805, #1372)
 
 
 

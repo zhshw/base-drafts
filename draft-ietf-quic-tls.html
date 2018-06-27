@@ -1126,8 +1126,15 @@ encrypted_pn = packet_number XOR PRF(pn_key, sample)
 <p></p>
 
 <ul>
-<li>Big restructure to align with the &#8220;QUIC record layer for TLS&#8221; proposal.</li>
-<li>Remove source address validation from TLS in favor of Retry.</li>
+<li>Changes to integration of the TLS handshake (#829, #1018, #1094, #1165, #1190, #1233, #1242, #1252, #1450) <ul>
+<li>The cryptographic handshake uses CRYPTO frames, not stream 0</li>
+<li>QUIC packet protection is used in place of TLS record protection</li>
+<li>Separate QUIC packet number spaces are used for the handshake</li>
+<li>Changed Retry to be independent of the cryptographic handshake</li>
+<li>Limit the use of HelloRetryRequest to address TLS needs (like key shares)</li>
+</ul>
+</li>
+<li>Changed codepoint of TLS extension (#1395, #1402)</li>
 </ul>
 <h2 id="rfc.appendix.A.2">
 <a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-tls-11" id="since-draft-ietf-quic-tls-11">Since draft-ietf-quic-tls-11</a>

@@ -127,9 +127,10 @@ Internet-Draft                    QPACK                        June 2018
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  23
      9.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  23
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  23
-     A.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  23
+     A.1.  Since draft-ietf-quic-qpack-00  . . . . . . . . . . . . .  23
+     A.2.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  24
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Introduction
 
@@ -161,7 +162,6 @@ Internet-Draft                    QPACK                        June 2018
    Like HPACK, QPACK uses two tables for associating header fields to
    indexes.  The static table (see Section 2.1) is predefined and
    contains common header fields (some of them with an empty value).
-   The dynamic table (see Section 2.2) built up over the course of the
 
 
 
@@ -170,6 +170,7 @@ Krasic, et al.          Expires December 29, 2018               [Page 3]
 Internet-Draft                    QPACK                        June 2018
 
 
+   The dynamic table (see Section 2.2) built up over the course of the
    connection and can be used by the encoder to index header fields
    repeated in the encoded header lists.
 
@@ -217,7 +218,6 @@ Internet-Draft                    QPACK                        June 2018
    control how much memory is used by the dynamic table.  To limit the
    memory requirements of the decoder, the dynamic table size is
    strictly bounded.
-
 
 
 
@@ -1271,16 +1271,16 @@ Appendix A.  Change Log
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-A.1.  Since draft-ietf-quic-qcram-00
+A.1.  Since draft-ietf-quic-qpack-00
 
-   o  Separate instruction sets for table updates and header blocks
-      (#1235, #1142, #1141)
+   o  Renumbered instructions for consistency (#1471, #1472)
 
-   o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
-      #1314)
+   o  Decoder is allowed to validate largest reference (#1404, #1469)
 
-   o  Added mechanisms that support one-pass encoding (#1138, #1320)
+   o  Header block acknowledgments also acknowledge the associated
+      largest reference (#1370, #1400)
 
+   o  Added an acknowledgment for unread streams (#1371, #1400)
 
 
 
@@ -1289,6 +1289,21 @@ Krasic, et al.          Expires December 29, 2018              [Page 23]
 
 Internet-Draft                    QPACK                        June 2018
 
+
+   o  Removed framing from encoder stream (#1361,#1467)
+
+   o  Control streams use typed unidirectional streams rather than fixed
+      stream IDs (#910,#1359)
+
+A.2.  Since draft-ietf-quic-qcram-00
+
+   o  Separate instruction sets for table updates and header blocks
+      (#1235, #1142, #1141)
+
+   o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
+      #1314)
+
+   o  Added mechanisms that support one-pass encoding (#1138, #1320)
 
    o  Added a setting to control the number of blocked decoders (#238,
       #1140, #1143)
@@ -1320,6 +1335,17 @@ Acknowledgments
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
 
+
+
+
+
+
+
+Krasic, et al.          Expires December 29, 2018              [Page 24]
+
+Internet-Draft                    QPACK                        June 2018
+
+
 Authors' Addresses
 
    Charles 'Buck' Krasic
@@ -1341,4 +1367,34 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.          Expires December 29, 2018              [Page 25]

@@ -319,7 +319,8 @@ ul.toc li {
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
-<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-qcram-00">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-qpack-00">
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-qcram-00">
 <link href="#rfc.acknowledgments" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -481,7 +482,9 @@ ul.toc li {
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
-<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-qcram-00</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-qpack-00</a>
+</li>
+<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-qcram-00</a>
 </li>
 </ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
@@ -1090,7 +1093,20 @@ return controlBuffer, prefixBuffer + streamBuffer
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
 <h2 id="rfc.appendix.A.1">
-<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-qpack-00" id="since-draft-ietf-quic-qpack-00">Since draft-ietf-quic-qpack-00</a>
+</h2>
+<p></p>
+
+<ul>
+<li>Renumbered instructions for consistency (#1471, #1472)</li>
+<li>Decoder is allowed to validate largest reference (#1404, #1469)</li>
+<li>Header block acknowledgments also acknowledge the associated largest reference (#1370, #1400)</li>
+<li>Added an acknowledgment for unread streams (#1371, #1400)</li>
+<li>Removed framing from encoder stream (#1361,#1467)</li>
+<li>Control streams use typed unidirectional streams rather than fixed stream IDs (#910,#1359)</li>
+</ul>
+<h2 id="rfc.appendix.A.2">
+<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
 </h2>
 <p></p>
 
