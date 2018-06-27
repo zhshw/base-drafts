@@ -85,7 +85,7 @@ Table of Contents
      4.3.  Version Negotiation Packet  . . . . . . . . . . . . . . .  12
      4.4.  Cryptographic Handshake Packets . . . . . . . . . . . . .  14
        4.4.1.  Initial Packet  . . . . . . . . . . . . . . . . . . .  14
-       4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  16
+       4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  17
        4.4.3.  Handshake Packet  . . . . . . . . . . . . . . . . . .  18
      4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  18
      4.6.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  19
@@ -855,7 +855,9 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    ID to the value from the Source Connection ID in the Retry packet.
    Changing Destination Connection ID also results in a change to the
    keys used to protect the Initial packet.  It also sets the Token
-   field to the token provided in the Retry.
+   field to the token provided in the Retry.  The client MUST NOT change
+   the Source Connection ID because the server could include the
+   connection ID as part of its token validation logic.
 
    When a server receives an Initial packet with an address validation
    token, it SHOULD attempt to validate it.  If the token is invalid
@@ -885,10 +887,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    frames to the Initial packet and/or by combining the Initial packet
    with a 0-RTT packet (see Section 4.6).
 
-4.4.2.  Retry Packet
 
-   A Retry packet uses long headers with a type value of 0x7E.  It
-   carries an address validation token created by the server.  It is
+
 
 
 
@@ -898,6 +898,10 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 16]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+4.4.2.  Retry Packet
+
+   A Retry packet uses long headers with a type value of 0x7E.  It
+   carries an address validation token created by the server.  It is
    used by a server that wishes to perform a stateless retry (see
    Section 6.7).
 
@@ -942,10 +946,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    A server MUST only send a Retry in response to a client Initial
    packet.
 
-   If the Original Destination Connection ID field does not match the
-   Destination Connection ID from most recent the Initial packet it
-   sent, clients MUST discard the packet.  This prevents an off-path
-
 
 
 
@@ -954,6 +954,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 17]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+   If the Original Destination Connection ID field does not match the
+   Destination Connection ID from most recent the Initial packet it
+   sent, clients MUST discard the packet.  This prevents an off-path
    attacker from injecting a Retry packet with a bogus new Source
    Connection ID.
 
@@ -999,9 +1002,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    headers; all packets protected with 1-RTT keys are sent with short
    headers.  The different packet types explicitly indicate the
    encryption level and therefore the keys that are used to remove
-   packet protection.  0-RTT and 1-RTT protected packets share a single
-   packet number space.
-
 
 
 
@@ -1009,6 +1009,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 18]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   packet protection.  0-RTT and 1-RTT protected packets share a single
+   packet number space.
 
    Packets protected with handshake keys only use packet protection to
    ensure that the sender of the packet is on the network path.  This
@@ -1054,9 +1057,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    application data during the handshake and immediately afterwards.  It
    is not necessary for senders to coalesce packets, though failing to
    do so will require sending a significantly larger number of datagrams
-   during the handshake.  Receivers MUST be able to process coalesced
-   packets.
-
 
 
 
@@ -1065,6 +1065,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 19]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   during the handshake.  Receivers MUST be able to process coalesced
+   packets.
 
    Senders SHOULD coalesce packets in order of increasing encryption
    levels (Initial, Handshake, 0-RTT, 1-RTT), as this makes it more
@@ -1111,9 +1114,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    the long header, and thus be given multiple opportunities to update
    the Destination Connection ID it sends.  A client MUST only change
    the value it sends in the Destination Connection ID in response to
-   the first packet of each type it receives from the server (Retry or
-   Initial); a server MUST set its value based on the Initial packet.
-   Any additional changes are not permitted; if subsequent packets of
 
 
 
@@ -1122,6 +1122,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 20]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+   the first packet of each type it receives from the server (Retry or
+   Initial); a server MUST set its value based on the Initial packet.
+   Any additional changes are not permitted; if subsequent packets of
    those types include a different Source Connection ID, they MUST be
    discarded.  This avoids problems that might arise from stateless
    processing of multiple Initial packets producing different connection
@@ -1167,9 +1170,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    o  Handshake space: All Handshake packets Section 4.4.3 are in this
       space.
 
-   o  Application data space: All 0-RTT and 1-RTT encrypted packets
-      Section 4.5 are in this space.
-
 
 
 
@@ -1177,6 +1177,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 21]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   o  Application data space: All 0-RTT and 1-RTT encrypted packets
+      Section 4.5 are in this space.
 
    As described in [QUIC-TLS], each packet type uses different
    encryption keys.
@@ -1224,9 +1227,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Note that these encodings are similar to those in Section 7.1, but
    use different values.
 
-   The encoded packet number is protected as described in Section 5.6
-   [QUIC-TLS].  Protection of the packet number is removed prior to
-
 
 
 Iyengar & Thomson       Expires December 29, 2018              [Page 22]
@@ -1234,6 +1234,8 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 22]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+   The encoded packet number is protected as described in Section 5.6
+   [QUIC-TLS].  Protection of the packet number is removed prior to
    recovering the full packet number.  The full packet number is
    reconstructed at the receiver based on the number of significant bits
    present, the content of those bits, and the largest packet number
@@ -1277,8 +1279,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The payload of all packets, after removing packet protection,
    consists of a sequence of frames, as shown in Figure 4.  Version
    Negotiation and Stateless Reset do not contain frames.
-
-
 
 
 
