@@ -6139,12 +6139,6 @@ Appendix A.  Change Log
 
 A.1.  Since draft-ietf-quic-transport-12
 
-   o  Enable server to transition connections to a preferred address
-      (#560, #1251, #1373)
-
-   o  Added ECN feedback mechanisms and handling; new ACK_ECN frame
-      (#804, #805, #1372)
-
    o  Changes to integration of the TLS handshake (#829, #1018, #1094,
       #1165, #1190, #1233, #1242, #1252, #1450)
 
@@ -6155,6 +6149,12 @@ A.1.  Since draft-ietf-quic-transport-12
 
       *  Separate QUIC packet number spaces are used for the handshake
 
+      *  Changed Retry to be independent of the cryptographic handshake
+
+      *  Added NEW_TOKEN frame and Token fields to Initial packet
+
+
+
 
 
 Iyengar & Thomson       Expires December 29, 2018             [Page 110]
@@ -6162,12 +6162,14 @@ Iyengar & Thomson       Expires December 29, 2018             [Page 110]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-      *  Changed Retry to be independent of the cryptographic handshake
-
-      *  Added NEW_TOKEN frame and Token fields to Initial packet
-
       *  Limit the use of HelloRetryRequest to address TLS needs (like
          key shares)
+
+   o  Enable server to transition connections to a preferred address
+      (#560, #1251, #1373)
+
+   o  Added ECN feedback mechanisms and handling; new ACK_ECN frame
+      (#804, #805, #1372)
 
    o  Changed rules and recommendations for use of new connection IDs
       (#1258, #1264, #1276, #1280, #1419, #1452, #1453, #1465)
@@ -6209,14 +6211,14 @@ A.3.  Since draft-ietf-quic-transport-10
 
    o  Spin bit reserved (#1283)
 
-   o  Coalescing multiple QUIC packets in a UDP datagram (#1262, #1285)
-
 
 
 Iyengar & Thomson       Expires December 29, 2018             [Page 111]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   o  Coalescing multiple QUIC packets in a UDP datagram (#1262, #1285)
 
    o  A more complete connection migration (#1249)
 
@@ -6264,8 +6266,6 @@ A.4.  Since draft-ietf-quic-transport-09
 
    o  Added an error code for server busy signals (#1137)
 
-   o  Endpoints now set the connection ID that their peer uses.
-      Connection IDs are variable length.  Removed the
 
 
 
@@ -6274,6 +6274,8 @@ Iyengar & Thomson       Expires December 29, 2018             [Page 112]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
+   o  Endpoints now set the connection ID that their peer uses.
+      Connection IDs are variable length.  Removed the
       omit_connection_id transport parameter and the corresponding short
       header flag. (#1089, #1052, #1146, #821, #745, #821, #1166, #1151)
 
@@ -6320,8 +6322,6 @@ A.6.  Since draft-ietf-quic-transport-07
    o  Streams are split into unidirectional and bidirectional (#643,
       #656, #720, #872, #175, #885)
 
-      *  Stream limits now have separate uni- and bi-directinal
-         transport parameters (#909, #958)
 
 
 
@@ -6329,6 +6329,9 @@ Iyengar & Thomson       Expires December 29, 2018             [Page 113]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+      *  Stream limits now have separate uni- and bi-directinal
+         transport parameters (#909, #958)
 
       *  Stream limit transport parameters are now optional and default
          to 0 (#970, #971)
@@ -6373,9 +6376,6 @@ A.7.  Since draft-ietf-quic-transport-06
    o  Remove timestamps from the ACK frame (#841)
 
    o  Require transport parameters to only appear once (#792)
-
-
-
 
 
 
