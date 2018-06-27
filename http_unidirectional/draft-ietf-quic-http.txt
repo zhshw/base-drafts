@@ -689,7 +689,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
    the connection and send its SETTINGS frame as the first frame on this
    stream.  Only one control stream per peer is permitted; receipt of a
    second stream which claims to be a control stream MUST be treated as
-   a connection error of type HTTP_TOO_CONTROLLING.  If the control
+   a connection error of type HTTP_WRONG_STREAM_COUNT.  If the control
    stream is closed at any point, this MUST be treated as a connection
    error of type HTTP_CLOSED_CRITICAL_STREAM.
 
@@ -1491,8 +1491,8 @@ Internet-Draft               HTTP over QUIC                    June 2018
    HTTP_UNKNOWN_STREAM_TYPE (0x0D):  A unidirectional stream header
       contained an unknown stream type.
 
-   HTTP_TOO_CONTROLLING (0x0E):  More than one control stream was opened
-      by the peer.
+   HTTP_WRONG_STREAM_COUNT (0x0E):  A unidirectional stream type was
+      used more times than is permitted by that type.
 
    HTTP_CLOSED_CRITICAL_STREAM (0x0F):  A stream required by the
       connection was closed or reset.
@@ -2043,8 +2043,8 @@ Internet-Draft               HTTP over QUIC                    June 2018
    |                           | D     | irectional   |                |
    |                           |       | stream type  |                |
    |                           |       |              |                |
-   | HTTP_TOO_CONTROLLING      | 0x000 | Multiple     | Section 6.1    |
-   |                           | E     | control      |                |
+   | HTTP_WRONG_STREAM_COUNT   | 0x000 | Too many uni | Section 6.1    |
+   |                           | E     | directional  |                |
    |                           |       | streams      |                |
    |                           |       |              |                |
    | HTTP_CLOSED_CRITICAL_STRE | 0x000 | Critical     | Section 6.1    |
