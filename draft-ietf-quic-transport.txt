@@ -1262,8 +1262,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    next expected packet.  The next expected packet is the highest
    received packet number plus one.  For example, if the highest
    successfully authenticated packet had a packet number of 0xaa82f30e,
-   then a packet containing a 14-bit value of 0x1f94 will be decoded as
-   0xaa831f94.
+   then a packet containing a 14-bit value of 0x9b3 will be decoded as
+   0xaa8309b3.
 
    The sender MUST use a packet number size able to represent more than
    twice as large a range than the difference between the largest

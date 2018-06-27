@@ -314,6 +314,7 @@ ul.toc li {
 <link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations">
 <link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Settings Registration">
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Stream Type Registration">
 <link href="#rfc.references" rel="Chapter" title="9 References">
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
@@ -469,6 +470,8 @@ ul.toc li {
 <li>8.   <a href="#rfc.section.8">IANA Considerations</a>
 </li>
 <ul><li>8.1.   <a href="#rfc.section.8.1">Settings Registration</a>
+</li>
+<li>8.2.   <a href="#rfc.section.8.2">Stream Type Registration</a>
 </li>
 </ul><li>9.   <a href="#rfc.references">References</a>
 </li>
@@ -645,12 +648,13 @@ d = count of entries dropped
 <p></p>
 
 <ul>
-<li>Table updates are carried by a unidirectional stream from encoder to decoder.  Instructions on this stream modify the dynamic table state without generating output to any particular request.</li>
-<li>Acknowledgements of table modifications and header processing are carried by a unidirectional stream from decoder to encoder.</li>
-<li>Finally, the contents of HEADERS and PUSH_PROMISE frames on request streams reference the QPACK table state.</li>
+<li>The encoder stream is a unidirectional stream of type <samp>0x48</samp> (ASCII &#8216;H&#8217;) which carries table updates from encoder to decoder. Instructions on this stream modify the dynamic table state without generating output to any particular request.</li>
+<li>The decoder stream is a unidirectional stream of type <samp>0x68</samp> (ASCII &#8216;h&#8217;) which carries acknowledgements of table modifications and header processing from decoder to encoder.</li>
+<li>Finally, the contents of HEADERS and PUSH_PROMISE frames on request streams and push streams reference the QPACK table state.</li>
 </ul>
-<p id="rfc.section.5.p.3">This section describes the instructions which are possible on each stream type.</p>
-<p id="rfc.section.5.p.4">All table updates occur on the control stream.  Request streams only carry header blocks that do not modify the state of the table.</p>
+<p id="rfc.section.5.p.3">There MUST be exactly one of each unidirectional stream type in each direction.  Receipt of a second instance of either stream type MUST be treated as a connection error of HTTP_WRONG_STREAM_COUNT.  Closure of either unidirectional stream MUST be treated as a connection error of type HTTP_CLOSED_CRITICAL_STREAM.</p>
+<p id="rfc.section.5.p.4">This section describes the instructions which are possible on each stream type.</p>
+<p id="rfc.section.5.p.5">All table updates occur on the encoder stream.  Request streams and push streams only carry header blocks that do not modify the state of the table.</p>
 <h2 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#primitives" id="primitives">Primitives</a>
 </h2>
@@ -1003,6 +1007,33 @@ return controlBuffer, prefixBuffer + streamBuffer
 <td class="left">QPACK_BLOCKED_STREAMS</td>
 <td class="center">0x7</td>
 <td class="left"><a href="#configuration" class="xref">Section 4</a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="rfc.section.8.2">
+<a href="#rfc.section.8.2">8.2.</a> <a href="#stream-type-registration" id="stream-type-registration">Stream Type Registration</a>
+</h2>
+<p id="rfc.section.8.2.p.1">This document creates two new settings in the &#8220;HTTP/QUIC Stream Type&#8221; registry established in <a href="#QUIC-HTTP" class="xref">[QUIC-HTTP]</a>.</p>
+<p id="rfc.section.8.2.p.2">The entries in the following table are registered by this document.</p>
+<table cellpadding="3" cellspacing="0" class="tt full center">
+<thead><tr>
+<th class="left">Stream Type</th>
+<th class="center">Code</th>
+<th class="left">Specification</th>
+<th class="left">Sender</th>
+</tr></thead>
+<tbody>
+<tr>
+<td class="left">QPACK Encoder Stream</td>
+<td class="center">0x48</td>
+<td class="left"><a href="#wire-format" class="xref">Section 5</a></td>
+<td class="left">Both</td>
+</tr>
+<tr>
+<td class="left">QPACK Decoder Stream</td>
+<td class="center">0x68</td>
+<td class="left"><a href="#wire-format" class="xref">Section 5</a></td>
+<td class="left">Both</td>
 </tr>
 </tbody>
 </table>
