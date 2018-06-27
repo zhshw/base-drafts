@@ -581,7 +581,7 @@ ul.toc li {
 <ul>
 <li>Retransmittable frames are those that count towards bytes in flight and need acknowledgement.  The most common are STREAM frames, which typically contain application data.</li>
 <li>Retransmittable packets are those that contain at least one retransmittable frame.</li>
-<li>Crypto handshake data is sent in CRYPTO_HS frames, and uses the reliability machinery of QUIC underneath.</li>
+<li>Cryptographic handshake data is sent in CRYPTO frames, and uses the reliability machinery of QUIC underneath.</li>
 <li>ACK and ACK_ECN frames contain acknowledgment information. ACK_ECN frames additionally contain information about ECN codepoints seen by the peer.  (The rest of this document uses ACK frames to refer to both ACK and ACK_ECN frames.)</li>
 </ul>
 <h2 id="rfc.section.2.1">
@@ -652,12 +652,12 @@ ul.toc li {
 <h3 id="rfc.section.3.3.1">
 <a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#crypto-handshake-timeout" id="crypto-handshake-timeout">Crypto Handshake Timeout</a>
 </h3>
-<p id="rfc.section.3.3.1.p.1">Data in CRYPTO_HS frames is critical to QUIC transport and crypto negotiation, so a more aggressive timeout is used to retransmit it.  Below, the word handshake packet is used to refer to packets containing CRYPTO_HS frames, not packets with the specific long header packet type Handshake.</p>
+<p id="rfc.section.3.3.1.p.1">Data in CRYPTO frames is critical to QUIC transport and crypto negotiation, so a more aggressive timeout is used to retransmit it.  Below, the term &#8220;handshake packet&#8221; is used to refer to packets containing CRYPTO frames, not packets with the specific long header packet type Handshake.</p>
 <p id="rfc.section.3.3.1.p.2">The initial handshake timeout SHOULD be set to twice the initial RTT.</p>
 <p id="rfc.section.3.3.1.p.3">At the beginning, there are no prior RTT samples within a connection.  Resumed connections over the same network SHOULD use the previous connection&#8217;s final smoothed RTT value as the resumed connection&#8217;s initial RTT.</p>
 <p id="rfc.section.3.3.1.p.4">If no previous RTT is available, or if the network changes, the initial RTT SHOULD be set to 100ms.</p>
-<p id="rfc.section.3.3.1.p.5">When CRYPTO_HS frames are sent, the sender SHOULD set an alarm for the handshake timeout period.  When the alarm fires, the sender MUST retransmit all unacknowledged CRYPTO_HS data by calling RetransmitAllUnackedHandshakeData(). On each consecutive firing of the handshake alarm without receiving an acknowledgement for a new packet, the sender SHOULD double the handshake timeout and set an alarm for this period.</p>
-<p id="rfc.section.3.3.1.p.6">When CRYPTO_HS frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO_HS frames were sent at 1RTT encryption.</p>
+<p id="rfc.section.3.3.1.p.5">When CRYPTO frames are sent, the sender SHOULD set an alarm for the handshake timeout period.  When the alarm fires, the sender MUST retransmit all unacknowledged CRYPTO data by calling RetransmitAllUnackedHandshakeData(). On each consecutive firing of the handshake alarm without receiving an acknowledgement for a new packet, the sender SHOULD double the handshake timeout and set an alarm for this period.</p>
+<p id="rfc.section.3.3.1.p.6">When CRYPTO frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO frames were sent at 1RTT encryption.</p>
 <p id="rfc.section.3.3.1.p.7">When an acknowledgement is received for a handshake packet, the new RTT is computed and the alarm SHOULD be set for twice the newly computed smoothed RTT.</p>
 <h4 id="rfc.section.3.3.1.1">
 <a href="#rfc.section.3.3.1.1">3.3.1.1.</a> <a href="#retry" id="retry">Retry</a>
@@ -703,7 +703,7 @@ ul.toc li {
 <h2 id="rfc.section.3.4">
 <a href="#rfc.section.3.4">3.4.</a> <a href="#generating-acknowledgements" id="generating-acknowledgements">Generating Acknowledgements</a>
 </h2>
-<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing non-ack frames.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
+<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing frames other than ACK or ACN_ECN.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
 <p id="rfc.section.3.4.p.2">An acknowledgement MAY be sent for every second full-sized packet, as TCP does <a href="#RFC5681" class="xref">[RFC5681]</a>, or may be sent less frequently, as long as the delay does not exceed the maximum ack delay.  QUIC recovery algorithms do not assume the peer generates an acknowledgement immediately when receiving a second full-sized packet.</p>
 <p id="rfc.section.3.4.p.3">Out-of-order packets SHOULD be acknowledged more quickly, in order to accelerate loss recovery.  The receiver SHOULD send an immediate ACK when it receives a new packet which is not one greater than the largest received packet number.</p>
 <p id="rfc.section.3.4.p.4">Similarly, packets marked with the ECN Congestion Experienced (CE) codepoint in the IP header SHOULD be acknowledged immediately, to reduce the peer&#8217;s response time to congestion events.</p>
@@ -770,7 +770,7 @@ ul.toc li {
 <dt>time_of_last_sent_retransmittable_packet:</dt>
 <dd style="margin-left: 8">The time the most recent retransmittable packet was sent.</dd>
 <dt>time_of_last_sent_handshake_packet:</dt>
-<dd style="margin-left: 8">The time the most recent packet containing a CRYPTO_HS frame was sent.</dd>
+<dd style="margin-left: 8">The time the most recent packet containing a CRYPTO frame was sent.</dd>
 <dt>largest_sent_packet:</dt>
 <dd style="margin-left: 8">The packet number of the most recently sent packet.</dd>
 <dt>largest_acked_packet:</dt>

@@ -360,7 +360,7 @@ ul.toc li {
 <link href="#rfc.section.7.18" rel="Chapter" title="7.18 PATH_RESPONSE Frame">
 <link href="#rfc.section.7.19" rel="Chapter" title="7.19 NEW_TOKEN frame">
 <link href="#rfc.section.7.20" rel="Chapter" title="7.20 STREAM Frames">
-<link href="#rfc.section.7.21" rel="Chapter" title="7.21 CRYPTO_HS Frame">
+<link href="#rfc.section.7.21" rel="Chapter" title="7.21 CRYPTO Frame">
 <link href="#rfc.section.8" rel="Chapter" title="8 Packetization and Reliability">
 <link href="#rfc.section.8.1" rel="Chapter" title="8.1 Packet Processing and Acknowledgment">
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 Retransmission of Information">
@@ -386,7 +386,7 @@ ul.toc li {
 <link href="#rfc.section.10.2" rel="Chapter" title="10.2 Stream Limit Increment">
 <link href="#rfc.section.10.2.1" rel="Chapter" title="10.2.1 Blocking on Flow Control">
 <link href="#rfc.section.10.3" rel="Chapter" title="10.3 Stream Final Offset">
-<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow control of CRYPTO_HS data">
+<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow Control for Crytographic Handshake">
 <link href="#rfc.section.11" rel="Chapter" title="11 Error Handling">
 <link href="#rfc.section.11.1" rel="Chapter" title="11.1 Connection Errors">
 <link href="#rfc.section.11.2" rel="Chapter" title="11.2 Stream Errors">
@@ -658,7 +658,7 @@ ul.toc li {
 </li>
 <li>7.20.   <a href="#rfc.section.7.20">STREAM Frames</a>
 </li>
-<li>7.21.   <a href="#rfc.section.7.21">CRYPTO_HS Frame</a>
+<li>7.21.   <a href="#rfc.section.7.21">CRYPTO Frame</a>
 </li>
 </ul><li>8.   <a href="#rfc.section.8">Packetization and Reliability</a>
 </li>
@@ -710,7 +710,7 @@ ul.toc li {
 </li>
 </ul><li>10.3.   <a href="#rfc.section.10.3">Stream Final Offset</a>
 </li>
-<li>10.4.   <a href="#rfc.section.10.4">Flow control of CRYPTO_HS data</a>
+<li>10.4.   <a href="#rfc.section.10.4">Flow Control for Crytographic Handshake</a>
 </li>
 </ul><li>11.   <a href="#rfc.section.11">Error Handling</a>
 </li>
@@ -1065,7 +1065,7 @@ ul.toc li {
 <h3 id="rfc.section.4.4.1">
 <a href="#rfc.section.4.4.1">4.4.1.</a> <a href="#packet-initial" id="packet-initial">Initial Packet</a>
 </h3>
-<p id="rfc.section.4.4.1.p.1">The Initial packet uses long headers with a type value of 0x7F.  It carries the first CRYPTO_HS frames sent by the client and server to perform key exchange, and may carry ACKs in either direction. The Initial packet is protected by Initial keys as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</p>
+<p id="rfc.section.4.4.1.p.1">The Initial packet uses long headers with a type value of 0x7F.  It carries the first CRYPTO frames sent by the client and server to perform key exchange, and may carry ACKs in either direction. The Initial packet is protected by Initial keys as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</p>
 <p id="rfc.section.4.4.1.p.2">The Initial packet has two additional header fields that follow the normal Long Header.</p>
 <pre>
  0                   1                   2                   3
@@ -1086,7 +1086,7 @@ ul.toc li {
 </dl>
 <p id="rfc.section.4.4.1.p.4">The client and server use the Initial packet type for any packet that contains an initial cryptographic handshake message. In addition to the first packet(s). This includes all cases where a new packet containing the initial cryptographic message needs to be created, such as the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).</p>
 <p id="rfc.section.4.4.1.p.5">A server sends its first Initial packet in response to a client Initial.  A server may send multiple Initial packets.  The cryptographic key exchange could require multiple round trips or retransmissions of this data.</p>
-<p id="rfc.section.4.4.1.p.6">The payload of an Initial packet includes a CRYPTO_HS frame (or frames) containing a cryptographic handshake message, ACK frames, or both. The first CRYPTO_HS frame sent always begins at an offset of 0 (see <a href="#handshake" class="xref">Section 6.4</a>). The client&#8217;s complete first message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.4</a>). Note that if the server sends a HelloRetryRequest, the client will send a second Initial packet with a CRYPTO_HS frame with an offset starting at the end of the CRYPTO_HS stream in the first Initial.</p>
+<p id="rfc.section.4.4.1.p.6">The payload of an Initial packet includes a CRYPTO frame (or frames) containing a cryptographic handshake message, ACK frames, or both. The first CRYPTO frame sent always begins at an offset of 0 (see <a href="#handshake" class="xref">Section 6.4</a>). The client&#8217;s complete first message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.4</a>). Note that if the server sends a HelloRetryRequest, the client will send a second Initial packet with a CRYPTO frame with an offset starting at the end of the CRYPTO stream in the first Initial.</p>
 <h4 id="rfc.section.4.4.1.1">
 <a href="#rfc.section.4.4.1.1">4.4.1.1.</a> <a href="#connection-ids" id="connection-ids">Connection IDs</a>
 </h4>
@@ -1106,6 +1106,9 @@ ul.toc li {
 <dt>Note:</dt>
 <dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.</dd>
 </dl>
+<p></p>
+
+<ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li>Reflow paragraphs</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
 <h4 id="rfc.section.4.4.1.3">
 <a href="#rfc.section.4.4.1.3">4.4.1.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
 </h4>
@@ -1153,7 +1156,7 @@ ul.toc li {
 <p id="rfc.section.4.4.3.p.3">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id-encoding" class="xref">Section 4.7</a>).</p>
 <p id="rfc.section.4.4.3.p.4">The first Handshake packet sent by a server contains a packet number of 0.  Handshake packets are their own packet number space.  Packet numbers are incremented normally for other Handshake packets.</p>
 <p id="rfc.section.4.4.3.p.5">Servers MUST NOT send more than three datagrams including Initial and Handshake packets without receiving a packet from a verified source address.  Source addresses can be verified through an address validation token (delivered via a Retry packet or a NEW_TOKEN frame) or by receiving any message from the client encrypted using the Handshake keys.</p>
-<p id="rfc.section.4.4.3.p.6">The payload of this packet contains CRYPTO_HS frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
+<p id="rfc.section.4.4.3.p.6">The payload of this packet contains CRYPTO frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
 </h2>
@@ -1367,7 +1370,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">0x18</td>
-<td class="left">CRYPTO_HS</td>
+<td class="left">CRYPTO</td>
 <td class="left"><a href="#frame-crypto" class="xref">Section 7.21</a></td>
 </tr>
 <tr>
@@ -1456,7 +1459,7 @@ ul.toc li {
 <h2 id="rfc.section.6.4">
 <a href="#rfc.section.6.4">6.4.</a> <a href="#handshake" id="handshake">Cryptographic and Transport Handshake</a>
 </h2>
-<p id="rfc.section.6.4.p.1">QUIC relies on a combined cryptographic and transport handshake to minimize connection establishment latency.  QUIC uses the CRYPTO_HS frame <a href="#frame-crypto" class="xref">Section 7.21</a> to transmit the cryptographic handshake.  Version 0x00000001 of QUIC uses TLS 1.3 as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>; a different QUIC version number could indicate that a different cryptographic handshake protocol is in use.</p>
+<p id="rfc.section.6.4.p.1">QUIC relies on a combined cryptographic and transport handshake to minimize connection establishment latency.  QUIC uses the CRYPTO frame <a href="#frame-crypto" class="xref">Section 7.21</a> to transmit the cryptographic handshake.  Version 0x00000001 of QUIC uses TLS 1.3 as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>; a different QUIC version number could indicate that a different cryptographic handshake protocol is in use.</p>
 <p id="rfc.section.6.4.p.2">QUIC provides reliable, ordered delivery of the cryptographic handshake data. QUIC packet protection ensures confidentiality and integrity protection that meets the requirements of the cryptographic handshake protocol:</p>
 <p></p>
 
@@ -1474,28 +1477,28 @@ ul.toc li {
 <li>authenticated negotiation of an application protocol (TLS uses ALPN <a href="#RFC7301" class="xref">[RFC7301]</a> for this purpose)</li>
 <li>for the server, the ability to carry data that provides assurance that the client can receive packets that are addressed with the transport address that is claimed by the client (see <a href="#address-validation" class="xref">Section 6.9</a>)</li>
 </ul>
-<p id="rfc.section.6.4.p.4">The initial CRYPTO_HS frame MUST be sent in a single packet.  Any second attempt that is triggered by address validation MUST also be sent within a single packet. This avoids having to reassemble a message from multiple packets.</p>
+<p id="rfc.section.6.4.p.4">The initial CRYPTO frame MUST be sent in a single packet.  Any second attempt that is triggered by address validation MUST also be sent within a single packet. This avoids having to reassemble a message from multiple packets.</p>
 <p id="rfc.section.6.4.p.5">The first client packet of the cryptographic handshake protocol MUST fit within a 1232 octet QUIC packet payload.  This includes overheads that reduce the space available to the cryptographic handshake protocol.</p>
-<p id="rfc.section.6.4.p.6">The CRYPTO_HS frame can be sent in different packet number spaces.  CRYPTO_HS frames in each packet number space carry a separate sequence of handshake data starting from an offset of 0.</p>
+<p id="rfc.section.6.4.p.6">The CRYPTO frame can be sent in different packet number spaces.  CRYPTO frames in each packet number space carry a separate sequence of handshake data starting from an offset of 0.</p>
 <h2 id="rfc.section.6.5">
 <a href="#rfc.section.6.5">6.5.</a> <a href="#example-handshake-flows" id="example-handshake-flows">Example Handshake Flows</a>
 </h2>
 <p id="rfc.section.6.5.p.1">Details of how TLS is integrated with QUIC are provided in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, but some examples are provided here.</p>
-<p><a href="#tls-1rtt-handshake" class="xref">Figure 6</a> provides an overview of the 1-RTT handshake.  Each line shows a QUIC packet with the packet type and packet number shown first, followed by the contents. So, for instance the first packet is of type Initial, with packet number 0, and contains a CRYPTO_HS frame carrying the ClientHello.</p>
+<p><a href="#tls-1rtt-handshake" class="xref">Figure 6</a> provides an overview of the 1-RTT handshake.  Each line shows a QUIC packet with the packet type and packet number shown first, followed by the contents. So, for instance the first packet is of type Initial, with packet number 0, and contains a CRYPTO frame carrying the ClientHello.</p>
 <p id="rfc.section.6.5.p.3">Note that multiple QUIC packets &#8211; even of different encryption levels &#8211; may be coalesced into a single UDP datagram (see <a href="#packet-coalesce" class="xref">Section 4.6</a>, and so this handshake may consist of as few as 4 UDP datagrams, or any number more. For instance, the server&#8217;s first flight contains packets from the Initial encryption level (obfuscation), the Handshake level, and &#8220;0.5-RTT data&#8221; from the server at the 1-RTT encryption level.</p>
 <div id="rfc.figure.6"></div>
 <div id="tls-1rtt-handshake"></div>
 <pre>
 Client                                                  Server
 
-Initial[0]: CRYPTO_HS[CH] -&gt;
+Initial[0]: CRYPTO[CH] -&gt;
 
-                              Initial[0]: CRYPTO_HS[SH] ACK[0]
-                    Handshake[0]: CRYPTO_HS[EE, CERT, CV, FIN]
+                                 Initial[0]: CRYPTO[SH] ACK[0]
+                       Handshake[0]: CRYPTO[EE, CERT, CV, FIN]
                                  &lt;- 1-RTT[0]: STREAM[1, "..."]
 
 Initial[1]: ACK[0]
-Handshake[0]: CRYPTO_HS[FIN], ACK[0]
+Handshake[0]: CRYPTO[FIN], ACK[0]
 1-RTT[0]: STREAM[0, "..."], ACK[0] -&gt;
 
                            1-RTT[1]: STREAM[55, "..."], ACK[0]
@@ -1508,16 +1511,16 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <pre>
 Client                                                  Server
 
-Initial[0]: CRYPTO_HS[CH]
+Initial[0]: CRYPTO[CH]
 0-RTT[0]: STREAM[0, "..."] -&gt;
 
-                              Initial[0]: CRYPTO_HS[SH] ACK[0]
-                     Handshake[0] CRYPTO_HS[EE, CERT, CV, FIN]
+                                 Initial[0]: CRYPTO[SH] ACK[0]
+                        Handshake[0] CRYPTO[EE, CERT, CV, FIN]
                           &lt;- 1-RTT[0]: STREAM[1, "..."] ACK[0]
 
 Initial[1]: ACK[0]
-0-RTT[1]: CRYPTO_HS[EOED]
-Handshake[0]: CRYPTO_HS[FIN], ACK[0]
+0-RTT[1]: CRYPTO[EOED]
+Handshake[0]: CRYPTO[FIN], ACK[0]
 1-RTT[2]: STREAM[0, "..."] ACK[0] -&gt;
 
                          1-RTT[1]: STREAM[55, "..."], ACK[1,2]
@@ -2329,7 +2332,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 </h3>
 <p id="rfc.section.7.15.3.p.1">ACK frames MUST only be carried in a packet that has the same packet number space as the packet being ACKed (see <a href="#packet-protected" class="xref">Section 4.5</a>). For instance, packets that are protected with 1-RTT keys MUST be acknowledged in packets that are also protected with 1-RTT keys.</p>
 <p id="rfc.section.7.15.3.p.2">Packets that a client sends with 0-RTT packet protection MUST be acknowledged by the server in packets protected by 1-RTT keys.  This can mean that the client is unable to use these acknowledgments if the server cryptographic handshake messages are delayed or lost.  Note that the same limitation applies to other data sent by the server protected by the 1-RTT keys.</p>
-<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO_HS frames with a reduced delay; see Section 3.5.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
+<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO frames with a reduced delay; see Section 3.5.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
 <h2 id="rfc.section.7.16">
 <a href="#rfc.section.7.16">7.16.</a> <a href="#frame-ack-ecn" id="frame-ack-ecn">ACK_ECN Frame</a>
 </h2>
@@ -2464,10 +2467,10 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <p id="rfc.section.7.20.p.9">Stream multiplexing is achieved by interleaving STREAM frames from multiple streams into one or more QUIC packets.  A single QUIC packet can include multiple STREAM frames from one or more streams.</p>
 <p id="rfc.section.7.20.p.10">Implementation note: One of the benefits of QUIC is avoidance of head-of-line blocking across multiple streams.  When a packet loss occurs, only streams with data in that packet are blocked waiting for a retransmission to be received, while other streams can continue making progress.  Note that when data from multiple streams is bundled into a single QUIC packet, loss of that packet blocks all those streams from making progress.  An implementation is therefore advised to bundle as few streams as necessary in outgoing packets without losing transmission efficiency to underfilled packets.</p>
 <h2 id="rfc.section.7.21">
-<a href="#rfc.section.7.21">7.21.</a> <a href="#frame-crypto" id="frame-crypto">CRYPTO_HS Frame</a>
+<a href="#rfc.section.7.21">7.21.</a> <a href="#frame-crypto" id="frame-crypto">CRYPTO Frame</a>
 </h2>
-<p id="rfc.section.7.21.p.1">The CRYPTO_HS frame (type=0x18) is used to transmit cryptographic handshake messages. It can be sent in all packet types. The CRYPTO_HS frame offers the cryptographic protocol an in-order stream of bytes.  CRYPTO_HS frames are functionally identical to STREAM frames, except that they do not bear a stream identifier; they are not flow controlled; and they do not carry markers for optional offset, optional length, and the end of the stream.</p>
-<p id="rfc.section.7.21.p.2">A CRYPTO_HS frame is shown below.</p>
+<p id="rfc.section.7.21.p.1">The CRYPTO frame (type=0x18) is used to transmit cryptographic handshake messages. It can be sent in all packet types. The CRYPTO frame offers the cryptographic protocol an in-order stream of bytes.  CRYPTO frames are functionally identical to STREAM frames, except that they do not bear a stream identifier; they are not flow controlled; and they do not carry markers for optional offset, optional length, and the end of the stream.</p>
+<p id="rfc.section.7.21.p.2">A CRYPTO frame is shown below.</p>
 <div id="rfc.figure.13"></div>
 <div id="crypto-format"></div>
 <pre>
@@ -2481,20 +2484,20 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 |                        Crypto Data (*)                      ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 13: CRYPTO_HS Frame Format</p>
-<p id="rfc.section.7.21.p.3">The CRYPTO_HS frame contains the following fields:</p>
+<p class="figure">Figure 13: CRYPTO Frame Format</p>
+<p id="rfc.section.7.21.p.3">The CRYPTO frame contains the following fields:</p>
 <p></p>
 
 <dl>
 <dt>Offset:</dt>
-<dd style="margin-left: 8">A variable-length integer specifying the byte offset in the stream for the data in this CRYPTO_HS frame.</dd>
+<dd style="margin-left: 8">A variable-length integer specifying the byte offset in the stream for the data in this CRYPTO frame.</dd>
 <dt>Length:</dt>
-<dd style="margin-left: 8">A variable-length integer specifying the length of the Crypto Data field in this CRYPTO_HS frame.</dd>
+<dd style="margin-left: 8">A variable-length integer specifying the length of the Crypto Data field in this CRYPTO frame.</dd>
 <dt>Crypto Data:</dt>
 <dd style="margin-left: 8">The cryptographic message data.</dd>
 </dl>
-<p id="rfc.section.7.21.p.5">There is a separate flow of cryptographic handshake data in each encryption level, each of which starts at an offset of 0. This implies that each encryption level is treated as a separate CRYPTO_HS stream of data.</p>
-<p id="rfc.section.7.21.p.6">Unlike STREAM frames, which include a Stream ID indicating to which stream the data belongs, the CRYPTO_HS frame carries data for a single stream per encryption level. The stream does not have an explicit end, so CRYPTO_HS frames do not have a FIN bit.</p>
+<p id="rfc.section.7.21.p.5">There is a separate flow of cryptographic handshake data in each encryption level, each of which starts at an offset of 0. This implies that each encryption level is treated as a separate CRYPTO stream of data.</p>
+<p id="rfc.section.7.21.p.6">Unlike STREAM frames, which include a Stream ID indicating to which stream the data belongs, the CRYPTO frame carries data for a single stream per encryption level. The stream does not have an explicit end, so CRYPTO frames do not have a FIN bit.</p>
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#packetization" id="packetization">Packetization and Reliability</a>
 </h1>
@@ -2514,7 +2517,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <p></p>
 
 <ul>
-<li>Data sent in CRYPTO_HS frames are retransmitted according to the rules in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>, until either all data has been acknowledged or the crypto state machine implictly knows that the peer received the data.</li>
+<li>Data sent in CRYPTO frames are retransmitted according to the rules in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>, until either all data has been acknowledged or the crypto state machine implicitly knows that the peer received the data.</li>
 <li>Application data sent in STREAM frames is retransmitted in new STREAM frames unless the endpoint has sent a RST_STREAM for that stream.  Once an endpoint sends a RST_STREAM frame, no further STREAM frames are needed.</li>
 <li>The most recent set of acknowledgments are sent in ACK frames.  An ACK frame SHOULD contain all unacknowledged acknowledgments, as described in <a href="#sending-ack-frames" class="xref">Section 7.15.2</a>.</li>
 <li>Cancellation of stream transmission, as carried in a RST_STREAM frame, is sent until acknowledged or until all stream data is acknowledged by the peer (that is, either the &#8220;Reset Recvd&#8221; or &#8220;Data Recvd&#8221; state is reached on the send stream). The content of a RST_STREAM frame MUST NOT change when it is sent again.</li>
@@ -2838,7 +2841,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <p id="rfc.section.9.6.p.3">A QUIC implementation SHOULD provide ways in which an application can indicate the relative priority of streams.  When deciding which streams to dedicate resources to, QUIC SHOULD use the information provided by the application.  Failure to account for priority of streams can result in suboptimal performance.</p>
 <p id="rfc.section.9.6.p.4">Stream priority is most relevant when deciding which stream data will be transmitted.  Often, there will be limits on what can be transmitted as a result of connection flow control or the current congestion controller state.</p>
 <p id="rfc.section.9.6.p.5">Giving preference to the transmission of its own management frames ensures that the protocol functions efficiently.  That is, prioritizing frames other than STREAM frames ensures that loss recovery, congestion control, and flow control operate effectively.</p>
-<p id="rfc.section.9.6.p.6">CRYPTO_HS frames SHOULD be prioritized over other streams prior to the completion of the cryptographic handshake.  This includes the retransmission of the second flight of client handshake messages, that is, the TLS Finished and any client authentication messages.</p>
+<p id="rfc.section.9.6.p.6">CRYPTO frames SHOULD be prioritized over other streams prior to the completion of the cryptographic handshake.  This includes the retransmission of the second flight of client handshake messages, that is, the TLS Finished and any client authentication messages.</p>
 <p id="rfc.section.9.6.p.7">STREAM data in frames determined to be lost SHOULD be retransmitted before sending new data, unless application priorities indicate otherwise.  Retransmitting lost stream data can fill in gaps, which allows the peer to consume already received data and free up flow control window.</p>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#flow-control" id="flow-control">Flow Control</a>
@@ -2886,9 +2889,9 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <p id="rfc.section.10.3.p.3">An endpoint MUST NOT send data on a stream at or beyond the final offset.</p>
 <p id="rfc.section.10.3.p.4">Once a final offset for a stream is known, it cannot change.  If a RST_STREAM or STREAM frame causes the final offset to change for a stream, an endpoint SHOULD respond with a FINAL_OFFSET_ERROR error (see <a href="#error-handling" class="xref">Section 11</a>).  A receiver SHOULD treat receipt of data at or beyond the final offset as a FINAL_OFFSET_ERROR error, even after a stream is closed.  Generating these errors is not mandatory, but only because requiring that an endpoint generate these errors also means that the endpoint needs to maintain the final offset state for closed streams, which could mean a significant state commitment.</p>
 <h2 id="rfc.section.10.4">
-<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow control of CRYPTO_HS data</a>
+<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow Control for Crytographic Handshake</a>
 </h2>
-<p id="rfc.section.10.4.p.1">Data sent in CRYPTO_HS frames is not flow controlled in the same way as STREAM frames.  QUIC relies on the cryptographic protocol implementation to avoid excessive buffering of data, see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  The implementation SHOULD provide an interface to QUIC to tell it about its buffering limits so that there is not excessive buffering at multiple layers.</p>
+<p id="rfc.section.10.4.p.1">Data sent in CRYPTO frames is not flow controlled in the same way as STREAM frames.  QUIC relies on the cryptographic protocol implementation to avoid excessive buffering of data, see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  The implementation SHOULD provide an interface to QUIC to tell it about its buffering limits so that there is not excessive buffering at multiple layers.</p>
 <h1 id="rfc.section.11">
 <a href="#rfc.section.11">11.</a> <a href="#error-handling" id="error-handling">Error Handling</a>
 </h1>
@@ -2942,7 +2945,7 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <dd style="margin-left: 8">An endpoint received a PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE frame that it previously sent.</dd>
 <dt>INVALID_MIGRATION (0xC):</dt>
 <dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
-<dt>CRYPTO_ERROR (0x2XX):</dt>
+<dt>CRYPTO_ERROR (0x1XX):</dt>
 <dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occuring when TLS is used for the crypto handshake are defined in Section 11 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
 </dl>
 <p id="rfc.section.11.3.p.4">See <a href="#iana-error-codes" class="xref">Section 13.3</a> for details of registering new error codes.</p>
@@ -3347,8 +3350,8 @@ Handshake[0]: CRYPTO_HS[FIN], ACK[0]
 <p></p>
 
 <ul>
-<li>Enable server to transition connections to a preferred address (#560,#1251).</li>
-<li>Moved the cryptographic handshake off stream 0 and into CRYPTO_HS frames.</li>
+<li>Enable server to transition connections to a preferred address (#560, #1251).</li>
+<li>Moved the cryptographic handshake off stream 0 and into CRYPTO frames.</li>
 <li>Move stateless retry to the QUIC layer.</li>
 <li>Added token fields to Initial packet header.</li>
 <li>Added NEW_TOKEN frame.</li>

@@ -85,13 +85,13 @@ Table of Contents
      4.3.  Version Negotiation Packet  . . . . . . . . . . . . . . .  12
      4.4.  Cryptographic Handshake Packets . . . . . . . . . . . . .  14
        4.4.1.  Initial Packet  . . . . . . . . . . . . . . . . . . .  14
-       4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  16
+       4.4.2.  Retry Packet  . . . . . . . . . . . . . . . . . . . .  17
        4.4.3.  Handshake Packet  . . . . . . . . . . . . . . . . . .  18
-     4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  18
-     4.6.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  19
+     4.5.  Protected Packets . . . . . . . . . . . . . . . . . . . .  19
+     4.6.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  20
      4.7.  Connection ID Encoding  . . . . . . . . . . . . . . . . .  20
-     4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  21
-   5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  23
+     4.8.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  22
+   5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  24
      5.1.  Extension Frames  . . . . . . . . . . . . . . . . . . . .  26
    6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  26
      6.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  27
@@ -176,7 +176,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
      7.18. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  74
      7.19. NEW_TOKEN frame . . . . . . . . . . . . . . . . . . . . .  74
      7.20. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  74
-     7.21. CRYPTO_HS Frame . . . . . . . . . . . . . . . . . . . . .  76
+     7.21. CRYPTO Frame  . . . . . . . . . . . . . . . . . . . . . .  76
    8.  Packetization and Reliability . . . . . . . . . . . . . . . .  77
      8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  78
      8.2.  Retransmission of Information . . . . . . . . . . . . . .  78
@@ -203,7 +203,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
      10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . .  96
        10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . .  96
      10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . .  96
-     10.4.  Flow control of CRYPTO_HS data . . . . . . . . . . . . .  97
+     10.4.  Flow Control for Crytographic Handshake  . . . . . . . .  97
    11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . .  97
      11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . .  97
      11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . .  98
@@ -756,7 +756,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 4.4.1.  Initial Packet
 
    The Initial packet uses long headers with a type value of 0x7F.  It
-   carries the first CRYPTO_HS frames sent by the client and server to
+   carries the first CRYPTO frames sent by the client and server to
    perform key exchange, and may carry ACKs in either direction.  The
    Initial packet is protected by Initial keys as described in
    [QUIC-TLS].
@@ -801,13 +801,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    cryptographic key exchange could require multiple round trips or
    retransmissions of this data.
 
-   The payload of an Initial packet includes a CRYPTO_HS frame (or
-   frames) containing a cryptographic handshake message, ACK frames, or
-   both.  The first CRYPTO_HS frame sent always begins at an offset of 0
-   (see Section 6.4).  The client's complete first message MUST fit in a
+   The payload of an Initial packet includes a CRYPTO frame (or frames)
+   containing a cryptographic handshake message, ACK frames, or both.
+   The first CRYPTO frame sent always begins at an offset of 0 (see
+   Section 6.4).  The client's complete first message MUST fit in a
    single packet (see Section 6.4).  Note that if the server sends a
    HelloRetryRequest, the client will send a second Initial packet with
-   a CRYPTO_HS frame with an offset starting at the end of the CRYPTO_HS
+   a CRYPTO frame with an offset starting at the end of the CRYPTO
    stream in the first Initial.
 
 4.4.1.1.  Connection IDs
@@ -871,10 +871,33 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       token at all, leading to connection failure if the packet is
       discarded.
 
+
+
+
+
+
+
+
+
+
+
+
+
+                        Reflow paragraphs
+
 4.4.1.3.  Starting Packet Numbers
 
    The first Initial packet contains a packet number of 0.  Each packet
    sent after the Initial packet is associated with a packet number
+
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 16]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
    space and its packet number increases monotonically in that space
    (see Section 4.8).
 
@@ -889,15 +912,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    A Retry packet uses long headers with a type value of 0x7E.  It
    carries an address validation token created by the server.  It is
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 16]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    used by a server that wishes to perform a stateless retry (see
    Section 6.7).
 
@@ -932,6 +946,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The Packet Number field of a Retry packet MUST be set to 0.  This
    value is subsequently protected as normal.  [[Editor's Note: This
    isn't ideal, because it creates a "cheat" where the client assumes a
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 17]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
    value.  That's a problem, so I'm tempted to suggest that this include
    any value less than 2^30 so that normal processing works - and can be
    properly exercised.]]
@@ -945,15 +967,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    If the Original Destination Connection ID field does not match the
    Destination Connection ID from most recent the Initial packet it
    sent, clients MUST discard the packet.  This prevents an off-path
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 17]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    attacker from injecting a Retry packet with a bogus new Source
    Connection ID.
 
@@ -988,8 +1001,17 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    or by receiving any message from the client encrypted using the
    Handshake keys.
 
-   The payload of this packet contains CRYPTO_HS frames and could
-   contain PADDING, or ACK frames.  Handshake packets MAY contain
+
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 18]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
+   The payload of this packet contains CRYPTO frames and could contain
+   PADDING, or ACK frames.  Handshake packets MAY contain
    CONNECTION_CLOSE frames if the handshake is unsuccessful.
 
 4.5.  Protected Packets
@@ -1001,14 +1023,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    encryption level and therefore the keys that are used to remove
    packet protection.  0-RTT and 1-RTT protected packets share a single
    packet number space.
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 18]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
 
    Packets protected with handshake keys only use packet protection to
    ensure that the sender of the packet is on the network path.  This
@@ -1043,6 +1057,15 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The payload is protected using authenticated encryption.  [QUIC-TLS]
    describes packet protection in detail.  After decryption, the
+
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 19]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
    plaintext consists of a sequence of frames, as described in
    Section 5.
 
@@ -1056,15 +1079,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    do so will require sending a significantly larger number of datagrams
    during the handshake.  Receivers MUST be able to process coalesced
    packets.
-
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 19]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
 
    Senders SHOULD coalesce packets in order of increasing encryption
    levels (Initial, Handshake, 0-RTT, 1-RTT), as this makes it more
@@ -1099,6 +1113,15 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Connection ID is used to set the Destination Connection ID used by
    the peer.
 
+
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 20]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
    During the handshake, packets with the long header are used to
    establish the connection ID that each endpoint uses.  Each endpoint
    uses the Source Connection ID field to specify the connection ID that
@@ -1114,14 +1137,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    the first packet of each type it receives from the server (Retry or
    Initial); a server MUST set its value based on the Initial packet.
    Any additional changes are not permitted; if subsequent packets of
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 20]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    those types include a different Source Connection ID, they MUST be
    discarded.  This avoids problems that might arise from stateless
    processing of multiple Initial packets producing different connection
@@ -1152,6 +1167,17 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    NEW_CONNECTION_ID frames (Section 7.13) are used to provide new
    connection ID values.
 
+
+
+
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 21]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
 4.8.  Packet Numbers
 
    The packet number is an integer in the range 0 to 2^62-1.  The value
@@ -1169,14 +1195,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    o  Application data space: All 0-RTT and 1-RTT encrypted packets
       Section 4.5 are in this space.
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 21]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
 
    As described in [QUIC-TLS], each packet type uses different
    encryption keys.
@@ -1209,6 +1227,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    One or two of the most significant bits of the first octet determine
    how many bits of the packet number are provided, as shown in Table 2.
 
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 22]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
           +---------------------+----------------+--------------+
           | First octet pattern | Encoded Length | Bits Present |
           +---------------------+----------------+--------------+
@@ -1226,14 +1251,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The encoded packet number is protected as described in Section 5.6
    [QUIC-TLS].  Protection of the packet number is removed prior to
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 22]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
-
    recovering the full packet number.  The full packet number is
    reconstructed at the receiver based on the number of significant bits
    present, the content of those bits, and the largest packet number
@@ -1265,6 +1282,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    For example, if an endpoint has received an acknowledgment for packet
    0x6afa2f, sending a packet with a number of 0x6b2d79 requires a
    packet number encoding with 14 bits or more; whereas the 30-bit
+
+
+
+Iyengar & Thomson       Expires December 29, 2018              [Page 23]
+
+Internet-Draft           QUIC Transport Protocol               June 2018
+
+
    packet number encoding is needed to send a packet with a number of
    0x6bc107.
 
@@ -1277,18 +1302,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The payload of all packets, after removing packet protection,
    consists of a sequence of frames, as shown in Figure 4.  Version
    Negotiation and Stateless Reset do not contain frames.
-
-
-
-
-
-
-
-
-Iyengar & Thomson       Expires December 29, 2018              [Page 23]
-
-Internet-Draft           QUIC Transport Protocol               June 2018
-
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1324,19 +1337,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    The frame types defined in this specification are listed in Table 3.
    The Frame Type in STREAM frames is used to carry other frame-specific
    flags.  For all other frames, the Frame Type field simply identifies
-   the frame.  These frames are explained in more detail as they are
-   referenced later in the document.
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1345,6 +1345,9 @@ Iyengar & Thomson       Expires December 29, 2018              [Page 24]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
+
+   the frame.  These frames are explained in more detail as they are
+   referenced later in the document.
 
             +-------------+-------------------+--------------+
             | Type Value  | Frame Type Name   | Definition   |
@@ -1383,7 +1386,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
             |             |                   |              |
             | 0x10 - 0x17 | STREAM            | Section 7.20 |
             |             |                   |              |
-            | 0x18        | CRYPTO_HS         | Section 7.21 |
+            | 0x18        | CRYPTO            | Section 7.21 |
             |             |                   |              |
             | 0x19        | NEW_TOKEN         | Section 7.19 |
             |             |                   |              |
@@ -1391,9 +1394,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
             +-------------+-------------------+--------------+
 
                            Table 3: Frame Types
-
-
-
 
 
 
@@ -1710,7 +1710,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 6.4.  Cryptographic and Transport Handshake
 
    QUIC relies on a combined cryptographic and transport handshake to
-   minimize connection establishment latency.  QUIC uses the CRYPTO_HS
+   minimize connection establishment latency.  QUIC uses the CRYPTO
    frame Section 7.21 to transmit the cryptographic handshake.  Version
    0x00000001 of QUIC uses TLS 1.3 as described in [QUIC-TLS]; a
    different QUIC version number could indicate that a different
@@ -1756,19 +1756,19 @@ Internet-Draft           QUIC Transport Protocol               June 2018
       that the client can receive packets that are addressed with the
       transport address that is claimed by the client (see Section 6.9)
 
-   The initial CRYPTO_HS frame MUST be sent in a single packet.  Any
-   second attempt that is triggered by address validation MUST also be
-   sent within a single packet.  This avoids having to reassemble a
-   message from multiple packets.
+   The initial CRYPTO frame MUST be sent in a single packet.  Any second
+   attempt that is triggered by address validation MUST also be sent
+   within a single packet.  This avoids having to reassemble a message
+   from multiple packets.
 
    The first client packet of the cryptographic handshake protocol MUST
    fit within a 1232 octet QUIC packet payload.  This includes overheads
    that reduce the space available to the cryptographic handshake
    protocol.
 
-   The CRYPTO_HS frame can be sent in different packet number spaces.
-   CRYPTO_HS frames in each packet number space carry a separate
-   sequence of handshake data starting from an offset of 0.
+   The CRYPTO frame can be sent in different packet number spaces.
+   CRYPTO frames in each packet number space carry a separate sequence
+   of handshake data starting from an offset of 0.
 
 6.5.  Example Handshake Flows
 
@@ -1778,8 +1778,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Figure 6 provides an overview of the 1-RTT handshake.  Each line
    shows a QUIC packet with the packet type and packet number shown
    first, followed by the contents.  So, for instance the first packet
-   is of type Initial, with packet number 0, and contains a CRYPTO_HS
-   frame carrying the ClientHello.
+   is of type Initial, with packet number 0, and contains a CRYPTO frame
+   carrying the ClientHello.
 
    Note that multiple QUIC packets - even of different encryption levels
    - may be coalesced into a single UDP datagram (see Section 4.6, and
@@ -1799,14 +1799,14 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Client                                                  Server
 
-   Initial[0]: CRYPTO_HS[CH] ->
+   Initial[0]: CRYPTO[CH] ->
 
-                                 Initial[0]: CRYPTO_HS[SH] ACK[0]
-                       Handshake[0]: CRYPTO_HS[EE, CERT, CV, FIN]
+                                    Initial[0]: CRYPTO[SH] ACK[0]
+                          Handshake[0]: CRYPTO[EE, CERT, CV, FIN]
                                     <- 1-RTT[0]: STREAM[1, "..."]
 
    Initial[1]: ACK[0]
-   Handshake[0]: CRYPTO_HS[FIN], ACK[0]
+   Handshake[0]: CRYPTO[FIN], ACK[0]
    1-RTT[0]: STREAM[0, "..."], ACK[0] ->
 
                               1-RTT[1]: STREAM[55, "..."], ACK[0]
@@ -1822,16 +1822,16 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Client                                                  Server
 
-   Initial[0]: CRYPTO_HS[CH]
+   Initial[0]: CRYPTO[CH]
    0-RTT[0]: STREAM[0, "..."] ->
 
-                                 Initial[0]: CRYPTO_HS[SH] ACK[0]
-                        Handshake[0] CRYPTO_HS[EE, CERT, CV, FIN]
+                                    Initial[0]: CRYPTO[SH] ACK[0]
+                           Handshake[0] CRYPTO[EE, CERT, CV, FIN]
                              <- 1-RTT[0]: STREAM[1, "..."] ACK[0]
 
    Initial[1]: ACK[0]
-   0-RTT[1]: CRYPTO_HS[EOED]
-   Handshake[0]: CRYPTO_HS[FIN], ACK[0]
+   0-RTT[1]: CRYPTO[EOED]
+   Handshake[0]: CRYPTO[FIN], ACK[0]
    1-RTT[2]: STREAM[0, "..."] ACK[0] ->
 
                             1-RTT[1]: STREAM[55, "..."], ACK[1,2]
@@ -4016,15 +4016,15 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Note that the same limitation applies to other data sent by the
    server protected by the 1-RTT keys.
 
-   Endpoints SHOULD send acknowledgments for packets containing
-   CRYPTO_HS frames with a reduced delay; see Section 3.5.1 of
-   [QUIC-RECOVERY].
+   Endpoints SHOULD send acknowledgments for packets containing CRYPTO
+   frames with a reduced delay; see Section 3.5.1 of [QUIC-RECOVERY].
 
 7.16.  ACK_ECN Frame
 
    The ACK_ECN frame (type=0x20) is used by an endpoint that supports
    ECN to acknowledge packets received with ECN codepoints of ECT(0),
    ECT(1), or CE in the packet's IP header.
+
 
 
 
@@ -4230,17 +4230,17 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    advised to bundle as few streams as necessary in outgoing packets
    without losing transmission efficiency to underfilled packets.
 
-7.21.  CRYPTO_HS Frame
+7.21.  CRYPTO Frame
 
-   The CRYPTO_HS frame (type=0x18) is used to transmit cryptographic
-   handshake messages.  It can be sent in all packet types.  The
-   CRYPTO_HS frame offers the cryptographic protocol an in-order stream
-   of bytes.  CRYPTO_HS frames are functionally identical to STREAM
-   frames, except that they do not bear a stream identifier; they are
-   not flow controlled; and they do not carry markers for optional
-   offset, optional length, and the end of the stream.
+   The CRYPTO frame (type=0x18) is used to transmit cryptographic
+   handshake messages.  It can be sent in all packet types.  The CRYPTO
+   frame offers the cryptographic protocol an in-order stream of bytes.
+   CRYPTO frames are functionally identical to STREAM frames, except
+   that they do not bear a stream identifier; they are not flow
+   controlled; and they do not carry markers for optional offset,
+   optional length, and the end of the stream.
 
-   A CRYPTO_HS frame is shown below.
+   A CRYPTO frame is shown below.
 
 
 
@@ -4268,27 +4268,27 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    |                        Crypto Data (*)                      ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-                     Figure 13: CRYPTO_HS Frame Format
+                      Figure 13: CRYPTO Frame Format
 
-   The CRYPTO_HS frame contains the following fields:
+   The CRYPTO frame contains the following fields:
 
    Offset:  A variable-length integer specifying the byte offset in the
-      stream for the data in this CRYPTO_HS frame.
+      stream for the data in this CRYPTO frame.
 
    Length:  A variable-length integer specifying the length of the
-      Crypto Data field in this CRYPTO_HS frame.
+      Crypto Data field in this CRYPTO frame.
 
    Crypto Data:  The cryptographic message data.
 
    There is a separate flow of cryptographic handshake data in each
    encryption level, each of which starts at an offset of 0.  This
-   implies that each encryption level is treated as a separate CRYPTO_HS
+   implies that each encryption level is treated as a separate CRYPTO
    stream of data.
 
    Unlike STREAM frames, which include a Stream ID indicating to which
-   stream the data belongs, the CRYPTO_HS frame carries data for a
-   single stream per encryption level.  The stream does not have an
-   explicit end, so CRYPTO_HS frames do not have a FIN bit.
+   stream the data belongs, the CRYPTO frame carries data for a single
+   stream per encryption level.  The stream does not have an explicit
+   end, so CRYPTO frames do not have a FIN bit.
 
 8.  Packetization and Reliability
 
@@ -4348,9 +4348,9 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    and sending ceases when a packet containing that information is
    acknowledged.
 
-   o  Data sent in CRYPTO_HS frames are retransmitted according to the
+   o  Data sent in CRYPTO frames are retransmitted according to the
       rules in [QUIC-RECOVERY], until either all data has been
-      acknowledged or the crypto state machine implictly knows that the
+      acknowledged or the crypto state machine implicitly knows that the
       peer received the data.
 
    o  Application data sent in STREAM frames is retransmitted in new
@@ -5173,8 +5173,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    prioritizing frames other than STREAM frames ensures that loss
    recovery, congestion control, and flow control operate effectively.
 
-   CRYPTO_HS frames SHOULD be prioritized over other streams prior to
-   the completion of the cryptographic handshake.  This includes the
+   CRYPTO frames SHOULD be prioritized over other streams prior to the
+   completion of the cryptographic handshake.  This includes the
    retransmission of the second flight of client handshake messages,
    that is, the TLS Finished and any client authentication messages.
 
@@ -5391,10 +5391,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    that the endpoint needs to maintain the final offset state for closed
    streams, which could mean a significant state commitment.
 
-10.4.  Flow control of CRYPTO_HS data
+10.4.  Flow Control for Crytographic Handshake
 
-   Data sent in CRYPTO_HS frames is not flow controlled in the same way
-   as STREAM frames.  QUIC relies on the cryptographic protocol
+   Data sent in CRYPTO frames is not flow controlled in the same way as
+   STREAM frames.  QUIC relies on the cryptographic protocol
    implementation to avoid excessive buffering of data, see [QUIC-TLS].
    The implementation SHOULD provide an interface to QUIC to tell it
    about its buffering limits so that there is not excessive buffering
@@ -5549,7 +5549,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    INVALID_MIGRATION (0xC):  A peer has migrated to a different network
       when the endpoint had disabled migration.
 
-   CRYPTO_ERROR (0x2XX):  The cryptographic handshake failed.  A range
+   CRYPTO_ERROR (0x1XX):  The cryptographic handshake failed.  A range
       of 256 values is reserved for carrying error codes specific to the
       cryptographic handshake that is used.  Codes for errors occuring
       when TLS is used for the crypto handshake are defined in
@@ -6140,9 +6140,9 @@ Appendix A.  Change Log
 A.1.  Since draft-ietf-quic-transport-12
 
    o  Enable server to transition connections to a preferred address
-      (#560,#1251).
+      (#560, #1251).
 
-   o  Moved the cryptographic handshake off stream 0 and into CRYPTO_HS
+   o  Moved the cryptographic handshake off stream 0 and into CRYPTO
       frames.
 
    o  Move stateless retry to the QUIC layer.
