@@ -85,7 +85,7 @@ Table of Contents
      2.4.  Connection Reuse  . . . . . . . . . . . . . . . . . . . .   6
    3.  Stream Mapping and Usage  . . . . . . . . . . . . . . . . . .   7
      3.1.  HTTP Message Exchanges  . . . . . . . . . . . . . . . . .   7
-       3.1.1.  Header Compression  . . . . . . . . . . . . . . . . .   8
+       3.1.1.  Header Compression  . . . . . . . . . . . . . . . . .   9
        3.1.2.  The CONNECT Method  . . . . . . . . . . . . . . . . .   9
        3.1.3.  Request Cancellation  . . . . . . . . . . . . . . . .  10
      3.2.  Request Prioritization  . . . . . . . . . . . . . . . . .  10
@@ -363,7 +363,8 @@ Internet-Draft               HTTP over QUIC                    June 2018
    be readily correlated with the request.  This means that the client's
    first request occurs on QUIC stream 0, with subsequent requests on
    stream 4, 8, and so on.  HTTP/QUIC does not use server-initiated
-   bidirectional streams.
+   bidirectional streams.  The use of unidirectional streams is
+   discussed in Section 3.3.
 
    These streams carry frames related to the request/response (see
    Section 4.2).  When a stream terminates cleanly, if the last frame on
@@ -384,8 +385,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    An HTTP message (request or response) consists of:
 
-   1.  one header block (see Section 4.2.3) containing the message
-       headers (see [RFC7230], Section 3.2),
+
 
 
 
@@ -393,6 +393,9 @@ Bishop                  Expires December 29, 2018               [Page 7]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   1.  one header block (see Section 4.2.3) containing the message
+       headers (see [RFC7230], Section 3.2),
 
    2.  the payload body (see [RFC7230], Section 3.3), sent as a series
        of DATA frames (see Section 4.2.2),
@@ -436,12 +439,9 @@ Internet-Draft               HTTP over QUIC                    June 2018
    Servers MUST NOT abort a response in progress as a result of
    receiving a solicited RST_STREAM.
 
-3.1.1.  Header Compression
 
-   HTTP/QUIC uses QPACK header compression as described in [QPACK], a
-   variation of HPACK which allows the flexibility to avoid header-
-   compression-induced head-of-line blocking.  See that document for
-   additional details.
+
+
 
 
 
@@ -449,6 +449,13 @@ Bishop                  Expires December 29, 2018               [Page 8]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+3.1.1.  Header Compression
+
+   HTTP/QUIC uses QPACK header compression as described in [QPACK], a
+   variation of HPACK which allows the flexibility to avoid header-
+   compression-induced head-of-line blocking.  See that document for
+   additional details.
 
 3.1.2.  The CONNECT Method
 
@@ -491,13 +498,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    A TCP connection error is signaled with RST_STREAM.  A proxy treats
    any error in the TCP connection, which includes receiving a TCP
-   segment with the RST bit set, as a stream error of type
-   HTTP_CONNECT_ERROR (Section 6.1).  Correspondingly, a proxy MUST send
-   a TCP segment with the RST bit set if it detects an error with the
-   stream or the QUIC connection.
-
-
-
 
 
 
@@ -505,6 +505,11 @@ Bishop                  Expires December 29, 2018               [Page 9]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   segment with the RST bit set, as a stream error of type
+   HTTP_CONNECT_ERROR (Section 6.1).  Correspondingly, a proxy MUST send
+   a TCP segment with the RST bit set if it detects an error with the
+   stream or the QUIC connection.
 
 3.1.3.  Request Cancellation
 
@@ -550,17 +555,17 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    o  Requests, identified by the ID of the request stream
 
-   o  Pushes, identified by the Push ID of the promised resource
-      (Section 4.2.7)
-
-   o  Placeholders, identified by a Placeholder ID
-
 
 
 Bishop                  Expires December 29, 2018              [Page 10]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   o  Pushes, identified by the Push ID of the promised resource
+      (Section 4.2.7)
+
+   o  Placeholders, identified by a Placeholder ID
 
    An element can depend on another element or on the root of the tree.
    A reference to an element which is no longer in the tree is treated
@@ -606,17 +611,15 @@ Internet-Draft               HTTP over QUIC                    June 2018
       nodes (i.e. a node with only other inactive nodes as descendants,
       along with those descendants)
 
-   o  Identify and condense interior regions of the tree containing only
-      inactive nodes, allocating weight appropriately
-
-
-
 
 
 Bishop                  Expires December 29, 2018              [Page 11]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   o  Identify and condense interior regions of the tree containing only
+      inactive nodes, allocating weight appropriately
 
        x                x                 x
        |                |                 |
@@ -663,9 +666,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
    If the stream header indicates a stream type which is not supported
    by the recipient, this SHOULD be treated as a stream error of type
    HTTP_UNKNOWN_STREAM_TYPE.  The semantics of the remainder of the
-   stream are unknown.  Implementations SHOULD NOT send stream types the
-   peer is not already known to support, since a stream error can be
-
 
 
 
@@ -674,6 +674,8 @@ Bishop                  Expires December 29, 2018              [Page 12]
 Internet-Draft               HTTP over QUIC                    June 2018
 
 
+   stream are unknown.  Implementations SHOULD NOT send stream types the
+   peer is not already known to support, since a stream error can be
    promoted to a connection error at the peer's discretion (see
    Section 6).
 
@@ -719,9 +721,7 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
                        Figure 3: Push Stream Header
 
-   Unlike HTTP/2, the PUSH_PROMISE does not reference a stream; it
-   contains a Push ID.  The Push ID uniquely identifies a server push.
-   This allows a server to fulfill promises in the order that best suits
+
 
 
 
@@ -730,6 +730,9 @@ Bishop                  Expires December 29, 2018              [Page 13]
 Internet-Draft               HTTP over QUIC                    June 2018
 
 
+   Unlike HTTP/2, the PUSH_PROMISE does not reference a stream; it
+   contains a Push ID.  The Push ID uniquely identifies a server push.
+   This allows a server to fulfill promises in the order that best suits
    its needs.  When a server later fulfills a promise, the server push
    response is conveyed on a push stream.
 
@@ -774,9 +777,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    Frames are used on the control stream, request streams, and push
    streams.  This section describes HTTP framing in QUIC and highlights
-   some differences from HTTP/2 framing.  For more detail on differences
-   from HTTP/2, see Section 7.2.
-
 
 
 
@@ -785,6 +785,9 @@ Bishop                  Expires December 29, 2018              [Page 14]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   some differences from HTTP/2 framing.  For more detail on differences
+   from HTTP/2, see Section 7.2.
 
 4.1.  Frame Layout
 
@@ -831,9 +834,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
 
    DATA frames MUST be associated with an HTTP request or response.  If
    a DATA frame is received on either control stream, the recipient MUST
-   respond with a connection error (Section 6) of type
-   HTTP_WRONG_STREAM.
-
 
 
 
@@ -841,6 +841,9 @@ Bishop                  Expires December 29, 2018              [Page 15]
 
 Internet-Draft               HTTP over QUIC                    June 2018
 
+
+   respond with a connection error (Section 6) of type
+   HTTP_WRONG_STREAM.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -882,9 +885,6 @@ Internet-Draft               HTTP over QUIC                    June 2018
    request stream, to allow for identification of server pushes, and the
    larger stream ID space of QUIC.  The semantics of the Stream
    Dependency, Weight, and E flag are otherwise the same as in HTTP/2.
-
-
-
 
 
 
