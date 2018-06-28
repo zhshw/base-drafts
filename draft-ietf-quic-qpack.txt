@@ -228,8 +228,7 @@ Internet-Draft                    QPACK                        June 2018
 
    The decoder determines the maximum size that the encoder is permitted
    to use for the dynamic table.  In HTTP/QUIC, this value is determined
-   by the SETTINGS_HEADER_TABLE_SIZE setting (see Section 7.3 of
-   [QUIC-HTTP]).
+   by the SETTINGS_HEADER_TABLE_SIZE setting (see Section 4).
 
    An encoder can choose to use less capacity than this maximum size
    (see Section 5.2.4), but the chosen size MUST stay lower than or
@@ -273,7 +272,8 @@ Internet-Draft                    QPACK                        June 2018
 
               Example Dynamic Table Indexing - Control Stream
 
-
+   Because frames from request streams can be delivered out of order
+   with instructions on the control stream, relative indices are
 
 
 
@@ -282,8 +282,6 @@ Krasic, et al.          Expires December 30, 2018               [Page 5]
 Internet-Draft                    QPACK                        June 2018
 
 
-   Because frames from request streams can be delivered out of order
-   with instructions on the control stream, relative indices are
    relative to the Base Index at the beginning of the header block (see
    Section 5.4.1).  The Base Index is an absolute index.  When
    interpreting the rest of the frame, the entry identified by Base
@@ -330,6 +328,8 @@ Internet-Draft                    QPACK                        June 2018
 
    If the decoder encounters a reference to an entry which has already
    been dropped from the table or which is greater than the declared
+   Largest Reference (see Section 5.4.1), this MUST be treated as a
+   stream error of type "HTTP_QPACK_DECOMPRESSION_FAILED" error code.
 
 
 
@@ -338,8 +338,6 @@ Krasic, et al.          Expires December 30, 2018               [Page 6]
 Internet-Draft                    QPACK                        June 2018
 
 
-   Largest Reference (see Section 5.4.1), this MUST be treated as a
-   stream error of type "HTTP_QPACK_DECOMPRESSION_FAILED" error code.
    If this reference occurs on the control stream, this MUST be treated
    as a session error.
 
@@ -384,6 +382,8 @@ Internet-Draft                    QPACK                        June 2018
    stream which risks becoming blocked.  If the decoder encounters more
    blocked streams than it promised to support, it SHOULD treat this as
    a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.
+
+
 
 
 
