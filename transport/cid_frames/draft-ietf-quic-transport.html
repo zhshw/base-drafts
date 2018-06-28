@@ -350,7 +350,6 @@ ul.toc li {
 <link href="#rfc.section.7.11" rel="Chapter" title="7.11 STREAM_BLOCKED Frame">
 <link href="#rfc.section.7.12" rel="Chapter" title="7.12 STREAM_ID_BLOCKED Frame">
 <link href="#rfc.section.7.13" rel="Chapter" title="7.13 NEW_CONNECTION_ID Frame">
-<link href="#rfc.section.7.13.1" rel="Chapter" title="7.13.1 Connection ID Block">
 <link href="#rfc.section.7.14" rel="Chapter" title="7.14 STOP_SENDING Frame">
 <link href="#rfc.section.7.15" rel="Chapter" title="7.15 ACK Frame">
 <link href="#rfc.section.7.15.1" rel="Chapter" title="7.15.1 ACK Block Section">
@@ -641,9 +640,7 @@ ul.toc li {
 </li>
 <li>7.13.   <a href="#rfc.section.7.13">NEW_CONNECTION_ID Frame</a>
 </li>
-<ul><li>7.13.1.   <a href="#rfc.section.7.13.1">Connection ID Block</a>
-</li>
-</ul><li>7.14.   <a href="#rfc.section.7.14">STOP_SENDING Frame</a>
+<li>7.14.   <a href="#rfc.section.7.14">STOP_SENDING Frame</a>
 </li>
 <li>7.15.   <a href="#rfc.section.7.15">ACK Frame</a>
 </li>
@@ -2197,26 +2194,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                          Sequence (i)                       ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|    Count (8)  |           Connection ID Blocks (*)          ...
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</pre>
-<p id="rfc.section.7.13.p.3">The fields are:</p>
-<p></p>
-
-<dl>
-<dt>Sequence:</dt>
-<dd style="margin-left: 8">A variable-length integer identifying the sequence number of the first CID carried by this frame.  This value starts at 0 and increases by 1 for each connection ID that is provided by the server.  The connection ID that is assigned during the handshake is assumed to have a sequence of -1.  That is, the value selected during the handshake comes immediately before the first value that a server can send.</dd>
-<dt>Count:</dt>
-<dd style="margin-left: 8">The number of Connection ID Blocks in the remainder of the frame.</dd>
-</dl>
-<p id="rfc.section.7.13.p.5">A series of Connection ID Blocks follows, as described in <a href="#connection-id-block" class="xref">Section 7.13.1</a>.</p>
-<p id="rfc.section.7.13.p.6">An endpoint MUST NOT send this frame if it currently requires that its peer send packets with a zero-length Destination Connection ID.  Changing the length of a connection ID to or from zero-length makes it difficult to identify when the value of the connection ID changed.  An endpoint that is sending packets with a zero-length Destination Connection ID MUST treat receipt of a NEW_CONNECTION_ID frame as a connection error of type PROTOCOL_VIOLATION.</p>
-<h3 id="rfc.section.7.13.1">
-<a href="#rfc.section.7.13.1">7.13.1.</a> <a href="#connection-id-block" id="connection-id-block">Connection ID Block</a>
-</h3>
-<p id="rfc.section.7.13.1.p.1">Each element in the Connection ID Block has the following format:</p>
-<pre>
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   Length (8)  |          Connection ID (32..144)            ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                                                               |
@@ -2228,10 +2205,12 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p id="rfc.section.7.13.1.p.2">The fields are:</p>
+<p id="rfc.section.7.13.p.3">The fields are:</p>
 <p></p>
 
 <dl>
+<dt>Sequence:</dt>
+<dd style="margin-left: 8">A variable-length integer.  This value starts at 0 and increases by 1 for each connection ID that is provided by the server.  The connection ID that is assigned during the handshake is assumed to have a sequence of -1.  That is, the value selected during the handshake comes immediately before the first value that a server can send.</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">An 8-bit unsigned integer containing the length of the connection ID.  Values less than 4 and greater than 18 are invalid and MUST be treated as a connection error of type PROTOCOL_VIOLATION.</dd>
 <dt>Connection ID:</dt>
@@ -2239,6 +2218,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>Stateless Reset Token:</dt>
 <dd style="margin-left: 8">A 128-bit value that will be used to for a stateless reset when the associated connection ID is used (see <a href="#stateless-reset" class="xref">Section 6.13.4</a>).</dd>
 </dl>
+<p id="rfc.section.7.13.p.5">An endpoint MUST NOT send this frame if it currently requires that its peer send packets with a zero-length Destination Connection ID.  Changing the length of a connection ID to or from zero-length makes it difficult to identify when the value of the connection ID changed.  An endpoint that is sending packets with a zero-length Destination Connection ID MUST treat receipt of a NEW_CONNECTION_ID frame as a connection error of type PROTOCOL_VIOLATION.</p>
 <h2 id="rfc.section.7.14">
 <a href="#rfc.section.7.14">7.14.</a> <a href="#frame-stop-sending" id="frame-stop-sending">STOP_SENDING Frame</a>
 </h2>

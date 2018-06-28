@@ -158,10 +158,10 @@ Internet-Draft           QUIC Transport Protocol               June 2018
      7.11. STREAM_BLOCKED Frame  . . . . . . . . . . . . . . . . . .  65
      7.12. STREAM_ID_BLOCKED Frame . . . . . . . . . . . . . . . . .  66
      7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  66
-       7.13.1.  Connection ID Block  . . . . . . . . . . . . . . . .  67
      7.14. STOP_SENDING Frame  . . . . . . . . . . . . . . . . . . .  68
      7.15. ACK Frame . . . . . . . . . . . . . . . . . . . . . . . .  68
        7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  70
+       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  71
 
 
 
@@ -170,7 +170,6 @@ Iyengar & Thomson       Expires December 30, 2018               [Page 3]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  71
        7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  72
      7.16. ACK_ECN Frame . . . . . . . . . . . . . . . . . . . . . .  72
      7.17. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  73
@@ -218,6 +217,7 @@ Internet-Draft           QUIC Transport Protocol               June 2018
      12.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . . 104
      12.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 104
      12.5.  Stream Fragmentation and Reassembly Attacks  . . . . . . 104
+     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 105
 
 
 
@@ -226,7 +226,6 @@ Iyengar & Thomson       Expires December 30, 2018               [Page 4]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 105
      12.7.  Explicit Congestion Notification Attacks . . . . . . . . 105
    13. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 105
      13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . . 106
@@ -273,7 +272,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    o  Connection migration and resilience to NAT rebinding
 
-
+   QUIC implements techniques learned from experience with TCP, SCTP and
+   other transport protocols.  QUIC uses UDP as substrate so as to not
 
 
 
@@ -282,8 +282,6 @@ Iyengar & Thomson       Expires December 30, 2018               [Page 5]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-   QUIC implements techniques learned from experience with TCP, SCTP and
-   other transport protocols.  QUIC uses UDP as substrate so as to not
    require changes to legacy client operating systems and middleboxes to
    be deployable.  QUIC authenticates all of its headers and encrypts
    most of the data it exchanges, including its signaling.  This allows
@@ -330,6 +328,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    QUIC packet:  A well-formed UDP payload that can be parsed by a QUIC
       receiver.
 
+   QUIC is a name, not an acronym.
+
 
 
 
@@ -337,8 +337,6 @@ Iyengar & Thomson       Expires December 30, 2018               [Page 6]
 
 Internet-Draft           QUIC Transport Protocol               June 2018
 
-
-   QUIC is a name, not an acronym.
 
 2.1.  Notational Conventions
 
@@ -386,6 +384,8 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    expectation that the server will initiate version negotiation; a
    server MAY advertise support for one of these versions and can expect
    that clients ignore the value.
+
+
 
 
 
@@ -3677,19 +3677,19 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The NEW_CONNECTION_ID is as follows:
 
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                          Sequence (i)                       ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |    Count (8)  |           Connection ID Blocks (*)          ...
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-   The fields are:
 
-   Sequence:  A variable-length integer identifying the sequence number
-      of the first CID carried by this frame.  This value starts at 0
-      and increases by 1 for each connection ID that is provided by the
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -3698,29 +3698,10 @@ Iyengar & Thomson       Expires December 30, 2018              [Page 66]
 Internet-Draft           QUIC Transport Protocol               June 2018
 
 
-      server.  The connection ID that is assigned during the handshake
-      is assumed to have a sequence of -1.  That is, the value selected
-      during the handshake comes immediately before the first value that
-      a server can send.
-
-   Count:  The number of Connection ID Blocks in the remainder of the
-      frame.
-
-   A series of Connection ID Blocks follows, as described in
-   Section 7.13.1.
-
-   An endpoint MUST NOT send this frame if it currently requires that
-   its peer send packets with a zero-length Destination Connection ID.
-   Changing the length of a connection ID to or from zero-length makes
-   it difficult to identify when the value of the connection ID changed.
-   An endpoint that is sending packets with a zero-length Destination
-   Connection ID MUST treat receipt of a NEW_CONNECTION_ID frame as a
-   connection error of type PROTOCOL_VIOLATION.
-
-7.13.1.  Connection ID Block
-
-   Each element in the Connection ID Block has the following format:
-
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                          Sequence (i)                       ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |   Length (8)  |          Connection ID (32..144)            ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -3735,6 +3716,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The fields are:
 
+   Sequence:  A variable-length integer.  This value starts at 0 and
+      increases by 1 for each connection ID that is provided by the
+      server.  The connection ID that is assigned during the handshake
+      is assumed to have a sequence of -1.  That is, the value selected
+      during the handshake comes immediately before the first value that
+      a server can send.
+
    Length:  An 8-bit unsigned integer containing the length of the
       connection ID.  Values less than 4 and greater than 18 are invalid
       and MUST be treated as a connection error of type
@@ -3745,6 +3733,18 @@ Internet-Draft           QUIC Transport Protocol               June 2018
    Stateless Reset Token:  A 128-bit value that will be used to for a
       stateless reset when the associated connection ID is used (see
       Section 6.13.4).
+
+   An endpoint MUST NOT send this frame if it currently requires that
+   its peer send packets with a zero-length Destination Connection ID.
+   Changing the length of a connection ID to or from zero-length makes
+   it difficult to identify when the value of the connection ID changed.
+   An endpoint that is sending packets with a zero-length Destination
+   Connection ID MUST treat receipt of a NEW_CONNECTION_ID frame as a
+   connection error of type PROTOCOL_VIOLATION.
+
+
+
+
 
 
 
