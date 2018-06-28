@@ -4260,12 +4260,13 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    Upon receipt of a RETIRE_CONNECTION_ID frame, an endpoint MUST
    consider connection IDs older than the specified sequence number as
-   unusable.  If an older connection ID is currently being used on any
-   local address, the endpoint MUST advance to a more recent connection
-   ID.  If a more recent connection ID is not available, the connection
-   MUST be closed.
+   unusable and MUST NOT consider the associated stateless reset tokens
+   to be valid.  If an older connection ID is currently being used on
+   any local address, the endpoint MUST advance to a more recent
+   connection ID.  If a more recent connection ID is not available, no
+   packets can be sent until a NEW_CONNECTION_ID frame is received.
 
-   Endpoints sending a RETIRE_CONNECTION_ID frame SHOULD continue to
+   Endpoints sending a RETIRE_CONNECTION_ID frame MUST continue to
    accept packets with older connection IDs until the packet containing
    the frame is acknowledged.
 
@@ -4304,7 +4305,6 @@ Internet-Draft           QUIC Transport Protocol               June 2018
 
    The number of older connection IDs still outstanding MAY be
    constrained using the RETIRE_CONNECTION_ID frames.
-
 
 
 
