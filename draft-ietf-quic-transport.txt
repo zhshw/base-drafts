@@ -5083,7 +5083,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    that receives a STREAM frame with an ID greater than the limit it has
    sent MUST treat this as a stream error of type STREAM_ID_ERROR
    (Section 11), unless this is a result of a change in the initial
-   offsets (see Section 6.6.2).
+   limits (see Section 6.6.2).
 
    A receiver MUST NOT renege on an advertisement; that is, once a
    receiver advertises a stream ID via a MAX_STREAM_ID frame, it MUST
