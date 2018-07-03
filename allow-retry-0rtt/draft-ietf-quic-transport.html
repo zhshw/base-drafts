@@ -1197,7 +1197,7 @@ ul.toc li {
 <h3 id="rfc.section.4.6.4">
 <a href="#rfc.section.4.6.4">4.6.4.</a> <a href="#retry-0rtt-pn" id="retry-0rtt-pn">0-RTT Packet Numbers</a>
 </h3>
-<p id="rfc.section.4.6.4.p.1">Packet numbers for 0-RTT protected packets use the same space as 0-RTT protected packets.</p>
+<p id="rfc.section.4.6.4.p.1">Packet numbers for 0-RTT protected packets use the same space as 1-RTT protected packets.</p>
 <p id="rfc.section.4.6.4.p.2">After a client receives a Retry or Version Negotiation packet, it MAY attempt to send data in 0-RTT packets after it sends a new Initial packet.  However, a client MUST NOT reset the packet number it uses for 0-RTT packets.  The keys used to protect 0-RTT keys are not guaranteed to change as a result of responding to a Retry or Version Negotiation packet.</p>
 <p id="rfc.section.4.6.4.p.3">Receiving a Retry or Version Negotiation packet, especially a Retry that changes the connection ID used for subsequent packets, indicates a strong possibility that 0-RTT packets could be lost.  A client only receives acknowledgments for its 0-RTT packets once the handshake is complete.  Consequently, a server might expect 0-RTT packets to start with a packet number of 0.  Therefore, in determining the length of the packet number encoding for 0-RTT packets, a client MUST assume that all packets up to the current packet number are in flight, starting from a packet number of 0.  Thus, 0-RTT packets could need to use a longer packet number encoding.</p>
 <h3 id="rfc.section.4.6.5">
