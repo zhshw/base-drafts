@@ -2210,7 +2210,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-http
 
-   [4] https://www.iana.org/assignments/ message-headers
+   [4] https://www.iana.org/assignments/message-headers
 
 Appendix A.  Change Log
 
