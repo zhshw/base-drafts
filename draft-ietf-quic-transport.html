@@ -433,7 +433,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-02" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-03" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -457,12 +457,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 3, 2019</td>
+<td class="left">Expires: January 4, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 02, 2018</td>
+<td class="right">July 03, 2018</td>
 </tr>
 
     	
@@ -481,7 +481,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 3, 2019.</p>
+<p>This Internet-Draft will expire on January 4, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1885,7 +1885,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p id="rfc.section.6.13.4.p.4">This design ensures that a stateless reset packet is - to the extent possible - indistinguishable from a regular packet with a short header.</p>
-<p id="rfc.section.6.13.4.p.5">The message consists of a header octet, followed by random octets of arbitrary length, followed by a Stateless Reset Token.</p>
+<p id="rfc.section.6.13.4.p.5">The message consists of a header octet, followed by an arbitrary number of random octets, followed by a Stateless Reset Token.</p>
 <p id="rfc.section.6.13.4.p.6">A stateless reset will be interpreted by a recipient as a packet with a short header.  For the packet to appear as valid, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
 <p id="rfc.section.6.13.4.p.7">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
 <p id="rfc.section.6.13.4.p.8">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
