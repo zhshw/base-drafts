@@ -5846,6 +5846,8 @@ Internet-Draft           QUIC Transport Protocol               July 2018
            | 0x0007 | ack_delay_exponent       | Section 6.6.1 |
            |        |                          |               |
            | 0x0008 | initial_max_uni_streams  | Section 6.6.1 |
+           |        |                          |               |
+           | 0x0009 | disable_migration        | Section 6.6.1 |
            +--------+--------------------------+---------------+
 
             Table 7: Initial QUIC Transport Parameters Entries
@@ -5872,8 +5874,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Specification:  A reference to a publicly available specification for
       the value.
 
-   The nominated expert(s) verify that a specification exists and is
-   readily accessible.  Specifications for new registrations need to
 
 
 
@@ -5882,6 +5882,8 @@ Iyengar & Thomson        Expires January 4, 2019              [Page 105]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   The nominated expert(s) verify that a specification exists and is
+   readily accessible.  Specifications for new registrations need to
    describe the means by which an endpoint might determine that it can
    send the identified type of frame.  An accompanying transport
    parameter registration (see Section 13.1) is expected for most
@@ -5928,8 +5930,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    +------+---------------------------+----------------+---------------+
    | 0x0  | NO_ERROR                  | No error       | Section 11.3  |
    |      |                           |                |               |
-   | 0x1  | INTERNAL_ERROR            | Implementation | Section 11.3  |
-   |      |                           | error          |               |
 
 
 
@@ -5938,6 +5938,8 @@ Iyengar & Thomson        Expires January 4, 2019              [Page 106]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   | 0x1  | INTERNAL_ERROR            | Implementation | Section 11.3  |
+   |      |                           | error          |               |
    |      |                           |                |               |
    | 0x2  | SERVER_BUSY               | Server         | Section 11.3  |
    |      |                           | currently busy |               |
@@ -5981,8 +5983,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    +------+---------------------------+----------------+---------------+
 
             Table 8: Initial QUIC Transport Error Codes Entries
-
-
 
 
 
