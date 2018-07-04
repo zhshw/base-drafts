@@ -1016,7 +1016,7 @@ ul.toc li {
 <dt>Google QUIC Demultipexing Bit:</dt>
 <dd style="margin-left: 8">The fifth bit (0x8) of octet 0 is set to 0. This allows implementations of Google QUIC to distinguish Google QUIC packets from short header packets sent by a client because Google QUIC servers expect the connection ID to always be present.  The special interpretation of this bit SHOULD be removed from this specification when Google QUIC has finished transitioning to the new header format.</dd>
 <dt>Reserved:</dt>
-<dd style="margin-left: 8">The sixth, seventh, and eighth bits (0x7) of octet 0 are reserved for experimentation.  Endpoints can MUST ignore these bits unless they are participating in an experiment that uses these bits.  An endpoint not actively using these bits SHOULD set the value randomly to protect against unwanted inference about particular values.</dd>
+<dd style="margin-left: 8">The sixth, seventh, and eighth bits (0x7) of octet 0 are reserved for experimentation.  Endpoints MUST ignore these bits unless they are participating in an experiment that uses these bits.  An endpoint not actively using these bits SHOULD set the value randomly to protect against unwanted inference about particular values.</dd>
 <dt>Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 6.1</a> for more details.</dd>
 <dt>Packet Number:</dt>
