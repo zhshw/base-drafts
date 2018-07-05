@@ -26,7 +26,7 @@ body {
   font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
 .title, #rfc\.title h1 { font-size: 32px; }
 h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
@@ -165,12 +165,17 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
@@ -407,21 +412,22 @@ ul.toc li {
 <link href="#rfc.references" rel="Chapter" title="14 References">
 <link href="#rfc.references.1" rel="Chapter" title="14.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="14.2 Informative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
-<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-transport-12">
-<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-transport-11">
-<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-transport-10">
-<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Since draft-ietf-quic-transport-09">
-<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 Since draft-ietf-quic-transport-08">
-<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 Since draft-ietf-quic-transport-07">
-<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 Since draft-ietf-quic-transport-06">
-<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 Since draft-ietf-quic-transport-05">
-<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 Since draft-ietf-quic-transport-04">
-<link href="#rfc.appendix.A.10" rel="Chapter" title="A.10 Since draft-ietf-quic-transport-03">
-<link href="#rfc.appendix.A.11" rel="Chapter" title="A.11 Since draft-ietf-quic-transport-02">
-<link href="#rfc.appendix.A.12" rel="Chapter" title="A.12 Since draft-ietf-quic-transport-01">
-<link href="#rfc.appendix.A.13" rel="Chapter" title="A.13 Since draft-ietf-quic-transport-00">
-<link href="#rfc.appendix.A.14" rel="Chapter" title="A.14 Since draft-hamilton-quic-transport-protocol-01">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Sample Packet Number Decoding Algorithm">
+<link href="#rfc.appendix.B" rel="Chapter" title="B Change Log">
+<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Since draft-ietf-quic-transport-12">
+<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Since draft-ietf-quic-transport-11">
+<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Since draft-ietf-quic-transport-10">
+<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Since draft-ietf-quic-transport-09">
+<link href="#rfc.appendix.B.5" rel="Chapter" title="B.5 Since draft-ietf-quic-transport-08">
+<link href="#rfc.appendix.B.6" rel="Chapter" title="B.6 Since draft-ietf-quic-transport-07">
+<link href="#rfc.appendix.B.7" rel="Chapter" title="B.7 Since draft-ietf-quic-transport-06">
+<link href="#rfc.appendix.B.8" rel="Chapter" title="B.8 Since draft-ietf-quic-transport-05">
+<link href="#rfc.appendix.B.9" rel="Chapter" title="B.9 Since draft-ietf-quic-transport-04">
+<link href="#rfc.appendix.B.10" rel="Chapter" title="B.10 Since draft-ietf-quic-transport-03">
+<link href="#rfc.appendix.B.11" rel="Chapter" title="B.11 Since draft-ietf-quic-transport-02">
+<link href="#rfc.appendix.B.12" rel="Chapter" title="B.12 Since draft-ietf-quic-transport-01">
+<link href="#rfc.appendix.B.13" rel="Chapter" title="B.13 Since draft-ietf-quic-transport-00">
+<link href="#rfc.appendix.B.14" rel="Chapter" title="B.14 Since draft-hamilton-quic-transport-protocol-01">
 <link href="#rfc.acknowledgments" rel="Chapter">
 <link href="#rfc.contributors" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
@@ -432,7 +438,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-06-27" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-05" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -456,12 +462,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: December 29, 2018</td>
+<td class="left">Expires: January 6, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">June 27, 2018</td>
+<td class="right">July 05, 2018</td>
 </tr>
 
     	
@@ -480,7 +486,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on December 29, 2018.</p>
+<p>This Internet-Draft will expire on January 6, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -752,35 +758,37 @@ ul.toc li {
 </li>
 <li>14.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
-</ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Sample Packet Number Decoding Algorithm</a>
 </li>
-<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-transport-12</a>
+<li>Appendix B.   <a href="#rfc.appendix.B">Change Log</a>
 </li>
-<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-transport-11</a>
+<ul><li>B.1.   <a href="#rfc.appendix.B.1">Since draft-ietf-quic-transport-12</a>
 </li>
-<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-transport-10</a>
+<li>B.2.   <a href="#rfc.appendix.B.2">Since draft-ietf-quic-transport-11</a>
 </li>
-<li>A.4.   <a href="#rfc.appendix.A.4">Since draft-ietf-quic-transport-09</a>
+<li>B.3.   <a href="#rfc.appendix.B.3">Since draft-ietf-quic-transport-10</a>
 </li>
-<li>A.5.   <a href="#rfc.appendix.A.5">Since draft-ietf-quic-transport-08</a>
+<li>B.4.   <a href="#rfc.appendix.B.4">Since draft-ietf-quic-transport-09</a>
 </li>
-<li>A.6.   <a href="#rfc.appendix.A.6">Since draft-ietf-quic-transport-07</a>
+<li>B.5.   <a href="#rfc.appendix.B.5">Since draft-ietf-quic-transport-08</a>
 </li>
-<li>A.7.   <a href="#rfc.appendix.A.7">Since draft-ietf-quic-transport-06</a>
+<li>B.6.   <a href="#rfc.appendix.B.6">Since draft-ietf-quic-transport-07</a>
 </li>
-<li>A.8.   <a href="#rfc.appendix.A.8">Since draft-ietf-quic-transport-05</a>
+<li>B.7.   <a href="#rfc.appendix.B.7">Since draft-ietf-quic-transport-06</a>
 </li>
-<li>A.9.   <a href="#rfc.appendix.A.9">Since draft-ietf-quic-transport-04</a>
+<li>B.8.   <a href="#rfc.appendix.B.8">Since draft-ietf-quic-transport-05</a>
 </li>
-<li>A.10.   <a href="#rfc.appendix.A.10">Since draft-ietf-quic-transport-03</a>
+<li>B.9.   <a href="#rfc.appendix.B.9">Since draft-ietf-quic-transport-04</a>
 </li>
-<li>A.11.   <a href="#rfc.appendix.A.11">Since draft-ietf-quic-transport-02</a>
+<li>B.10.   <a href="#rfc.appendix.B.10">Since draft-ietf-quic-transport-03</a>
 </li>
-<li>A.12.   <a href="#rfc.appendix.A.12">Since draft-ietf-quic-transport-01</a>
+<li>B.11.   <a href="#rfc.appendix.B.11">Since draft-ietf-quic-transport-02</a>
 </li>
-<li>A.13.   <a href="#rfc.appendix.A.13">Since draft-ietf-quic-transport-00</a>
+<li>B.12.   <a href="#rfc.appendix.B.12">Since draft-ietf-quic-transport-01</a>
 </li>
-<li>A.14.   <a href="#rfc.appendix.A.14">Since draft-hamilton-quic-transport-protocol-01</a>
+<li>B.13.   <a href="#rfc.appendix.B.13">Since draft-ietf-quic-transport-00</a>
+</li>
+<li>B.14.   <a href="#rfc.appendix.B.14">Since draft-hamilton-quic-transport-protocol-01</a>
 </li>
 </ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
@@ -1098,7 +1106,7 @@ ul.toc li {
 <a href="#rfc.section.4.4.1.2">4.4.1.2.</a> <a href="#tokens" id="tokens">Tokens</a>
 </h4>
 <p id="rfc.section.4.4.1.2.p.1">If the client has a suitable token available from a previous connection, it SHOULD populate the Token field.</p>
-<p id="rfc.section.4.4.1.2.p.2">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry.</p>
+<p id="rfc.section.4.4.1.2.p.2">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
 <p id="rfc.section.4.4.1.2.p.3">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
 <p></p>
 
@@ -1106,9 +1114,6 @@ ul.toc li {
 <dt>Note:</dt>
 <dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.</dd>
 </dl>
-<p></p>
-
-<ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li><ul class="empty"><li>Reflow paragraphs</li></ul></li></ul></li></ul></li></ul></li></ul></li></ul></li></ul>
 <h4 id="rfc.section.4.4.1.3">
 <a href="#rfc.section.4.4.1.3">4.4.1.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
 </h4>
@@ -1203,7 +1208,7 @@ ul.toc li {
 <p id="rfc.section.4.8.p.6">This enforces cryptographic separation between the data sent in the different packet sequence number spaces.  Each packet number space starts at packet number 0.  Subsequent packets sent in the same packet number space MUST increase the packet number by at least one.</p>
 <p id="rfc.section.4.8.p.7">0-RTT and 1-RTT data exist in the same packet number space to make loss recovery algorithms easier to implement between the two packet types.</p>
 <p id="rfc.section.4.8.p.8">A QUIC endpoint MUST NOT reuse a packet number within the same packet number space in one connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; an endpoint MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) in response to further packets that it receives.</p>
-<p id="rfc.section.4.8.p.9">In the QUIC long and short packet headers, the number of bits required to represent the packet number are reduced by including only a variable number of the least significant bits of the packet number.  One or two of the most significant bits of the first octet determine how many bits of the packet number are provided, as shown in <a href="#pn-encodings" class="xref">Table 2</a>.</p>
+<p id="rfc.section.4.8.p.9">In the QUIC long and short packet headers, the number of bits required to represent the packet number is reduced by including only a variable number of the least significant bits of the packet number.  One or two of the most significant bits of the first octet determine how many bits of the packet number are provided, as shown in <a href="#pn-encodings" class="xref">Table 2</a>.</p>
 <div id="rfc.table.2"></div>
 <div id="pn-encodings"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -1233,7 +1238,7 @@ ul.toc li {
 </table>
 <p id="rfc.section.4.8.p.10">Note that these encodings are similar to those in <a href="#integer-encoding" class="xref">Section 7.1</a>, but use different values.</p>
 <p id="rfc.section.4.8.p.11">The encoded packet number is protected as described in Section 5.6 <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. Protection of the packet number is removed prior to recovering the full packet number. The full packet number is reconstructed at the receiver based on the number of significant bits present, the content of those bits, and the largest packet number received on a successfully authenticated packet. Recovering the full packet number is necessary to successfully remove packet protection.</p>
-<p id="rfc.section.4.8.p.12">Once packet number protection is removed, the packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 14-bit value of 0x9b3 will be decoded as 0xaa8309b3.</p>
+<p id="rfc.section.4.8.p.12">Once packet number protection is removed, the packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 14-bit value of 0x9b3 will be decoded as 0xaa8309b3.  Example pseudo-code for packet number decoding can be found in <a href="#sample-packet-number-decoding" class="xref">Appendix A</a>.</p>
 <p id="rfc.section.4.8.p.13">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
 <p id="rfc.section.4.8.p.14">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
 <p id="rfc.section.4.8.p.15">For example, if an endpoint has received an acknowledgment for packet 0x6afa2f, sending a packet with a number of 0x6b2d79 requires a packet number encoding with 14 bits or more; whereas the 30-bit packet number encoding is needed to send a packet with a number of 0x6bc107.</p>
@@ -1740,8 +1745,10 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.6.11">6.11.</a> <a href="#migration" id="migration">Connection Migration</a>
 </h2>
 <p id="rfc.section.6.11.p.1">QUIC allows connections to survive changes to endpoint addresses (that is, IP address and/or port), such as those caused by a endpoint migrating to a new network.  This section describes the process by which an endpoint migrates to a new address.</p>
-<p id="rfc.section.6.11.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.  An endpoint also MUST NOT initiate connection migration if the peer sent the <samp>disable_migration</samp> transport parameter during the handshake.  An endpoint which has sent this transport parameter, but detects that a peer has nonetheless migrated to a different network MAY treat this as a connection error of type INVALID_MIGRATION. However, note that not all changes of peer address are intentional migrations. The peer could experience an unintended change of address due to NAT rebinding; endpoints SHOULD perform path validation (<a href="#migrate-validate" class="xref">Section 6.10</a>) if the rebinding does not cause the connection to fail.</p>
-<p id="rfc.section.6.11.p.3">This document limits migration of connections to new client addresses, except as described in <a href="#preferred-address" class="xref">Section 6.12</a>. Clients are responsible for initiating all migrations.  Servers do not send non-probing packets (see <a href="#probing" class="xref">Section 6.11.1</a>) toward a client address until it sees a non-probing packet from that address.  If a client receives packets from an unknown server address, the client MAY discard these packets.</p>
+<p id="rfc.section.6.11.p.2">An endpoint MUST NOT initiate connection migration before the handshake is finished and the endpoint has 1-RTT keys.  The design of QUIC relies on endpoints retaining a stable address for the duration of the handshake.</p>
+<p id="rfc.section.6.11.p.3">An endpoint also MUST NOT initiate connection migration if the peer sent the <samp>disable_migration</samp> transport parameter during the handshake.  An endpoint which has sent this transport parameter, but detects that a peer has nonetheless migrated to a different network MAY treat this as a connection error of type INVALID_MIGRATION.</p>
+<p id="rfc.section.6.11.p.4">Not all changes of peer address are intentional migrations. The peer could experience NAT rebinding: a change of address due to a middlebox, usually a NAT, allocating a new outgoing port or even a new outgoing IP address for a flow.  Endpoints SHOULD perform path validation (<a href="#migrate-validate" class="xref">Section 6.10</a>) if a NAT rebinding does not cause the connection to fail.</p>
+<p id="rfc.section.6.11.p.5">This document limits migration of connections to new client addresses, except as described in <a href="#preferred-address" class="xref">Section 6.12</a>. Clients are responsible for initiating all migrations.  Servers do not send non-probing packets (see <a href="#probing" class="xref">Section 6.11.1</a>) toward a client address until it sees a non-probing packet from that address.  If a client receives packets from an unknown server address, the client MAY discard these packets.</p>
 <h3 id="rfc.section.6.11.1">
 <a href="#rfc.section.6.11.1">6.11.1.</a> <a href="#probing" id="probing">Probing a New Path</a>
 </h3>
@@ -1885,7 +1892,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p id="rfc.section.6.13.4.p.4">This design ensures that a stateless reset packet is - to the extent possible - indistinguishable from a regular packet with a short header.</p>
-<p id="rfc.section.6.13.4.p.5">The message consists of a header octet, followed by random octets of arbitrary length, followed by a Stateless Reset Token.</p>
+<p id="rfc.section.6.13.4.p.5">The message consists of a header octet, followed by an arbitrary number of random octets, followed by a Stateless Reset Token.</p>
 <p id="rfc.section.6.13.4.p.6">A stateless reset will be interpreted by a recipient as a packet with a short header.  For the packet to appear as valid, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
 <p id="rfc.section.6.13.4.p.7">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
 <p id="rfc.section.6.13.4.p.8">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
@@ -2508,7 +2515,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.8.1.p.1">A packet MUST NOT be acknowledged until packet protection has been successfully removed and all frames contained in the packet have been processed.  Any stream state transitions triggered by the frame MUST have occurred.  For STREAM frames, this means the data has been enqueued in preparation to be received by the application protocol, but it does not require that data is delivered and consumed.</p>
 <p id="rfc.section.8.1.p.2">Once the packet has been fully processed, a receiver acknowledges receipt by sending one or more ACK frames containing the packet number of the received packet.  To avoid creating an indefinite feedback loop, an endpoint MUST NOT send an ACK frame in response to a packet containing only ACK or PADDING frames, even if there are packet gaps which precede the received packet.  The endpoint MUST acknowledge packets containing only ACK or PADDING frames in the next ACK frame that it sends.</p>
-<p id="rfc.section.8.1.p.3">Strategies and implications of the frequency of generating acknowledgments are discussed in more detail in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
+<p id="rfc.section.8.1.p.3">While PADDING frames do not elicit an ACK frame from a receiver, they are considered to be in flight for congestion control purposes <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>. Sending only PADDING frames might cause the sender to become limited by the congestion controller (as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>) with no acknowledgments forthcoming from the receiver. Therefore, a sender should ensure that other frames are sent in addition to PADDING frames to elicit acknowledgments from the receiver.</p>
+<p id="rfc.section.8.1.p.4">Strategies and implications of the frequency of generating acknowledgments are discussed in more detail in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
 <h2 id="rfc.section.8.2">
 <a href="#rfc.section.8.2">8.2.</a> <a href="#retransmission-of-information" id="retransmission-of-information">Retransmission of Information</a>
 </h2>
@@ -2822,7 +2830,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.9.4.p.1">An endpoint limits the number of concurrently active incoming streams by adjusting the maximum stream ID.  An initial value is set in the transport parameters (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) and is subsequently increased by MAX_STREAM_ID frames (see <a href="#frame-max-stream-id" class="xref">Section 7.8</a>).</p>
 <p id="rfc.section.9.4.p.2">The maximum stream ID is specific to each endpoint and applies only to the peer that receives the setting. That is, clients specify the maximum stream ID the server can initiate, and servers specify the maximum stream ID the client can initiate.  Each endpoint may respond on streams initiated by the other peer, regardless of whether it is permitted to initiated new streams.</p>
-<p id="rfc.section.9.4.p.3">Endpoints MUST NOT exceed the limit set by their peer.  An endpoint that receives a STREAM frame with an ID greater than the limit it has sent MUST treat this as a stream error of type STREAM_ID_ERROR (<a href="#error-handling" class="xref">Section 11</a>), unless this is a result of a change in the initial offsets (see <a href="#zerortt-parameters" class="xref">Section 6.6.2</a>).</p>
+<p id="rfc.section.9.4.p.3">Endpoints MUST NOT exceed the limit set by their peer.  An endpoint that receives a STREAM frame with an ID greater than the limit it has sent MUST treat this as a stream error of type STREAM_ID_ERROR (<a href="#error-handling" class="xref">Section 11</a>), unless this is a result of a change in the initial limits (see <a href="#zerortt-parameters" class="xref">Section 6.6.2</a>).</p>
 <p id="rfc.section.9.4.p.4">A receiver MUST NOT renege on an advertisement; that is, once a receiver advertises a stream ID via a MAX_STREAM_ID frame, it MUST NOT subsequently advertise a smaller maximum ID.  A sender may receive MAX_STREAM_ID frames out of order; a sender MUST therefore ignore any MAX_STREAM_ID that does not increase the maximum.</p>
 <h2 id="rfc.section.9.5">
 <a href="#rfc.section.9.5">9.5.</a> <a href="#sending-and-receiving-data" id="sending-and-receiving-data">Sending and Receiving Data</a>
@@ -3075,6 +3083,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="left">initial_max_uni_streams</td>
 <td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
 </tr>
+<tr>
+<td class="left">0x0009</td>
+<td class="left">disable_migration</td>
+<td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
+</tr>
 </tbody>
 </table>
 <h2 id="rfc.section.13.2">
@@ -3234,12 +3247,12 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-RECOVERY">[QUIC-RECOVERY]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, June 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, July 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="QUIC-TLS">[QUIC-TLS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, June 2018.</td>
+<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, July 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -3293,7 +3306,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, June 2018.</td>
+<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, July 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2018">[RFC2018]</b></td>
@@ -3337,38 +3350,80 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#change-log" id="change-log">Change Log</a>
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#sample-packet-number-decoding" id="sample-packet-number-decoding">Sample Packet Number Decoding Algorithm</a>
+</h1>
+<p id="rfc.section.A.p.1">The following pseudo-code shows how an implementation can decode packet numbers after packet number protection has been removed.</p>
+<pre>
+DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
+   expected_pn  = largest_pn + 1
+   pn_win       = 1 &lt;&lt; pn_nbits
+   pn_hwin      = pn_win / 2
+   pn_mask      = pn_win - 1
+   // The incoming packet number should be greater than
+   // expected_pn - pn_hwin and less than or equal to
+   // expected_pn + pn_hwin
+   //
+   // This means we can't just strip the trailing bits from
+   // expected_pn and add the truncated_pn because that might
+   // yield a value outside the window.
+   //
+   // The following code calculates a candidate value and
+   // makes sure it's within the packet number window.
+   candidate_pn = (expected_pn &amp; ~pn_mask) | truncated_pn
+   if candidate_pn &lt;= expected_pn - pn_hwin:
+      return candidate_pn + pn_win
+   // Note the extra check for underflow when candidate_pn
+   // is near zero.
+   if candidate_pn &gt; expected_pn + pn_hwin and
+      candidate_pn &gt; pn_win:
+      return candidate_pn - pn_win
+   return candidate_pn
+</pre>
+<h1 id="rfc.appendix.B">
+<a href="#rfc.appendix.B">Appendix B.</a> <a href="#change-log" id="change-log">Change Log</a>
 </h1>
 <p></p>
 
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong> Please remove this section prior to publication of a final version of this document.</li></ul>
-<p id="rfc.section.A.p.2">Issue and pull request numbers are listed with a leading octothorp.</p>
-<h2 id="rfc.appendix.A.1">
-<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-transport-12" id="since-draft-ietf-quic-transport-12">Since draft-ietf-quic-transport-12</a>
+<p id="rfc.section.B.p.2">Issue and pull request numbers are listed with a leading octothorp.</p>
+<h2 id="rfc.appendix.B.1">
+<a href="#rfc.appendix.B.1">B.1.</a> <a href="#since-draft-ietf-quic-transport-12" id="since-draft-ietf-quic-transport-12">Since draft-ietf-quic-transport-12</a>
 </h2>
 <p></p>
 
 <ul>
-<li>Enable server to transition connections to a preferred address (#560, #1251).</li>
-<li>Moved the cryptographic handshake off stream 0 and into CRYPTO frames.</li>
-<li>Move stateless retry to the QUIC layer.</li>
-<li>Added token fields to Initial packet header.</li>
-<li>Added NEW_TOKEN frame.</li>
+<li>Changes to integration of the TLS handshake (#829, #1018, #1094, #1165, #1190, #1233, #1242, #1252, #1450) <ul>
+<li>The cryptographic handshake uses CRYPTO frames, not stream 0</li>
+<li>QUIC packet protection is used in place of TLS record protection</li>
+<li>Separate QUIC packet number spaces are used for the handshake</li>
+<li>Changed Retry to be independent of the cryptographic handshake</li>
+<li>Added NEW_TOKEN frame and Token fields to Initial packet</li>
+<li>Limit the use of HelloRetryRequest to address TLS needs (like key shares)</li>
 </ul>
-<h2 id="rfc.appendix.A.2">
-<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
+</li>
+<li>Enable server to transition connections to a preferred address (#560, #1251, #1373)</li>
+<li>Added ECN feedback mechanisms and handling; new ACK_ECN frame (#804, #805, #1372)</li>
+<li>Changed rules and recommendations for use of new connection IDs (#1258, #1264, #1276, #1280, #1419, #1452, #1453, #1465)</li>
+<li>Added a transport parameter to disable intentional connection migration (#1271, #1447)</li>
+<li>Packets from different connection ID can&#8217;t be coalesced (#1287, #1423)</li>
+<li>Fixed sampling method for packet number encryption; the length field in long headers includes the packet number field in addition to the packet payload (#1387, #1389)</li>
+<li>Stateless Reset is now symmetric and subject to size constraints (#466, #1346)</li>
+<li>Added frame type extension mechanism (#58, #1473)</li>
+</ul>
+<h2 id="rfc.appendix.B.2">
+<a href="#rfc.appendix.B.2">B.2.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
 </h2>
 <p></p>
 
 <ul>
 <li>Enable server to transition connections to a preferred address (#560, #1251)</li>
-<li>Packet numbers are encrypted (#1174, #1043, #1048, #1034, #850, #990, #734, #1079)</li>
+<li>Packet numbers are encrypted (#1174, #1043, #1048, #1034, #850, #990, #734, #1317, #1267, #1079)</li>
 <li>Packet numbers use a variable-length encoding (#989, #1334)</li>
 <li>STREAM frames can now be empty (#1350)</li>
 </ul>
-<h2 id="rfc.appendix.A.3">
-<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
+<h2 id="rfc.appendix.B.3">
+<a href="#rfc.appendix.B.3">B.3.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
 </h2>
 <p></p>
 
@@ -3388,8 +3443,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Endpoints now become closing after an idle timeout (#1178, #1179)</li>
 <li>Remove implication that Version Negotiation is sent when a packet of the wrong version is received (#1197)</li>
 </ul>
-<h2 id="rfc.appendix.A.4">
-<a href="#rfc.appendix.A.4">A.4.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
+<h2 id="rfc.appendix.B.4">
+<a href="#rfc.appendix.B.4">B.4.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
 </h2>
 <p></p>
 
@@ -3403,8 +3458,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Added an error code for server busy signals (#1137)</li>
 <li>Endpoints now set the connection ID that their peer uses.  Connection IDs are variable length.  Removed the omit_connection_id transport parameter and the corresponding short header flag. (#1089, #1052, #1146, #821, #745, #821, #1166, #1151)</li>
 </ul>
-<h2 id="rfc.appendix.A.5">
-<a href="#rfc.appendix.A.5">A.5.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
+<h2 id="rfc.appendix.B.5">
+<a href="#rfc.appendix.B.5">B.5.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
 </h2>
 <p></p>
 
@@ -3421,8 +3476,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Ack Delay assumes a default value during the handshake (#1007, #1009)</li>
 <li>Removed transport parameters from NewSessionTicket (#1015)</li>
 </ul>
-<h2 id="rfc.appendix.A.6">
-<a href="#rfc.appendix.A.6">A.6.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
+<h2 id="rfc.appendix.B.6">
+<a href="#rfc.appendix.B.6">B.6.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
 </h2>
 <p></p>
 
@@ -3449,8 +3504,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>negotiated_version is sent in server transport parameters (#710, #959)</li>
 <li>Increased the range over which packet numbers are randomized (#864, #850, #964)</li>
 </ul>
-<h2 id="rfc.appendix.A.7">
-<a href="#rfc.appendix.A.7">A.7.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
+<h2 id="rfc.appendix.B.7">
+<a href="#rfc.appendix.B.7">B.7.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
 </h2>
 <p></p>
 
@@ -3464,8 +3519,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Remove timestamps from the ACK frame (#841)</li>
 <li>Require transport parameters to only appear once (#792)</li>
 </ul>
-<h2 id="rfc.appendix.A.8">
-<a href="#rfc.appendix.A.8">A.8.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
+<h2 id="rfc.appendix.B.8">
+<a href="#rfc.appendix.B.8">B.8.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
 </h2>
 <p></p>
 
@@ -3477,8 +3532,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Renamed STREAM_ID_NEEDED to STREAM_ID_BLOCKED</li>
 <li>Clarify Keep-alive requirements (#729)</li>
 </ul>
-<h2 id="rfc.appendix.A.9">
-<a href="#rfc.appendix.A.9">A.9.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
+<h2 id="rfc.appendix.B.9">
+<a href="#rfc.appendix.B.9">B.9.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
 </h2>
 <p></p>
 
@@ -3497,8 +3552,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>CONNECTION_CLOSE terminates the connection like TCP RST (#330, #328)</li>
 <li>Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)</li>
 </ul>
-<h2 id="rfc.appendix.A.10">
-<a href="#rfc.appendix.A.10">A.10.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
+<h2 id="rfc.appendix.B.10">
+<a href="#rfc.appendix.B.10">B.10.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
 </h2>
 <p></p>
 
@@ -3506,8 +3561,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Change STREAM and RST_STREAM layout</li>
 <li>Add MAX_STREAM_ID settings</li>
 </ul>
-<h2 id="rfc.appendix.A.11">
-<a href="#rfc.appendix.A.11">A.11.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
+<h2 id="rfc.appendix.B.11">
+<a href="#rfc.appendix.B.11">B.11.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
 </h2>
 <p></p>
 
@@ -3532,8 +3587,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </li>
 <li>Expanded security considerations (#440, #444, #445, #448)</li>
 </ul>
-<h2 id="rfc.appendix.A.12">
-<a href="#rfc.appendix.A.12">A.12.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
+<h2 id="rfc.appendix.B.12">
+<a href="#rfc.appendix.B.12">B.12.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
 </h2>
 <p></p>
 
@@ -3575,8 +3630,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Error codes for RST_STREAM and CONNECTION_CLOSE are now at a consistent offset (#249)</li>
 <li>Defined priority as the responsibility of the application protocol (#104, #303)</li>
 </ul>
-<h2 id="rfc.appendix.A.13">
-<a href="#rfc.appendix.A.13">A.13.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
+<h2 id="rfc.appendix.B.13">
+<a href="#rfc.appendix.B.13">B.13.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
 </h2>
 <p></p>
 
@@ -3587,8 +3642,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Error code space is divided into regions for each component</li>
 <li>Use big endian for all numeric values</li>
 </ul>
-<h2 id="rfc.appendix.A.14">
-<a href="#rfc.appendix.A.14">A.14.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
+<h2 id="rfc.appendix.B.14">
+<a href="#rfc.appendix.B.14">B.14.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
 </h2>
 <p></p>
 
@@ -3599,11 +3654,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <li>Moved Contributors and Acknowledgments to appendices</li>
 </ul>
 <h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
-<p id="rfc.section.B.p.1">Special thanks are due to the following for helping shape pre-IETF QUIC and its deployment: Chris Bentzel, Misha Efimov, Roberto Peon, Alistair Riddoch, Siddharth Vijayakrishnan, and Assar Westerlund.</p>
-<p id="rfc.section.B.p.2">This document has benefited immensely from various private discussions and public ones on the quic@ietf.org and proto-quic@chromium.org mailing lists. Our thanks to all.</p>
+<p id="rfc.section.C.p.1">Special thanks are due to the following for helping shape pre-IETF QUIC and its deployment: Chris Bentzel, Misha Efimov, Roberto Peon, Alistair Riddoch, Siddharth Vijayakrishnan, and Assar Westerlund.</p>
+<p id="rfc.section.C.p.2">This document has benefited immensely from various private discussions and public ones on the quic@ietf.org and proto-quic@chromium.org mailing lists. Our thanks to all.</p>
 <h1 id="rfc.contributors"><a href="#rfc.contributors">Contributors</a></h1>
-<p id="rfc.section.C.p.1">The original authors of this specification were Ryan Hamilton, Jana Iyengar, Ian Swett, and Alyssa Wilk.</p>
-<p id="rfc.section.C.p.2">The original design and rationale behind this protocol draw significantly from work by Jim Roskind <a href="#EARLY-DESIGN" class="xref">[EARLY-DESIGN]</a>. In alphabetical order, the contributors to the pre-IETF QUIC project at Google are: Britt Cyr, Jeremy Dorfman, Ryan Hamilton, Jana Iyengar, Fedor Kouranov, Charles Krasic, Jo Kulik, Adam Langley, Jim Roskind, Robbie Shade, Satyam Shekhar, Cherie Shi, Ian Swett, Raman Tenneti, Victor Vasiliev, Antonio Vicente, Patrik Westin, Alyssa Wilk, Dale Worley, Fan Yang, Dan Zhang, Daniel Ziegler.</p>
+<p id="rfc.section.D.p.1">The original authors of this specification were Ryan Hamilton, Jana Iyengar, Ian Swett, and Alyssa Wilk.</p>
+<p id="rfc.section.D.p.2">The original design and rationale behind this protocol draw significantly from work by Jim Roskind <a href="#EARLY-DESIGN" class="xref">[EARLY-DESIGN]</a>. In alphabetical order, the contributors to the pre-IETF QUIC project at Google are: Britt Cyr, Jeremy Dorfman, Ryan Hamilton, Jana Iyengar, Fedor Kouranov, Charles Krasic, Jo Kulik, Adam Langley, Jim Roskind, Robbie Shade, Satyam Shekhar, Cherie Shi, Ian Swett, Raman Tenneti, Victor Vasiliev, Antonio Vicente, Patrik Westin, Alyssa Wilk, Dale Worley, Fan Yang, Dan Zhang, Daniel Ziegler.</p>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">

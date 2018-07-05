@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: December 29, 2018                           Akamai Technologies
+Expires: January 6, 2019                             Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                           June 27, 2018
+                                                           July 05, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on December 29, 2018.
+   This Internet-Draft will expire on January 6, 2019.
 
 
 
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 1]
+Krasic, et al.           Expires January 6, 2019                [Page 1]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 2]
+Krasic, et al.           Expires January 6, 2019                [Page 2]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
        6.3.1.  Blocked Eviction  . . . . . . . . . . . . . . . . . .  20
@@ -127,9 +127,10 @@ Internet-Draft                    QPACK                        June 2018
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  23
      9.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  23
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  23
-     A.1.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  23
+     A.1.  Since draft-ietf-quic-qpack-00  . . . . . . . . . . . . .  23
+     A.2.  Since draft-ietf-quic-qcram-00  . . . . . . . . . . . . .  24
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Introduction
 
@@ -145,8 +146,7 @@ Internet-Draft                    QPACK                        June 2018
 
    QUIC is described in [QUIC-TRANSPORT].  The HTTP/QUIC mapping is
    described in [QUIC-HTTP].  For a full description of HTTP/2, see
-   [RFC7540].  The description of HPACK is [RFC7541], with important
-   terminology in Section 1.3.
+   [RFC7540].  The description of HPACK is [RFC7541].
 
    QPACK reuses core concepts from HPACK, but is redesigned to allow
    correctness in the presence of out-of-order delivery, with
@@ -165,9 +165,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 3]
+Krasic, et al.           Expires January 6, 2019                [Page 3]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    connection and can be used by the encoder to index header fields
@@ -221,15 +221,14 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 4]
+Krasic, et al.           Expires January 6, 2019                [Page 4]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    The decoder determines the maximum size that the encoder is permitted
    to use for the dynamic table.  In HTTP/QUIC, this value is determined
-   by the SETTINGS_HEADER_TABLE_SIZE setting (see Section 4.2.5.2 of
-   [QUIC-HTTP]).
+   by the SETTINGS_HEADER_TABLE_SIZE setting (see Section 4).
 
    An encoder can choose to use less capacity than this maximum size
    (see Section 5.2.4), but the chosen size MUST stay lower than or
@@ -273,17 +272,16 @@ Internet-Draft                    QPACK                        June 2018
 
               Example Dynamic Table Indexing - Control Stream
 
-
-
-
-
-Krasic, et al.          Expires December 29, 2018               [Page 5]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    Because frames from request streams can be delivered out of order
    with instructions on the control stream, relative indices are
+
+
+
+Krasic, et al.           Expires January 6, 2019                [Page 5]
+
+Internet-Draft                    QPACK                        July 2018
+
+
    relative to the Base Index at the beginning of the header block (see
    Section 5.4.1).  The Base Index is an absolute index.  When
    interpreting the rest of the frame, the entry identified by Base
@@ -330,16 +328,16 @@ Internet-Draft                    QPACK                        June 2018
 
    If the decoder encounters a reference to an entry which has already
    been dropped from the table or which is greater than the declared
-
-
-
-Krasic, et al.          Expires December 29, 2018               [Page 6]
-
-Internet-Draft                    QPACK                        June 2018
-
-
    Largest Reference (see Section 5.4.1), this MUST be treated as a
    stream error of type "HTTP_QPACK_DECOMPRESSION_FAILED" error code.
+
+
+
+Krasic, et al.           Expires January 6, 2019                [Page 6]
+
+Internet-Draft                    QPACK                        July 2018
+
+
    If this reference occurs on the control stream, this MUST be treated
    as a session error.
 
@@ -389,9 +387,11 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 7]
+
+
+Krasic, et al.           Expires January 6, 2019                [Page 7]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 2.3.1.  State Synchronization
@@ -445,9 +445,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 8]
+Krasic, et al.           Expires January 6, 2019                [Page 8]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    Encoder:  An implementation which transforms a header set into a
@@ -501,9 +501,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018               [Page 9]
+Krasic, et al.           Expires January 6, 2019                [Page 9]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    o  Finally, the contents of HEADERS and PUSH_PROMISE frames on
@@ -557,9 +557,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 10]
+Krasic, et al.           Expires January 6, 2019               [Page 10]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 5.2.  QPACK Encoder Stream
@@ -613,9 +613,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 11]
+Krasic, et al.           Expires January 6, 2019               [Page 11]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
         0   1   2   3   4   5   6   7
@@ -669,9 +669,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 12]
+Krasic, et al.           Expires January 6, 2019               [Page 12]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit
@@ -725,9 +725,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 13]
+Krasic, et al.           Expires January 6, 2019               [Page 13]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 5.3.2.  Header Acknowledgement
@@ -781,9 +781,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 14]
+Krasic, et al.           Expires January 6, 2019               [Page 14]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
      0   1   2   3   4   5   6   7
@@ -837,9 +837,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 15]
+Krasic, et al.           Expires January 6, 2019               [Page 15]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    A single-pass encoder is expected to determine the absolute value of
@@ -893,9 +893,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 16]
+Krasic, et al.           Expires January 6, 2019               [Page 16]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 5.4.2.2.  Indexed Header Field With Post-Base Index
@@ -949,9 +949,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 17]
+Krasic, et al.           Expires January 6, 2019               [Page 17]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    For entries in the static table or in the dynamic table with an
@@ -1005,9 +1005,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 18]
+Krasic, et al.           Expires January 6, 2019               [Page 18]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
         0   1   2   3   4   5   6   7
@@ -1061,9 +1061,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 19]
+Krasic, et al.           Expires January 6, 2019               [Page 19]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 6.3.1.  Blocked Eviction
@@ -1117,9 +1117,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 20]
+Krasic, et al.           Expires January 6, 2019               [Page 20]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
    baseIndex = dynamicTable.baseIndex
@@ -1173,9 +1173,9 @@ Internet-Draft                    QPACK                        June 2018
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 21]
+Krasic, et al.           Expires January 6, 2019               [Page 21]
 
-Internet-Draft                    QPACK                        June 2018
+Internet-Draft                    QPACK                        July 2018
 
 
 7.  Security Considerations
@@ -1220,19 +1220,24 @@ Internet-Draft                    QPACK                        June 2018
 
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http (work in progress), June 2018.
+              QUIC", draft-ietf-quic-http (work in progress), July 2018.
+
+   [QUIC-TRANSPORT]
+              Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
+              Multiplexed and Secure Transport", draft-ietf-quic-
+              transport (work in progress), July 2018.
+
+
+
+Krasic, et al.           Expires January 6, 2019               [Page 22]
+
+Internet-Draft                    QPACK                        July 2018
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-Krasic, et al.          Expires December 29, 2018              [Page 22]
-
-Internet-Draft                    QPACK                        June 2018
-
 
    [RFC7541]  Peon, R. and H. Ruellan, "HPACK: Header Compression for
               HTTP/2", RFC 7541, DOI 10.17487/RFC7541, May 2015,
@@ -1243,11 +1248,6 @@ Internet-Draft                    QPACK                        June 2018
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
 9.2.  Informative References
-
-   [QUIC-TRANSPORT]
-              Iyengar, J. and M. Thomson, "QUIC: A UDP-Based Multiplexed
-              and Secure Transport", draft-ietf-quic-transport-12 (work
-              in progress), May 2018.
 
    [RFC2360]  Scott, G., "Guide for Internet Standards Writers", BCP 22,
               RFC 2360, DOI 10.17487/RFC2360, June 1998,
@@ -1271,7 +1271,31 @@ Appendix A.  Change Log
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-A.1.  Since draft-ietf-quic-qcram-00
+A.1.  Since draft-ietf-quic-qpack-00
+
+   o  Renumbered instructions for consistency (#1471, #1472)
+
+   o  Decoder is allowed to validate largest reference (#1404, #1469)
+
+   o  Header block acknowledgments also acknowledge the associated
+      largest reference (#1370, #1400)
+
+   o  Added an acknowledgment for unread streams (#1371, #1400)
+
+
+
+
+Krasic, et al.           Expires January 6, 2019               [Page 23]
+
+Internet-Draft                    QPACK                        July 2018
+
+
+   o  Removed framing from encoder stream (#1361,#1467)
+
+   o  Control streams use typed unidirectional streams rather than fixed
+      stream IDs (#910,#1359)
+
+A.2.  Since draft-ietf-quic-qcram-00
 
    o  Separate instruction sets for table updates and header blocks
       (#1235, #1142, #1141)
@@ -1280,15 +1304,6 @@ A.1.  Since draft-ietf-quic-qcram-00
       #1314)
 
    o  Added mechanisms that support one-pass encoding (#1138, #1320)
-
-
-
-
-
-Krasic, et al.          Expires December 29, 2018              [Page 23]
-
-Internet-Draft                    QPACK                        June 2018
-
 
    o  Added a setting to control the number of blocked decoders (#238,
       #1140, #1143)
@@ -1320,6 +1335,17 @@ Acknowledgments
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
 
+
+
+
+
+
+
+Krasic, et al.           Expires January 6, 2019               [Page 24]
+
+Internet-Draft                    QPACK                        July 2018
+
+
 Authors' Addresses
 
    Charles 'Buck' Krasic
@@ -1341,4 +1367,34 @@ Authors' Addresses
 
 
 
-Krasic, et al.          Expires December 29, 2018              [Page 24]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Krasic, et al.           Expires January 6, 2019               [Page 25]
