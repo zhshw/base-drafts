@@ -291,7 +291,7 @@ ul.toc li {
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 Connection Reuse">
 <link href="#rfc.section.3" rel="Chapter" title="3 Stream Mapping and Usage">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 HTTP Message Exchanges">
-<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Header Compression">
+<link href="#rfc.section.3.1.1" rel="Chapter" title="3.1.1 Header Formatting and Compression">
 <link href="#rfc.section.3.1.2" rel="Chapter" title="3.1.2 The CONNECT Method">
 <link href="#rfc.section.3.1.3" rel="Chapter" title="3.1.3 Request Cancellation">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Request Prioritization">
@@ -429,7 +429,7 @@ ul.toc li {
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">HTTP Message Exchanges</a>
 </li>
-<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Header Compression</a>
+<ul><li>3.1.1.   <a href="#rfc.section.3.1.1">Header Formatting and Compression</a>
 </li>
 <li>3.1.2.   <a href="#rfc.section.3.1.2">The CONNECT Method</a>
 </li>
@@ -638,9 +638,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a QUIC stream. After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
 <p id="rfc.section.3.1.p.9">A server can send a complete response prior to the client sending an entire request if the response does not depend on any portion of the request that has not been sent and received. When this is true, a server MAY request that the client abort transmission of a request without error by triggering a QUIC STOP_SENDING with error code HTTP_EARLY_RESPONSE, sending a complete response, and cleanly closing its streams. Clients MUST NOT discard complete responses as a result of having their request terminated abruptly, though clients can always discard responses at their discretion for other reasons.  Servers MUST NOT abort a response in progress as a result of receiving a solicited RST_STREAM.</p>
 <h3 id="rfc.section.3.1.1">
-<a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#header-compression" id="header-compression">Header Compression</a>
+<a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#header-formatting-and-compression" id="header-formatting-and-compression">Header Formatting and Compression</a>
 </h3>
-<p id="rfc.section.3.1.1.p.1">HTTP/QUIC uses QPACK header compression as described in <a href="#QPACK" class="xref">[QPACK]</a>, a variation of HPACK which allows the flexibility to avoid header-compression-induced head-of-line blocking.  See that document for additional details.</p>
+<p id="rfc.section.3.1.1.p.1">HTTP header fields carry information as a series of key-value pairs. For a listing of registered HTTP headers, see the &#8220;Message Header Field&#8221; registry maintained at <a href="https://www.iana.org/assignments/message-headers">https://www.iana.org/assignments/message-headers</a>.</p>
+<p id="rfc.section.3.1.1.p.2">Just as in previous versions of HTTP, header field names are strings of ASCII characters that are compared in a case-insensitive fashion.  Properties of HTTP header names and values are discussed in more detail in Section 3.2 of <a href="#RFC7230" class="xref">[RFC7230]</a>, though the wire rendering in HTTP/QUIC differs.  As in HTTP/2, header field names MUST be converted to lowercase prior to their encoding.  A request or response containing uppercase header field names MUST be treated as malformed.</p>
+<p id="rfc.section.3.1.1.p.3">As in HTTP/2, HTTP/QUIC uses special pseudo-header fields beginning with &#8216;:&#8217; character (ASCII 0x3a) to convey the target URI, the method of the request, and the status code for the response.  These pseudo-header fields are defined in Section 8.1.2.3 and 8.1.2.4 of <a href="#RFC7540" class="xref">[RFC7540]</a>. Pseudo-header fields are not HTTP header fields.  Endpoints MUST NOT generate pseudo-header fields other than those defined in <a href="#RFC7540" class="xref">[RFC7540]</a>.  The restrictions on the use of pseudo-header fields in Section 8.1.2.1 of <a href="#RFC7540" class="xref">[RFC7540]</a> also apply to HTTP/QUIC.</p>
+<p id="rfc.section.3.1.1.p.4">HTTP/QUIC uses QPACK header compression as described in <a href="#QPACK" class="xref">[QPACK]</a>, a variation of HPACK which allows the flexibility to avoid header-compression-induced head-of-line blocking.  See that document for additional details.</p>
 <h3 id="rfc.section.3.1.2">
 <a href="#rfc.section.3.1.2">3.1.2.</a> <a href="#the-connect-method" id="the-connect-method">The CONNECT Method</a>
 </h3>
