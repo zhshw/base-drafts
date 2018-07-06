@@ -298,8 +298,9 @@ ul.toc li {
 <link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Placeholders">
 <link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 Priority Tree Maintenance">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Unidirectional Streams">
-<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Control Streams">
-<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 Server Push">
+<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Reserved Stream Types">
+<link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 Control Streams">
+<link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 Server Push">
 <link href="#rfc.section.4" rel="Chapter" title="4 HTTP Framing Layer">
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Frame Layout">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Frame Definitions">
@@ -443,9 +444,11 @@ ul.toc li {
 </li>
 </ul><li>3.3.   <a href="#rfc.section.3.3">Unidirectional Streams</a>
 </li>
-<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Control Streams</a>
+<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Reserved Stream Types</a>
 </li>
-<li>3.3.2.   <a href="#rfc.section.3.3.2">Server Push</a>
+<li>3.3.2.   <a href="#rfc.section.3.3.2">Control Streams</a>
+</li>
+<li>3.3.3.   <a href="#rfc.section.3.3.3">Server Push</a>
 </li>
 </ul></ul><li>4.   <a href="#rfc.section.4">HTTP Framing Layer</a>
 </li>
@@ -604,7 +607,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 </h2>
 <p id="rfc.section.2.3.p.1">HTTP/QUIC relies on QUIC as the underlying transport.  The QUIC version being used MUST use TLS version 1.3 or greater as its handshake protocol.  HTTP/QUIC clients MUST indicate the target domain name during the TLS handshake. This may be done using the Server Name Indication (SNI) <a href="#RFC6066" class="xref">[RFC6066]</a> extension to TLS or using some other mechanism.</p>
 <p id="rfc.section.2.3.p.2">QUIC connections are established as described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. During connection establishment, HTTP/QUIC support is indicated by selecting the ALPN token &#8220;hq&#8221; in the TLS handshake.  Support for other application-layer protocols MAY be offered in the same handshake.</p>
-<p id="rfc.section.2.3.p.3">While connection-level options pertaining to the core QUIC protocol are set in the initial crypto handshake, HTTP/QUIC-specific settings are conveyed in the SETTINGS frame. After the QUIC connection is established, a SETTINGS frame (<a href="#frame-settings" class="xref">Section 4.2.6</a>) MUST be sent by each endpoint as the initial frame of their respective HTTP control stream (see <a href="#control-streams" class="xref">Section 3.3.1</a>). The server MUST NOT send data on any other stream until the client&#8217;s SETTINGS frame has been received.</p>
+<p id="rfc.section.2.3.p.3">While connection-level options pertaining to the core QUIC protocol are set in the initial crypto handshake, HTTP/QUIC-specific settings are conveyed in the SETTINGS frame. After the QUIC connection is established, a SETTINGS frame (<a href="#frame-settings" class="xref">Section 4.2.6</a>) MUST be sent by each endpoint as the initial frame of their respective HTTP control stream (see <a href="#control-streams" class="xref">Section 3.3.2</a>). The server MUST NOT send data on any other stream until the client&#8217;s SETTINGS frame has been received.</p>
 <h2 id="rfc.section.2.4">
 <a href="#rfc.section.2.4">2.4.</a> <a href="#connection-reuse" id="connection-reuse">Connection Reuse</a>
 </h2>
@@ -632,7 +635,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>optionally, one header block containing the trailer-part, if present (see <a href="#RFC7230" class="xref">[RFC7230]</a>, Section 4.1.2).</li>
 </ol>
 <p id="rfc.section.3.1.p.4">In addition, prior to sending the message header block indicated above, a response may contain zero or more header blocks containing the message headers of informational (1xx) HTTP responses (see <a href="#RFC7230" class="xref">[RFC7230]</a>, Section 3.2 and <a href="#RFC7231" class="xref">[RFC7231]</a>, Section 6.2).</p>
-<p id="rfc.section.3.1.p.5">PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) MAY be interleaved with the frames of a response message indicating a pushed resource related to the response. These PUSH_PROMISE frames are not part of the response, but carry the headers of a separate HTTP request message.  See <a href="#server-push" class="xref">Section 3.3.2</a> for more details.</p>
+<p id="rfc.section.3.1.p.5">PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) MAY be interleaved with the frames of a response message indicating a pushed resource related to the response. These PUSH_PROMISE frames are not part of the response, but carry the headers of a separate HTTP request message.  See <a href="#server-push" class="xref">Section 3.3.3</a> for more details.</p>
 <p id="rfc.section.3.1.p.6">The &#8220;chunked&#8221; transfer encoding defined in Section 4.1 of <a href="#RFC7230" class="xref">[RFC7230]</a> MUST NOT be used.</p>
 <p id="rfc.section.3.1.p.7">Trailing header fields are carried in an additional header block following the body. Senders MUST send only one header block in the trailers section; receivers MUST discard any subsequent header blocks.</p>
 <p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a QUIC stream. After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
@@ -725,22 +728,28 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 2: Unidirectional Stream Header</p>
-<p id="rfc.section.3.3.p.2">Two stream types are defined in this document: control streams (<a href="#control-streams" class="xref">Section 3.3.1</a>) and push streams (<a href="#server-push" class="xref">Section 3.3.2</a>).  Other stream types can be defined by extensions to HTTP/QUIC.</p>
-<p id="rfc.section.3.3.p.3">If the stream header indicates a stream type which is not supported by the recipient, this SHOULD be treated as a stream error of type HTTP_UNKNOWN_STREAM_TYPE.  The semantics of the remainder of the stream are unknown. Implementations SHOULD NOT send stream types the peer is not already known to support, since a stream error can be promoted to a connection error at the peer&#8217;s discretion (see <a href="#errors" class="xref">Section 6</a>).</p>
+<p id="rfc.section.3.3.p.2">Some stream types are reserved (<a href="#stream-grease" class="xref">Section 3.3.1</a>).  Two stream types are defined in this document: control streams (<a href="#control-streams" class="xref">Section 3.3.2</a>) and push streams (<a href="#server-push" class="xref">Section 3.3.3</a>).  Other stream types can be defined by extensions to HTTP/QUIC.</p>
+<p id="rfc.section.3.3.p.3">If the stream header indicates a stream type which is not supported by the recipient, the remainder of the stream cannot be consumed as the semantics are unknown. Recipients of unknown stream types MAY trigger a QUIC STOP_SENDING frame with an error code of HTTP_UNKNOWN_STREAM_TYPE, but MUST NOT consider such streams to be an error of any kind.</p>
+<p id="rfc.section.3.3.p.4">Implementations MAY send stream types before knowing whether the peer supports them.  However, stream types which could modify the state or semantics of existing protocol components, including QPACK or other extensions, MUST NOT be sent until the peer is known to support them.</p>
 <h3 id="rfc.section.3.3.1">
-<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#control-streams" id="control-streams">Control Streams</a>
+<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#stream-grease" id="stream-grease">Reserved Stream Types</a>
 </h3>
-<p id="rfc.section.3.3.1.p.1">The control stream is indicated by a stream type of <samp>0x43</samp> (ASCII &#8216;C&#8217;).  Data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>.</p>
-<p id="rfc.section.3.3.1.p.2">Each side MUST initiate a single control stream at the beginning of the connection and send its SETTINGS frame as the first frame on this stream.  Only one control stream per peer is permitted; receipt of a second stream which claims to be a control stream MUST be treated as a connection error of type HTTP_WRONG_STREAM_COUNT.  If the control stream is closed at any point, this MUST be treated as a connection error of type HTTP_CLOSED_CRITICAL_STREAM.</p>
-<p id="rfc.section.3.3.1.p.3">A pair of unidirectional streams is used rather than a single bidirectional stream.  This allows either peer to send data as soon they are able.  Depending on whether 0-RTT is enabled on the connection, either client or server might be able to send stream data first after the cryptographic handshake completes.</p>
+<p id="rfc.section.3.3.1.p.1">Stream types of the format <samp>0x1f * N</samp> are reserved to exercise the requirement that unknown types be ignored. These streams have no semantic meaning, and can be sent when application-layer padding is desired.  They MAY also be sent on connections where no request data is currently being transferred. Endpoints MUST NOT consider these streams to have any meaning upon receipt.</p>
+<p id="rfc.section.3.3.1.p.2">The payload and length of the stream are selected in any manner the implementation chooses.</p>
 <h3 id="rfc.section.3.3.2">
-<a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#server-push" id="server-push">Server Push</a>
+<a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#control-streams" id="control-streams">Control Streams</a>
 </h3>
-<p id="rfc.section.3.3.2.p.1">HTTP/QUIC server push is similar to what is described in HTTP/2 <a href="#RFC7540" class="xref">[RFC7540]</a>, but uses different mechanisms.</p>
-<p id="rfc.section.3.3.2.p.2">The PUSH_PROMISE frame (<a href="#frame-push-promise" class="xref">Section 4.2.7</a>) is sent on the client-initiated bidirectional stream that carried the request that generated the push. This allows the server push to be associated with a request. Ordering of a PUSH_PROMISE in relation to certain parts of the response is important (see Section 8.2.1 of <a href="#RFC7540" class="xref">[RFC7540]</a>).</p>
-<p id="rfc.section.3.3.2.p.3">The PUSH_PROMISE frame does not reference a stream; it contains a Push ID that uniquely identifies a server push. This allows a server to fulfill promises in the order that best suits its needs. The same Push ID can be used in multiple PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>). When a server later fulfills a promise, the server push response is conveyed on a push stream.</p>
-<p id="rfc.section.3.3.2.p.4">A push stream is indicated by a stream type of <samp>0x50</samp> (ASCII &#8216;P&#8217;), followed by the Push ID of the promise that it fulfills, encoded as a variable-length integer. The remaining data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>, and carries the response side of an HTTP message exchange asdescribed in <a href="#request-response" class="xref">Section 3.1</a>. The request headers of the exchange are carried by a PUSH_PROMISE frame (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) on the request stream which generated the push. Promised requests MUST conform to the requirements in Section 8.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>.</p>
-<p id="rfc.section.3.3.2.p.5">Only servers can push; if a server receives a client-initiated push stream, this MUST be treated as a stream error of type HTTP_WRONG_STREAM_DIRECTION.</p>
+<p id="rfc.section.3.3.2.p.1">The control stream is indicated by a stream type of <samp>0x43</samp> (ASCII &#8216;C&#8217;).  Data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>.</p>
+<p id="rfc.section.3.3.2.p.2">Each side MUST initiate a single control stream at the beginning of the connection and send its SETTINGS frame as the first frame on this stream.  Only one control stream per peer is permitted; receipt of a second stream which claims to be a control stream MUST be treated as a connection error of type HTTP_WRONG_STREAM_COUNT.  If the control stream is closed at any point, this MUST be treated as a connection error of type HTTP_CLOSED_CRITICAL_STREAM.</p>
+<p id="rfc.section.3.3.2.p.3">A pair of unidirectional streams is used rather than a single bidirectional stream.  This allows either peer to send data as soon they are able.  Depending on whether 0-RTT is enabled on the connection, either client or server might be able to send stream data first after the cryptographic handshake completes.</p>
+<h3 id="rfc.section.3.3.3">
+<a href="#rfc.section.3.3.3">3.3.3.</a> <a href="#server-push" id="server-push">Server Push</a>
+</h3>
+<p id="rfc.section.3.3.3.p.1">HTTP/QUIC server push is similar to what is described in HTTP/2 <a href="#RFC7540" class="xref">[RFC7540]</a>, but uses different mechanisms.</p>
+<p id="rfc.section.3.3.3.p.2">The PUSH_PROMISE frame (<a href="#frame-push-promise" class="xref">Section 4.2.7</a>) is sent on the client-initiated bidirectional stream that carried the request that generated the push. This allows the server push to be associated with a request. Ordering of a PUSH_PROMISE in relation to certain parts of the response is important (see Section 8.2.1 of <a href="#RFC7540" class="xref">[RFC7540]</a>).</p>
+<p id="rfc.section.3.3.3.p.3">The PUSH_PROMISE frame does not reference a stream; it contains a Push ID that uniquely identifies a server push. This allows a server to fulfill promises in the order that best suits its needs. The same Push ID can be used in multiple PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>). When a server later fulfills a promise, the server push response is conveyed on a push stream.</p>
+<p id="rfc.section.3.3.3.p.4">A push stream is indicated by a stream type of <samp>0x50</samp> (ASCII &#8216;P&#8217;), followed by the Push ID of the promise that it fulfills, encoded as a variable-length integer. The remaining data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>, and carries the response side of an HTTP message exchange asdescribed in <a href="#request-response" class="xref">Section 3.1</a>. The request headers of the exchange are carried by a PUSH_PROMISE frame (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) on the request stream which generated the push. Promised requests MUST conform to the requirements in Section 8.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>.</p>
+<p id="rfc.section.3.3.3.p.5">Only servers can push; if a server receives a client-initiated push stream, this MUST be treated as a stream error of type HTTP_WRONG_STREAM_DIRECTION.</p>
 <div id="rfc.figure.3"></div>
 <div id="fig-push-stream-header"></div>
 <pre>
@@ -751,9 +760,9 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 3: Push Stream Header</p>
-<p id="rfc.section.3.3.2.p.6">Server push is only enabled on a connection when a client sends a MAX_PUSH_ID frame (see <a href="#frame-max-push-id" class="xref">Section 4.2.9</a>). A server cannot use server push until it receives a MAX_PUSH_ID frame. A client sends additional MAX_PUSH_ID frames to control the number of pushes that a server can promise. A server SHOULD use Push IDs sequentially, starting at 0. A client MUST treat receipt of a pushstream with a Push ID that is greater than the maximum Push ID as a connection error of type HTTP_PUSH_LIMIT_EXCEEDED.</p>
-<p id="rfc.section.3.3.2.p.7">Each Push ID MUST only be used once in a push stream header. If a push stream header includes a Push ID that was used in another push stream header, the client MUST treat this as a connection error of type HTTP_DUPLICATE_PUSH.</p>
-<p id="rfc.section.3.3.2.p.8">If a promised server push is not needed by the client, the client SHOULD send a CANCEL_PUSH frame. If the push stream is already open, a QUIC STOP_SENDING frame with an appropriate error code can be used instead (e.g., HTTP_PUSH_REFUSED, HTTP_PUSH_ALREADY_IN_CACHE; see <a href="#errors" class="xref">Section 6</a>). This asks the server not to transfer the data and indicates that it will be discarded upon receipt.</p>
+<p id="rfc.section.3.3.3.p.6">Server push is only enabled on a connection when a client sends a MAX_PUSH_ID frame (see <a href="#frame-max-push-id" class="xref">Section 4.2.9</a>). A server cannot use server push until it receives a MAX_PUSH_ID frame. A client sends additional MAX_PUSH_ID frames to control the number of pushes that a server can promise. A server SHOULD use Push IDs sequentially, starting at 0. A client MUST treat receipt of a pushstream with a Push ID that is greater than the maximum Push ID as a connection error of type HTTP_PUSH_LIMIT_EXCEEDED.</p>
+<p id="rfc.section.3.3.3.p.7">Each Push ID MUST only be used once in a push stream header. If a push stream header includes a Push ID that was used in another push stream header, the client MUST treat this as a connection error of type HTTP_DUPLICATE_PUSH.</p>
+<p id="rfc.section.3.3.3.p.8">If a promised server push is not needed by the client, the client SHOULD send a CANCEL_PUSH frame. If the push stream is already open, a QUIC STOP_SENDING frame with an appropriate error code can be used instead (e.g., HTTP_PUSH_REFUSED, HTTP_PUSH_ALREADY_IN_CACHE; see <a href="#errors" class="xref">Section 6</a>). This asks the server not to transfer the data and indicates that it will be discarded upon receipt.</p>
 <h1 id="rfc.section.4">
 <a href="#rfc.section.4">4.</a> <a href="#http-framing-layer" id="http-framing-layer">HTTP Framing Layer</a>
 </h1>
@@ -990,7 +999,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 
 <dl>
 <dt>Push ID:</dt>
-<dd style="margin-left: 8">A variable-length integer that identifies the server push request.  A push ID is used in push stream header (<a href="#server-push" class="xref">Section 3.3.2</a>), CANCEL_PUSH frames (<a href="#frame-cancel-push" class="xref">Section 4.2.5</a>), and PRIORITY frames (<a href="#frame-priority" class="xref">Section 4.2.4</a>).</dd>
+<dd style="margin-left: 8">A variable-length integer that identifies the server push request.  A push ID is used in push stream header (<a href="#server-push" class="xref">Section 3.3.3</a>), CANCEL_PUSH frames (<a href="#frame-cancel-push" class="xref">Section 4.2.5</a>), and PRIORITY frames (<a href="#frame-priority" class="xref">Section 4.2.4</a>).</dd>
 <dt>Header Block:</dt>
 <dd style="margin-left: 8">QPACK-compressed request headers for the promised response.  See <a href="#QPACK" class="xref">[QPACK]</a> for more details.</dd>
 </dl>
@@ -1211,7 +1220,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h1 id="rfc.section.8">
 <a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.8.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2 with TLS.</p>
+<p id="rfc.section.8.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING frames to make a connection more resistant to traffic analysis, HTTP/QUIC can rely on QUIC&#8217;s own PADDING frames or employ the reserved frame and stream types discussed in <a href="#frame-grease" class="xref">Section 4.2.1</a> and <a href="#stream-grease" class="xref">Section 3.3.1</a>.</p>
 <p id="rfc.section.8.p.2">The modified SETTINGS format contains nested length elements, which could pose a security risk to an uncautious implementer.  A SETTINGS frame parser MUST ensure that the length of the frame exactly matches the length of the settings it contains.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
@@ -1325,7 +1334,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 </tr>
 </tbody>
 </table>
-<p id="rfc.section.9.3.p.6">Additionally, each code of the format <samp>0xb + (0x1f * N)</samp> for values of N in the range (0..7) (that is, <samp>0xb</samp>, <samp>0x2a</samp>, etc., through <samp>0xe4</samp>), the following values should be registered:</p>
+<p id="rfc.section.9.3.p.6">Additionally, each code of the format <samp>0xb + (0x1f * N)</samp> for values of N in the range (0..7) (that is, <samp>0xb</samp>, <samp>0x2a</samp>, <samp>0x49</samp>, <samp>0x68</samp>, <samp>0x87</samp>, <samp>0xa6</samp>, <samp>0xc5</samp>, and <samp>0xe4</samp>), the following values should be registered:</p>
 <p></p>
 
 <dl>
@@ -1560,17 +1569,28 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <tr>
 <td class="left">Control Stream</td>
 <td class="center">0x43</td>
-<td class="left"><a href="#control-streams" class="xref">Section 3.3.1</a></td>
+<td class="left"><a href="#control-streams" class="xref">Section 3.3.2</a></td>
 <td class="left">Both</td>
 </tr>
 <tr>
 <td class="left">Push Stream</td>
 <td class="center">0x50</td>
-<td class="left"><a href="#server-push" class="xref">Section 3.3.2</a></td>
+<td class="left"><a href="#server-push" class="xref">Section 3.3.3</a></td>
 <td class="left">Server</td>
 </tr>
 </tbody>
 </table>
+<p id="rfc.section.9.6.p.5">Additionally, for each code of the format <samp>0x1f * N</samp> for values of N in the range (0..8) (that is, <samp>0x00</samp>, <samp>0x1f</samp>, <samp>0x3e</samp>, <samp>0x5d</samp>, <samp>0x7c</samp>, <samp>0x9b</samp>, <samp>0xba</samp>, <samp>0xd9</samp>, <samp>0xf8</samp>), the following values should be registered:</p>
+<p></p>
+
+<dl>
+<dt>Stream Type:</dt>
+<dd style="margin-left: 8">Reserved - GREASE</dd>
+<dt>Specification:</dt>
+<dd style="margin-left: 8"><a href="#stream-grease" class="xref">Section 3.3.1</a></dd>
+<dt>Sender:</dt>
+<dd style="margin-left: 8">Both</dd>
+</dl>
 <h1 id="rfc.references">
 <a href="#rfc.references">10.</a> References</h1>
 <h2 id="rfc.references.1">
