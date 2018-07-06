@@ -124,14 +124,14 @@ Internet-Draft               HTTP over QUIC                    July 2018
      7.3.  HTTP/2 SETTINGS Parameters  . . . . . . . . . . . . . . .  30
      7.4.  HTTP/2 Error Codes  . . . . . . . . . . . . . . . . . . .  31
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  32
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  32
-     9.1.  Registration of HTTP/QUIC Identification String . . . . .  32
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  33
+     9.1.  Registration of HTTP/QUIC Identification String . . . . .  33
      9.2.  Registration of QUIC Version Hint Alt-Svc Parameter . . .  33
      9.3.  Frame Types . . . . . . . . . . . . . . . . . . . . . . .  33
      9.4.  Settings Parameters . . . . . . . . . . . . . . . . . . .  34
      9.5.  Error Codes . . . . . . . . . . . . . . . . . . . . . . .  35
      9.6.  Stream Types  . . . . . . . . . . . . . . . . . . . . . .  38
-   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  39
      10.1.  Normative References . . . . . . . . . . . . . . . . . .  39
      10.2.  Informative References . . . . . . . . . . . . . . . . .  40
      10.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  40
@@ -1772,12 +1772,27 @@ Internet-Draft               HTTP over QUIC                    July 2018
 8.  Security Considerations
 
    The security considerations of HTTP over QUIC should be comparable to
-   those of HTTP/2 with TLS.
+   those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING
+   frames to make a connection more resistant to traffic analysis, HTTP/
+   QUIC can rely on QUIC's own PADDING frames or employ the reserved
+   frame and stream types discussed in Section 4.2.1 and Section 3.3.1.
 
    The modified SETTINGS format contains nested length elements, which
    could pose a security risk to an uncautious implementer.  A SETTINGS
    frame parser MUST ensure that the length of the frame exactly matches
    the length of the settings it contains.
+
+
+
+
+
+
+
+
+Bishop                   Expires January 7, 2019               [Page 32]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
 9.  IANA Considerations
 
@@ -1786,13 +1801,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
    This document creates a new registration for the identification of
    HTTP/QUIC in the "Application Layer Protocol Negotiation (ALPN)
    Protocol IDs" registry established in [RFC7301].
-
-
-
-Bishop                   Expires January 7, 2019               [Page 32]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
 
    The "hq" string identifies HTTP/QUIC:
 
@@ -1833,14 +1841,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    Code:  The 8-bit code assigned to the frame type.
 
-   Specification:  A reference to a specification that includes a
-      description of the frame layout and its semantics, including any
-      parts of the frame that are conditionally present.
-
-   The entries in the following table are registered by this document.
-
-
-
 
 
 
@@ -1849,6 +1849,12 @@ Bishop                   Expires January 7, 2019               [Page 33]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+   Specification:  A reference to a specification that includes a
+      description of the frame layout and its semantics, including any
+      parts of the frame that are conditionally present.
+
+   The entries in the following table are registered by this document.
 
                   +--------------+------+---------------+
                   | Frame Type   | Code | Specification |
@@ -1891,12 +1897,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
    Settings" registry operates under the "Expert Review" policy
    [RFC8126] for values in the range from 0x0000 to 0xefff, with values
    between and 0xf000 and 0xffff being reserved for Experimental Use.
-   The designated experts are the same as those for the "HTTP/2
-   Settings" registry defined in [RFC7540].
-
-   While this registry is separate from the "HTTP/2 Settings" registry
-   defined in [RFC7540], it is preferable that the assignments parallel
-   each other.  If an entry is present in only one registry, every
 
 
 
@@ -1906,6 +1906,12 @@ Bishop                   Expires January 7, 2019               [Page 34]
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
+   The designated experts are the same as those for the "HTTP/2
+   Settings" registry defined in [RFC7540].
+
+   While this registry is separate from the "HTTP/2 Settings" registry
+   defined in [RFC7540], it is preferable that the assignments parallel
+   each other.  If an entry is present in only one registry, every
    effort SHOULD be made to avoid assigning the corresponding value to
    an unrelated operation.
 
@@ -1947,13 +1953,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    This document establishes a registry for HTTP/QUIC error codes.  The
    "HTTP/QUIC Error Code" registry manages a 16-bit space.  The "HTTP/
-   QUIC Error Code" registry operates under the "Expert Review" policy
-   [RFC8126].
 
-   Registrations for error codes are required to include a description
-   of the error code.  An expert reviewer is advised to examine new
-   registrations for possible duplication with existing error codes.
-   Use of existing registrations is to be encouraged, but not mandated.
 
 
 
@@ -1961,6 +1961,14 @@ Bishop                   Expires January 7, 2019               [Page 35]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+   QUIC Error Code" registry operates under the "Expert Review" policy
+   [RFC8126].
+
+   Registrations for error codes are required to include a description
+   of the error code.  An expert reviewer is advised to examine new
+   registrations for possible duplication with existing error codes.
+   Use of existing registrations is to be encouraged, but not mandated.
 
    New registrations are advised to provide the following information:
 
@@ -2002,14 +2010,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
    | HTTP_REQUEST_CANCELLED    | 0x000 | Data no      | Section 6.1    |
    |                           | 5     | longer       |                |
    |                           |       | needed       |                |
-   |                           |       |              |                |
-   | HTTP_HPACK_DECOMPRESSION_ | 0x000 | HPACK cannot | Section 6.1    |
-   | FAILED                    | 6     | continue     |                |
-   |                           |       |              |                |
-   | HTTP_CONNECT_ERROR        | 0x000 | TCP reset or | Section 6.1    |
-   |                           | 7     | error on     |                |
-   |                           |       | CONNECT      |                |
-   |                           |       | request      |                |
 
 
 
@@ -2018,6 +2018,14 @@ Bishop                   Expires January 7, 2019               [Page 36]
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
+   |                           |       |              |                |
+   | HTTP_HPACK_DECOMPRESSION_ | 0x000 | HPACK cannot | Section 6.1    |
+   | FAILED                    | 6     | continue     |                |
+   |                           |       |              |                |
+   | HTTP_CONNECT_ERROR        | 0x000 | TCP reset or | Section 6.1    |
+   |                           | 7     | error on     |                |
+   |                           |       | CONNECT      |                |
+   |                           |       | request      |                |
    |                           |       |              |                |
    | HTTP_EXCESSIVE_LOAD       | 0x000 | Peer         | Section 6.1    |
    |                           | 8     | generating   |                |
@@ -2058,14 +2066,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
    |                           |       |              |                |
    | HTTP_MALFORMED_FRAME      | 0x01X | Error in     | Section 6.1    |
    |                           | X     | frame        |                |
-   |                           |       | formatting   |                |
-   |                           |       | or use       |                |
-   +---------------------------+-------+--------------+----------------+
-
-
-
-
-
 
 
 
@@ -2073,6 +2073,10 @@ Bishop                   Expires January 7, 2019               [Page 37]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+   |                           |       | formatting   |                |
+   |                           |       | or use       |                |
+   +---------------------------+-------+--------------+----------------+
 
 9.6.  Stream Types
 
@@ -2116,10 +2120,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    Sender:  Both
 
-10.  References
-
-
-
 
 
 
@@ -2129,6 +2129,8 @@ Bishop                   Expires January 7, 2019               [Page 38]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+10.  References
 
 10.1.  Normative References
 
@@ -2175,9 +2177,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
               DOI 10.17487/RFC7540, May 2015,
               <https://www.rfc-editor.org/info/rfc7540>.
 
-   [RFC7838]  Nottingham, M., McManus, P., and J. Reschke, "HTTP
-              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
-              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
+
 
 
 
@@ -2185,6 +2185,10 @@ Bishop                   Expires January 7, 2019               [Page 39]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+   [RFC7838]  Nottingham, M., McManus, P., and J. Reschke, "HTTP
+              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
+              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -2230,10 +2234,6 @@ A.1.  Since draft-ietf-quic-http-12
    o  Unidirectional streams carry a type byte and are extensible
       (#910,#1359)
 
-   o  Priority mechanism now uses explicit placeholders to enable
-      persistent structure in the tree (#441,#1421,#1422)
-
-
 
 
 
@@ -2241,6 +2241,9 @@ Bishop                   Expires January 7, 2019               [Page 40]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
+
+   o  Priority mechanism now uses explicit placeholders to enable
+      persistent structure in the tree (#441,#1421,#1422)
 
 A.2.  Since draft-ietf-quic-http-11
 
@@ -2287,9 +2290,6 @@ A.8.  Since draft-ietf-quic-http-05
    o  Guidance about keep-alive and QUIC PINGs (#729)
 
    o  Expanded text on GOAWAY and cancellation (#757)
-
-
-
 
 
 
