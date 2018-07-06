@@ -2026,7 +2026,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 
 <dl>
 <dt>Error Code:</dt>
-<dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  CONNECTION_CLOSE uses codes from the space defined in <a href="#error-codes" class="xref">Section 11.3</a> (APPLICATION_CLOSE uses codes from the application protocol error code space, see <a href="#app-error-codes" class="xref">Section 11.4</a>).</dd>
+<dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  CONNECTION_CLOSE uses codes from the space defined in <a href="#error-codes" class="xref">Section 11.3</a>.</dd>
 <dt>Frame Type:</dt>
 <dd style="margin-left: 8">The type of frame that triggered the error.  A value of 0 (equivalent to the mention of the PADDING frame) is used when the frame type is unknown.</dd>
 <dt>Reason Phrase Length:</dt>
@@ -2037,8 +2037,31 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h2 id="rfc.section.7.5">
 <a href="#rfc.section.7.5">7.5.</a> <a href="#frame-application-close" id="frame-application-close">APPLICATION_CLOSE frame</a>
 </h2>
-<p id="rfc.section.7.5.p.1">An APPLICATION_CLOSE frame (type=0x03) uses the same format as the CONNECTION_CLOSE frame (<a href="#frame-connection-close" class="xref">Section 7.4</a>), except that it uses error codes from the application protocol error code space (<a href="#app-error-codes" class="xref">Section 11.4</a>) instead of the transport error code space.</p>
-<p id="rfc.section.7.5.p.2">Other than the error code space, the format and semantics of the APPLICATION_CLOSE frame are identical to the CONNECTION_CLOSE frame.</p>
+<p id="rfc.section.7.5.p.1">An APPLICATION_CLOSE frame (type=0x03) is used to signal an error with the protocol that uses QUIC.</p>
+<p id="rfc.section.7.5.p.2">The APPLICATION_CLOSE frame is as follows:</p>
+<pre>
+ 0                   1                   2                   3
+ 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|           Error Code (16)     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                    Reason Phrase Length (i)                 ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Reason Phrase (*)                    ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<p id="rfc.section.7.5.p.3">The fields of a APPLICATION_CLOSE frame are as follows:</p>
+<p></p>
+
+<dl>
+<dt>Error Code:</dt>
+<dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  APPLICATION_CLOSE uses codes from the application protocol error code space, see <a href="#app-error-codes" class="xref">Section 11.4</a>.</dd>
+<dt>Reason Phrase Length:</dt>
+<dd style="margin-left: 8">This field is identical in format and semantics to the Reason Phrase Length field from CONNECTION_CLOSE.</dd>
+<dt>Reason Phrase:</dt>
+<dd style="margin-left: 8">This field is identical in format and semantics to the Reason Phrase field from CONNECTION_CLOSE.</dd>
+</dl>
+<p id="rfc.section.7.5.p.5">APPLICATION_CLOSE has similar format and semantics to the CONNECTION_CLOSE frame (<a href="#frame-connection-close" class="xref">Section 7.4</a>).  Aside from the semantics of the Error Code field and the omission of the Frame Type field, both frames are used to close the connection.</p>
 <h2 id="rfc.section.7.6">
 <a href="#rfc.section.7.6">7.6.</a> <a href="#frame-max-data" id="frame-max-data">MAX_DATA Frame</a>
 </h2>
