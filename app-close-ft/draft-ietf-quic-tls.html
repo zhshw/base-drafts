@@ -26,7 +26,7 @@ body {
   font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
 .title, #rfc\.title h1 { font-size: 32px; }
 h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
@@ -165,12 +165,17 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
@@ -339,7 +344,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Thomson, M., Ed. and S. Turner, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-tls-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-03" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-06" />
   <meta name="dct.abstract" content="This document describes how Transport Layer Security (TLS) is used to secure QUIC." />
   <meta name="description" content="This document describes how Transport Layer Security (TLS) is used to secure QUIC." />
 
@@ -363,12 +368,12 @@ ul.toc li {
 <td class="right">S. Turner, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 4, 2019</td>
+<td class="left">Expires: January 7, 2019</td>
 <td class="right">sn3rd</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 03, 2018</td>
+<td class="right">July 06, 2018</td>
 </tr>
 
     	
@@ -387,7 +392,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 4, 2019.</p>
+<p>This Internet-Draft will expire on January 7, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -733,7 +738,7 @@ ul.toc li {
 <h3 id="rfc.section.4.1.2">
 <a href="#rfc.section.4.1.2">4.1.2.</a> <a href="#encryption-level-changes" id="encryption-level-changes">Encryption Level Changes</a>
 </h3>
-<p id="rfc.section.4.1.2.p.1">At each change of encryption level in either direction, TLS provides QUIC with the new level and the encryption keys.  These events are not asynchronous, they always occur immediately after TLS is provided with new handshake octets, or after TLS produces handshake octets.</p>
+<p id="rfc.section.4.1.2.p.1">At each change of encryption level in either direction, TLS signals QUIC, providing the new level and the encryption keys.  These events are not asynchronous, they always occur immediately after TLS is provided with new handshake octets, or after TLS produces handshake octets.</p>
 <p id="rfc.section.4.1.2.p.2">If 0-RTT is possible, it is ready after the client sends a TLS ClientHello message or the server receives that message.  After providing a QUIC client with the first handshake octets, the TLS stack might signal the change to 0-RTT keys. On the server, after receiving handshake octets that contain a ClientHello message, a TLS server might signal that 0-RTT keys are available.</p>
 <p id="rfc.section.4.1.2.p.3">Note that although TLS only uses one encryption level at a time, QUIC may use more than one level. For instance, after sending its Finished message (using a CRYPTO frame in Handshake encryption) may send STREAM data (in 1-RTT encryption). However, if the Finished is lost, the client would have to retransmit the Finished, in which case it would use Handshake encryption.</p>
 <h3 id="rfc.section.4.1.3">
@@ -746,27 +751,25 @@ ul.toc li {
 Client                                                    Server
 
 Get Handshake
-                     Initial -------------&gt;
+                      Initial ------------&gt;
 Rekey tx to 0-RTT Keys
-                     0-RTT ---------------&gt;
+                      0-RTT --------------&gt;
                                               Handshake Received
                                                    Get Handshake
-                     &lt;------------- Initial
+                      &lt;------------ Initial
                                           Rekey rx to 0-RTT keys
                                               Handshake Received
                                       Rekey rx to Handshake keys
                                                    Get Handshake
                      &lt;----------- Handshake
                                           Rekey tx to 1-RTT keys
-                     &lt;--------------- 1-RTT
 Handshake Received
 Rekey rx to Handshake keys
 Handshake Received
 Get Handshake
 Handshake Complete
-                     Handshake -----------&gt;
 Rekey tx to 1-RTT keys
-                     1-RTT ---------------&gt;
+                      Handshake ----------&gt;
                                               Handshake Received
                                           Rekey rx to 1-RTT keys
                                                    Get Handshake
