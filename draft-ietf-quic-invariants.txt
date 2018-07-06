@@ -126,6 +126,9 @@ Internet-Draft               QUIC Invariants                   July 2018
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
+   This document uses terms and notational conventions from
+   [QUIC-TRANSPORT].
+
 3.  An Extremely Abstract Description of QUIC
 
    QUIC is a connection-oriented protocol between two endpoints.  Those
@@ -150,9 +153,6 @@ Internet-Draft               QUIC Invariants                   July 2018
 
    Long headers take the form described in Figure 1.  Bits that have
    version-specific semantics are marked with an X.
-
-
-
 
 
 
