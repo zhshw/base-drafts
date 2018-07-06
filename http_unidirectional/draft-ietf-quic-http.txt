@@ -679,8 +679,8 @@ Internet-Draft               HTTP over QUIC                    July 2018
    HTTP_UNKNOWN_STREAM_TYPE, but MUST NOT consider such streams to be an
    error of any kind.
 
-   Implementations SHOULD NOT send stream types the peer is not already
-   known to support.  Stream types which could modify the state or
+   Implementations MAY send stream types before knowing whether the peer
+   supports them.  However, stream types which could modify the state or
    semantics of existing protocol components, including QPACK or other
    extensions, MUST NOT be sent until the peer is known to support them.
 
@@ -1883,8 +1883,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
                   +--------------+------+---------------+
 
    Additionally, each code of the format "0xb + (0x1f * N)" for values
-   of N in the range (0..7) (that is, "0xb", "0x2a", etc., through
-   "0xe4"), the following values should be registered:
+   of N in the range (0..7) (that is, "0xb", "0x2a", "0x49", "0x68",
+   "0x87", "0xa6", "0xc5", and "0xe4"), the following values should be
+   registered:
 
    Frame Type:  Reserved - GREASE
 
@@ -1897,7 +1898,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
    Settings" registry operates under the "Expert Review" policy
    [RFC8126] for values in the range from 0x0000 to 0xefff, with values
    between and 0xf000 and 0xffff being reserved for Experimental Use.
-
 
 
 
@@ -2110,16 +2110,16 @@ Internet-Draft               HTTP over QUIC                    July 2018
             | Push Stream    | 0x50 | Section 3.3.3 | Server |
             +----------------+------+---------------+--------+
 
-   Additionally, each code of the format "0x1f * N" for values of N in
-   the range (0..8) (that is, "0x00", "0x1f", etc., through "0xf8"), the
-   following values should be registered:
+   Additionally, for each code of the format "0x1f * N" for values of N
+   in the range (0..8) (that is, "0x00", "0x1f", "0x3e", "0x5d", "0x7c",
+   "0x9b", "0xba", "0xd9", "0xf8"), the following values should be
+   registered:
 
    Stream Type:  Reserved - GREASE
 
    Specification:  Section 3.3.1
 
    Sender:  Both
-
 
 
 
