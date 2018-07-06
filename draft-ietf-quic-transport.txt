@@ -3422,9 +3422,9 @@ Internet-Draft           QUIC Transport Protocol               July 2018
       closing this connection.  CONNECTION_CLOSE uses codes from the
       space defined in Section 11.3.
 
-   Frame Type:  The type of frame that triggered the error.  A value of
-      0 (equivalent to the mention of the PADDING frame) is used when
-      the frame type is unknown.
+   Frame Type:  A variable-length integer encoding the type of frame
+      that triggered the error.  A value of 0 (equivalent to the mention
+      of the PADDING frame) is used when the frame type is unknown.
 
    Reason Phrase Length:  A variable-length integer specifying the
       length of the reason phrase in bytes.  Note that a
@@ -3899,8 +3899,8 @@ Internet-Draft           QUIC Transport Protocol               July 2018
       allows for a larger range of values with a shorter encoding at the
       cost of lower resolution.
 
-   ACK Block Count:  The number of Additional ACK Block (and Gap) fields
-      after the First ACK Block.
+   ACK Block Count:  A variable-length integer specifying the number of
+      Additional ACK Block (and Gap) fields after the First ACK Block.
 
    ACK Blocks:  Contains one or more blocks of packet numbers which have
       been successfully received, see Section 7.15.1.

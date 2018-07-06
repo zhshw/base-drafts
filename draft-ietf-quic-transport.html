@@ -2028,7 +2028,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>Error Code:</dt>
 <dd style="margin-left: 8">A 16-bit error code which indicates the reason for closing this connection.  CONNECTION_CLOSE uses codes from the space defined in <a href="#error-codes" class="xref">Section 11.3</a>.</dd>
 <dt>Frame Type:</dt>
-<dd style="margin-left: 8">The type of frame that triggered the error.  A value of 0 (equivalent to the mention of the PADDING frame) is used when the frame type is unknown.</dd>
+<dd style="margin-left: 8">A variable-length integer encoding the type of frame that triggered the error.  A value of 0 (equivalent to the mention of the PADDING frame) is used when the frame type is unknown.</dd>
 <dt>Reason Phrase Length:</dt>
 <dd style="margin-left: 8">A variable-length integer specifying the length of the reason phrase in bytes.  Note that a CONNECTION_CLOSE frame cannot be split between packets, so in practice any limits on packet size will also limit the space available for a reason phrase.</dd>
 <dt>Reason Phrase:</dt>
@@ -2293,7 +2293,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>ACK Delay:</dt>
 <dd style="margin-left: 8">A variable-length integer including the time in microseconds that the largest acknowledged packet, as indicated in the Largest Acknowledged field, was received by this peer to when this ACK was sent.  The value of the ACK Delay field is scaled by multiplying the encoded value by the 2 to the power of the value of the <samp>ack_delay_exponent</samp> transport parameter set by the sender of the ACK frame.  The <samp>ack_delay_exponent</samp> defaults to 3, or a multiplier of 8 (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>).  Scaling in this fashion allows for a larger range of values with a shorter encoding at the cost of lower resolution.</dd>
 <dt>ACK Block Count:</dt>
-<dd style="margin-left: 8">The number of Additional ACK Block (and Gap) fields after the First ACK Block.</dd>
+<dd style="margin-left: 8">A variable-length integer specifying the number of Additional ACK Block (and Gap) fields after the First ACK Block.</dd>
 <dt>ACK Blocks:</dt>
 <dd style="margin-left: 8">Contains one or more blocks of packet numbers which have been successfully received, see <a href="#ack-block-section" class="xref">Section 7.15.1</a>.</dd>
 </dl>
