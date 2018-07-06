@@ -443,7 +443,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-04" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-06" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -467,12 +467,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 5, 2019</td>
+<td class="left">Expires: January 7, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 04, 2018</td>
+<td class="right">July 06, 2018</td>
 </tr>
 
     	
@@ -491,7 +491,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 5, 2019.</p>
+<p>This Internet-Draft will expire on January 7, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1186,7 +1186,7 @@ ul.toc li {
 <a href="#rfc.section.4.6.2">4.6.2.</a> <a href="#tokens" id="tokens">Tokens</a>
 </h3>
 <p id="rfc.section.4.6.2.p.1">If the client has a token received in a NEW_TOKEN frame on a previous connection to what it believes to be the same server, it can include that value in the Token field of its Initial packet.</p>
-<p id="rfc.section.4.6.2.p.2">A client SHOULD NOT reuse a token.  Reusing a token could allow different connections to be identified as coming from the same endpoint (see also <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed; that is, if there is a change in its local IP address or network interface.  A client MUST start the connection process over if it migrates prior to completing the handshake.</p>
+<p id="rfc.section.4.6.2.p.2">A client SHOULD NOT reuse a token.  Reusing a token could allow different connections to be identified as coming from the same endpoint (see also <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since it was last used; that is, if there is a change in its local IP address or network interface.  A client MUST start the connection process over if it migrates prior to completing the handshake.</p>
 <p id="rfc.section.4.6.2.p.3">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
 <p id="rfc.section.4.6.2.p.4">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
 <p></p>
@@ -1203,8 +1203,9 @@ ul.toc li {
 <a href="#rfc.section.4.6.4">4.6.4.</a> <a href="#retry-0rtt-pn" id="retry-0rtt-pn">0-RTT Packet Numbers</a>
 </h3>
 <p id="rfc.section.4.6.4.p.1">Packet numbers for 0-RTT protected packets use the same space as 1-RTT protected packets.</p>
-<p id="rfc.section.4.6.4.p.2">After a client receives a Retry or Version Negotiation packet, it MAY attempt to send data in 0-RTT packets after it sends a new Initial packet.  However, a client MUST NOT reset the packet number it uses for 0-RTT packets.  The keys used to protect 0-RTT packets will not change as a result of responding to a Retry or Version Negotiation packet unless the client also regenerates the cryptographic handshake messages.</p>
-<p id="rfc.section.4.6.4.p.3">Receiving a Retry or Version Negotiation packet, especially a Retry that changes the connection ID used for subsequent packets, indicates a strong possibility that 0-RTT packets could be lost.  A client only receives acknowledgments for its 0-RTT packets once the handshake is complete.  Consequently, a server might expect 0-RTT packets to start with a packet number of 0.  Therefore, in determining the length of the packet number encoding for 0-RTT packets, a client MUST assume that all packets up to the current packet number are in flight, starting from a packet number of 0.  Thus, 0-RTT packets could need to use a longer packet number encoding.</p>
+<p id="rfc.section.4.6.4.p.2">After a client receives a Retry or Version Negotiation packet, 0-RTT packets are likely to be lost or discarded by the server, especially if the server changes its connection ID with a Retry packet.  A client MAY attempt to send data in 0-RTT packets after it sends a new Initial packet.</p>
+<p id="rfc.section.4.6.4.p.3">A client MUST NOT reset the packet number it uses for 0-RTT packets.  The keys used to protect 0-RTT packets will not change as a result of responding to a Retry or Version Negotiation packet unless the client also regenerates the cryptographic handshake message.  Sending packets with the same packet number in that case would compromise the packet protection for all 0-RTT packets.</p>
+<p id="rfc.section.4.6.4.p.4">Receiving a Retry or Version Negotiation packet, especially a Retry that changes the connection ID used for subsequent packets, indicates a strong possibility that 0-RTT packets could be lost.  A client only receives acknowledgments for its 0-RTT packets once the handshake is complete.  Consequently, a server might expect 0-RTT packets to start with a packet number of 0.  Therefore, in determining the length of the packet number encoding for 0-RTT packets, a client MUST assume that all packets up to the current packet number are in flight, starting from a packet number of 0.  Thus, 0-RTT packets could need to use a longer packet number encoding.</p>
 <h3 id="rfc.section.4.6.5">
 <a href="#rfc.section.4.6.5">4.6.5.</a> <a href="#minimum-packet-size" id="minimum-packet-size">Minimum Packet Size</a>
 </h3>
@@ -1510,7 +1511,7 @@ ul.toc li {
 <p id="rfc.section.6.3.2.p.3">The client MUST use the long header format and include its selected version on all packets until it has 1-RTT keys and it has received a packet from the server which is not a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.4">A client MUST NOT change the version it uses unless it is in response to a Version Negotiation packet from the server.  Once a client receives a packet from the server which is not a Version Negotiation packet, it MUST discard other Version Negotiation packets on the same connection.  Similarly, a client MUST ignore a Version Negotiation packet if it has already received and acted on a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.5">A client MUST ignore a Version Negotiation packet that lists the client&#8217;s chosen version.</p>
-<p id="rfc.section.6.3.2.p.6">A client MAY attempt 0-RTT after receiving a Version Negotiation packet.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
+<p id="rfc.section.6.3.2.p.6">A client MAY attempt 0-RTT after receiving a Version Negotiation packet.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 as a result, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
 <p id="rfc.section.6.3.2.p.7">Version negotiation packets have no cryptographic protection. The result of the negotiation MUST be revalidated as part of the cryptographic handshake (see <a href="#version-validation" class="xref">Section 6.6.4</a>).</p>
 <h3 id="rfc.section.6.3.3">
 <a href="#rfc.section.6.3.3">6.3.3.</a> <a href="#using-reserved-versions" id="using-reserved-versions">Using Reserved Versions</a>
