@@ -94,7 +94,7 @@ Table of Contents
      4.8.  Protected Packets . . . . . . . . . . . . . . . . . . . .  20
      4.9.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  21
      4.10. Connection ID Encoding  . . . . . . . . . . . . . . . . .  21
-     4.11. Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  22
+     4.11. Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  23
    5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  25
      5.1.  Extension Frames  . . . . . . . . . . . . . . . . . . . .  27
    6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  27
@@ -813,7 +813,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    sent, clients MUST discard the packet.  This prevents an off-path
    attacker from injecting a Retry packet.
 
-   The client responds to a Retry packet with Initial packet that
+   The client responds to a Retry packet with an Initial packet that
    includes the provided Retry Token to continue connection
    establishment.
 
@@ -822,9 +822,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    value of at least 8 octets in length.  This allows clients to
    distinguish between Retry packets when the server sends multiple
    rounds of Retry packets.  A server that will not send additional
-   Retry packets can set the Source Connection ID to any value.  A
-   client MUST ignore a Retry that contains an ODCIL field with a value
-   less than 8 or greater than 18.
+   Retry packets can set the Source Connection ID to any value.
 
 4.5.  Cryptographic Handshake Packets
 
@@ -834,6 +832,8 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
    All these packets use the long header and contain the current QUIC
    version in the version field.
+
+
 
 
 
@@ -973,13 +973,20 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    connection to what it believes to be the same server, it can include
    that value in the Token field of its Initial packet.
 
-   A client SHOULD NOT reuse a token.  Reusing a token on different
-   network paths would allow activity to be linked between paths (see
+   A token allows a server to correlate activity between connections.
+   Specifically, the connection where the token was issued, and any
+   connection where it is used.  Clients that want to break continuity
+   of identity with a server MAY discard tokens provided using the
+   NEW_TOKEN frame.  Tokens obtained in Retry packets MUST NOT be
+   discarded.
+
+   A client SHOULD NOT reuse a token.  Reusing a token on allows
+   connections to be linked by entities on the network path (see
    Section 6.11.5).  A client MUST NOT reuse a token if it believes that
-   its point of network attachment has changed; that is, if there is a
-   change in its local IP address or network interface.  A client needs
-   to start the connection process over if it migrates prior to
-   completing the handshake.
+   its point of network attachment has changed since the token was last
+   used; that is, if there is a change in its local IP address or
+   network interface.  A client needs to start the connection process
+   over if it migrates prior to completing the handshake.
 
    If the client received a Retry packet from the server and sends an
    Initial packet in response, then it sets the Destination Connection
@@ -994,14 +1001,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    token, it SHOULD attempt to validate it.  If the token is invalid
    then the server SHOULD proceed as if the client did not have a
    validated address, including potentially sending a Retry.  If the
-   validation succeeds, the server SHOULD then allow the handshake to
-   proceed (see Section 6.7).
 
-   Note:  The rationale for treating the client as unvalidated rather
-      than discarding the packet is that the client might have received
-      the token in a previous connection using the NEW_TOKEN frame, and
-      if the server has lost state, it might be unable to validate the
-      token at all, leading to connection failure if the packet is
 
 
 
@@ -1010,6 +1010,14 @@ Iyengar & Thomson       Expires January 10, 2019               [Page 18]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   validation succeeds, the server SHOULD then allow the handshake to
+   proceed (see Section 6.7).
+
+   Note:  The rationale for treating the client as unvalidated rather
+      than discarding the packet is that the client might have received
+      the token in a previous connection using the NEW_TOKEN frame, and
+      if the server has lost state, it might be unable to validate the
+      token at all, leading to connection failure if the packet is
       discarded.  A server MAY encode tokens provided with NEW_TOKEN
       frames and Retry packets differently, and validate the latter more
       strictly.
@@ -1049,14 +1057,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    of 0.  Handshake packets are their own packet number space.  Packet
    numbers are incremented normally for other Handshake packets.
 
-   Servers MUST NOT send more than three datagrams including Initial and
-   Handshake packets without receiving a packet from a verified source
-   address.  Source addresses can be verified through an address
-   validation token (delivered via a Retry packet or a NEW_TOKEN frame)
-   or by receiving any message from the client encrypted using the
-   Handshake keys.
-
-
 
 
 
@@ -1065,6 +1065,13 @@ Iyengar & Thomson       Expires January 10, 2019               [Page 19]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   Servers MUST NOT send more than three datagrams including Initial and
+   Handshake packets without receiving a packet from a verified source
+   address.  Source addresses can be verified through an address
+   validation token (delivered via a Retry packet or a NEW_TOKEN frame)
+   or by receiving any message from the client encrypted using the
+   Handshake keys.
 
    The payload of this packet contains CRYPTO frames and could contain
    PADDING, or ACK frames.  Handshake packets MAY contain
@@ -1107,13 +1114,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    The packet number field contains a packet number, which has
    additional confidentiality protection that is applied after packet
    protection is applied (see [QUIC-TLS] for details).  The underlying
-   packet number increases with each packet sent, see Section 4.11 for
-   details.
-
-   The payload is protected using authenticated encryption.  [QUIC-TLS]
-   describes packet protection in detail.  After decryption, the
-   plaintext consists of a sequence of frames, as described in
-   Section 5.
 
 
 
@@ -1121,6 +1121,14 @@ Iyengar & Thomson       Expires January 10, 2019               [Page 20]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   packet number increases with each packet sent, see Section 4.11 for
+   details.
+
+   The payload is protected using authenticated encryption.  [QUIC-TLS]
+   describes packet protection in detail.  After decryption, the
+   plaintext consists of a sequence of frames, as described in
+   Section 5.
 
 4.9.  Coalescing Packets
 
@@ -1162,14 +1170,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    A connection ID is used to ensure consistent routing of packets, as
    described in Section 6.1.  The long header contains two connection
    IDs: the Destination Connection ID is chosen by the recipient of the
-   packet and is used to provide consistent routing; the Source
-   Connection ID is used to set the Destination Connection ID used by
-   the peer.
-
-   During the handshake, packets with the long header are used to
-   establish the connection ID that each endpoint uses.  Each endpoint
-   uses the Source Connection ID field to specify the connection ID that
-   is used in the Destination Connection ID field of packets being sent
 
 
 
@@ -1178,6 +1178,14 @@ Iyengar & Thomson       Expires January 10, 2019               [Page 21]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   packet and is used to provide consistent routing; the Source
+   Connection ID is used to set the Destination Connection ID used by
+   the peer.
+
+   During the handshake, packets with the long header are used to
+   establish the connection ID that each endpoint uses.  Each endpoint
+   uses the Source Connection ID field to specify the connection ID that
+   is used in the Destination Connection ID field of packets being sent
    to them.  Upon receiving a packet, each endpoint sets the Destination
    Connection ID it sends to match the value of the Source Connection ID
    that they receive.
@@ -1219,20 +1227,19 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    NEW_CONNECTION_ID frames (Section 7.13) are used to provide new
    connection ID values.
 
-4.11.  Packet Numbers
-
-   The packet number is an integer in the range 0 to 2^62-1.  The value
-   is used in determining the cryptographic nonce for packet encryption.
-   Each endpoint maintains a separate packet number for sending and
-   receiving.
-
-
 
 
 Iyengar & Thomson       Expires January 10, 2019               [Page 22]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+4.11.  Packet Numbers
+
+   The packet number is an integer in the range 0 to 2^62-1.  The value
+   is used in determining the cryptographic nonce for packet encryption.
+   Each endpoint maintains a separate packet number for sending and
+   receiving.
 
    Packet numbers are divided into 3 spaces in QUIC:
 
@@ -1274,13 +1281,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    a variable number of the least significant bits of the packet number.
    One or two of the most significant bits of the first octet determine
    how many bits of the packet number are provided, as shown in Table 2.
-
-
-
-
-
-
-
 
 
 
