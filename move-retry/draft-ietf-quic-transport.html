@@ -442,7 +442,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-09" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -466,12 +466,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 7, 2019</td>
+<td class="left">Expires: January 10, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 06, 2018</td>
+<td class="right">July 09, 2018</td>
 </tr>
 
     	
@@ -490,7 +490,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 7, 2019.</p>
+<p>This Internet-Draft will expire on January 10, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1107,7 +1107,7 @@ ul.toc li {
 
 <dl>
 <dt>ODCIL:</dt>
-<dd style="margin-left: 8">The length of the Original Destination Connection ID field as an unsigned 8-bit integer.  This field does not use the same encoding as the DCIL and SCIL fields.</dd>
+<dd style="margin-left: 8">The length of the Original Destination Connection ID field.  The length is encoded in the least significant bit of the octet using the same encoding as the DCIL and SCIL fields.  The most significant 4 bits of this octet are reserved.  Unless a use for these bits has been negotiated, endpoints SHOULD send randomized values and MUST ignore any value that it receives.</dd>
 <dt>Original Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Original Destination Connection ID contains the value of the Destination Connection ID from the Initial packet that this Retry is in response to. The length of this field is given in ODCIL.</dd>
 <dt>Retry Token:</dt>
@@ -1162,7 +1162,7 @@ ul.toc li {
 
 <dl>
 <dt>Token Length:</dt>
-<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  This value is zero if no token is present.  Initial packets sent by the server MUST specify a token of zero length.</dd>
+<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  This value is zero if no token is present.  Initial packets sent by the server MUST set the Token Length field to zero; clients that receive an Initial packet with a non-zero Token Length field MUST either discard the packet or generate a connection error of type PROTOCOL_VIOLATION.</dd>
 <dt>Token:</dt>
 <dd style="margin-left: 8">The value of the token.</dd>
 </dl>
