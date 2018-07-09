@@ -443,7 +443,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-08" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-09" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -467,12 +467,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 9, 2019</td>
+<td class="left">Expires: January 10, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 08, 2018</td>
+<td class="right">July 09, 2018</td>
 </tr>
 
     	
@@ -491,7 +491,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 9, 2019.</p>
+<p>This Internet-Draft will expire on January 10, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1105,12 +1105,12 @@ ul.toc li {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 4: Retry Packet</p>
-<p id="rfc.section.4.4.p.2">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 4</a>) only the invariant portion of the long packet header <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a>; that is, the fields up to and including the Destination and Source Connection ID fields.  The contents of the Retry packet are not protected.  Like Version Negotiation, a Retry packet contains the long header including the connection IDs, but omits the Length, Packet Number, and Payload fields.  These are replaced with:</p>
+<p id="rfc.section.4.4.p.2">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 4</a>) only uses the invariant portion of the long packet header <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a>; that is, the fields up to and including the Destination and Source Connection ID fields.  The contents of the Retry packet are not protected.  Like Version Negotiation, a Retry packet contains the long header including the connection IDs, but omits the Length, Packet Number, and Payload fields.  These are replaced with:</p>
 <p></p>
 
 <dl>
 <dt>ODCIL:</dt>
-<dd style="margin-left: 8">The length of the Original Destination Connection ID field as an unsigned 8-bit integer.  This field does not use the same encoding as the DCIL and SCIL fields.</dd>
+<dd style="margin-left: 8">The length of the Original Destination Connection ID field.  The length is encoded in the least significant bit of the octet using the same encoding as the DCIL and SCIL fields.  The most significant 4 bits of this octet are reserved.  Unless a use for these bits has been negotiated, endpoints SHOULD send randomized values and MUST ignore any value that it receives.</dd>
 <dt>Original Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Original Destination Connection ID contains the value of the Destination Connection ID from the Initial packet that this Retry is in response to. The length of this field is given in ODCIL.</dd>
 <dt>Retry Token:</dt>
@@ -1121,9 +1121,9 @@ ul.toc li {
 <p id="rfc.section.4.4.p.6">A Retry packet does not include a packet number and cannot be explictly acknowledged by a client.</p>
 <p id="rfc.section.4.4.p.7">A server MUST only send a Retry in response to a client Initial packet.</p>
 <p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
-<p id="rfc.section.4.4.p.9">The client responds to a Retry packet with Initial packet that includes the provided Retry Token to continue connection establishment.</p>
+<p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
 <p id="rfc.section.4.4.p.10">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT packets to the connection ID provided by the server.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
-<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  A server that will not send additional Retry packets can set the Source Connection ID to any value.  A client MUST ignore a Retry that contains an ODCIL field with a value less than 8 or greater than 18.</p>
+<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
 </h2>
@@ -1166,7 +1166,7 @@ ul.toc li {
 
 <dl>
 <dt>Token Length:</dt>
-<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  This value is zero if no token is present.  Initial packets sent by the server MUST specify a token of zero length.</dd>
+<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  This value is zero if no token is present.  Initial packets sent by the server MUST set the Token Length field to zero; clients that receive an Initial packet with a non-zero Token Length field MUST either discard the packet or generate a connection error of type PROTOCOL_VIOLATION.</dd>
 <dt>Token:</dt>
 <dd style="margin-left: 8">The value of the token.</dd>
 </dl>
@@ -1186,9 +1186,10 @@ ul.toc li {
 <a href="#rfc.section.4.6.2">4.6.2.</a> <a href="#tokens" id="tokens">Tokens</a>
 </h3>
 <p id="rfc.section.4.6.2.p.1">If the client has a token received in a NEW_TOKEN frame on a previous connection to what it believes to be the same server, it can include that value in the Token field of its Initial packet.</p>
-<p id="rfc.section.4.6.2.p.2">A client SHOULD NOT reuse a token.  Reusing a token could allow different connections to be identified as coming from the same endpoint (see also <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since it was last used; that is, if there is a change in its local IP address or network interface.  A client MUST start the connection process over if it migrates prior to completing the handshake.</p>
-<p id="rfc.section.4.6.2.p.3">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
-<p id="rfc.section.4.6.2.p.4">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
+<p id="rfc.section.4.6.2.p.2">A token allows a server to correlate activity between connections.  Specifically, the connection where the token was issued, and any connection where it is used.  Clients that want to break continuity of identity with a server MAY discard tokens provided using the NEW_TOKEN frame.  Tokens obtained in Retry packets MUST NOT be discarded.</p>
+<p id="rfc.section.4.6.2.p.3">A client SHOULD NOT reuse a token.  Reusing a token on allows connections to be linked by entities on the network path (see <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since the token was last used; that is, if there is a change in its local IP address or network interface.  A client needs to start the connection process over if it migrates prior to completing the handshake.</p>
+<p id="rfc.section.4.6.2.p.4">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
+<p id="rfc.section.4.6.2.p.5">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
 <p></p>
 
 <dl>
