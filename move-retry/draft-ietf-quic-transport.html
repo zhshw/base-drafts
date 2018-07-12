@@ -442,7 +442,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-09" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-12" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -466,12 +466,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 10, 2019</td>
+<td class="left">Expires: January 13, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 09, 2018</td>
+<td class="right">July 12, 2018</td>
 </tr>
 
     	
@@ -490,7 +490,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 10, 2019.</p>
+<p>This Internet-Draft will expire on January 13, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1107,7 +1107,7 @@ ul.toc li {
 
 <dl>
 <dt>ODCIL:</dt>
-<dd style="margin-left: 8">The length of the Original Destination Connection ID field.  The length is encoded in the least significant bit of the octet using the same encoding as the DCIL and SCIL fields.  The most significant 4 bits of this octet are reserved.  Unless a use for these bits has been negotiated, endpoints SHOULD send randomized values and MUST ignore any value that it receives.</dd>
+<dd style="margin-left: 8">The length of the Original Destination Connection ID field.  The length is encoded in the least significant 4 bits of the octet, using the same encoding as the DCIL and SCIL fields.  The most significant 4 bits of this octet are reserved.  Unless a use for these bits has been negotiated, endpoints SHOULD send randomized values and MUST ignore any value that it receives.</dd>
 <dt>Original Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Original Destination Connection ID contains the value of the Destination Connection ID from the Initial packet that this Retry is in response to. The length of this field is given in ODCIL.</dd>
 <dt>Retry Token:</dt>
@@ -1119,7 +1119,7 @@ ul.toc li {
 <p id="rfc.section.4.4.p.7">A server MUST only send a Retry in response to a client Initial packet.</p>
 <p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
 <p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
-<p id="rfc.section.4.4.p.10">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
+<p id="rfc.section.4.4.p.10">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destinagion Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
 </h2>
