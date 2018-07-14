@@ -125,7 +125,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
        4.8.3.  Initialization  . . . . . . . . . . . . . . . . . . .  27
        4.8.4.  On Packet Sent  . . . . . . . . . . . . . . . . . . .  27
        4.8.5.  On Packet Acknowledgement . . . . . . . . . . . . . .  27
-       4.8.6.  On New Congestion Event . . . . . . . . . . . . . . .  27
+       4.8.6.  On New Congestion Event . . . . . . . . . . . . . . .  28
        4.8.7.  Process ECN Information . . . . . . . . . . . . . . .  28
        4.8.8.  On Packets Lost . . . . . . . . . . . . . . . . . . .  28
        4.8.9.  On Retransmission Timeout Verified  . . . . . . . . .  28
@@ -134,22 +134,22 @@ Internet-Draft             QUIC Loss Detection                 July 2018
      6.1.  Normative References  . . . . . . . . . . . . . . . . . .  29
      6.2.  Informative References  . . . . . . . . . . . . . . . . .  29
      6.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  30
-   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  30
-     A.1.  Since draft-ietf-quic-recovery-12 . . . . . . . . . . . .  30
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  31
+     A.1.  Since draft-ietf-quic-recovery-12 . . . . . . . . . . . .  31
      A.2.  Since draft-ietf-quic-recovery-11 . . . . . . . . . . . .  31
      A.3.  Since draft-ietf-quic-recovery-10 . . . . . . . . . . . .  31
      A.4.  Since draft-ietf-quic-recovery-09 . . . . . . . . . . . .  31
      A.5.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  31
      A.6.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  31
-     A.7.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  31
-     A.8.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  31
+     A.7.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  32
+     A.8.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  32
      A.9.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  32
      A.10. Since draft-ietf-quic-recovery-03 . . . . . . . . . . . .  32
      A.11. Since draft-ietf-quic-recovery-02 . . . . . . . . . . . .  32
      A.12. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  32
      A.13. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  32
      A.14. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  32
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  32
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  33
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
 
 1.  Introduction
@@ -1410,14 +1410,19 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    RFCs, papers, and common practice.  Some may need to be changed or
    negotiated in order to better suit a variety of environments.
 
-   kInitialMss (RECOMMENDED 1460 bytes):  The max packet size is used
-      for calculating initial and minimum congestion windows.
+   kMaxDatagramSize (RECOMMENDED 1200 bytes):  The sender's maximum
+      payload size.  Does not include UDP or IP overhead.  The max
+      packet size is used for calculating initial and minimum congestion
+      windows.
 
-   kInitialWindow (RECOMMENDED 10 * kInitialMss):  Limit on the initial
-      amount of outstanding data in bytes.
+   kInitialWindow (RECOMMENDED min(10 * kMaxDatagramSize,
 
-   kMinimumWindow (RECOMMENDED 2 * kInitialMss):  Minimum congestion
-      window in bytes.
+                                   max(2* kMaxDatagramSize, 14600))):
+      Default limit on the initial amount of outstanding data in bytes.
+      Taken from [RFC6928].
+
+   kMinimumWindow (RECOMMENDED 2 * kMaxDatagramSize):  Minimum
+      congestion window in bytes.
 
    kLossReductionFactor (RECOMMENDED 0.5):  Reduction in congestion
       window when a new loss event is detected.
@@ -1445,11 +1450,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    end_of_recovery:  The largest packet number sent when QUIC detects a
       loss.  When a larger packet is acknowledged, QUIC exits recovery.
 
-   ssthresh:  Slow start threshold in bytes.  When the congestion window
-      is below ssthresh, the mode is slow start and the window grows by
-      the number of bytes acknowledged.
-
-
 
 
 
@@ -1457,6 +1457,10 @@ Iyengar & Swett         Expires January 15, 2019               [Page 26]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   ssthresh:  Slow start threshold in bytes.  When the congestion window
+      is below ssthresh, the mode is slow start and the window grows by
+      the number of bytes acknowledged.
 
 4.8.3.  Initialization
 
@@ -1496,14 +1500,10 @@ Internet-Draft             QUIC Loss Detection                 July 2018
           congestion_window += acked_packet.bytes
         else:
           // Congestion avoidance.
-          congestion_window +=
-            kInitialMss * acked_packet.bytes / congestion_window
+          congestion_window += kMaxDatagramSize * acked_packet.bytes
+              / congestion_window
 
-4.8.6.  On New Congestion Event
 
-   Invoked from ProcessECN and OnPacketLost when a new congestion event
-   is detected.  Starts a new recovery period and reduces the congestion
-   window.
 
 
 
@@ -1513,6 +1513,12 @@ Iyengar & Swett         Expires January 15, 2019               [Page 27]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+4.8.6.  On New Congestion Event
+
+   Invoked from ProcessECN and OnPacketLost when a new congestion event
+   is detected.  Starts a new recovery period and reduces the congestion
+   window.
 
       CongestionEvent(packet_number):
         // Start a new congestion event if packet_number
@@ -1555,12 +1561,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    QUIC decreases the congestion window to the minimum value once the
    retransmission timeout has been verified.
 
-      OnRetransmissionTimeoutVerified()
-        congestion_window = kMinimumWindow
-
-
-
-
 
 
 
@@ -1569,6 +1569,9 @@ Iyengar & Swett         Expires January 15, 2019               [Page 28]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+      OnRetransmissionTimeoutVerified()
+        congestion_window = kMinimumWindow
 
 5.  IANA Considerations
 
@@ -1612,11 +1615,8 @@ Internet-Draft             QUIC Loss Detection                 July 2018
               Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
               <https://www.rfc-editor.org/info/rfc5681>.
 
-   [RFC5682]  Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata,
-              "Forward RTO-Recovery (F-RTO): An Algorithm for Detecting
-              Spurious Retransmission Timeouts with TCP", RFC 5682,
-              DOI 10.17487/RFC5682, September 2009,
-              <https://www.rfc-editor.org/info/rfc5682>.
+
+
 
 
 
@@ -1625,6 +1625,12 @@ Iyengar & Swett         Expires January 15, 2019               [Page 29]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   [RFC5682]  Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata,
+              "Forward RTO-Recovery (F-RTO): An Algorithm for Detecting
+              Spurious Retransmission Timeouts with TCP", RFC 5682,
+              DOI 10.17487/RFC5682, September 2009,
+              <https://www.rfc-editor.org/info/rfc5682>.
 
    [RFC5827]  Allman, M., Avrachenkov, K., Ayesta, U., Blanton, J., and
               P. Hurtig, "Early Retransmit for TCP and Stream Control
@@ -1648,6 +1654,11 @@ Internet-Draft             QUIC Loss Detection                 July 2018
               RFC 6675, DOI 10.17487/RFC6675, August 2012,
               <https://www.rfc-editor.org/info/rfc6675>.
 
+   [RFC6928]  Chu, J., Dukkipati, N., Cheng, Y., and M. Mathis,
+              "Increasing TCP's Initial Window", RFC 6928,
+              DOI 10.17487/RFC6928, April 2013,
+              <https://www.rfc-editor.org/info/rfc6928>.
+
    [TLP]      Dukkipati, N., Cardwell, N., Cheng, Y., and M. Mathis,
               "Tail Loss Probe (TLP): An Algorithm for Fast Recovery of
               Tail Losses", draft-dukkipati-tcpm-tcp-loss-probe-01 (work
@@ -1661,6 +1672,16 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-recovery
 
+
+
+
+
+
+Iyengar & Swett         Expires January 15, 2019               [Page 30]
+
+Internet-Draft             QUIC Loss Detection                 July 2018
+
+
 Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
@@ -1673,14 +1694,6 @@ A.1.  Since draft-ietf-quic-recovery-12
 
    o  Added ECN feedback mechanisms and handling; new ACK_ECN frame
       (#804, #805, #1372)
-
-
-
-
-Iyengar & Swett         Expires January 15, 2019               [Page 30]
-
-Internet-Draft             QUIC Loss Detection                 July 2018
-
 
 A.2.  Since draft-ietf-quic-recovery-11
 
@@ -1718,6 +1731,13 @@ A.6.  Since draft-ietf-quic-recovery-07
 
    o  Many editorial fixes.
 
+
+
+Iyengar & Swett         Expires January 15, 2019               [Page 31]
+
+Internet-Draft             QUIC Loss Detection                 July 2018
+
+
 A.7.  Since draft-ietf-quic-recovery-06
 
    No significant changes.
@@ -1725,18 +1745,6 @@ A.7.  Since draft-ietf-quic-recovery-06
 A.8.  Since draft-ietf-quic-recovery-05
 
    o  Add more congestion control text (#776)
-
-
-
-
-
-
-
-
-Iyengar & Swett         Expires January 15, 2019               [Page 31]
-
-Internet-Draft             QUIC Loss Detection                 July 2018
-
 
 A.9.  Since draft-ietf-quic-recovery-04
 
@@ -1779,20 +1787,16 @@ A.14.  Since draft-iyengar-quic-loss-recovery-01
 
    o  Updated authors/editors list
 
-   o  Added table of contents
-
-Acknowledgments
-
-
-
-
-
 
 
 Iyengar & Swett         Expires January 15, 2019               [Page 32]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   o  Added table of contents
+
+Acknowledgments
 
 Authors' Addresses
 
@@ -1806,10 +1810,6 @@ Authors' Addresses
    Google
 
    Email: ianswett@google.com
-
-
-
-
 
 
 

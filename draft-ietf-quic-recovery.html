@@ -1099,11 +1099,13 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
-<dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
-<dt>kInitialWindow (RECOMMENDED 10 * kInitialMss):</dt>
-<dd style="margin-left: 8">Limit on the initial amount of outstanding data in bytes.</dd>
-<dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
+<dt>kMaxDatagramSize (RECOMMENDED 1200 bytes):</dt>
+<dd style="margin-left: 8">The sender&#8217;s maximum payload size. Does not include UDP or IP overhead. The max packet size is used for calculating initial and minimum congestion windows.</dd>
+<dt>kInitialWindow (RECOMMENDED min(10 * kMaxDatagramSize,</dt>
+<dd style="margin-left: 8"></dd>
+<dt>                                max(2* kMaxDatagramSize, 14600))):</dt>
+<dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
+<dt>kMinimumWindow (RECOMMENDED 2 * kMaxDatagramSize):</dt>
 <dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
 <dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
@@ -1164,8 +1166,8 @@ DetectLostPackets(largest_acked):
        congestion_window += acked_packet.bytes
      else:
        // Congestion avoidance.
-       congestion_window +=
-         kInitialMss * acked_packet.bytes / congestion_window
+       congestion_window += kMaxDatagramSize * acked_packet.bytes
+           / congestion_window
 </pre>
 <h3 id="rfc.section.4.8.6">
 <a href="#rfc.section.4.8.6">4.8.6.</a> <a href="#on-new-congestion-event" id="on-new-congestion-event">On New Congestion Event</a>
@@ -1289,6 +1291,11 @@ DetectLostPackets(largest_acked):
 <td class="reference"><b id="RFC6675">[RFC6675]</b></td>
 <td class="top">
 <a>Blanton, E.</a>, <a>Allman, M.</a>, <a>Wang, L.</a>, <a>Jarvinen, I.</a>, <a>Kojo, M.</a> and <a>Y. Nishida</a>, "<a href="https://tools.ietf.org/html/rfc6675">A Conservative Loss Recovery Algorithm Based on Selective Acknowledgment (SACK) for TCP</a>", RFC 6675, DOI 10.17487/RFC6675, August 2012.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC6928">[RFC6928]</b></td>
+<td class="top">
+<a>Chu, J.</a>, <a>Dukkipati, N.</a>, <a>Cheng, Y.</a> and <a>M. Mathis</a>, "<a href="https://tools.ietf.org/html/rfc6928">Increasing TCP's Initial Window</a>", RFC 6928, DOI 10.17487/RFC6928, April 2013.</td>
 </tr>
 <tr>
 <td class="reference"><b id="TLP">[TLP]</b></td>
