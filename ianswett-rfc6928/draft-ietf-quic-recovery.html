@@ -9,86 +9,30 @@
 
   
 <style type="text/css">/*<![CDATA[*/
-@viewport {
-  zoom: 1.0;
-  width: extend-to-zoom;
-}
-@-ms-viewport {
-  width: extend-to-zoom;
-  zoom: 1.0;
-}
-
-@media screen and (min-width: 1024px) {
-  body>ul.toc, body>#rfc\.toc {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    right: calc(50vw - 550px);
-    width: 300px;
-    z-index: 1;
-  }
-  #rfc\.toc {
-    top: 55px;
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  ul.toc, #rfc\.toc {
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-  ul.toc li, #rfc\.toc li {
-    font-size: 15px;
-    line-height: 20px;
-    text-indent: 0;
-    padding-left: 1em;
-  }
-  body>ul.toc {
-    top: 140px;
-  }
-
-  body {
-    padding-right: 350px;
-  }
-}
 
 body {
-  font: 16px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font: 16px "Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   color: #333;
   font-size-adjust: 0.5;
   line-height: 24px;
   margin: 75px auto;
-  max-width: 724px;
+  max-width: 624px;
+  padding: 0 5px;
 }
 
-.title, .filename, h1, h2, h3, h4 {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+.title, .filename, h1, h2, h3, h4, h5 {
+  font: 16px "Roboto Condensed","Helvetica Neue","Open Sans",Helvetica,Calibri,sans-serif;
   font-size-adjust: 0.5;
-  font-weight: 500;
+  font-weight: bold;
   color: #333;
   line-height: 100%;
-  margin: 0.8em 0 0.3em;
+  margin: 1.2em 0 0.3em;
 }
-.title { font-size: 36px; }
-h1 { font-size: 36px; }
-h2 { font-size: 24px; }
-h3, h4 { font-size: 18px; }
+.title, #rfc\.title h1 { font-size: 32px; }
+h1, section h1, h2, section h2, section h3, nav h2 { font-size: 20px; }
+h3, section h4, h4, section h5 { font-size: 16px; }
 h1 a[href], h2 a[href], h3 a[href], h4 a[href] {
   color: #333;
-}
-
-ul.toc li {
-  list-style: none;
-  text-indent: -2.5em;
-  padding-left: 2.5em;
-  padding-bottom: 5px;
-  margin: 0;
-}
-ul.toc ul {
-  margin: 0;
-}
-/* xml2rfc nests ul directly inside ul which messes with the style badly */
-ul.toc, ul.toc>ul, ul.toc ul>ul {
-  margin: 0 0 0 1.5em;
 }
 
 table {
@@ -117,28 +61,30 @@ td.reference {
 }
 
 
-table.header {
+table.header, table#rfc\.headerblock {
   width: 100%;
 }
-table.header td {
+table.header td, table#rfc\.headerblock td {
   border: none;
   background-color: transparent;
   color: black;
+  padding: 0;
 }
 .filename {
+  display: block;
   color: rgb(119, 119, 119);
-  font-size: 23px;
+  font-size: 20px;
   font-weight: normal;
-  height: auto;
   line-height: 100%;
+  margin: 10px 0 32px;
 }
 #rfc\.abstract+p, #rfc\.abstract p {
-  font-size: 18px;
-  line-height: 27px%;
+  font-size: 20px;
+  line-height: 28px;
 }
 
 samp, tt, code, pre {
-  font: 11pt consolas, monospace;
+  font: 15px Consolas, monospace;
   font-size-adjust: none;
 }
 pre {
@@ -148,13 +94,15 @@ pre {
   padding: 5px;
   margin: 5px;
 }
-.figure {
+.figure, caption {
   font-style: italic;
   margin: 0 1.5em;
+  text-align: left;
 }
 
 address {
-  margin: 10px 0 0;
+  margin: 16px 2px;
+  line-height: 20px;
 }
 .vcard {
   font-style: normal;
@@ -162,8 +110,8 @@ address {
 .vcardline {
   display: block;
 }
-.vcardline .fn {
-  font-weight: bold;
+.vcardline .fn, address b {
+  font-weight: normal;
 }
 .vcardline .hidden {
   display: none;
@@ -217,15 +165,59 @@ a[href]:hover {
   background-color: #eee;
 }
 
-ol, ul, li, p {
+p, ol, ul, li {
   padding: 0;
-  margin: 0.5em 0 0.5em 2em;
 }
-li, p {
-  margin-left: 0;
+p {
+  margin: 0.5em 0;
+}
+ol, ul {
+  margin: 0.2em 0 0.2em 2em;
+}
+li {
+  margin: 0.2em 0;
 }
 address {
   font-style: normal;
+}
+
+ul.toc ul {
+  margin: 0 0 0 2em;
+}
+ul.toc li {
+  list-style: none;
+  margin: 0;
+}
+
+@media screen and (min-width: 924px) {
+  body {
+    padding-right: 350px;
+  }
+  body>ul.toc, body>#rfc\.toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 500px);
+    width: 300px;
+    z-index: 1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  body>#rfc\.toc {
+    top: 55px;
+  }
+  body>ul.toc {
+    top: 100px;
+  }
+
+  ul.toc {
+    margin: 0 0 0 4px;
+    font-size: 12px;
+    line-height: 20px;
+  }
+  ul.toc ul {
+    margin-left: 1.2em;
+  }
 }
 
 .github-fork-ribbon-wrapper {
@@ -285,6 +277,7 @@ address {
     position: fixed;
   }
   /*]]>*/</style>
+  <meta name="viewport" content="initial-scale=1.0">
 
 
   <link href="#rfc.toc" rel="Contents">
@@ -292,74 +285,82 @@ address {
 <link href="#rfc.section.1.1" rel="Chapter" title="1.1 Notational Conventions">
 <link href="#rfc.section.2" rel="Chapter" title="2 Design of the QUIC Transmission Machinery">
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Relevant Differences Between QUIC and TCP">
-<link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 Monotonically Increasing Packet Numbers">
-<link href="#rfc.section.2.1.2" rel="Chapter" title="2.1.2 No Reneging">
-<link href="#rfc.section.2.1.3" rel="Chapter" title="2.1.3 More ACK Ranges">
-<link href="#rfc.section.2.1.4" rel="Chapter" title="2.1.4 Explicit Correction For Delayed ACKs">
+<link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 Separate Packet Number Spaces">
+<link href="#rfc.section.2.1.2" rel="Chapter" title="2.1.2 Monotonically Increasing Packet Numbers">
+<link href="#rfc.section.2.1.3" rel="Chapter" title="2.1.3 No Reneging">
+<link href="#rfc.section.2.1.4" rel="Chapter" title="2.1.4 More ACK Ranges">
+<link href="#rfc.section.2.1.5" rel="Chapter" title="2.1.5 Explicit Correction For Delayed ACKs">
 <link href="#rfc.section.3" rel="Chapter" title="3 Loss Detection">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 Computing the RTT estimate">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Ack-based Detection">
 <link href="#rfc.section.3.2.1" rel="Chapter" title="3.2.1 Fast Retransmit">
 <link href="#rfc.section.3.2.2" rel="Chapter" title="3.2.2 Early Retransmit">
 <link href="#rfc.section.3.3" rel="Chapter" title="3.3 Timer-based Detection">
-<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Handshake Timeout">
+<link href="#rfc.section.3.3.1" rel="Chapter" title="3.3.1 Crypto Handshake Timeout">
 <link href="#rfc.section.3.3.2" rel="Chapter" title="3.3.2 Tail Loss Probe">
 <link href="#rfc.section.3.3.3" rel="Chapter" title="3.3.3 Retransmission Timeout">
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 Generating Acknowledgements">
-<link href="#rfc.section.3.4.1" rel="Chapter" title="3.4.1 ACK Ranges">
-<link href="#rfc.section.3.4.2" rel="Chapter" title="3.4.2 Receiver Tracking of ACK Frames">
+<link href="#rfc.section.3.4.1" rel="Chapter" title="3.4.1 Crypto Handshake Data">
+<link href="#rfc.section.3.4.2" rel="Chapter" title="3.4.2 ACK Ranges">
+<link href="#rfc.section.3.4.3" rel="Chapter" title="3.4.3 Receiver Tracking of ACK Frames">
 <link href="#rfc.section.3.5" rel="Chapter" title="3.5 Pseudocode">
 <link href="#rfc.section.3.5.1" rel="Chapter" title="3.5.1 Constants of interest">
 <link href="#rfc.section.3.5.2" rel="Chapter" title="3.5.2 Variables of interest">
 <link href="#rfc.section.3.5.3" rel="Chapter" title="3.5.3 Initialization">
 <link href="#rfc.section.3.5.4" rel="Chapter" title="3.5.4 On Sending a Packet">
-<link href="#rfc.section.3.5.5" rel="Chapter" title="3.5.5 On Ack Receipt">
+<link href="#rfc.section.3.5.5" rel="Chapter" title="3.5.5 On Receiving an Acknowledgment">
 <link href="#rfc.section.3.5.6" rel="Chapter" title="3.5.6 On Packet Acknowledgment">
 <link href="#rfc.section.3.5.7" rel="Chapter" title="3.5.7 Setting the Loss Detection Alarm">
 <link href="#rfc.section.3.5.8" rel="Chapter" title="3.5.8 On Alarm Firing">
 <link href="#rfc.section.3.5.9" rel="Chapter" title="3.5.9 Detecting Lost Packets">
 <link href="#rfc.section.3.6" rel="Chapter" title="3.6 Discussion">
 <link href="#rfc.section.4" rel="Chapter" title="4 Congestion Control">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Slow Start">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Congestion Avoidance">
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Recovery Period">
-<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Tail Loss Probe">
-<link href="#rfc.section.4.5" rel="Chapter" title="4.5 Retransmission Timeout">
-<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Pacing">
-<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Pseudocode">
-<link href="#rfc.section.4.7.1" rel="Chapter" title="4.7.1 Constants of interest">
-<link href="#rfc.section.4.7.2" rel="Chapter" title="4.7.2 Variables of interest">
-<link href="#rfc.section.4.7.3" rel="Chapter" title="4.7.3 Initialization">
-<link href="#rfc.section.4.7.4" rel="Chapter" title="4.7.4 On Packet Sent">
-<link href="#rfc.section.4.7.5" rel="Chapter" title="4.7.5 On Packet Acknowledgement">
-<link href="#rfc.section.4.7.6" rel="Chapter" title="4.7.6 On Packets Lost">
-<link href="#rfc.section.4.7.7" rel="Chapter" title="4.7.7 On Retransmission Timeout Verified">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 Explicit Congestion Notification">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Slow Start">
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Congestion Avoidance">
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Recovery Period">
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 Tail Loss Probe">
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Retransmission Timeout">
+<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Pacing">
+<link href="#rfc.section.4.8" rel="Chapter" title="4.8 Pseudocode">
+<link href="#rfc.section.4.8.1" rel="Chapter" title="4.8.1 Constants of interest">
+<link href="#rfc.section.4.8.2" rel="Chapter" title="4.8.2 Variables of interest">
+<link href="#rfc.section.4.8.3" rel="Chapter" title="4.8.3 Initialization">
+<link href="#rfc.section.4.8.4" rel="Chapter" title="4.8.4 On Packet Sent">
+<link href="#rfc.section.4.8.5" rel="Chapter" title="4.8.5 On Packet Acknowledgement">
+<link href="#rfc.section.4.8.6" rel="Chapter" title="4.8.6 On New Congestion Event">
+<link href="#rfc.section.4.8.7" rel="Chapter" title="4.8.7 Process ECN Information">
+<link href="#rfc.section.4.8.8" rel="Chapter" title="4.8.8 On Packets Lost">
+<link href="#rfc.section.4.8.9" rel="Chapter" title="4.8.9 On Retransmission Timeout Verified">
 <link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations">
 <link href="#rfc.references" rel="Chapter" title="6 References">
 <link href="#rfc.references.1" rel="Chapter" title="6.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="6.2 Informative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Acknowledgments">
-<link href="#rfc.appendix.B" rel="Chapter" title="B Change Log">
-<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Since draft-ietf-quic-recovery-09">
-<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Since draft-ietf-quic-recovery-08">
-<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Since draft-ietf-quic-recovery-07">
-<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Since draft-ietf-quic-recovery-06">
-<link href="#rfc.appendix.B.5" rel="Chapter" title="B.5 Since draft-ietf-quic-recovery-05">
-<link href="#rfc.appendix.B.6" rel="Chapter" title="B.6 Since draft-ietf-quic-recovery-04">
-<link href="#rfc.appendix.B.7" rel="Chapter" title="B.7 Since draft-ietf-quic-recovery-03">
-<link href="#rfc.appendix.B.8" rel="Chapter" title="B.8 Since draft-ietf-quic-recovery-02">
-<link href="#rfc.appendix.B.9" rel="Chapter" title="B.9 Since draft-ietf-quic-recovery-01">
-<link href="#rfc.appendix.B.10" rel="Chapter" title="B.10 Since draft-ietf-quic-recovery-00">
-<link href="#rfc.appendix.B.11" rel="Chapter" title="B.11 Since draft-iyengar-quic-loss-recovery-01">
+<link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-recovery-12">
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-recovery-11">
+<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-recovery-10">
+<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Since draft-ietf-quic-recovery-09">
+<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 Since draft-ietf-quic-recovery-08">
+<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 Since draft-ietf-quic-recovery-07">
+<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 Since draft-ietf-quic-recovery-06">
+<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 Since draft-ietf-quic-recovery-05">
+<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 Since draft-ietf-quic-recovery-04">
+<link href="#rfc.appendix.A.10" rel="Chapter" title="A.10 Since draft-ietf-quic-recovery-03">
+<link href="#rfc.appendix.A.11" rel="Chapter" title="A.11 Since draft-ietf-quic-recovery-02">
+<link href="#rfc.appendix.A.12" rel="Chapter" title="A.12 Since draft-ietf-quic-recovery-01">
+<link href="#rfc.appendix.A.13" rel="Chapter" title="A.13 Since draft-ietf-quic-recovery-00">
+<link href="#rfc.appendix.A.14" rel="Chapter" title="A.14 Since draft-iyengar-quic-loss-recovery-01">
+<link href="#rfc.acknowledgments" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
 
 
-  <meta name="generator" content="xml2rfc version 2.9.6 - https://tools.ietf.org/tools/xml2rfc" />
+  <meta name="generator" content="xml2rfc version 2.9.9 - https://tools.ietf.org/tools/xml2rfc" />
   <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and I. Swett, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-recovery-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-03-20" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-14" />
   <meta name="dct.abstract" content="This document describes loss detection and congestion control mechanisms for QUIC." />
   <meta name="description" content="This document describes loss detection and congestion control mechanisms for QUIC." />
 
@@ -383,12 +384,12 @@ address {
 <td class="right">I. Swett, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: September 21, 2018</td>
+<td class="left">Expires: January 15, 2019</td>
 <td class="right">Google</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">March 20, 2018</td>
+<td class="right">July 14, 2018</td>
 </tr>
 
     	
@@ -407,7 +408,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 21, 2018.</p>
+<p>This Internet-Draft will expire on January 15, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -425,13 +426,15 @@ address {
 </li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Relevant Differences Between QUIC and TCP</a>
 </li>
-<ul><li>2.1.1.   <a href="#rfc.section.2.1.1">Monotonically Increasing Packet Numbers</a>
+<ul><li>2.1.1.   <a href="#rfc.section.2.1.1">Separate Packet Number Spaces</a>
 </li>
-<li>2.1.2.   <a href="#rfc.section.2.1.2">No Reneging</a>
+<li>2.1.2.   <a href="#rfc.section.2.1.2">Monotonically Increasing Packet Numbers</a>
 </li>
-<li>2.1.3.   <a href="#rfc.section.2.1.3">More ACK Ranges</a>
+<li>2.1.3.   <a href="#rfc.section.2.1.3">No Reneging</a>
 </li>
-<li>2.1.4.   <a href="#rfc.section.2.1.4">Explicit Correction For Delayed ACKs</a>
+<li>2.1.4.   <a href="#rfc.section.2.1.4">More ACK Ranges</a>
+</li>
+<li>2.1.5.   <a href="#rfc.section.2.1.5">Explicit Correction For Delayed ACKs</a>
 </li>
 </ul></ul><li>3.   <a href="#rfc.section.3">Loss Detection</a>
 </li>
@@ -445,7 +448,7 @@ address {
 </li>
 </ul><li>3.3.   <a href="#rfc.section.3.3">Timer-based Detection</a>
 </li>
-<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Handshake Timeout</a>
+<ul><li>3.3.1.   <a href="#rfc.section.3.3.1">Crypto Handshake Timeout</a>
 </li>
 <li>3.3.2.   <a href="#rfc.section.3.3.2">Tail Loss Probe</a>
 </li>
@@ -453,9 +456,11 @@ address {
 </li>
 </ul><li>3.4.   <a href="#rfc.section.3.4">Generating Acknowledgements</a>
 </li>
-<ul><li>3.4.1.   <a href="#rfc.section.3.4.1">ACK Ranges</a>
+<ul><li>3.4.1.   <a href="#rfc.section.3.4.1">Crypto Handshake Data</a>
 </li>
-<li>3.4.2.   <a href="#rfc.section.3.4.2">Receiver Tracking of ACK Frames</a>
+<li>3.4.2.   <a href="#rfc.section.3.4.2">ACK Ranges</a>
+</li>
+<li>3.4.3.   <a href="#rfc.section.3.4.3">Receiver Tracking of ACK Frames</a>
 </li>
 </ul><li>3.5.   <a href="#rfc.section.3.5">Pseudocode</a>
 </li>
@@ -467,7 +472,7 @@ address {
 </li>
 <li>3.5.4.   <a href="#rfc.section.3.5.4">On Sending a Packet</a>
 </li>
-<li>3.5.5.   <a href="#rfc.section.3.5.5">On Ack Receipt</a>
+<li>3.5.5.   <a href="#rfc.section.3.5.5">On Receiving an Acknowledgment</a>
 </li>
 <li>3.5.6.   <a href="#rfc.section.3.5.6">On Packet Acknowledgment</a>
 </li>
@@ -481,33 +486,39 @@ address {
 </li>
 </ul><li>4.   <a href="#rfc.section.4">Congestion Control</a>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">Slow Start</a>
+<ul><li>4.1.   <a href="#rfc.section.4.1">Explicit Congestion Notification</a>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">Congestion Avoidance</a>
+<li>4.2.   <a href="#rfc.section.4.2">Slow Start</a>
 </li>
-<li>4.3.   <a href="#rfc.section.4.3">Recovery Period</a>
+<li>4.3.   <a href="#rfc.section.4.3">Congestion Avoidance</a>
 </li>
-<li>4.4.   <a href="#rfc.section.4.4">Tail Loss Probe</a>
+<li>4.4.   <a href="#rfc.section.4.4">Recovery Period</a>
 </li>
-<li>4.5.   <a href="#rfc.section.4.5">Retransmission Timeout</a>
+<li>4.5.   <a href="#rfc.section.4.5">Tail Loss Probe</a>
 </li>
-<li>4.6.   <a href="#rfc.section.4.6">Pacing</a>
+<li>4.6.   <a href="#rfc.section.4.6">Retransmission Timeout</a>
 </li>
-<li>4.7.   <a href="#rfc.section.4.7">Pseudocode</a>
+<li>4.7.   <a href="#rfc.section.4.7">Pacing</a>
 </li>
-<ul><li>4.7.1.   <a href="#rfc.section.4.7.1">Constants of interest</a>
+<li>4.8.   <a href="#rfc.section.4.8">Pseudocode</a>
 </li>
-<li>4.7.2.   <a href="#rfc.section.4.7.2">Variables of interest</a>
+<ul><li>4.8.1.   <a href="#rfc.section.4.8.1">Constants of interest</a>
 </li>
-<li>4.7.3.   <a href="#rfc.section.4.7.3">Initialization</a>
+<li>4.8.2.   <a href="#rfc.section.4.8.2">Variables of interest</a>
 </li>
-<li>4.7.4.   <a href="#rfc.section.4.7.4">On Packet Sent</a>
+<li>4.8.3.   <a href="#rfc.section.4.8.3">Initialization</a>
 </li>
-<li>4.7.5.   <a href="#rfc.section.4.7.5">On Packet Acknowledgement</a>
+<li>4.8.4.   <a href="#rfc.section.4.8.4">On Packet Sent</a>
 </li>
-<li>4.7.6.   <a href="#rfc.section.4.7.6">On Packets Lost</a>
+<li>4.8.5.   <a href="#rfc.section.4.8.5">On Packet Acknowledgement</a>
 </li>
-<li>4.7.7.   <a href="#rfc.section.4.7.7">On Retransmission Timeout Verified</a>
+<li>4.8.6.   <a href="#rfc.section.4.8.6">On New Congestion Event</a>
+</li>
+<li>4.8.7.   <a href="#rfc.section.4.8.7">Process ECN Information</a>
+</li>
+<li>4.8.8.   <a href="#rfc.section.4.8.8">On Packets Lost</a>
+</li>
+<li>4.8.9.   <a href="#rfc.section.4.8.9">On Retransmission Timeout Verified</a>
 </li>
 </ul></ul><li>5.   <a href="#rfc.section.5">IANA Considerations</a>
 </li>
@@ -517,33 +528,39 @@ address {
 </li>
 <li>6.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
-</ul><li>Appendix A.   <a href="#rfc.appendix.A">Acknowledgments</a>
+</ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
-<li>Appendix B.   <a href="#rfc.appendix.B">Change Log</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-recovery-12</a>
 </li>
-<ul><li>B.1.   <a href="#rfc.appendix.B.1">Since draft-ietf-quic-recovery-09</a>
+<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-recovery-11</a>
 </li>
-<li>B.2.   <a href="#rfc.appendix.B.2">Since draft-ietf-quic-recovery-08</a>
+<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-recovery-10</a>
 </li>
-<li>B.3.   <a href="#rfc.appendix.B.3">Since draft-ietf-quic-recovery-07</a>
+<li>A.4.   <a href="#rfc.appendix.A.4">Since draft-ietf-quic-recovery-09</a>
 </li>
-<li>B.4.   <a href="#rfc.appendix.B.4">Since draft-ietf-quic-recovery-06</a>
+<li>A.5.   <a href="#rfc.appendix.A.5">Since draft-ietf-quic-recovery-08</a>
 </li>
-<li>B.5.   <a href="#rfc.appendix.B.5">Since draft-ietf-quic-recovery-05</a>
+<li>A.6.   <a href="#rfc.appendix.A.6">Since draft-ietf-quic-recovery-07</a>
 </li>
-<li>B.6.   <a href="#rfc.appendix.B.6">Since draft-ietf-quic-recovery-04</a>
+<li>A.7.   <a href="#rfc.appendix.A.7">Since draft-ietf-quic-recovery-06</a>
 </li>
-<li>B.7.   <a href="#rfc.appendix.B.7">Since draft-ietf-quic-recovery-03</a>
+<li>A.8.   <a href="#rfc.appendix.A.8">Since draft-ietf-quic-recovery-05</a>
 </li>
-<li>B.8.   <a href="#rfc.appendix.B.8">Since draft-ietf-quic-recovery-02</a>
+<li>A.9.   <a href="#rfc.appendix.A.9">Since draft-ietf-quic-recovery-04</a>
 </li>
-<li>B.9.   <a href="#rfc.appendix.B.9">Since draft-ietf-quic-recovery-01</a>
+<li>A.10.   <a href="#rfc.appendix.A.10">Since draft-ietf-quic-recovery-03</a>
 </li>
-<li>B.10.   <a href="#rfc.appendix.B.10">Since draft-ietf-quic-recovery-00</a>
+<li>A.11.   <a href="#rfc.appendix.A.11">Since draft-ietf-quic-recovery-02</a>
 </li>
-<li>B.11.   <a href="#rfc.appendix.B.11">Since draft-iyengar-quic-loss-recovery-01</a>
+<li>A.12.   <a href="#rfc.appendix.A.12">Since draft-ietf-quic-recovery-01</a>
 </li>
-</ul><li><a href="#rfc.authors">Authors' Addresses</a>
+<li>A.13.   <a href="#rfc.appendix.A.13">Since draft-ietf-quic-recovery-00</a>
+</li>
+<li>A.14.   <a href="#rfc.appendix.A.14">Since draft-iyengar-quic-loss-recovery-01</a>
+</li>
+</ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
+</li>
+<li><a href="#rfc.authors">Authors' Addresses</a>
 </li>
 
 
@@ -561,38 +578,42 @@ address {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#design-of-the-quic-transmission-machinery" id="design-of-the-quic-transmission-machinery">Design of the QUIC Transmission Machinery</a>
 </h1>
-<p id="rfc.section.2.p.1">All transmissions in QUIC are sent with a packet-level header, which includes a packet sequence number (referred to below as a packet number).  These packet numbers never repeat in the lifetime of a connection, and are monotonically increasing, which prevents ambiguity.  This fundamental design decision obviates the need for disambiguating between transmissions and retransmissions and eliminates significant complexity from QUIC&#8217;s interpretation of TCP loss detection mechanisms.</p>
-<p id="rfc.section.2.p.2">Every packet may contain several frames.  We outline the frames that are important to the loss detection and congestion control machinery below.</p>
+<p id="rfc.section.2.p.1">All transmissions in QUIC are sent with a packet-level header, which indicates the encryption level and includes a packet sequence number (referred to below as a packet number).  The encryption level indicates the packet number space, as described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>.  Packet numbers never repeat within a packet number space for the lifetime of a connection.  Packet numbers monotonically increase within a space, preventing ambiguity.</p>
+<p id="rfc.section.2.p.2">This design obviates the need for disambiguating between transmissions and retransmissions and eliminates significant complexity from QUIC&#8217;s interpretation of TCP loss detection mechanisms.</p>
+<p id="rfc.section.2.p.3">QUIC packets can contain multiple frames of different types. The recovery mechanisms ensure that data and frames that need reliable delivery are acknowledged or declared lost and sent in new packets as necessary. The types of frames contained in a packet affect recovery and congestion control logic:</p>
 <p></p>
 
 <ul>
-<li>Retransmittable frames are those that count towards bytes in flight and need acknowledgement.  The most common are STREAM frames, which typically contain application data.</li>
-<li>Retransmittable packets are those that contain at least one retransmittable frame.</li>
-<li>Crypto handshake data is sent on stream 0, and uses the reliability machinery of QUIC underneath.</li>
-<li>ACK frames contain acknowledgment information.  ACK frames contain one or more ranges of acknowledged packets.</li>
+<li>All packets are acknowledged, though packets that contain only ACK, ACK_ECN, and PADDING frames are not acknowledged immediately.  Packets containing at least one frame besides ACK, ACK_ECN, and PADDING are referred to as &#8220;retransmittable&#8221; below.</li>
+<li>Long header packets that contain CRYPTO frames are critical to the performance of the QUIC handshake and use shorter timers for acknowledgement and retransmission.</li>
+<li>Packets that contain only ACK and ACK_ECN frames do not count toward congestion control limits and are not considered in-flight. Note that this means PADDING frames cause packets to contribute toward bytes in flight without directly causing an acknowledgment to be sent.  The rest of this document uses &#8220;ACK frames&#8221; to refer to both ACK and ACK_ECN frames.</li>
 </ul>
 <h2 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#relevant-differences-between-quic-and-tcp" id="relevant-differences-between-quic-and-tcp">Relevant Differences Between QUIC and TCP</a>
 </h2>
 <p id="rfc.section.2.1.p.1">Readers familiar with TCP&#8217;s loss detection and congestion control will find algorithms here that parallel well-known TCP ones. Protocol differences between QUIC and TCP however contribute to algorithmic differences. We briefly describe these protocol differences below.</p>
 <h3 id="rfc.section.2.1.1">
-<a href="#rfc.section.2.1.1">2.1.1.</a> <a href="#monotonically-increasing-packet-numbers" id="monotonically-increasing-packet-numbers">Monotonically Increasing Packet Numbers</a>
+<a href="#rfc.section.2.1.1">2.1.1.</a> <a href="#separate-packet-number-spaces" id="separate-packet-number-spaces">Separate Packet Number Spaces</a>
 </h3>
-<p id="rfc.section.2.1.1.p.1">TCP conflates transmission sequence number at the sender with delivery sequence number at the receiver, which results in retransmissions of the same data carrying the same sequence number, and consequently to problems caused by &#8220;retransmission ambiguity&#8221;.  QUIC separates the two: QUIC uses a packet number for transmissions, and any data that is to be delivered to the receiving application(s) is sent in one or more streams, with delivery order determined by stream offsets encoded within STREAM frames.</p>
-<p id="rfc.section.2.1.1.p.2">QUIC&#8217;s packet number is strictly increasing, and directly encodes transmission order.  A higher QUIC packet number signifies that the packet was sent later, and a lower QUIC packet number signifies that the packet was sent earlier.  When a packet containing frames is deemed lost, QUIC rebundles necessary frames in a new packet with a new packet number, removing ambiguity about which packet is acknowledged when an ACK is received.  Consequently, more accurate RTT measurements can be made, spurious retransmissions are trivially detected, and mechanisms such as Fast Retransmit can be applied universally, based only on packet number.</p>
-<p id="rfc.section.2.1.1.p.3">This design point significantly simplifies loss detection mechanisms for QUIC.  Most TCP mechanisms implicitly attempt to infer transmission ordering based on TCP sequence numbers - a non-trivial task, especially when TCP timestamps are not available.</p>
+<p id="rfc.section.2.1.1.p.1">QUIC uses separate packet number spaces for each encryption level, except 0-RTT and all generations of 1-RTT keys use the same packet number space.  Separate packet number spaces ensures acknowledgement of packets sent with one level of encryption will not cause spurious retransmission of packets sent with a different encryption level.  Congestion control and RTT measurement are unified across packet number spaces.</p>
 <h3 id="rfc.section.2.1.2">
-<a href="#rfc.section.2.1.2">2.1.2.</a> <a href="#no-reneging" id="no-reneging">No Reneging</a>
+<a href="#rfc.section.2.1.2">2.1.2.</a> <a href="#monotonically-increasing-packet-numbers" id="monotonically-increasing-packet-numbers">Monotonically Increasing Packet Numbers</a>
 </h3>
-<p id="rfc.section.2.1.2.p.1">QUIC ACKs contain information that is similar to TCP SACK, but QUIC does not allow any acked packet to be reneged, greatly simplifying implementations on both sides and reducing memory pressure on the sender.</p>
+<p id="rfc.section.2.1.2.p.1">TCP conflates transmission sequence number at the sender with delivery sequence number at the receiver, which results in retransmissions of the same data carrying the same sequence number, and consequently to problems caused by &#8220;retransmission ambiguity&#8221;.  QUIC separates the two: QUIC uses a packet number for transmissions, and any data that is to be delivered to the receiving application(s) is sent in one or more streams, with delivery order determined by stream offsets encoded within STREAM frames.</p>
+<p id="rfc.section.2.1.2.p.2">QUIC&#8217;s packet number is strictly increasing, and directly encodes transmission order.  A higher QUIC packet number signifies that the packet was sent later, and a lower QUIC packet number signifies that the packet was sent earlier.  When a packet containing frames is deemed lost, QUIC rebundles necessary frames in a new packet with a new packet number, removing ambiguity about which packet is acknowledged when an ACK is received.  Consequently, more accurate RTT measurements can be made, spurious retransmissions are trivially detected, and mechanisms such as Fast Retransmit can be applied universally, based only on packet number.</p>
+<p id="rfc.section.2.1.2.p.3">This design point significantly simplifies loss detection mechanisms for QUIC.  Most TCP mechanisms implicitly attempt to infer transmission ordering based on TCP sequence numbers - a non-trivial task, especially when TCP timestamps are not available.</p>
 <h3 id="rfc.section.2.1.3">
-<a href="#rfc.section.2.1.3">2.1.3.</a> <a href="#more-ack-ranges" id="more-ack-ranges">More ACK Ranges</a>
+<a href="#rfc.section.2.1.3">2.1.3.</a> <a href="#no-reneging" id="no-reneging">No Reneging</a>
 </h3>
-<p id="rfc.section.2.1.3.p.1">QUIC supports many ACK ranges, opposed to TCP&#8217;s 3 SACK ranges.  In high loss environments, this speeds recovery, reduces spurious retransmits, and ensures forward progress without relying on timeouts.</p>
+<p id="rfc.section.2.1.3.p.1">QUIC ACKs contain information that is similar to TCP SACK, but QUIC does not allow any acked packet to be reneged, greatly simplifying implementations on both sides and reducing memory pressure on the sender.</p>
 <h3 id="rfc.section.2.1.4">
-<a href="#rfc.section.2.1.4">2.1.4.</a> <a href="#explicit-correction-for-delayed-acks" id="explicit-correction-for-delayed-acks">Explicit Correction For Delayed ACKs</a>
+<a href="#rfc.section.2.1.4">2.1.4.</a> <a href="#more-ack-ranges" id="more-ack-ranges">More ACK Ranges</a>
 </h3>
-<p id="rfc.section.2.1.4.p.1">QUIC ACKs explicitly encode the delay incurred at the receiver between when a packet is received and when the corresponding ACK is sent.  This allows the receiver of the ACK to adjust for receiver delays, specifically the delayed ack timer, when estimating the path RTT.  This mechanism also allows a receiver to measure and report the delay from when a packet was received by the OS kernel, which is useful in receivers which may incur delays such as context-switch latency before a userspace QUIC receiver processes a received packet.</p>
+<p id="rfc.section.2.1.4.p.1">QUIC supports many ACK ranges, opposed to TCP&#8217;s 3 SACK ranges.  In high loss environments, this speeds recovery, reduces spurious retransmits, and ensures forward progress without relying on timeouts.</p>
+<h3 id="rfc.section.2.1.5">
+<a href="#rfc.section.2.1.5">2.1.5.</a> <a href="#explicit-correction-for-delayed-acks" id="explicit-correction-for-delayed-acks">Explicit Correction For Delayed ACKs</a>
+</h3>
+<p id="rfc.section.2.1.5.p.1">QUIC ACKs explicitly encode the delay incurred at the receiver between when a packet is received and when the corresponding ACK is sent.  This allows the receiver of the ACK to adjust for receiver delays, specifically the delayed ack timer, when estimating the path RTT.  This mechanism also allows a receiver to measure and report the delay from when a packet was received by the OS kernel, which is useful in receivers which may incur delays such as context-switch latency before a userspace QUIC receiver processes a received packet.</p>
 <h1 id="rfc.section.3">
 <a href="#rfc.section.3">3.</a> <a href="#loss-detection" id="loss-detection">Loss Detection</a>
 </h1>
@@ -612,12 +633,12 @@ address {
 </h3>
 <p id="rfc.section.3.2.1.p.1">An unacknowledged packet is marked as lost when an acknowledgment is received for a packet that was sent a threshold number of packets (kReorderingThreshold) after the unacknowledged packet. Receipt of the ack indicates that a later packet was received, while kReorderingThreshold provides some tolerance for reordering of packets in the network.</p>
 <p id="rfc.section.3.2.1.p.2">The RECOMMENDED initial value for kReorderingThreshold is 3.</p>
-<p id="rfc.section.3.2.1.p.3">We derive this default from recommendations for TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. It is possible for networks to exhibit higher degrees of reordering, causing a sender to detect spurious losses. Detecting spurious losses leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience, though care should be taken to map TCP specifics to QUIC correctly. Similarly, using time-based loss detection to deal with reordering, such as in PR-TCP, should be more readily usable in QUIC. Making QUIC deal with such networks is important open research, and implementers are encouraged to explore this space.</p>
+<p id="rfc.section.3.2.1.p.3">We derive this recommendation from TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. It is possible for networks to exhibit higher degrees of reordering, causing a sender to detect spurious losses. Detecting spurious losses leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience, though care should be taken to map TCP specifics to QUIC correctly. Similarly, using time-based loss detection to deal with reordering, such as in PR-TCP, should be more readily usable in QUIC. Making QUIC deal with such networks is important open research, and implementers are encouraged to explore this space.</p>
 <h3 id="rfc.section.3.2.2">
 <a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#early-retransmit" id="early-retransmit">Early Retransmit</a>
 </h3>
 <p id="rfc.section.3.2.2.p.1">Unacknowledged packets close to the tail may have fewer than kReorderingThreshold retransmittable packets sent after them.  Loss of such packets cannot be detected via Fast Retransmit. To enable ack-based loss detection of such packets, receipt of an acknowledgment for the last outstanding retransmittable packet triggers the Early Retransmit process, as follows.</p>
-<p id="rfc.section.3.2.2.p.2">If there are unacknowledged retransmittable packets still pending, they should be marked as lost. To compensate for the reduced reordering resilience, the sender SHOULD set an alarm for a small period of time. If the unacknowledged retransmittable packets are not acknowledged during this time, then these packets MUST be marked as lost.</p>
+<p id="rfc.section.3.2.2.p.2">If there are unacknowledged in-flight packets still pending, they should be marked as lost. To compensate for the reduced reordering resilience, the sender SHOULD set an alarm for a small period of time. If the unacknowledged in-flight packets are not acknowledged during this time, then these packets MUST be marked as lost.</p>
 <p id="rfc.section.3.2.2.p.3">An endpoint SHOULD set the alarm such that a packet is marked as lost no earlier than 1.25 * max(SRTT, latest_RTT) since when it was sent.</p>
 <p id="rfc.section.3.2.2.p.4">Using max(SRTT, latest_RTT) protects from the two following cases:</p>
 <p></p>
@@ -633,17 +654,20 @@ address {
 </h2>
 <p id="rfc.section.3.3.p.1">Timer-based loss detection implements a handshake retransmission timer that is optimized for QUIC as well as the spirit of TCP&#8217;s Tail Loss Probe and Retransmission Timeout mechanisms.</p>
 <h3 id="rfc.section.3.3.1">
-<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#handshake-timeout" id="handshake-timeout">Handshake Timeout</a>
+<a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#crypto-handshake-timeout" id="crypto-handshake-timeout">Crypto Handshake Timeout</a>
 </h3>
-<p id="rfc.section.3.3.1.p.1">Handshake packets, which contain STREAM frames for stream 0, are critical to QUIC transport and crypto negotiation, so a separate alarm is used for them.</p>
+<p id="rfc.section.3.3.1.p.1">Data in CRYPTO frames is critical to QUIC transport and crypto negotiation, so a more aggressive timeout is used to retransmit it.  Below, the term &#8220;handshake packet&#8221; is used to refer to packets containing CRYPTO frames, not packets with the specific long header packet type Handshake.</p>
 <p id="rfc.section.3.3.1.p.2">The initial handshake timeout SHOULD be set to twice the initial RTT.</p>
 <p id="rfc.section.3.3.1.p.3">At the beginning, there are no prior RTT samples within a connection.  Resumed connections over the same network SHOULD use the previous connection&#8217;s final smoothed RTT value as the resumed connection&#8217;s initial RTT.</p>
 <p id="rfc.section.3.3.1.p.4">If no previous RTT is available, or if the network changes, the initial RTT SHOULD be set to 100ms.</p>
-<p id="rfc.section.3.3.1.p.5">When a handshake packet is sent, the sender SHOULD set an alarm for the handshake timeout period.</p>
-<p id="rfc.section.3.3.1.p.6">When the alarm fires, the sender MUST retransmit all unacknowledged handshake data, by calling RetransmitAllUnackedHandshakeData(). On each consecutive firing of the handshake alarm, the sender SHOULD double the handshake timeout and set an alarm for this period.</p>
+<p id="rfc.section.3.3.1.p.5">When CRYPTO frames are sent, the sender SHOULD set an alarm for the handshake timeout period.  When the alarm fires, the sender MUST retransmit all unacknowledged CRYPTO data by calling RetransmitAllUnackedHandshakeData(). On each consecutive firing of the handshake alarm without receiving an acknowledgement for a new packet, the sender SHOULD double the handshake timeout and set an alarm for this period.</p>
+<p id="rfc.section.3.3.1.p.6">When CRYPTO frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO frames were sent at 1RTT encryption.</p>
 <p id="rfc.section.3.3.1.p.7">When an acknowledgement is received for a handshake packet, the new RTT is computed and the alarm SHOULD be set for twice the newly computed smoothed RTT.</p>
-<p id="rfc.section.3.3.1.p.8">Handshake data may be cancelled by handshake state transitions. In particular, all non-protected data SHOULD no longer be transmitted once packet protection is available.</p>
-<p id="rfc.section.3.3.1.p.9">(TODO: Work this section some more. Add text on client vs. server, and on stateless retry.)</p>
+<h4 id="rfc.section.3.3.1.1">
+<a href="#rfc.section.3.3.1.1">3.3.1.1.</a> <a href="#retry" id="retry">Retry</a>
+</h4>
+<p id="rfc.section.3.3.1.1.p.1">A Retry packet causes the content of the client&#8217;s Initial packet to be immediately retransmitted along with the token present in the Retry.</p>
+<p id="rfc.section.3.3.1.1.p.2">The Retry indicates that the Initial was received but not processed.  It MUST NOT be treated as an acknowledgment for the Initial, but it MAY be used for an RTT measurement.</p>
 <h3 id="rfc.section.3.3.2">
 <a href="#rfc.section.3.3.2">3.3.2.</a> <a href="#tlp" id="tlp">Tail Loss Probe</a>
 </h3>
@@ -683,21 +707,26 @@ address {
 <h2 id="rfc.section.3.4">
 <a href="#rfc.section.3.4">3.4.</a> <a href="#generating-acknowledgements" id="generating-acknowledgements">Generating Acknowledgements</a>
 </h2>
-<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing non-ack frames.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The default maximum ack delay in QUIC is 25ms.</p>
+<p id="rfc.section.3.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing frames other than ACK or ACN_ECN.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
 <p id="rfc.section.3.4.p.2">An acknowledgement MAY be sent for every second full-sized packet, as TCP does <a href="#RFC5681" class="xref">[RFC5681]</a>, or may be sent less frequently, as long as the delay does not exceed the maximum ack delay.  QUIC recovery algorithms do not assume the peer generates an acknowledgement immediately when receiving a second full-sized packet.</p>
 <p id="rfc.section.3.4.p.3">Out-of-order packets SHOULD be acknowledged more quickly, in order to accelerate loss recovery.  The receiver SHOULD send an immediate ACK when it receives a new packet which is not one greater than the largest received packet number.</p>
-<p id="rfc.section.3.4.p.4">As an optimization, a receiver MAY process multiple packets before sending any ACK frames in response.  In this case they can determine whether an immediate or delayed acknowledgement should be generated after processing incoming packets.</p>
+<p id="rfc.section.3.4.p.4">Similarly, packets marked with the ECN Congestion Experienced (CE) codepoint in the IP header SHOULD be acknowledged immediately, to reduce the peer&#8217;s response time to congestion events.</p>
+<p id="rfc.section.3.4.p.5">As an optimization, a receiver MAY process multiple packets before sending any ACK frames in response.  In this case they can determine whether an immediate or delayed acknowledgement should be generated after processing incoming packets.</p>
 <h3 id="rfc.section.3.4.1">
-<a href="#rfc.section.3.4.1">3.4.1.</a> <a href="#ack-ranges" id="ack-ranges">ACK Ranges</a>
+<a href="#rfc.section.3.4.1">3.4.1.</a> <a href="#crypto-handshake-data" id="crypto-handshake-data">Crypto Handshake Data</a>
 </h3>
-<p id="rfc.section.3.4.1.p.1">When an ACK frame is sent, one or more ranges of acknowledged packets are included.  Including older packets reduces the chance of spurious retransmits caused by losing previously sent ACK frames, at the cost of larger ACK frames.</p>
-<p id="rfc.section.3.4.1.p.2">ACK frames SHOULD always acknowledge the most recently received packets, and the more out-of-order the packets are, the more important it is to send an updated ACK frame quickly, to prevent the peer from declaring a packet as lost and spuriusly retransmitting the frames it contains.</p>
-<p id="rfc.section.3.4.1.p.3">Below is one recommended approach for determining what packets to include in an ACK frame.</p>
+<p id="rfc.section.3.4.1.p.1">In order to quickly complete the handshake and avoid spurious retransmissions due to handshake alarm timeouts, handshake packets SHOULD use a very short ack delay, such as 1ms.  ACK frames MAY be sent immediately when the crypto stack indicates all data for that encryption level has been received.</p>
 <h3 id="rfc.section.3.4.2">
-<a href="#rfc.section.3.4.2">3.4.2.</a> <a href="#receiver-tracking-of-ack-frames" id="receiver-tracking-of-ack-frames">Receiver Tracking of ACK Frames</a>
+<a href="#rfc.section.3.4.2">3.4.2.</a> <a href="#ack-ranges" id="ack-ranges">ACK Ranges</a>
 </h3>
-<p id="rfc.section.3.4.2.p.1">When a packet containing an ACK frame is sent, the largest acknowledged in that frame may be saved.  When a packet containing an ACK frame is acknowledged, the receiver can stop acknowledging packets less than or equal to the largest acknowledged in the sent ACK frame.</p>
-<p id="rfc.section.3.4.2.p.2">In cases without ACK frame loss, this algorithm allows for a minimum of 1 RTT of reordering. In cases with ACK frame loss, this approach does not guarantee that every acknowledgement is seen by the sender before it is no longer included in the ACK frame. Packets could be received out of order and all subsequent ACK frames containing them could be lost. In this case, the loss recovery algorithm may cause spurious retransmits, but the sender will continue making forward progress.</p>
+<p id="rfc.section.3.4.2.p.1">When an ACK frame is sent, one or more ranges of acknowledged packets are included.  Including older packets reduces the chance of spurious retransmits caused by losing previously sent ACK frames, at the cost of larger ACK frames.</p>
+<p id="rfc.section.3.4.2.p.2">ACK frames SHOULD always acknowledge the most recently received packets, and the more out-of-order the packets are, the more important it is to send an updated ACK frame quickly, to prevent the peer from declaring a packet as lost and spuriusly retransmitting the frames it contains.</p>
+<p id="rfc.section.3.4.2.p.3">Below is one recommended approach for determining what packets to include in an ACK frame.</p>
+<h3 id="rfc.section.3.4.3">
+<a href="#rfc.section.3.4.3">3.4.3.</a> <a href="#receiver-tracking-of-ack-frames" id="receiver-tracking-of-ack-frames">Receiver Tracking of ACK Frames</a>
+</h3>
+<p id="rfc.section.3.4.3.p.1">When a packet containing an ACK frame is sent, the largest acknowledged in that frame may be saved.  When a packet containing an ACK frame is acknowledged, the receiver can stop acknowledging packets less than or equal to the largest acknowledged in the sent ACK frame.</p>
+<p id="rfc.section.3.4.3.p.2">In cases without ACK frame loss, this algorithm allows for a minimum of 1 RTT of reordering. In cases with ACK frame loss, this approach does not guarantee that every acknowledgement is seen by the sender before it is no longer included in the ACK frame. Packets could be received out of order and all subsequent ACK frames containing them could be lost. In this case, the loss recovery algorithm may cause spurious retransmits, but the sender will continue making forward progress.</p>
 <h2 id="rfc.section.3.5">
 <a href="#rfc.section.3.5">3.5.</a> <a href="#pseudocode" id="pseudocode">Pseudocode</a>
 </h2>
@@ -708,22 +737,22 @@ address {
 <p></p>
 
 <dl>
-<dt>kMaxTLPs (default 2):</dt>
+<dt>kMaxTLPs (RECOMMENDED 2):</dt>
 <dd style="margin-left: 8">Maximum number of tail loss probes before an RTO fires.</dd>
-<dt>kReorderingThreshold (default 3):</dt>
+<dt>kReorderingThreshold (RECOMMENDED 3):</dt>
 <dd style="margin-left: 8">Maximum reordering in packet number space before FACK style loss detection considers a packet lost.</dd>
-<dt>kTimeReorderingFraction (default 1/8):</dt>
+<dt>kTimeReorderingFraction (RECOMMENDED 1/8):</dt>
 <dd style="margin-left: 8">Maximum reordering in time space before time based loss detection considers a packet lost.  In fraction of an RTT.</dd>
-<dt>kUsingTimeLossDetection (default false):</dt>
+<dt>kUsingTimeLossDetection (RECOMMENDED false):</dt>
 <dd style="margin-left: 8">Whether time based loss detection is in use.  If false, uses FACK style loss detection.</dd>
-<dt>kMinTLPTimeout (default 10ms):</dt>
+<dt>kMinTLPTimeout (RECOMMENDED 10ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future a tail loss probe alarm may be set for.</dd>
-<dt>kMinRTOTimeout (default 200ms):</dt>
+<dt>kMinRTOTimeout (RECOMMENDED 200ms):</dt>
 <dd style="margin-left: 8">Minimum time in the future an RTO alarm may be set for.</dd>
-<dt>kDelayedAckTimeout (default 25ms):</dt>
+<dt>kDelayedAckTimeout (RECOMMENDED 25ms):</dt>
 <dd style="margin-left: 8">The length of the peer&#8217;s delayed ack timer.</dd>
-<dt>kDefaultInitialRtt (default 100ms):</dt>
-<dd style="margin-left: 8">The default RTT used before an RTT sample is taken.</dd>
+<dt>kInitialRtt (RECOMMENDED 100ms):</dt>
+<dd style="margin-left: 8">The RTT used before an RTT sample is taken.</dd>
 </dl>
 <h3 id="rfc.section.3.5.2">
 <a href="#rfc.section.3.5.2">3.5.2.</a> <a href="#variables-of-interest" id="variables-of-interest">Variables of interest</a>
@@ -735,7 +764,7 @@ address {
 <dt>loss_detection_alarm:</dt>
 <dd style="margin-left: 8">Multi-modal alarm used for loss detection.</dd>
 <dt>handshake_count:</dt>
-<dd style="margin-left: 8">The number of times the handshake packets have been retransmitted without receiving an ack.</dd>
+<dd style="margin-left: 8">The number of times all unacknowledged handshake data has been retransmitted without receiving an ack.</dd>
 <dt>tlp_count:</dt>
 <dd style="margin-left: 8">The number of times a tail loss probe has been sent without receiving an ack.</dd>
 <dt>rto_count:</dt>
@@ -745,7 +774,7 @@ address {
 <dt>time_of_last_sent_retransmittable_packet:</dt>
 <dd style="margin-left: 8">The time the most recent retransmittable packet was sent.</dd>
 <dt>time_of_last_sent_handshake_packet:</dt>
-<dd style="margin-left: 8">The time the most recent packet containing handshake data was sent.</dd>
+<dd style="margin-left: 8">The time the most recent packet containing a CRYPTO frame was sent.</dd>
 <dt>largest_sent_packet:</dt>
 <dd style="margin-left: 8">The packet number of the most recently sent packet.</dd>
 <dt>largest_acked_packet:</dt>
@@ -769,7 +798,7 @@ address {
 <dt>loss_time:</dt>
 <dd style="margin-left: 8">The time at which the next packet will be considered lost based on early transmit or exceeding the reordering window in time.</dd>
 <dt>sent_packets:</dt>
-<dd style="margin-left: 8">An association of packet numbers to information about them, including a number field indicating the packet number, a time field indicating the time a packet was sent, a boolean indicating whether the packet is ack only, and a bytes field indicating the packet&#8217;s size.  sent_packets is ordered by packet number, and packets remain in sent_packets until acknowledged or lost.</dd>
+<dd style="margin-left: 8">An association of packet numbers to information about them, including a number field indicating the packet number, a time field indicating the time a packet was sent, a boolean indicating whether the packet is ack only, a boolean indicating whether it counts towards bytes in flight, and a bytes field indicating the packet&#8217;s size.  sent_packets is ordered by packet number, and packets remain in sent_packets until acknowledged or lost.  A sent_packets data structure is maintained per packet number space, and ACK processing only applies to a single space.</dd>
 </dl>
 <h3 id="rfc.section.3.5.3">
 <a href="#rfc.section.3.5.3">3.5.3.</a> <a href="#initialization" id="initialization">Initialization</a>
@@ -804,19 +833,21 @@ address {
 
 <ul>
 <li>packet_number: The packet number of the sent packet.</li>
-<li>is_ack_only: A boolean that indicates whether a packet only contains an ACK frame.  If true, it is still expected an ack will be received for this packet, but it is not retransmittable.</li>
+<li>ack_only: A boolean that indicates whether a packet contains only ACK or PADDING frame(s).  If true, it is still expected an ack will be received for this packet, but it is not retransmittable.</li>
+<li>in_flight: A boolean that indicates whether the packet counts towards bytes in flight.</li>
 <li>is_handshake_packet: A boolean that indicates whether a packet contains handshake data.</li>
 <li>sent_bytes: The number of bytes sent in the packet, not including UDP or IP overhead, but including QUIC framing overhead.</li>
 </ul>
 <p id="rfc.section.3.5.4.p.3">Pseudocode for OnPacketSent follows:</p>
 <pre>
- OnPacketSent(packet_number, is_ack_only, is_handshake_packet,
-                sent_bytes):
+ OnPacketSent(packet_number, ack_only, in_flight,
+              is_handshake_packet, sent_bytes):
    largest_sent_packet = packet_number
    sent_packets[packet_number].packet_number = packet_number
    sent_packets[packet_number].time = now
-   sent_packets[packet_number].ack_only = is_ack_only
-   if !is_ack_only:
+   sent_packets[packet_number].ack_only = ack_only
+   sent_packets[packet_number].in_flight = in_flight
+   if !ack_only:
      if is_handshake_packet:
        time_of_last_sent_handshake_packet = now
      time_of_last_sent_retransmittable_packet = now
@@ -825,9 +856,9 @@ address {
      SetLossDetectionAlarm()
 </pre>
 <h3 id="rfc.section.3.5.5">
-<a href="#rfc.section.3.5.5">3.5.5.</a> <a href="#on-ack-receipt" id="on-ack-receipt">On Ack Receipt</a>
+<a href="#rfc.section.3.5.5">3.5.5.</a> <a href="#on-receiving-an-acknowledgment" id="on-receiving-an-acknowledgment">On Receiving an Acknowledgment</a>
 </h3>
-<p id="rfc.section.3.5.5.p.1">When an ack is received, it may acknowledge 0 or more packets.</p>
+<p id="rfc.section.3.5.5.p.1">When an ACK frame is received, it may acknowledge 0 or more packets.</p>
 <p id="rfc.section.3.5.5.p.2">Pseudocode for OnAckReceived and UpdateRtt follow:</p>
 <pre>
   OnAckReceived(ack):
@@ -842,6 +873,10 @@ address {
 
     DetectLostPackets(ack.largest_acked_packet)
     SetLossDetectionAlarm()
+
+    // Process ECN information if present.
+    if (ACK frame contains ECN information):
+       ProcessECN(ack)
 
 
   UpdateRtt(latest_rtt, ack_delay):
@@ -867,21 +902,22 @@ address {
 <a href="#rfc.section.3.5.6">3.5.6.</a> <a href="#on-packet-acknowledgment" id="on-packet-acknowledgment">On Packet Acknowledgment</a>
 </h3>
 <p id="rfc.section.3.5.6.p.1">When a packet is acked for the first time, the following OnPacketAcked function is called.  Note that a single ACK frame may newly acknowledge several packets.  OnPacketAcked must be called once for each of these newly acked packets.</p>
-<p id="rfc.section.3.5.6.p.2">OnPacketAcked takes one parameter, acked_packet_number, which is the packet number of the newly acked packet, and returns a list of packet numbers that are detected as lost.</p>
-<p id="rfc.section.3.5.6.p.3">If this is the first acknowledgement following RTO, check if the smallest newly acknowledged packet is one sent by the RTO, and if so, inform congestion control of a verified RTO, similar to F-RTO <a href="#RFC5682" class="xref">[RFC5682]</a></p>
+<p id="rfc.section.3.5.6.p.2">OnPacketAcked takes one parameter, acked_packet, which is the struct of the newly acked packet.</p>
+<p id="rfc.section.3.5.6.p.3">If this is the first acknowledgement following RTO, check if the smallest newly acknowledged packet is one sent by the RTO, and if so, inform congestion control of a verified RTO, similar to F-RTO <a href="#RFC5682" class="xref">[RFC5682]</a>.</p>
 <p id="rfc.section.3.5.6.p.4">Pseudocode for OnPacketAcked follows:</p>
 <pre>
-   OnPacketAcked(acked_packet_number):
-     OnPacketAckedCC(acked_packet_number)
+   OnPacketAcked(acked_packet):
+     if (!acked_packet.is_ack_only):
+       OnPacketAckedCC(acked_packet)
      // If a packet sent prior to RTO was acked, then the RTO
      // was spurious.  Otherwise, inform congestion control.
      if (rto_count &gt; 0 &amp;&amp;
-         acked_packet_number &gt; largest_sent_before_rto)
+         acked_packet.packet_number &gt; largest_sent_before_rto)
        OnRetransmissionTimeoutVerified()
      handshake_count = 0
      tlp_count = 0
      rto_count = 0
-     sent_packets.remove(acked_packet_number)
+     sent_packets.remove(acked_packet.packet_number)
 </pre>
 <h3 id="rfc.section.3.5.7">
 <a href="#rfc.section.3.5.7">3.5.7.</a> <a href="#setting-the-loss-detection-alarm" id="setting-the-loss-detection-alarm">Setting the Loss Detection Alarm</a>
@@ -892,7 +928,7 @@ address {
 </h4>
 <p id="rfc.section.3.5.7.1.p.1">When a connection has unacknowledged handshake data, the handshake alarm is set and when it expires, all unacknowledgedd handshake data is retransmitted.</p>
 <p id="rfc.section.3.5.7.1.p.2">When stateless rejects are in use, the connection is considered immediately closed once a reject is sent, so no timer is set to retransmit the reject.</p>
-<p id="rfc.section.3.5.7.1.p.3">Version negotiation packets are always stateless, and MUST be sent once per handshake packet that uses an unsupported QUIC version, and MAY be sent in response to 0RTT packets.</p>
+<p id="rfc.section.3.5.7.1.p.3">Version negotiation packets are always stateless, and MUST be sent once per handshake packet that uses an unsupported QUIC version, and MAY be sent in response to 0-RTT packets.</p>
 <h4 id="rfc.section.3.5.7.2">
 <a href="#rfc.section.3.5.7.2">3.5.7.2.</a> <a href="#tail-loss-probe-and-retransmission-alarm" id="tail-loss-probe-and-retransmission-alarm">Tail Loss Probe and Retransmission Alarm</a>
 </h4>
@@ -908,8 +944,8 @@ address {
 <p id="rfc.section.3.5.7.4.p.1">Pseudocode for SetLossDetectionAlarm follows:</p>
 <pre>
  SetLossDetectionAlarm():
-    // Don't arm the alarm if there are no packets with
-    // retransmittable data in flight.
+    // Don't arm alarm if there are no retransmittable packets
+    // in flight.
     if (bytes_in_flight == 0):
       loss_detection_alarm.cancel()
       return
@@ -917,7 +953,7 @@ address {
     if (handshake packets are outstanding):
       // Handshake retransmission alarm.
       if (smoothed_rtt == 0):
-        alarm_duration = 2 * kDefaultInitialRtt
+        alarm_duration = 2 * kInitialRtt
       else:
         alarm_duration = 2 * smoothed_rtt
       alarm_duration = max(alarm_duration + max_ack_delay,
@@ -976,16 +1012,12 @@ address {
 <h3 id="rfc.section.3.5.9">
 <a href="#rfc.section.3.5.9">3.5.9.</a> <a href="#detecting-lost-packets" id="detecting-lost-packets">Detecting Lost Packets</a>
 </h3>
-<p id="rfc.section.3.5.9.p.1">Packets in QUIC are only considered lost once a larger packet number is acknowledged.  DetectLostPackets is called every time an ack is received.  If the loss detection alarm fires and the loss_time is set, the previous largest acked packet is supplied.</p>
+<p id="rfc.section.3.5.9.p.1">Packets in QUIC are only considered lost once a larger packet number in the same packet number space is acknowledged.  DetectLostPackets is called every time an ack is received and operates on the sent_packets for that packet number space.  If the loss detection alarm fires and the loss_time is set, the previous largest acked packet is supplied.</p>
 <h4 id="rfc.section.3.5.9.1">
-<a href="#rfc.section.3.5.9.1">3.5.9.1.</a> <a href="#handshake-packets" id="handshake-packets">Handshake Packets</a>
+<a href="#rfc.section.3.5.9.1">3.5.9.1.</a> <a href="#pseudocode-2" id="pseudocode-2">Pseudocode</a>
 </h4>
-<p id="rfc.section.3.5.9.1.p.1">The receiver MUST close the connection with an error of type OPTIMISTIC_ACK when receiving an unprotected packet that acks protected packets.  The receiver MUST trust protected acks for unprotected packets, however.  Aside from this, loss detection for handshake packets when an ack is processed is identical to other packets.</p>
-<h4 id="rfc.section.3.5.9.2">
-<a href="#rfc.section.3.5.9.2">3.5.9.2.</a> <a href="#pseudocode-2" id="pseudocode-2">Pseudocode</a>
-</h4>
-<p id="rfc.section.3.5.9.2.p.1">DetectLostPackets takes one parameter, acked, which is the largest acked packet.</p>
-<p id="rfc.section.3.5.9.2.p.2">Pseudocode for DetectLostPackets follows:</p>
+<p id="rfc.section.3.5.9.1.p.1">DetectLostPackets takes one parameter, acked, which is the largest acked packet.</p>
+<p id="rfc.section.3.5.9.1.p.2">Pseudocode for DetectLostPackets follows:</p>
 <pre>
 DetectLostPackets(largest_acked):
   loss_time = 0
@@ -1024,54 +1056,62 @@ DetectLostPackets(largest_acked):
 <a href="#rfc.section.4">4.</a> <a href="#congestion-control" id="congestion-control">Congestion Control</a>
 </h1>
 <p id="rfc.section.4.p.1">QUIC&#8217;s congestion control is based on TCP NewReno <a href="#RFC6582" class="xref">[RFC6582]</a> congestion control to determine the congestion window.  QUIC congestion control is specified in bytes due to finer control and the ease of appropriate byte counting <a href="#RFC3465" class="xref">[RFC3465]</a>.</p>
-<p id="rfc.section.4.p.2">QUIC hosts MUST NOT send packets if they would increase bytes_in_flight (defined in <a href="#vars-of-interest" class="xref">Section 4.7.2</a>) beyond the available congestion window, unless the packet is a probe packet sent after the TLP or RTO alarm fires, as described in <a href="#tlp" class="xref">Section 3.3.2</a> and <a href="#rto" class="xref">Section 3.3.3</a>.</p>
+<p id="rfc.section.4.p.2">QUIC hosts MUST NOT send packets if they would increase bytes_in_flight (defined in <a href="#vars-of-interest" class="xref">Section 4.8.2</a>) beyond the available congestion window, unless the packet is a probe packet sent after the TLP or RTO alarm fires, as described in <a href="#tlp" class="xref">Section 3.3.2</a> and <a href="#rto" class="xref">Section 3.3.3</a>.</p>
 <h2 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#slow-start" id="slow-start">Slow Start</a>
+<a href="#rfc.section.4.1">4.1.</a> <a href="#congestion-ecn" id="congestion-ecn">Explicit Congestion Notification</a>
 </h2>
-<p id="rfc.section.4.1.p.1">QUIC begins every connection in slow start and exits slow start upon loss. QUIC re-enters slow start anytime the congestion window is less than sshthresh, which typically only occurs after an RTO.  While in slow start, QUIC increases the congestion window by the number of acknowledged bytes when each ack is processed.</p>
+<p id="rfc.section.4.1.p.1">If a path has been verified to support ECN, QUIC treats a Congestion Experienced codepoint in the IP header as a signal of congestion. This document specifies an endpoint&#8217;s response when its peer receives packets with the Congestion Experienced codepoint.  As discussed in <a href="#RFC8311" class="xref">[RFC8311]</a>, endpoints are permitted to experiment with other response functions.</p>
 <h2 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#congestion-avoidance" id="congestion-avoidance">Congestion Avoidance</a>
+<a href="#rfc.section.4.2">4.2.</a> <a href="#slow-start" id="slow-start">Slow Start</a>
 </h2>
-<p id="rfc.section.4.2.p.1">Slow start exits to congestion avoidance.  Congestion avoidance in NewReno uses an additive increase multiplicative decrease (AIMD) approach that increases the congestion window by one MSS of bytes per congestion window acknowledged.  When a loss is detected, NewReno halves the congestion window and sets the slow start threshold to the new congestion window.</p>
+<p id="rfc.section.4.2.p.1">QUIC begins every connection in slow start and exits slow start upon loss or upon increase in the ECN-CE counter. QUIC re-enters slow start anytime the congestion window is less than sshthresh, which typically only occurs after an RTO. While in slow start, QUIC increases the congestion window by the number of bytes acknowledged when each ack is processed.</p>
 <h2 id="rfc.section.4.3">
-<a href="#rfc.section.4.3">4.3.</a> <a href="#recovery-period" id="recovery-period">Recovery Period</a>
+<a href="#rfc.section.4.3">4.3.</a> <a href="#congestion-avoidance" id="congestion-avoidance">Congestion Avoidance</a>
 </h2>
-<p id="rfc.section.4.3.p.1">Recovery is a period of time beginning with detection of a lost packet.  Because QUIC retransmits stream data and control frames, not packets, it defines the end of recovery as a packet sent after the start of recovery being acknowledged.  This is slightly different from TCP&#8217;s definition of recovery ending when the lost packet that started recovery is acknowledged.</p>
-<p id="rfc.section.4.3.p.2">During recovery, the congestion window is not increased or decreased.  As such, multiple lost packets only decrease the congestion window once as long as they&#8217;re lost before exiting recovery. This causes QUIC to decrease the congestion window multiple times if retransmisions are lost, but limits the reduction to once per round trip.</p>
+<p id="rfc.section.4.3.p.1">Slow start exits to congestion avoidance.  Congestion avoidance in NewReno uses an additive increase multiplicative decrease (AIMD) approach that increases the congestion window by one MSS of bytes per congestion window acknowledged.  When a loss is detected, NewReno halves the congestion window and sets the slow start threshold to the new congestion window.</p>
 <h2 id="rfc.section.4.4">
-<a href="#rfc.section.4.4">4.4.</a> <a href="#tail-loss-probe" id="tail-loss-probe">Tail Loss Probe</a>
+<a href="#rfc.section.4.4">4.4.</a> <a href="#recovery-period" id="recovery-period">Recovery Period</a>
 </h2>
-<p id="rfc.section.4.4.p.1">A TLP packet MUST NOT be blocked by the sender&#8217;s congestion controller. The sender MUST however count these bytes as additional bytes-in-flight, since a TLP adds network load without establishing packet loss.</p>
-<p id="rfc.section.4.4.p.2">Acknowledgement or loss of tail loss probes are treated like any other packet.</p>
+<p id="rfc.section.4.4.p.1">Recovery is a period of time beginning with detection of a lost packet or an increase in the ECN-CE counter. Because QUIC retransmits stream data and control frames, not packets, it defines the end of recovery as a packet sent after the start of recovery being acknowledged. This is slightly different from TCP&#8217;s definition of recovery, which ends when the lost packet that started recovery is acknowledged.</p>
+<p id="rfc.section.4.4.p.2">The recovery period limits congestion window reduction to once per round trip.  During recovery, the congestion window remains unchanged irrespective of new losses or increases in the ECN-CE counter.</p>
 <h2 id="rfc.section.4.5">
-<a href="#rfc.section.4.5">4.5.</a> <a href="#retransmission-timeout" id="retransmission-timeout">Retransmission Timeout</a>
+<a href="#rfc.section.4.5">4.5.</a> <a href="#tail-loss-probe" id="tail-loss-probe">Tail Loss Probe</a>
 </h2>
-<p id="rfc.section.4.5.p.1">When retransmissions are sent due to a retransmission timeout alarm, no change is made to the congestion window until the next acknowledgement arrives.  The retransmission timeout is considered spurious when this acknowledgement acknowledges packets sent prior to the first retransmission timeout.  The retransmission timeout is considered valid when this acknowledgement acknowledges no packets sent prior to the first retransmission timeout.  In this case, the congestion window MUST be reduced to the minimum congestion window and slow start is re-entered.</p>
+<p id="rfc.section.4.5.p.1">A TLP packet MUST NOT be blocked by the sender&#8217;s congestion controller. The sender MUST however count these bytes as additional bytes-in-flight, since a TLP adds network load without establishing packet loss.</p>
+<p id="rfc.section.4.5.p.2">Acknowledgement or loss of tail loss probes are treated like any other packet.</p>
 <h2 id="rfc.section.4.6">
-<a href="#rfc.section.4.6">4.6.</a> <a href="#pacing" id="pacing">Pacing</a>
+<a href="#rfc.section.4.6">4.6.</a> <a href="#retransmission-timeout" id="retransmission-timeout">Retransmission Timeout</a>
 </h2>
-<p id="rfc.section.4.6.p.1">This document does not specify a pacer, but it is RECOMMENDED that a sender pace sending of all data based on input from the congestion controller.  For example, a pacer might distribute the congestion window over the SRTT when used with a window-based controller, and a pacer might use the rate estimate of a rate-based controller.</p>
-<p id="rfc.section.4.6.p.2">An implementation should take care to architect its congestion controller to work well with a pacer.  For instance, a pacer might wrap the congestion controller and control the availability of the congestion window, or a pacer might pace out packets handed to it by the congestion controller.</p>
-<p id="rfc.section.4.6.p.3">As an example of a well-known and publicly available implementation of a flow pacer, implementers are referred to the Fair Queue packet scheduler (fq qdisc) in Linux (3.11 onwards).</p>
+<p id="rfc.section.4.6.p.1">When retransmissions are sent due to a retransmission timeout alarm, no change is made to the congestion window until the next acknowledgement arrives.  The retransmission timeout is considered spurious when this acknowledgement acknowledges packets sent prior to the first retransmission timeout.  The retransmission timeout is considered valid when this acknowledgement acknowledges no packets sent prior to the first retransmission timeout.  In this case, the congestion window MUST be reduced to the minimum congestion window and slow start is re-entered.</p>
 <h2 id="rfc.section.4.7">
-<a href="#rfc.section.4.7">4.7.</a> <a href="#pseudocode-3" id="pseudocode-3">Pseudocode</a>
+<a href="#rfc.section.4.7">4.7.</a> <a href="#pacing" id="pacing">Pacing</a>
 </h2>
-<h3 id="rfc.section.4.7.1">
-<a href="#rfc.section.4.7.1">4.7.1.</a> <a href="#constants-of-interest-1" id="constants-of-interest-1">Constants of interest</a>
+<p id="rfc.section.4.7.p.1">This document does not specify a pacer, but it is RECOMMENDED that a sender pace sending of all in-flight packets based on input from the congestion controller. For example, a pacer might distribute the congestion window over the SRTT when used with a window-based controller, and a pacer might use the rate estimate of a rate-based controller.</p>
+<p id="rfc.section.4.7.p.2">An implementation should take care to architect its congestion controller to work well with a pacer.  For instance, a pacer might wrap the congestion controller and control the availability of the congestion window, or a pacer might pace out packets handed to it by the congestion controller. Timely delivery of ACK frames is important for efficient loss recovery. Packets containing only ACK frames should therefore not be paced, to avoid delaying their delivery to the peer.</p>
+<p id="rfc.section.4.7.p.3">As an example of a well-known and publicly available implementation of a flow pacer, implementers are referred to the Fair Queue packet scheduler (fq qdisc) in Linux (3.11 onwards).</p>
+<h2 id="rfc.section.4.8">
+<a href="#rfc.section.4.8">4.8.</a> <a href="#pseudocode-3" id="pseudocode-3">Pseudocode</a>
+</h2>
+<h3 id="rfc.section.4.8.1">
+<a href="#rfc.section.4.8.1">4.8.1.</a> <a href="#constants-of-interest-1" id="constants-of-interest-1">Constants of interest</a>
 </h3>
-<p id="rfc.section.4.7.1.p.1">Constants used in congestion control are based on a combination of RFCs, papers, and common practice.  Some may need to be changed or negotiated in order to better suit a variety of environments.</p>
+<p id="rfc.section.4.8.1.p.1">Constants used in congestion control are based on a combination of RFCs, papers, and common practice.  Some may need to be changed or negotiated in order to better suit a variety of environments.</p>
 <p></p>
 
 <dl>
+<dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
+<dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
 <dt>kInitialWindow (default 14600 bytes):</dt>
 <dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
-<dt>kLossReductionFactor (default 0.5):</dt>
+<dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
+<dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
+<dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
 </dl>
-<h3 id="rfc.section.4.7.2">
-<a href="#rfc.section.4.7.2">4.7.2.</a> <a href="#vars-of-interest" id="vars-of-interest">Variables of interest</a>
+<h3 id="rfc.section.4.8.2">
+<a href="#rfc.section.4.8.2">4.8.2.</a> <a href="#vars-of-interest" id="vars-of-interest">Variables of interest</a>
 </h3>
-<p id="rfc.section.4.7.2.p.1">Variables required to implement the congestion control mechanisms are described in this section.</p>
+<p id="rfc.section.4.8.2.p.1">Variables required to implement the congestion control mechanisms are described in this section.</p>
 <p></p>
 
 <dl>
@@ -1080,8 +1120,10 @@ DetectLostPackets(largest_acked):
 </dd>
 <dt>minimum_window :</dt>
 <dd style="margin-left: 8">Minimum congestion window.  Set to 2 * sender_mss.</dd>
+<dt>ecn_ce_counter:</dt>
+<dd style="margin-left: 8">The highest value reported for the ECN-CE counter by the peer in an ACK_ECN frame. This variable is used to detect increases in the reported ECN-CE counter.</dd>
 <dt>bytes_in_flight:</dt>
-<dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable frame, and have not been acked or declared lost. The size does not include IP or UDP overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
+<dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable or PADDING frame, and have not been acked or declared lost. The size does not include IP or UDP overhead, but does include the QUIC header and AEAD overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
 <dt>congestion_window:</dt>
 <dd style="margin-left: 8">Maximum number of bytes-in-flight that may be sent.</dd>
 <dt>end_of_recovery:</dt>
@@ -1089,31 +1131,32 @@ DetectLostPackets(largest_acked):
 <dt>ssthresh:</dt>
 <dd style="margin-left: 8">Slow start threshold in bytes.  When the congestion window is below ssthresh, the mode is slow start and the window grows by the number of bytes acknowledged.</dd>
 </dl>
-<h3 id="rfc.section.4.7.3">
-<a href="#rfc.section.4.7.3">4.7.3.</a> <a href="#initialization-1" id="initialization-1">Initialization</a>
+<h3 id="rfc.section.4.8.3">
+<a href="#rfc.section.4.8.3">4.8.3.</a> <a href="#initialization-1" id="initialization-1">Initialization</a>
 </h3>
-<p id="rfc.section.4.7.3.p.1">At the beginning of the connection, initialize the congestion control variables as follows:</p>
+<p id="rfc.section.4.8.3.p.1">At the beginning of the connection, initialize the congestion control variables as follows:</p>
 <pre>
    congestion_window = kInitialWindow
    minimum_window = 2 * sender_mss
    bytes_in_flight = 0
    end_of_recovery = 0
    ssthresh = infinite
+   ecn_ce_counter = 0
 </pre>
-<h3 id="rfc.section.4.7.4">
-<a href="#rfc.section.4.7.4">4.7.4.</a> <a href="#on-packet-sent" id="on-packet-sent">On Packet Sent</a>
+<h3 id="rfc.section.4.8.4">
+<a href="#rfc.section.4.8.4">4.8.4.</a> <a href="#on-packet-sent" id="on-packet-sent">On Packet Sent</a>
 </h3>
-<p id="rfc.section.4.7.4.p.1">Whenever a packet is sent, and it contains non-ACK frames, the packet increases bytes_in_flight.</p>
+<p id="rfc.section.4.8.4.p.1">Whenever a packet is sent, and it contains non-ACK frames, the packet increases bytes_in_flight.</p>
 <pre>
    OnPacketSentCC(bytes_sent):
      bytes_in_flight += bytes_sent
 </pre>
-<h3 id="rfc.section.4.7.5">
-<a href="#rfc.section.4.7.5">4.7.5.</a> <a href="#on-packet-acknowledgement" id="on-packet-acknowledgement">On Packet Acknowledgement</a>
+<h3 id="rfc.section.4.8.5">
+<a href="#rfc.section.4.8.5">4.8.5.</a> <a href="#on-packet-acknowledgement" id="on-packet-acknowledgement">On Packet Acknowledgement</a>
 </h3>
-<p id="rfc.section.4.7.5.p.1">Invoked from loss detection&#8217;s OnPacketAcked and is supplied with acked_packet from sent_packets.</p>
+<p id="rfc.section.4.8.5.p.1">Invoked from loss detection&#8217;s OnPacketAcked and is supplied with acked_packet from sent_packets.</p>
 <pre>
-   InRecovery(packet_number)
+   InRecovery(packet_number):
      return packet_number &lt;= end_of_recovery
 
    OnPacketAckedCC(acked_packet):
@@ -1130,28 +1173,52 @@ DetectLostPackets(largest_acked):
        congestion_window +=
          sender_mss * acked_packet.bytes / congestion_window
 </pre>
-<h3 id="rfc.section.4.7.6">
-<a href="#rfc.section.4.7.6">4.7.6.</a> <a href="#on-packets-lost" id="on-packets-lost">On Packets Lost</a>
+<h3 id="rfc.section.4.8.6">
+<a href="#rfc.section.4.8.6">4.8.6.</a> <a href="#on-new-congestion-event" id="on-new-congestion-event">On New Congestion Event</a>
 </h3>
-<p id="rfc.section.4.7.6.p.1">Invoked by loss detection from DetectLostPackets when new packets are detected lost.</p>
+<p id="rfc.section.4.8.6.p.1">Invoked from ProcessECN and OnPacketLost when a new congestion event is detected. Starts a new recovery period and reduces the congestion window.</p>
+<pre>
+   CongestionEvent(packet_number):
+     // Start a new congestion event if packet_number
+     // is larger than the end of the previous recovery epoch.
+     if (!InRecovery(packet_number)):
+       end_of_recovery = largest_sent_packet
+       congestion_window *= kMarkReductionFactor
+       congestion_window = max(congestion_window, minimum_window)
+</pre>
+<h3 id="rfc.section.4.8.7">
+<a href="#rfc.section.4.8.7">4.8.7.</a> <a href="#process-ecn-information" id="process-ecn-information">Process ECN Information</a>
+</h3>
+<p id="rfc.section.4.8.7.p.1">Invoked when an ACK_ECN frame is received from the peer.</p>
+<pre>
+   ProcessECN(ack):
+     // If the ECN-CE counter reported by the peer has increased,
+     // this could be a new congestion event.
+     if (ack.ce_counter &gt; ecn_ce_counter):
+       ecn_ce_counter = ack.ce_counter
+       // Start a new congestion event if the last acknowledged
+       // packet is past the end of the previous recovery epoch.
+       CongestionEvent(ack.largest_acked_packet)
+</pre>
+<h3 id="rfc.section.4.8.8">
+<a href="#rfc.section.4.8.8">4.8.8.</a> <a href="#on-packets-lost" id="on-packets-lost">On Packets Lost</a>
+</h3>
+<p id="rfc.section.4.8.8.p.1">Invoked by loss detection from DetectLostPackets when new packets are detected lost.</p>
 <pre>
    OnPacketsLost(lost_packets):
      // Remove lost packets from bytes_in_flight.
      for (lost_packet : lost_packets):
        bytes_in_flight -= lost_packet.bytes
      largest_lost_packet = lost_packets.last()
-     // Start a new recovery epoch if the lost packet is larger
-     // than the end of the previous recovery epoch.
-     if (!InRecovery(largest_lost_packet.packet_number)):
-       end_of_recovery = largest_sent_packet
-       congestion_window *= kLossReductionFactor
-       congestion_window = max(congestion_window, minimum_window)
-       ssthresh = congestion_window
+
+     // Start a new congestion epoch if the last lost packet
+     // is past the end of the previous recovery epoch.
+     CongestionEvent(largest_lost_packet.packet_number)
 </pre>
-<h3 id="rfc.section.4.7.7">
-<a href="#rfc.section.4.7.7">4.7.7.</a> <a href="#on-retransmission-timeout-verified" id="on-retransmission-timeout-verified">On Retransmission Timeout Verified</a>
+<h3 id="rfc.section.4.8.9">
+<a href="#rfc.section.4.8.9">4.8.9.</a> <a href="#on-retransmission-timeout-verified" id="on-retransmission-timeout-verified">On Retransmission Timeout Verified</a>
 </h3>
-<p id="rfc.section.4.7.7.p.1">QUIC decreases the congestion window to the minimum value once the retransmission timeout has been verified.</p>
+<p id="rfc.section.4.8.9.p.1">QUIC decreases the congestion window to the minimum value once the retransmission timeout has been verified.</p>
 <pre>
    OnRetransmissionTimeoutVerified()
      congestion_window = minimum_window
@@ -1168,7 +1235,7 @@ DetectLostPackets(largest_acked):
 <tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, March 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, July 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -1179,6 +1246,11 @@ DetectLostPackets(largest_acked):
 <td class="reference"><b id="RFC8174">[RFC8174]</b></td>
 <td class="top">
 <a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC8311">[RFC8311]</b></td>
+<td class="top">
+<a>Black, D.</a>, "<a href="https://tools.ietf.org/html/rfc8311">Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation</a>", RFC 8311, DOI 10.17487/RFC8311, January 2018.</td>
 </tr>
 </tbody></table>
 <h2 id="rfc.references.2">
@@ -1236,27 +1308,49 @@ DetectLostPackets(largest_acked):
 </tr>
 </tbody></table>
 <h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a>
-</h1>
-<h1 id="rfc.appendix.B">
-<a href="#rfc.appendix.B">Appendix B.</a> <a href="#change-log" id="change-log">Change Log</a>
+<a href="#rfc.appendix.A">Appendix A.</a> <a href="#change-log" id="change-log">Change Log</a>
 </h1>
 <p></p>
 
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
-<h2 id="rfc.appendix.B.1">
-<a href="#rfc.appendix.B.1">B.1.</a> <a href="#since-draft-ietf-quic-recovery-09" id="since-draft-ietf-quic-recovery-09">Since draft-ietf-quic-recovery-09</a>
+<h2 id="rfc.appendix.A.1">
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-recovery-12" id="since-draft-ietf-quic-recovery-12">Since draft-ietf-quic-recovery-12</a>
 </h2>
-<p id="rfc.section.B.1.p.1">No significant changes.</p>
-<h2 id="rfc.appendix.B.2">
-<a href="#rfc.appendix.B.2">B.2.</a> <a href="#since-draft-ietf-quic-recovery-08" id="since-draft-ietf-quic-recovery-08">Since draft-ietf-quic-recovery-08</a>
+<p></p>
+
+<ul>
+<li>Changes to manage separate packet number spaces and encryption levels (#1190, #1242, #1413, #1450)</li>
+<li>Added ECN feedback mechanisms and handling; new ACK_ECN frame (#804, #805, #1372)</li>
+</ul>
+<h2 id="rfc.appendix.A.2">
+<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-recovery-11" id="since-draft-ietf-quic-recovery-11">Since draft-ietf-quic-recovery-11</a>
+</h2>
+<p id="rfc.section.A.2.p.1">No significant changes.</p>
+<h2 id="rfc.appendix.A.3">
+<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-recovery-10" id="since-draft-ietf-quic-recovery-10">Since draft-ietf-quic-recovery-10</a>
+</h2>
+<p></p>
+
+<ul>
+<li>Improved text on ack generation (#1139, #1159)</li>
+<li>Make references to TCP recovery mechanisms informational (#1195)</li>
+<li>Define time_of_last_sent_handshake_packet (#1171)</li>
+<li>Added signal from TLS the data it includes needs to be sent in a Retry packet (#1061, #1199)</li>
+<li>Minimum RTT (min_rtt) is initialized with an infinite value (#1169)</li>
+</ul>
+<h2 id="rfc.appendix.A.4">
+<a href="#rfc.appendix.A.4">A.4.</a> <a href="#since-draft-ietf-quic-recovery-09" id="since-draft-ietf-quic-recovery-09">Since draft-ietf-quic-recovery-09</a>
+</h2>
+<p id="rfc.section.A.4.p.1">No significant changes.</p>
+<h2 id="rfc.appendix.A.5">
+<a href="#rfc.appendix.A.5">A.5.</a> <a href="#since-draft-ietf-quic-recovery-08" id="since-draft-ietf-quic-recovery-08">Since draft-ietf-quic-recovery-08</a>
 </h2>
 <p></p>
 
 <ul><li>Clarified pacing and RTO (#967, #977)</li></ul>
-<h2 id="rfc.appendix.B.3">
-<a href="#rfc.appendix.B.3">B.3.</a> <a href="#since-draft-ietf-quic-recovery-07" id="since-draft-ietf-quic-recovery-07">Since draft-ietf-quic-recovery-07</a>
+<h2 id="rfc.appendix.A.6">
+<a href="#rfc.appendix.A.6">A.6.</a> <a href="#since-draft-ietf-quic-recovery-07" id="since-draft-ietf-quic-recovery-07">Since draft-ietf-quic-recovery-07</a>
 </h2>
 <p></p>
 
@@ -1266,26 +1360,26 @@ DetectLostPackets(largest_acked):
 <li>Default RTT and Slow Start (#590)</li>
 <li>Many editorial fixes.</li>
 </ul>
-<h2 id="rfc.appendix.B.4">
-<a href="#rfc.appendix.B.4">B.4.</a> <a href="#since-draft-ietf-quic-recovery-06" id="since-draft-ietf-quic-recovery-06">Since draft-ietf-quic-recovery-06</a>
+<h2 id="rfc.appendix.A.7">
+<a href="#rfc.appendix.A.7">A.7.</a> <a href="#since-draft-ietf-quic-recovery-06" id="since-draft-ietf-quic-recovery-06">Since draft-ietf-quic-recovery-06</a>
 </h2>
-<p id="rfc.section.B.4.p.1">No significant changes.</p>
-<h2 id="rfc.appendix.B.5">
-<a href="#rfc.appendix.B.5">B.5.</a> <a href="#since-draft-ietf-quic-recovery-05" id="since-draft-ietf-quic-recovery-05">Since draft-ietf-quic-recovery-05</a>
+<p id="rfc.section.A.7.p.1">No significant changes.</p>
+<h2 id="rfc.appendix.A.8">
+<a href="#rfc.appendix.A.8">A.8.</a> <a href="#since-draft-ietf-quic-recovery-05" id="since-draft-ietf-quic-recovery-05">Since draft-ietf-quic-recovery-05</a>
 </h2>
 <p></p>
 
 <ul><li>Add more congestion control text (#776)</li></ul>
-<h2 id="rfc.appendix.B.6">
-<a href="#rfc.appendix.B.6">B.6.</a> <a href="#since-draft-ietf-quic-recovery-04" id="since-draft-ietf-quic-recovery-04">Since draft-ietf-quic-recovery-04</a>
+<h2 id="rfc.appendix.A.9">
+<a href="#rfc.appendix.A.9">A.9.</a> <a href="#since-draft-ietf-quic-recovery-04" id="since-draft-ietf-quic-recovery-04">Since draft-ietf-quic-recovery-04</a>
 </h2>
-<p id="rfc.section.B.6.p.1">No significant changes.</p>
-<h2 id="rfc.appendix.B.7">
-<a href="#rfc.appendix.B.7">B.7.</a> <a href="#since-draft-ietf-quic-recovery-03" id="since-draft-ietf-quic-recovery-03">Since draft-ietf-quic-recovery-03</a>
+<p id="rfc.section.A.9.p.1">No significant changes.</p>
+<h2 id="rfc.appendix.A.10">
+<a href="#rfc.appendix.A.10">A.10.</a> <a href="#since-draft-ietf-quic-recovery-03" id="since-draft-ietf-quic-recovery-03">Since draft-ietf-quic-recovery-03</a>
 </h2>
-<p id="rfc.section.B.7.p.1">No significant changes.</p>
-<h2 id="rfc.appendix.B.8">
-<a href="#rfc.appendix.B.8">B.8.</a> <a href="#since-draft-ietf-quic-recovery-02" id="since-draft-ietf-quic-recovery-02">Since draft-ietf-quic-recovery-02</a>
+<p id="rfc.section.A.10.p.1">No significant changes.</p>
+<h2 id="rfc.appendix.A.11">
+<a href="#rfc.appendix.A.11">A.11.</a> <a href="#since-draft-ietf-quic-recovery-02" id="since-draft-ietf-quic-recovery-02">Since draft-ietf-quic-recovery-02</a>
 </h2>
 <p></p>
 
@@ -1295,8 +1389,8 @@ DetectLostPackets(largest_acked):
 <li>Require connection abort if a skipped packet was acknowledged (#415)</li>
 <li>Simplify RTO calculations (#142, #417)</li>
 </ul>
-<h2 id="rfc.appendix.B.9">
-<a href="#rfc.appendix.B.9">B.9.</a> <a href="#since-draft-ietf-quic-recovery-01" id="since-draft-ietf-quic-recovery-01">Since draft-ietf-quic-recovery-01</a>
+<h2 id="rfc.appendix.A.12">
+<a href="#rfc.appendix.A.12">A.12.</a> <a href="#since-draft-ietf-quic-recovery-01" id="since-draft-ietf-quic-recovery-01">Since draft-ietf-quic-recovery-01</a>
 </h2>
 <p></p>
 
@@ -1307,14 +1401,14 @@ DetectLostPackets(largest_acked):
 <li>Clarified loss recovery for handshake packets</li>
 <li>Fixed references and made TCP references informative</li>
 </ul>
-<h2 id="rfc.appendix.B.10">
-<a href="#rfc.appendix.B.10">B.10.</a> <a href="#since-draft-ietf-quic-recovery-00" id="since-draft-ietf-quic-recovery-00">Since draft-ietf-quic-recovery-00</a>
+<h2 id="rfc.appendix.A.13">
+<a href="#rfc.appendix.A.13">A.13.</a> <a href="#since-draft-ietf-quic-recovery-00" id="since-draft-ietf-quic-recovery-00">Since draft-ietf-quic-recovery-00</a>
 </h2>
 <p></p>
 
 <ul><li>Improved description of constants and ACK behavior</li></ul>
-<h2 id="rfc.appendix.B.11">
-<a href="#rfc.appendix.B.11">B.11.</a> <a href="#since-draft-iyengar-quic-loss-recovery-01" id="since-draft-iyengar-quic-loss-recovery-01">Since draft-iyengar-quic-loss-recovery-01</a>
+<h2 id="rfc.appendix.A.14">
+<a href="#rfc.appendix.A.14">A.14.</a> <a href="#since-draft-iyengar-quic-loss-recovery-01" id="since-draft-iyengar-quic-loss-recovery-01">Since draft-iyengar-quic-loss-recovery-01</a>
 </h2>
 <p></p>
 
@@ -1323,6 +1417,7 @@ DetectLostPackets(largest_acked):
 <li>Updated authors/editors list</li>
 <li>Added table of contents</li>
 </ul>
+<h1 id="rfc.acknowledgments"><a href="#rfc.acknowledgments">Acknowledgments</a></h1>
 <h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
 <div class="avoidbreak">
   <address class="vcard">
