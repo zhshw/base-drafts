@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                           July 06, 2018
-Expires: January 7, 2019
+Intended status: Standards Track                           July 14, 2018
+Expires: January 15, 2019
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 7, 2019.
+   This Internet-Draft will expire on January 15, 2019.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Bishop                   Expires January 7, 2019                [Page 1]
+Bishop                  Expires January 15, 2019                [Page 1]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bishop                   Expires January 7, 2019                [Page 2]
+Bishop                  Expires January 15, 2019                [Page 2]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -131,25 +131,25 @@ Internet-Draft               HTTP over QUIC                    July 2018
      10.3.  Frame Types  . . . . . . . . . . . . . . . . . . . . . .  35
      10.4.  Settings Parameters  . . . . . . . . . . . . . . . . . .  36
      10.5.  Error Codes  . . . . . . . . . . . . . . . . . . . . . .  37
-     10.6.  Stream Types . . . . . . . . . . . . . . . . . . . . . .  40
+     10.6.  Stream Types . . . . . . . . . . . . . . . . . . . . . .  39
    11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  40
-     11.1.  Normative References . . . . . . . . . . . . . . . . . .  41
-     11.2.  Informative References . . . . . . . . . . . . . . . . .  42
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  40
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  41
      11.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  42
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  42
      A.1.  Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  42
-     A.2.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  43
-     A.3.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  43
+     A.2.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  42
+     A.3.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  42
      A.4.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  43
      A.5.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  43
      A.6.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  43
      A.7.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  43
      A.8.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  43
-     A.9.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  44
+     A.9.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  43
      A.10. Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  44
      A.11. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  44
      A.12. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  44
-     A.13. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  45
+     A.13. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  44
      A.14. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  45
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  45
    Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  45
@@ -165,7 +165,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 3]
+Bishop                  Expires January 15, 2019                [Page 3]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -221,7 +221,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 4]
+Bishop                  Expires January 15, 2019                [Page 4]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -277,7 +277,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 5]
+Bishop                  Expires January 15, 2019                [Page 5]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -333,7 +333,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 6]
+Bishop                  Expires January 15, 2019                [Page 6]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -389,7 +389,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 7]
+Bishop                  Expires January 15, 2019                [Page 7]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -445,7 +445,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 8]
+Bishop                  Expires January 15, 2019                [Page 8]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -501,7 +501,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019                [Page 9]
+Bishop                  Expires January 15, 2019                [Page 9]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -557,7 +557,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 10]
+Bishop                  Expires January 15, 2019               [Page 10]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -613,7 +613,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 11]
+Bishop                  Expires January 15, 2019               [Page 11]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -669,7 +669,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 12]
+Bishop                  Expires January 15, 2019               [Page 12]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -725,7 +725,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 13]
+Bishop                  Expires January 15, 2019               [Page 13]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -781,7 +781,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 14]
+Bishop                  Expires January 15, 2019               [Page 14]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -837,7 +837,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 15]
+Bishop                  Expires January 15, 2019               [Page 15]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -893,7 +893,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 16]
+Bishop                  Expires January 15, 2019               [Page 16]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -949,7 +949,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 17]
+Bishop                  Expires January 15, 2019               [Page 17]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 18]
+Bishop                  Expires January 15, 2019               [Page 18]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 19]
+Bishop                  Expires January 15, 2019               [Page 19]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 20]
+Bishop                  Expires January 15, 2019               [Page 20]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 21]
+Bishop                  Expires January 15, 2019               [Page 21]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 22]
+Bishop                  Expires January 15, 2019               [Page 22]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 23]
+Bishop                  Expires January 15, 2019               [Page 23]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 24]
+Bishop                  Expires January 15, 2019               [Page 24]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 25]
+Bishop                  Expires January 15, 2019               [Page 25]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 26]
+Bishop                  Expires January 15, 2019               [Page 26]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1509,7 +1509,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 27]
+Bishop                  Expires January 15, 2019               [Page 27]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1522,9 +1522,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    HTTP_REQUEST_CANCELLED (0x05):  The client no longer needs the
       requested data.
-
-   HTTP_QPACK_DECOMPRESSION_FAILED (0x06):  QPACK failed to decompress a
-      frame and cannot continue.
 
    HTTP_CONNECT_ERROR (0x07):  The connection established in response to
       a CONNECT request was reset or abnormally closed.
@@ -1562,16 +1559,16 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
+      For example, an error in a MAX_PUSH_ID frame would be indicated
+      with the code (0x10D).
 
 
 
-Bishop                   Expires January 7, 2019               [Page 28]
+
+Bishop                  Expires January 15, 2019               [Page 28]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
-
-      For example, an error in a MAX_PUSH_ID frame would be indicated
-      with the code (0x10D).
 
 7.  Extensions to HTTP/QUIC
 
@@ -1619,15 +1616,16 @@ Internet-Draft               HTTP over QUIC                    July 2018
    HTTP/QUIC, points out important differences from HTTP/2, and
    describes how to map HTTP/2 extensions into HTTP/QUIC.
 
+   HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
+   feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
 
 
-Bishop                   Expires January 7, 2019               [Page 29]
+
+Bishop                  Expires January 15, 2019               [Page 29]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
-   HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
-   feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
    primarily where necessary to accommodate the differences in behavior
    between QUIC and TCP (lack of ordering, support for streams).  We
    intend to avoid gratuitous changes which make it difficult or
@@ -1674,16 +1672,16 @@ Internet-Draft               HTTP over QUIC                    July 2018
    notion of in-order delivery of priority changes (i.e., dependency
    tree mutations): since operations on the dependency tree such as
    reparenting a subtree are not commutative, both sender and receiver
+   must apply them in the same order to ensure that both sides have a
+   consistent view of the stream dependency tree.  HTTP/2 specifies
 
 
 
-Bishop                   Expires January 7, 2019               [Page 30]
+Bishop                  Expires January 15, 2019               [Page 30]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
-   must apply them in the same order to ensure that both sides have a
-   consistent view of the stream dependency tree.  HTTP/2 specifies
    priority assignments in PRIORITY frames and (optionally) in HEADERS
    frames.  To achieve in-order delivery of priority changes in HTTP/
    QUIC, PRIORITY frames are sent on the control stream and the PRIORITY
@@ -1733,7 +1731,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 31]
+
+
+Bishop                  Expires January 15, 2019               [Page 31]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1789,7 +1789,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 32]
+Bishop                  Expires January 15, 2019               [Page 32]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1845,15 +1845,14 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 33]
+Bishop                  Expires January 15, 2019               [Page 33]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
    CANCEL (0x8):  HTTP_REQUEST_CANCELLED in Section 6.1.
 
-   COMPRESSION_ERROR (0x9):  HTTP_HPACK_DECOMPRESSION_FAILED in
-      Section 6.1.
+   COMPRESSION_ERROR (0x9):  HTTP_QPACK_DECOMPRESSION_FAILED in [QPACK].
 
    CONNECT_ERROR (0xa):  HTTP_CONNECT_ERROR in Section 6.1.
 
@@ -1901,7 +1900,8 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 34]
+
+Bishop                  Expires January 15, 2019               [Page 34]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -1957,7 +1957,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 35]
+Bishop                  Expires January 15, 2019               [Page 35]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -2013,7 +2013,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 36]
+Bishop                  Expires January 15, 2019               [Page 36]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -2069,7 +2069,7 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                   Expires January 7, 2019               [Page 37]
+Bishop                  Expires January 15, 2019               [Page 37]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
@@ -2089,102 +2089,86 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    The entries in the following table are registered by this document.
 
-   +---------------------------+-------+--------------+----------------+
-   | Name                      | Code  | Description  | Specification  |
-   +---------------------------+-------+--------------+----------------+
-   | STOPPING                  | 0x000 | Reserved by  | [QUIC-TRANSPOR |
-   |                           | 0     | QUIC         | T]             |
-   |                           |       |              |                |
-   | HTTP_NO_ERROR             | 0x000 | No error     | Section 6.1    |
-   |                           | 1     |              |                |
-   |                           |       |              |                |
-   | HTTP_PUSH_REFUSED         | 0x000 | Client       | Section 6.1    |
-   |                           | 2     | refused      |                |
-   |                           |       | pushed       |                |
-   |                           |       | content      |                |
-   |                           |       |              |                |
-   | HTTP_INTERNAL_ERROR       | 0x000 | Internal     | Section 6.1    |
-   |                           | 3     | error        |                |
-   |                           |       |              |                |
-   | HTTP_PUSH_ALREADY_IN_CACH | 0x000 | Pushed       | Section 6.1    |
-   | E                         | 4     | content      |                |
-   |                           |       | already      |                |
-   |                           |       | cached       |                |
-   |                           |       |              |                |
-   | HTTP_REQUEST_CANCELLED    | 0x000 | Data no      | Section 6.1    |
-   |                           | 5     | longer       |                |
-   |                           |       | needed       |                |
-   |                           |       |              |                |
-   | HTTP_HPACK_DECOMPRESSION_ | 0x000 | HPACK cannot | Section 6.1    |
-   | FAILED                    | 6     | continue     |                |
-   |                           |       |              |                |
-   | HTTP_CONNECT_ERROR        | 0x000 | TCP reset or | Section 6.1    |
-   |                           | 7     | error on     |                |
-   |                           |       | CONNECT      |                |
-   |                           |       | request      |                |
+   +-------------------------+-------+---------------+-----------------+
+   | Name                    | Code  | Description   | Specification   |
+   +-------------------------+-------+---------------+-----------------+
+   | STOPPING                | 0x000 | Reserved by   | [QUIC-TRANSPORT |
+   |                         | 0     | QUIC          | ]               |
+   |                         |       |               |                 |
+   | HTTP_NO_ERROR           | 0x000 | No error      | Section 6.1     |
+   |                         | 1     |               |                 |
+   |                         |       |               |                 |
+   | HTTP_PUSH_REFUSED       | 0x000 | Client        | Section 6.1     |
+   |                         | 2     | refused       |                 |
+   |                         |       | pushed        |                 |
+   |                         |       | content       |                 |
+   |                         |       |               |                 |
+   | HTTP_INTERNAL_ERROR     | 0x000 | Internal      | Section 6.1     |
+   |                         | 3     | error         |                 |
+   |                         |       |               |                 |
+   | HTTP_PUSH_ALREADY_IN_CA | 0x000 | Pushed        | Section 6.1     |
+   | CHE                     | 4     | content       |                 |
+   |                         |       | already       |                 |
+   |                         |       | cached        |                 |
+   |                         |       |               |                 |
+   | HTTP_REQUEST_CANCELLED  | 0x000 | Data no       | Section 6.1     |
+   |                         | 5     | longer needed |                 |
+   |                         |       |               |                 |
+   | HTTP_CONNECT_ERROR      | 0x000 | TCP reset or  | Section 6.1     |
+   |                         | 7     | error on      |                 |
+   |                         |       | CONNECT       |                 |
+   |                         |       | request       |                 |
+   |                         |       |               |                 |
+   | HTTP_EXCESSIVE_LOAD     | 0x000 | Peer          | Section 6.1     |
+   |                         | 8     | generating    |                 |
+   |                         |       | excessive     |                 |
 
 
 
-Bishop                   Expires January 7, 2019               [Page 38]
+Bishop                  Expires January 15, 2019               [Page 38]
 
 Internet-Draft               HTTP over QUIC                    July 2018
 
 
-   |                           |       |              |                |
-   | HTTP_EXCESSIVE_LOAD       | 0x000 | Peer         | Section 6.1    |
-   |                           | 8     | generating   |                |
-   |                           |       | excessive    |                |
-   |                           |       | load         |                |
-   |                           |       |              |                |
-   | HTTP_VERSION_FALLBACK     | 0x000 | Retry over   | Section 6.1    |
-   |                           | 9     | HTTP/2       |                |
-   |                           |       |              |                |
-   | HTTP_WRONG_STREAM         | 0x000 | A frame was  | Section 6.1    |
-   |                           | A     | sent on the  |                |
-   |                           |       | wrong stream |                |
-   |                           |       |              |                |
-   | HTTP_PUSH_LIMIT_EXCEEDED  | 0x000 | Maximum Push | Section 6.1    |
-   |                           | B     | ID exceeded  |                |
-   |                           |       |              |                |
-   | HTTP_DUPLICATE_PUSH       | 0x000 | Push ID was  | Section 6.1    |
-   |                           | C     | fulfilled    |                |
-   |                           |       | multiple     |                |
-   |                           |       | times        |                |
-   |                           |       |              |                |
-   | HTTP_UNKNOWN_STREAM_TYPE  | 0x000 | Unknown unid | Section 6.1    |
-   |                           | D     | irectional   |                |
-   |                           |       | stream type  |                |
-   |                           |       |              |                |
-   | HTTP_WRONG_STREAM_COUNT   | 0x000 | Too many uni | Section 6.1    |
-   |                           | E     | directional  |                |
-   |                           |       | streams      |                |
-   |                           |       |              |                |
-   | HTTP_CLOSED_CRITICAL_STRE | 0x000 | Critical     | Section 6.1    |
-   | AM                        | F     | stream was   |                |
-   |                           |       | closed       |                |
-   |                           |       |              |                |
-   | HTTP_WRONG_STREAM_DIRECTI | 0x001 | Unidirection | Section 6.1    |
-   | ON                        | 0     | al stream in |                |
-   |                           |       | wrong        |                |
-   |                           |       | direction    |                |
-   |                           |       |              |                |
-   | HTTP_MALFORMED_FRAME      | 0x01X | Error in     | Section 6.1    |
-   |                           | X     | frame        |                |
-   |                           |       | formatting   |                |
-   |                           |       | or use       |                |
-   +---------------------------+-------+--------------+----------------+
-
-
-
-
-
-
-
-
-Bishop                   Expires January 7, 2019               [Page 39]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
+   |                         |       | load          |                 |
+   |                         |       |               |                 |
+   | HTTP_VERSION_FALLBACK   | 0x000 | Retry over    | Section 6.1     |
+   |                         | 9     | HTTP/2        |                 |
+   |                         |       |               |                 |
+   | HTTP_WRONG_STREAM       | 0x000 | A frame was   | Section 6.1     |
+   |                         | A     | sent on the   |                 |
+   |                         |       | wrong stream  |                 |
+   |                         |       |               |                 |
+   | HTTP_PUSH_LIMIT_EXCEEDE | 0x000 | Maximum Push  | Section 6.1     |
+   | D                       | B     | ID exceeded   |                 |
+   |                         |       |               |                 |
+   | HTTP_DUPLICATE_PUSH     | 0x000 | Push ID was   | Section 6.1     |
+   |                         | C     | fulfilled     |                 |
+   |                         |       | multiple      |                 |
+   |                         |       | times         |                 |
+   |                         |       |               |                 |
+   | HTTP_UNKNOWN_STREAM_TYP | 0x000 | Unknown unidi | Section 6.1     |
+   | E                       | D     | rectional     |                 |
+   |                         |       | stream type   |                 |
+   |                         |       |               |                 |
+   | HTTP_WRONG_STREAM_COUNT | 0x000 | Too many unid | Section 6.1     |
+   |                         | E     | irectional    |                 |
+   |                         |       | streams       |                 |
+   |                         |       |               |                 |
+   | HTTP_CLOSED_CRITICAL_ST | 0x000 | Critical      | Section 6.1     |
+   | REAM                    | F     | stream was    |                 |
+   |                         |       | closed        |                 |
+   |                         |       |               |                 |
+   | HTTP_WRONG_STREAM_DIREC | 0x001 | Unidirectiona | Section 6.1     |
+   | TION                    | 0     | l stream in   |                 |
+   |                         |       | wrong         |                 |
+   |                         |       | direction     |                 |
+   |                         |       |               |                 |
+   | HTTP_MALFORMED_FRAME    | 0x01X | Error in      | Section 6.1     |
+   |                         | X     | frame         |                 |
+   |                         |       | formatting or |                 |
+   |                         |       | use           |                 |
+   +-------------------------+-------+---------------+-----------------+
 
 10.6.  Stream Types
 
@@ -2194,6 +2178,13 @@ Internet-Draft               HTTP over QUIC                    July 2018
    the "IETF Review" or "IESG Approval" policies [RFC8126] for values
    from 0x00 up to and including 0xef, with values from 0xf0 up to and
    including 0xff being reserved for Experimental Use.
+
+
+
+Bishop                  Expires January 15, 2019               [Page 39]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
    New entries in this registry require the following information:
 
@@ -2231,17 +2222,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 11.  References
 
-
-
-
-
-
-
-Bishop                   Expires January 7, 2019               [Page 40]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
-
 11.1.  Normative References
 
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
@@ -2252,6 +2232,15 @@ Internet-Draft               HTTP over QUIC                    July 2018
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
               transport (work in progress), July 2018.
+
+
+
+
+
+Bishop                  Expires January 15, 2019               [Page 40]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
               RFC 793, DOI 10.17487/RFC0793, September 1981,
@@ -2291,13 +2280,6 @@ Internet-Draft               HTTP over QUIC                    July 2018
               Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
               April 2016, <https://www.rfc-editor.org/info/rfc7838>.
 
-
-
-Bishop                   Expires January 7, 2019               [Page 41]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
@@ -2308,6 +2290,13 @@ Internet-Draft               HTTP over QUIC                    July 2018
               "Transport Layer Security (TLS) Application-Layer Protocol
               Negotiation Extension", RFC 7301, DOI 10.17487/RFC7301,
               July 2014, <https://www.rfc-editor.org/info/rfc7301>.
+
+
+
+Bishop                  Expires January 15, 2019               [Page 41]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
@@ -2347,13 +2336,6 @@ A.1.  Since draft-ietf-quic-http-12
    o  Priority mechanism now uses explicit placeholders to enable
       persistent structure in the tree (#441,#1421,#1422)
 
-
-
-Bishop                   Expires January 7, 2019               [Page 42]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
-
 A.2.  Since draft-ietf-quic-http-11
 
    o  Moved QPACK table updates and acknowledgments to dedicated streams
@@ -2363,6 +2345,14 @@ A.3.  Since draft-ietf-quic-http-10
 
    o  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
+
+
+
+
+Bishop                  Expires January 15, 2019               [Page 42]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
 A.4.  Since draft-ietf-quic-http-09
 
@@ -2400,16 +2390,6 @@ A.8.  Since draft-ietf-quic-http-05
 
    o  Expanded text on GOAWAY and cancellation (#757)
 
-
-
-
-
-
-Bishop                   Expires January 7, 2019               [Page 43]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
-
 A.9.  Since draft-ietf-quic-http-04
 
    o  Cite RFC 5234 (#404)
@@ -2421,6 +2401,14 @@ A.9.  Since draft-ietf-quic-http-04
    o  SETTINGS_ENABLE_PUSH instead of SETTINGS_DISABLE_PUSH (#477)
 
    o  Restored GOAWAY (#696)
+
+
+
+
+Bishop                  Expires January 15, 2019               [Page 43]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
    o  Identify server push using Push ID rather than a stream ID
       (#702,#281)
@@ -2458,14 +2446,6 @@ A.12.  Since draft-ietf-quic-http-01
 
    o  0-RTT guidance added
 
-
-
-
-Bishop                   Expires January 7, 2019               [Page 44]
-
-Internet-Draft               HTTP over QUIC                    July 2018
-
-
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
@@ -2478,6 +2458,13 @@ A.13.  Since draft-ietf-quic-http-00
 
    o  Adopted SETTINGS format from draft-bishop-httpbis-extended-
       settings-01
+
+
+
+Bishop                  Expires January 15, 2019               [Page 44]
+
+Internet-Draft               HTTP over QUIC                    July 2018
+
 
    o  Reworked SETTINGS_ACK to account for indeterminate inter-stream
       order (#75)
@@ -2517,4 +2504,17 @@ Author's Address
 
 
 
-Bishop                   Expires January 7, 2019               [Page 45]
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bishop                  Expires January 15, 2019               [Page 45]

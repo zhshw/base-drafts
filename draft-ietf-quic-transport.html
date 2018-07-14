@@ -438,7 +438,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-14" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -462,12 +462,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 7, 2019</td>
+<td class="left">Expires: January 15, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 06, 2018</td>
+<td class="right">July 14, 2018</td>
 </tr>
 
     	
@@ -486,7 +486,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 7, 2019.</p>
+<p>This Internet-Draft will expire on January 15, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1543,7 +1543,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
    uint32 QuicVersion;
 
    enum {
-      initial_max_stream_data(0),
+      initial_max_stream_data_bidi_local(0),
       initial_max_data(1),
       initial_max_bidi_streams(2),
       idle_timeout(3),
@@ -1553,6 +1553,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
       ack_delay_exponent(7),
       initial_max_uni_streams(8),
       disable_migration(9),
+      initial_max_stream_data_bidi_remote(10),
+      initial_max_stream_data_uni(11),
       (65535)
    } TransportParameterId;
 
@@ -1592,8 +1594,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p></p>
 
 <dl>
-<dt>initial_max_stream_data (0x0000):</dt>
-<dd style="margin-left: 8">The initial stream maximum data parameter contains the initial value for the maximum data that can be sent on any newly created stream.  This parameter is encoded as an unsigned 32-bit integer in units of octets.  This is equivalent to an implicit MAX_STREAM_DATA frame (<a href="#frame-max-stream-data" class="xref">Section 7.7</a>) being sent on all streams immediately after opening.</dd>
 <dt>initial_max_data (0x0001):</dt>
 <dd style="margin-left: 8">The initial maximum data parameter contains the initial value for the maximum amount of data that can be sent on the connection.  This parameter is encoded as an unsigned 32-bit integer in units of octets.  This is equivalent to sending a MAX_DATA (<a href="#frame-max-data" class="xref">Section 7.6</a>) for the connection immediately after completing the handshake.</dd>
 <dt>idle_timeout (0x0003):</dt>
@@ -1604,9 +1604,9 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 
 <dl>
 <dt>initial_max_bidi_streams (0x0002):</dt>
-<dd style="margin-left: 8">The initial maximum bidirectional streams parameter contains the initial maximum number of application-owned bidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, application-owned bidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 16 when received by a client or 17 when received by a server.</dd>
+<dd style="margin-left: 8">The initial maximum bidirectional streams parameter contains the initial maximum number of bidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, bidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 16 when received by a client or 17 when received by a server.</dd>
 <dt>initial_max_uni_streams (0x0008):</dt>
-<dd style="margin-left: 8">The initial maximum unidirectional streams parameter contains the initial maximum number of application-owned unidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, unidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 18 when received by a client or 19 when received by a server.</dd>
+<dd style="margin-left: 8">The initial maximum unidirectional streams parameter contains the initial maximum number of unidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, unidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 18 when received by a client or 19 when received by a server.</dd>
 <dt>max_packet_size (0x0005):</dt>
 <dd style="margin-left: 8">The maximum packet size parameter places a limit on the size of packets that the endpoint is willing to receive, encoded as an unsigned 16-bit integer.  This indicates that packets larger than this limit will be dropped.  The default for this parameter is the maximum permitted UDP payload of 65527.  Values below 1200 are invalid.  This limit only applies to protected packets (<a href="#packet-protected" class="xref">Section 4.5</a>).</dd>
 <dt>ack_delay_exponent (0x0007):</dt>
@@ -1614,7 +1614,19 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>disable_migration (0x0009):</dt>
 <dd style="margin-left: 8">The endpoint does not support connection migration (<a href="#migration" class="xref">Section 6.11</a>). Peers MUST NOT send any packets, including probing packets (<a href="#probing" class="xref">Section 6.11.1</a>), from a local address other than that used to perform the handshake.  This parameter is a zero-length value.</dd>
 </dl>
-<p id="rfc.section.6.6.1.p.5">A server MAY include the following transport parameters:</p>
+<p id="rfc.section.6.6.1.p.5">Either peer MAY advertise an initial value for the flow control on each type of stream on which they might receive data.  Each of the following transport parameters is encoded as an unsigned 32-bit integer in units of octets:</p>
+<p></p>
+
+<dl>
+<dt>initial_max_stream_data_bidi_local (0x0000):</dt>
+<dd style="margin-left: 8">The initial stream maximum data for bidirectional, locally-initiated streams parameter contains the initial flow control limit for newly created bidirectional streams opened by the endpoint that sets the transport parameter.  In client transport parameters, this applies to streams with an identifier ending in 0x0; in server transport parameters, this applies to streams ending in 0x1.</dd>
+<dt>initial_max_stream_data_bidi_remote (0x000a):</dt>
+<dd style="margin-left: 8">The initial stream maximum data for bidirectional, peer-initiated streams parameter contains the initial flow control limit for newly created bidirectional streams opened by the endpoint that receives the transport parameter.  In client transport parameters, this applies to streams with an identifier ending in 0x1; in server transport parameters, this applies to streams ending in 0x0.</dd>
+<dt>initial_max_stream_data_uni (0x000b):</dt>
+<dd style="margin-left: 8">The initial stream maximum data for unidirectional streams parameter contains the initial flow control limit for newly created unidirectional streams opened by the endpoint that receives the transport parameter.  In client transport parameters, this applies to streams with an identifier ending in 0x3; in server transport parameters, this applies to streams ending in 0x2.</dd>
+</dl>
+<p id="rfc.section.6.6.1.p.7">If present, transport parameters that set initial flow control limits are equivalent to sending a MAX_STREAM_DATA frame (<a href="#frame-max-stream-data" class="xref">Section 7.7</a>) on every stream of the corresponding type immediately after opening.  If the transport parameter is absent, streams of that type start with a flow control limit of 0.</p>
+<p id="rfc.section.6.6.1.p.8">A server MAY include the following transport parameters:</p>
 <p></p>
 
 <dl>
@@ -1623,14 +1635,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>preferred_address (0x0004):</dt>
 <dd style="margin-left: 8">The server&#8217;s Preferred Address is used to effect a change in server address at the end of the handshake, as described in <a href="#preferred-address" class="xref">Section 6.12</a>.</dd>
 </dl>
-<p id="rfc.section.6.6.1.p.7">A client MUST NOT include a stateless reset token or a preferred address.  A server MUST treat receipt of either transport parameter as a connection error of type TRANSPORT_PARAMETER_ERROR.</p>
+<p id="rfc.section.6.6.1.p.10">A client MUST NOT include a stateless reset token or a preferred address.  A server MUST treat receipt of either transport parameter as a connection error of type TRANSPORT_PARAMETER_ERROR.</p>
 <h3 id="rfc.section.6.6.2">
 <a href="#rfc.section.6.6.2">6.6.2.</a> <a href="#zerortt-parameters" id="zerortt-parameters">Values of Transport Parameters for 0-RTT</a>
 </h3>
 <p id="rfc.section.6.6.2.p.1">A client that attempts to send 0-RTT data MUST remember the transport parameters used by the server.  The transport parameters that the server advertises during connection establishment apply to all connections that are resumed using the keying material established during that handshake.  Remembered transport parameters apply to the new connection until the handshake completes and new transport parameters from the server can be provided.</p>
 <p id="rfc.section.6.6.2.p.2">A server can remember the transport parameters that it advertised, or store an integrity-protected copy of the values in the ticket and recover the information when accepting 0-RTT data.  A server uses the transport parameters in determining whether to accept 0-RTT data.</p>
-<p id="rfc.section.6.6.2.p.3">A server MAY accept 0-RTT and subsequently provide different values for transport parameters for use in the new connection.  If 0-RTT data is accepted by the server, the server MUST NOT reduce any limits or alter any values that might be violated by the client with its 0-RTT data.  In particular, a server that accepts 0-RTT data MUST NOT set values for initial_max_data or initial_max_stream_data that are smaller than the remembered value of those parameters.  Similarly, a server MUST NOT reduce the value of initial_max_bidi_streams or initial_max_uni_streams.</p>
-<p id="rfc.section.6.6.2.p.4">Omitting or setting a zero value for certain transport parameters can result in 0-RTT data being enabled, but not usable.  The following transport parameters SHOULD be set to non-zero values for 0-RTT: initial_max_bidi_streams, initial_max_uni_streams, initial_max_data, initial_max_stream_data.</p>
+<p id="rfc.section.6.6.2.p.3">A server MAY accept 0-RTT and subsequently provide different values for transport parameters for use in the new connection.  If 0-RTT data is accepted by the server, the server MUST NOT reduce any limits or alter any values that might be violated by the client with its 0-RTT data.  In particular, a server that accepts 0-RTT data MUST NOT set values for initial_max_data, initial_max_stream_data_bidi_local, initial_max_stream_data_bidi_remote, and initial_max_stream_data_uni that are smaller than the remembered value of those parameters.  Similarly, a server MUST NOT reduce the value of initial_max_bidi_streams or initial_max_uni_streams.</p>
+<p id="rfc.section.6.6.2.p.4">Omitting or setting a zero value for certain transport parameters can result in 0-RTT data being enabled, but not usable.  The applicable subset of transport parameters that permit sending of application data SHOULD be set to non-zero values for 0-RTT.  This includes initial_max_data and either initial_max_bidi_streams and initial_max_stream_data_bidi_remote, or initial_max_uni_streams and initial_max_stream_data_uni.</p>
 <p id="rfc.section.6.6.2.p.5">The value of the server&#8217;s previous preferred_address MUST NOT be used when establishing a new connection; rather, the client should wait to observe the server&#8217;s new preferred_address value in the handshake.</p>
 <p id="rfc.section.6.6.2.p.6">A server MUST reject 0-RTT data or even abort a handshake if the implied values for transport parameters cannot be supported.</p>
 <h3 id="rfc.section.6.6.3">
@@ -2644,7 +2656,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </tbody>
 </table>
 <p id="rfc.section.9.1.p.6">The first bi-directional stream opened by the client is stream 0.</p>
-<p id="rfc.section.9.1.p.7">A QUIC endpoint MUST NOT reuse a Stream ID.  Streams can be used in any order.  Streams that are used out of order result in opening all lower-numbered streams of the same type in the same direction.</p>
+<p id="rfc.section.9.1.p.7">A QUIC endpoint MUST NOT reuse a Stream ID.  Streams of each type are created in numeric order.  Streams that are used out of order result in opening all lower-numbered streams of the same type in the same direction.</p>
 <p id="rfc.section.9.1.p.8">Stream IDs are encoded as a variable-length integer (see <a href="#integer-encoding" class="xref">Section 7.1</a>).</p>
 <h2 id="rfc.section.9.2">
 <a href="#rfc.section.9.2">9.2.</a> <a href="#stream-states" id="stream-states">Stream States</a>
@@ -2717,6 +2729,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
        | Recv STREAM / STREAM_BLOCKED / RST_STREAM
        | Create Bidirectional Stream (Sending)
        | Recv MAX_STREAM_DATA
+       | Create Higher-Numbered Stream
        v
    +-------+
    | Recv  | Recv RST_STREAM
@@ -2748,13 +2761,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.9.2.2.p.2">The receiving part of a stream initiated by a peer (types 1 and 3 for a client, or 0 and 2 for a server) are created when the first STREAM, STREAM_BLOCKED, RST_STREAM, or MAX_STREAM_DATA (bidirectional only, see below) is received for that stream.  The initial state for a receive stream is &#8220;Recv&#8221;.  Receiving a RST_STREAM frame causes the receive stream to immediately transition to the &#8220;Reset Recvd&#8221;.</p>
 <p id="rfc.section.9.2.2.p.3">The receive stream enters the &#8220;Recv&#8221; state when the sending part of a bidirectional stream initiated by the endpoint (type 0 for a client, type 1 for a server) enters the &#8220;Ready&#8221; state.</p>
 <p id="rfc.section.9.2.2.p.4">A bidirectional stream also opens when a MAX_STREAM_DATA frame is received.  Receiving a MAX_STREAM_DATA frame implies that the remote peer has opened the stream and is providing flow control credit.  A MAX_STREAM_DATA frame might arrive before a STREAM or STREAM_BLOCKED frame if packets are lost or reordered.</p>
-<p id="rfc.section.9.2.2.p.5">In the &#8220;Recv&#8221; state, the endpoint receives STREAM and STREAM_BLOCKED frames.  Incoming data is buffered and can be reassembled into the correct order for delivery to the application.  As data is consumed by the application and buffer space becomes available, the endpoint sends MAX_STREAM_DATA frames to allow the peer to send more data.</p>
-<p id="rfc.section.9.2.2.p.6">When a STREAM frame with a FIN bit is received, the final offset (see <a href="#final-offset" class="xref">Section 10.3</a>) is known.  The receive stream enters the &#8220;Size Known&#8221; state.  In this state, the endpoint no longer needs to send MAX_STREAM_DATA frames, it only receives any retransmissions of stream data.</p>
-<p id="rfc.section.9.2.2.p.7">Once all data for the stream has been received, the receive stream enters the &#8220;Data Recvd&#8221; state.  This might happen as a result of receiving the same STREAM frame that causes the transition to &#8220;Size Known&#8221;.  In this state, the endpoint has all stream data.  Any STREAM or STREAM_BLOCKED frames it receives for the stream can be discarded.</p>
-<p id="rfc.section.9.2.2.p.8">The &#8220;Data Recvd&#8221; state persists until stream data has been delivered to the application or application protocol.  Once stream data has been delivered, the stream enters the &#8220;Data Read&#8221; state, which is a terminal state.</p>
-<p id="rfc.section.9.2.2.p.9">Receiving a RST_STREAM frame in the &#8220;Recv&#8221; or &#8220;Size Known&#8221; states causes the stream to enter the &#8220;Reset Recvd&#8221; state.  This might cause the delivery of stream data to the application to be interrupted.</p>
-<p id="rfc.section.9.2.2.p.10">It is possible that all stream data is received when a RST_STREAM is received (that is, from the &#8220;Data Recvd&#8221; state).  Similarly, it is possible for remaining stream data to arrive after receiving a RST_STREAM frame (the &#8220;Reset Recvd&#8221; state).  An implementation is able to manage this situation as they choose.  Sending RST_STREAM means that an endpoint cannot guarantee delivery of stream data; however there is no requirement that stream data not be delivered if a RST_STREAM is received.  An implementation MAY interrupt delivery of stream data, discard any data that was not consumed, and signal the existence of the RST_STREAM immediately.  Alternatively, the RST_STREAM signal might be suppressed or withheld if stream data is completely received.  In the latter case, the receive stream effectively transitions to &#8220;Data Recvd&#8221; from &#8220;Reset Recvd&#8221;.</p>
-<p id="rfc.section.9.2.2.p.11">Once the application has been delivered the signal indicating that the receive stream was reset, the receive stream transitions to the &#8220;Reset Read&#8221; state, which is a terminal state.</p>
+<p id="rfc.section.9.2.2.p.5">Before creating a stream, all lower-numbered streams of the same type MUST be created.  That means that receipt of a frame that would open a stream causes all lower-numbered streams of the same type to be opened in numeric order.  This ensures that the creation order for streams is consistent on both endpoints.</p>
+<p id="rfc.section.9.2.2.p.6">In the &#8220;Recv&#8221; state, the endpoint receives STREAM and STREAM_BLOCKED frames.  Incoming data is buffered and can be reassembled into the correct order for delivery to the application.  As data is consumed by the application and buffer space becomes available, the endpoint sends MAX_STREAM_DATA frames to allow the peer to send more data.</p>
+<p id="rfc.section.9.2.2.p.7">When a STREAM frame with a FIN bit is received, the final offset (see <a href="#final-offset" class="xref">Section 10.3</a>) is known.  The receive stream enters the &#8220;Size Known&#8221; state.  In this state, the endpoint no longer needs to send MAX_STREAM_DATA frames, it only receives any retransmissions of stream data.</p>
+<p id="rfc.section.9.2.2.p.8">Once all data for the stream has been received, the receive stream enters the &#8220;Data Recvd&#8221; state.  This might happen as a result of receiving the same STREAM frame that causes the transition to &#8220;Size Known&#8221;.  In this state, the endpoint has all stream data.  Any STREAM or STREAM_BLOCKED frames it receives for the stream can be discarded.</p>
+<p id="rfc.section.9.2.2.p.9">The &#8220;Data Recvd&#8221; state persists until stream data has been delivered to the application or application protocol.  Once stream data has been delivered, the stream enters the &#8220;Data Read&#8221; state, which is a terminal state.</p>
+<p id="rfc.section.9.2.2.p.10">Receiving a RST_STREAM frame in the &#8220;Recv&#8221; or &#8220;Size Known&#8221; states causes the stream to enter the &#8220;Reset Recvd&#8221; state.  This might cause the delivery of stream data to the application to be interrupted.</p>
+<p id="rfc.section.9.2.2.p.11">It is possible that all stream data is received when a RST_STREAM is received (that is, from the &#8220;Data Recvd&#8221; state).  Similarly, it is possible for remaining stream data to arrive after receiving a RST_STREAM frame (the &#8220;Reset Recvd&#8221; state).  An implementation is able to manage this situation as they choose.  Sending RST_STREAM means that an endpoint cannot guarantee delivery of stream data; however there is no requirement that stream data not be delivered if a RST_STREAM is received.  An implementation MAY interrupt delivery of stream data, discard any data that was not consumed, and signal the existence of the RST_STREAM immediately.  Alternatively, the RST_STREAM signal might be suppressed or withheld if stream data is completely received.  In the latter case, the receive stream effectively transitions to &#8220;Data Recvd&#8221; from &#8220;Reset Recvd&#8221;.</p>
+<p id="rfc.section.9.2.2.p.12">Once the application has been delivered the signal indicating that the receive stream was reset, the receive stream transitions to the &#8220;Reset Read&#8221; state, which is a terminal state.</p>
 <h3 id="rfc.section.9.2.3">
 <a href="#rfc.section.9.2.3">9.2.3.</a> <a href="#permitted-frame-types" id="permitted-frame-types">Permitted Frame Types</a>
 </h3>
@@ -3063,7 +3077,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tbody>
 <tr>
 <td class="left">0x0000</td>
-<td class="left">initial_max_stream_data</td>
+<td class="left">initial_max_stream_data_bidi_local</td>
 <td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
 </tr>
 <tr>
@@ -3109,6 +3123,16 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="left">0x0009</td>
 <td class="left">disable_migration</td>
+<td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
+</tr>
+<tr>
+<td class="left">0x000a</td>
+<td class="left">initial_max_stream_data_bidi_remote</td>
+<td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
+</tr>
+<tr>
+<td class="left">0x000b</td>
+<td class="left">initial_max_stream_data_uni</td>
 <td class="left"><a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a></td>
 </tr>
 </tbody>
@@ -3250,7 +3274,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b></td>
 <td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-21">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-21, July 2017.</td>
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="PLPMTUD">[PLPMTUD]</b></td>

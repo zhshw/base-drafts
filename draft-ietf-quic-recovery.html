@@ -360,7 +360,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and I. Swett, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-recovery-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-06" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-14" />
   <meta name="dct.abstract" content="This document describes loss detection and congestion control mechanisms for QUIC." />
   <meta name="description" content="This document describes loss detection and congestion control mechanisms for QUIC." />
 
@@ -384,12 +384,12 @@ ul.toc li {
 <td class="right">I. Swett, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 7, 2019</td>
+<td class="left">Expires: January 15, 2019</td>
 <td class="right">Google</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 06, 2018</td>
+<td class="right">July 14, 2018</td>
 </tr>
 
     	
@@ -408,7 +408,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 7, 2019.</p>
+<p>This Internet-Draft will expire on January 15, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -580,14 +580,13 @@ ul.toc li {
 </h1>
 <p id="rfc.section.2.p.1">All transmissions in QUIC are sent with a packet-level header, which indicates the encryption level and includes a packet sequence number (referred to below as a packet number).  The encryption level indicates the packet number space, as described in <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>.  Packet numbers never repeat within a packet number space for the lifetime of a connection.  Packet numbers monotonically increase within a space, preventing ambiguity.</p>
 <p id="rfc.section.2.p.2">This design obviates the need for disambiguating between transmissions and retransmissions and eliminates significant complexity from QUIC&#8217;s interpretation of TCP loss detection mechanisms.</p>
-<p id="rfc.section.2.p.3">Every packet may contain several frames.  We outline the frames that are important to the loss detection and congestion control machinery below.</p>
+<p id="rfc.section.2.p.3">QUIC packets can contain multiple frames of different types. The recovery mechanisms ensure that data and frames that need reliable delivery are acknowledged or declared lost and sent in new packets as necessary. The types of frames contained in a packet affect recovery and congestion control logic:</p>
 <p></p>
 
 <ul>
-<li>Retransmittable frames are those that count towards bytes in flight and need acknowledgement.  The most common are STREAM frames, which typically contain application data.</li>
-<li>Retransmittable packets are those that contain at least one retransmittable frame.</li>
-<li>Cryptographic handshake data is sent in CRYPTO frames, and uses the reliability machinery of QUIC underneath.</li>
-<li>ACK and ACK_ECN frames contain acknowledgment information. ACK_ECN frames additionally contain information about ECN codepoints seen by the peer.  (The rest of this document uses ACK frames to refer to both ACK and ACK_ECN frames.)</li>
+<li>All packets are acknowledged, though packets that contain only ACK, ACK_ECN, and PADDING frames are not acknowledged immediately.  Packets containing at least one frame besides ACK, ACK_ECN, and PADDING are referred to as &#8220;retransmittable&#8221; below.</li>
+<li>Long header packets that contain CRYPTO frames are critical to the performance of the QUIC handshake and use shorter timers for acknowledgement and retransmission.</li>
+<li>Packets that contain only ACK and ACK_ECN frames do not count toward congestion control limits and are not considered in-flight. Note that this means PADDING frames cause packets to contribute toward bytes in flight without directly causing an acknowledgment to be sent.  The rest of this document uses &#8220;ACK frames&#8221; to refer to both ACK and ACK_ECN frames.</li>
 </ul>
 <h2 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#relevant-differences-between-quic-and-tcp" id="relevant-differences-between-quic-and-tcp">Relevant Differences Between QUIC and TCP</a>
@@ -639,7 +638,7 @@ ul.toc li {
 <a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#early-retransmit" id="early-retransmit">Early Retransmit</a>
 </h3>
 <p id="rfc.section.3.2.2.p.1">Unacknowledged packets close to the tail may have fewer than kReorderingThreshold retransmittable packets sent after them.  Loss of such packets cannot be detected via Fast Retransmit. To enable ack-based loss detection of such packets, receipt of an acknowledgment for the last outstanding retransmittable packet triggers the Early Retransmit process, as follows.</p>
-<p id="rfc.section.3.2.2.p.2">If there are unacknowledged retransmittable packets still pending, they should be marked as lost. To compensate for the reduced reordering resilience, the sender SHOULD set an alarm for a small period of time. If the unacknowledged retransmittable packets are not acknowledged during this time, then these packets MUST be marked as lost.</p>
+<p id="rfc.section.3.2.2.p.2">If there are unacknowledged in-flight packets still pending, they should be marked as lost. To compensate for the reduced reordering resilience, the sender SHOULD set an alarm for a small period of time. If the unacknowledged in-flight packets are not acknowledged during this time, then these packets MUST be marked as lost.</p>
 <p id="rfc.section.3.2.2.p.3">An endpoint SHOULD set the alarm such that a packet is marked as lost no earlier than 1.25 * max(SRTT, latest_RTT) since when it was sent.</p>
 <p id="rfc.section.3.2.2.p.4">Using max(SRTT, latest_RTT) protects from the two following cases:</p>
 <p></p>
@@ -799,7 +798,7 @@ ul.toc li {
 <dt>loss_time:</dt>
 <dd style="margin-left: 8">The time at which the next packet will be considered lost based on early transmit or exceeding the reordering window in time.</dd>
 <dt>sent_packets:</dt>
-<dd style="margin-left: 8">An association of packet numbers to information about them, including a number field indicating the packet number, a time field indicating the time a packet was sent, a boolean indicating whether the packet is ack only, and a bytes field indicating the packet&#8217;s size.  sent_packets is ordered by packet number, and packets remain in sent_packets until acknowledged or lost.  A sent_packets data structure is maintained per packet number space, and ACK processing only applies to a single space.</dd>
+<dd style="margin-left: 8">An association of packet numbers to information about them, including a number field indicating the packet number, a time field indicating the time a packet was sent, a boolean indicating whether the packet is ack only, a boolean indicating whether it counts towards bytes in flight, and a bytes field indicating the packet&#8217;s size.  sent_packets is ordered by packet number, and packets remain in sent_packets until acknowledged or lost.  A sent_packets data structure is maintained per packet number space, and ACK processing only applies to a single space.</dd>
 </dl>
 <h3 id="rfc.section.3.5.3">
 <a href="#rfc.section.3.5.3">3.5.3.</a> <a href="#initialization" id="initialization">Initialization</a>
@@ -834,19 +833,21 @@ ul.toc li {
 
 <ul>
 <li>packet_number: The packet number of the sent packet.</li>
-<li>is_ack_only: A boolean that indicates whether a packet only contains an ACK frame.  If true, it is still expected an ack will be received for this packet, but it is not retransmittable.</li>
+<li>ack_only: A boolean that indicates whether a packet contains only ACK or PADDING frame(s).  If true, it is still expected an ack will be received for this packet, but it is not retransmittable.</li>
+<li>in_flight: A boolean that indicates whether the packet counts towards bytes in flight.</li>
 <li>is_handshake_packet: A boolean that indicates whether a packet contains handshake data.</li>
 <li>sent_bytes: The number of bytes sent in the packet, not including UDP or IP overhead, but including QUIC framing overhead.</li>
 </ul>
 <p id="rfc.section.3.5.4.p.3">Pseudocode for OnPacketSent follows:</p>
 <pre>
- OnPacketSent(packet_number, is_ack_only, is_handshake_packet,
-                sent_bytes):
+ OnPacketSent(packet_number, ack_only, in_flight,
+              is_handshake_packet, sent_bytes):
    largest_sent_packet = packet_number
    sent_packets[packet_number].packet_number = packet_number
    sent_packets[packet_number].time = now
-   sent_packets[packet_number].ack_only = is_ack_only
-   if !is_ack_only:
+   sent_packets[packet_number].ack_only = ack_only
+   sent_packets[packet_number].in_flight = in_flight
+   if !ack_only:
      if is_handshake_packet:
        time_of_last_sent_handshake_packet = now
      time_of_last_sent_retransmittable_packet = now
@@ -943,8 +944,8 @@ ul.toc li {
 <p id="rfc.section.3.5.7.4.p.1">Pseudocode for SetLossDetectionAlarm follows:</p>
 <pre>
  SetLossDetectionAlarm():
-    // Don't arm the alarm if there are no packets with
-    // retransmittable data in flight.
+    // Don't arm alarm if there are no retransmittable packets
+    // in flight.
     if (bytes_in_flight == 0):
       loss_detection_alarm.cancel()
       return
@@ -1085,7 +1086,7 @@ DetectLostPackets(largest_acked):
 <h2 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#pacing" id="pacing">Pacing</a>
 </h2>
-<p id="rfc.section.4.7.p.1">This document does not specify a pacer, but it is RECOMMENDED that a sender pace sending of all retransmittable packets based on input from the congestion controller. For example, a pacer might distribute the congestion window over the SRTT when used with a window-based controller, and a pacer might use the rate estimate of a rate-based controller.</p>
+<p id="rfc.section.4.7.p.1">This document does not specify a pacer, but it is RECOMMENDED that a sender pace sending of all in-flight packets based on input from the congestion controller. For example, a pacer might distribute the congestion window over the SRTT when used with a window-based controller, and a pacer might use the rate estimate of a rate-based controller.</p>
 <p id="rfc.section.4.7.p.2">An implementation should take care to architect its congestion controller to work well with a pacer.  For instance, a pacer might wrap the congestion controller and control the availability of the congestion window, or a pacer might pace out packets handed to it by the congestion controller. Timely delivery of ACK frames is important for efficient loss recovery. Packets containing only ACK frames should therefore not be paced, to avoid delaying their delivery to the peer.</p>
 <p id="rfc.section.4.7.p.3">As an example of a well-known and publicly available implementation of a flow pacer, implementers are referred to the Fair Queue packet scheduler (fq qdisc) in Linux (3.11 onwards).</p>
 <h2 id="rfc.section.4.8">
@@ -1117,7 +1118,7 @@ DetectLostPackets(largest_acked):
 <dt>ecn_ce_counter:</dt>
 <dd style="margin-left: 8">The highest value reported for the ECN-CE counter by the peer in an ACK_ECN frame. This variable is used to detect increases in the reported ECN-CE counter.</dd>
 <dt>bytes_in_flight:</dt>
-<dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable frame, and have not been acked or declared lost. The size does not include IP or UDP overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
+<dd style="margin-left: 8">The sum of the size in bytes of all sent packets that contain at least one retransmittable or PADDING frame, and have not been acked or declared lost. The size does not include IP or UDP overhead, but does include the QUIC header and AEAD overhead.  Packets only containing ACK frames do not count towards bytes_in_flight to ensure congestion control does not impede congestion feedback.</dd>
 <dt>congestion_window:</dt>
 <dd style="margin-left: 8">Maximum number of bytes-in-flight that may be sent.</dd>
 <dt>end_of_recovery:</dt>
