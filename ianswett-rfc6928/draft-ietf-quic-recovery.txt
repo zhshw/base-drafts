@@ -1413,8 +1413,10 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    kInitialMss (RECOMMENDED 1460 bytes):  The max packet size is used
       for calculating initial and minimum congestion windows.
 
-   kInitialWindow (default 14600 bytes):  Default limit on the initial
-      amount of outstanding data in bytes.  Taken from [RFC6928].
+   kInitialWindow (RECOMMENDED min (10<spanx style="emph">MSS, max
+   (2</spanx>MSS, 14600))):
+      Default limit on the initial amount of outstanding data in bytes.
+      Taken from [RFC6928].
 
    kMinimumWindow (RECOMMENDED 2 * kInitialMss):  Minimum congestion
       window in bytes.
@@ -1447,8 +1449,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    congestion_window:  Maximum number of bytes-in-flight that may be
       sent.
 
-   end_of_recovery:  The largest packet number sent when QUIC detects a
-      loss.  When a larger packet is acknowledged, QUIC exits recovery.
 
 
 
@@ -1457,6 +1457,9 @@ Iyengar & Swett         Expires January 15, 2019               [Page 26]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   end_of_recovery:  The largest packet number sent when QUIC detects a
+      loss.  When a larger packet is acknowledged, QUIC exits recovery.
 
    ssthresh:  Slow start threshold in bytes.  When the congestion window
       is below ssthresh, the mode is slow start and the window grows by
@@ -1503,9 +1506,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
           // Congestion avoidance.
           congestion_window +=
             sender_mss * acked_packet.bytes / congestion_window
-
-
-
 
 
 

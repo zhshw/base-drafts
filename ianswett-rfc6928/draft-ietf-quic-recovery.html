@@ -1101,7 +1101,7 @@ DetectLostPackets(largest_acked):
 <dl>
 <dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
 <dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
-<dt>kInitialWindow (default 14600 bytes):</dt>
+<dt>kInitialWindow (RECOMMENDED min (10&lt;spanx style="emph"&gt;MSS, max (2&lt;/spanx&gt;MSS, 14600))):</dt>
 <dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
 <dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
 <dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
