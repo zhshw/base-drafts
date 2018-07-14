@@ -1410,16 +1410,19 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    RFCs, papers, and common practice.  Some may need to be changed or
    negotiated in order to better suit a variety of environments.
 
-   kInitialMss (RECOMMENDED 1460 bytes):  The max packet size is used
-      for calculating initial and minimum congestion windows.
+   kMaxDatagramSize (RECOMMENDED 1200 bytes):  The sender's maximum
+      payload size.  Does not include UDP or IP overhead.  The max
+      packet size is used for calculating initial and minimum congestion
+      windows.
 
-   kInitialWindow (RECOMMENDED min (10<spanx style="emph">MSS, max
-   (2</spanx>MSS, 14600))):
+   kInitialWindow (RECOMMENDED min(10 * kMaxDatagramSize,
+
+                                   max(2* kMaxDatagramSize, 14600))):
       Default limit on the initial amount of outstanding data in bytes.
       Taken from [RFC6928].
 
-   kMinimumWindow (RECOMMENDED 2 * kInitialMss):  Minimum congestion
-      window in bytes.
+   kMinimumWindow (RECOMMENDED 2 * kMaxDatagramSize):  Minimum
+      congestion window in bytes.
 
    kLossReductionFactor (RECOMMENDED 0.5):  Reduction in congestion
       window when a new loss event is detected.
@@ -1428,11 +1431,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
    Variables required to implement the congestion control mechanisms are
    described in this section.
-
-   sender_mss:  The sender's maximum payload size.  Does not include UDP
-      or IP overhead.  Similar to SMSS defined for TCP in [RFC5681]
-
-   minimum_window :  Minimum congestion window.  Set to 2 * sender_mss.
 
    ecn_ce_counter:  The highest value reported for the ECN-CE counter by
       the peer in an ACK_ECN frame.  This variable is used to detect
@@ -1449,6 +1447,8 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    congestion_window:  Maximum number of bytes-in-flight that may be
       sent.
 
+   end_of_recovery:  The largest packet number sent when QUIC detects a
+      loss.  When a larger packet is acknowledged, QUIC exits recovery.
 
 
 
@@ -1457,9 +1457,6 @@ Iyengar & Swett         Expires January 15, 2019               [Page 26]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
-
-   end_of_recovery:  The largest packet number sent when QUIC detects a
-      loss.  When a larger packet is acknowledged, QUIC exits recovery.
 
    ssthresh:  Slow start threshold in bytes.  When the congestion window
       is below ssthresh, the mode is slow start and the window grows by
@@ -1471,7 +1468,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    variables as follows:
 
       congestion_window = kInitialWindow
-      minimum_window = 2 * sender_mss
       bytes_in_flight = 0
       end_of_recovery = 0
       ssthresh = infinite
@@ -1504,8 +1500,12 @@ Internet-Draft             QUIC Loss Detection                 July 2018
           congestion_window += acked_packet.bytes
         else:
           // Congestion avoidance.
-          congestion_window +=
-            sender_mss * acked_packet.bytes / congestion_window
+          congestion_window += kMaxDatagramSize * acked_packet.bytes
+              / congestion_window
+
+
+
+
 
 
 
@@ -1526,7 +1526,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
         if (!InRecovery(packet_number)):
           end_of_recovery = largest_sent_packet
           congestion_window *= kMarkReductionFactor
-          congestion_window = max(congestion_window, minimum_window)
+          congestion_window = max(congestion_window, kMinimumWindow)
 
 4.8.7.  Process ECN Information
 
@@ -1571,7 +1571,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
       OnRetransmissionTimeoutVerified()
-        congestion_window = minimum_window
+        congestion_window = kMinimumWindow
 
 5.  IANA Considerations
 

@@ -1099,11 +1099,13 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kInitialMss (RECOMMENDED 1460 bytes):</dt>
-<dd style="margin-left: 8">The max packet size is used for calculating initial and minimum congestion windows.</dd>
-<dt>kInitialWindow (RECOMMENDED min (10&lt;spanx style="emph"&gt;MSS, max (2&lt;/spanx&gt;MSS, 14600))):</dt>
+<dt>kMaxDatagramSize (RECOMMENDED 1200 bytes):</dt>
+<dd style="margin-left: 8">The sender&#8217;s maximum payload size. Does not include UDP or IP overhead. The max packet size is used for calculating initial and minimum congestion windows.</dd>
+<dt>kInitialWindow (RECOMMENDED min(10 * kMaxDatagramSize,</dt>
+<dd style="margin-left: 8"></dd>
+<dt>                                max(2* kMaxDatagramSize, 14600))):</dt>
 <dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
-<dt>kMinimumWindow (RECOMMENDED 2 * kInitialMss):</dt>
+<dt>kMinimumWindow (RECOMMENDED 2 * kMaxDatagramSize):</dt>
 <dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
 <dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
 <dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
@@ -1115,11 +1117,6 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>sender_mss:</dt>
-<dd style="margin-left: 8">The sender&#8217;s maximum payload size.  Does not include UDP or IP overhead. Similar to SMSS defined for TCP in <a href="#RFC5681" class="xref">[RFC5681]</a>
-</dd>
-<dt>minimum_window :</dt>
-<dd style="margin-left: 8">Minimum congestion window.  Set to 2 * sender_mss.</dd>
 <dt>ecn_ce_counter:</dt>
 <dd style="margin-left: 8">The highest value reported for the ECN-CE counter by the peer in an ACK_ECN frame. This variable is used to detect increases in the reported ECN-CE counter.</dd>
 <dt>bytes_in_flight:</dt>
@@ -1137,7 +1134,6 @@ DetectLostPackets(largest_acked):
 <p id="rfc.section.4.8.3.p.1">At the beginning of the connection, initialize the congestion control variables as follows:</p>
 <pre>
    congestion_window = kInitialWindow
-   minimum_window = 2 * sender_mss
    bytes_in_flight = 0
    end_of_recovery = 0
    ssthresh = infinite
@@ -1170,8 +1166,8 @@ DetectLostPackets(largest_acked):
        congestion_window += acked_packet.bytes
      else:
        // Congestion avoidance.
-       congestion_window +=
-         sender_mss * acked_packet.bytes / congestion_window
+       congestion_window += kMaxDatagramSize * acked_packet.bytes
+           / congestion_window
 </pre>
 <h3 id="rfc.section.4.8.6">
 <a href="#rfc.section.4.8.6">4.8.6.</a> <a href="#on-new-congestion-event" id="on-new-congestion-event">On New Congestion Event</a>
@@ -1184,7 +1180,7 @@ DetectLostPackets(largest_acked):
      if (!InRecovery(packet_number)):
        end_of_recovery = largest_sent_packet
        congestion_window *= kMarkReductionFactor
-       congestion_window = max(congestion_window, minimum_window)
+       congestion_window = max(congestion_window, kMinimumWindow)
 </pre>
 <h3 id="rfc.section.4.8.7">
 <a href="#rfc.section.4.8.7">4.8.7.</a> <a href="#process-ecn-information" id="process-ecn-information">Process ECN Information</a>
@@ -1221,7 +1217,7 @@ DetectLostPackets(largest_acked):
 <p id="rfc.section.4.8.9.p.1">QUIC decreases the congestion window to the minimum value once the retransmission timeout has been verified.</p>
 <pre>
    OnRetransmissionTimeoutVerified()
-     congestion_window = minimum_window
+     congestion_window = kMinimumWindow
 </pre>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
