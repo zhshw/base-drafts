@@ -599,7 +599,7 @@ ul.toc li {
 <h3 id="rfc.section.2.1.2">
 <a href="#rfc.section.2.1.2">2.1.2.</a> <a href="#monotonically-increasing-packet-numbers" id="monotonically-increasing-packet-numbers">Monotonically Increasing Packet Numbers</a>
 </h3>
-<p id="rfc.section.2.1.2.p.1">TCP conflates transmission sequence number at the sender with delivery sequence number at the receiver, which results in retransmissions of the same data carrying the same sequence number, and consequently to problems caused by &#8220;retransmission ambiguity&#8221;.  QUIC separates the two: QUIC uses a packet number for transmissions, and any data that is to be delivered to the receiving application(s) is sent in one or more streams, with delivery order determined by stream offsets encoded within STREAM frames.</p>
+<p id="rfc.section.2.1.2.p.1">TCP conflates transmission sequence number at the sender with delivery sequence number at the receiver, which results in retransmissions of the same data carrying the same sequence number, and consequently to problems caused by &#8220;retransmission ambiguity&#8221;.  QUIC separates the two: QUIC uses a packet number for transmissions, and any application data is sent in one or more streams, with delivery order determined by stream offsets encoded within STREAM frames.</p>
 <p id="rfc.section.2.1.2.p.2">QUIC&#8217;s packet number is strictly increasing, and directly encodes transmission order.  A higher QUIC packet number signifies that the packet was sent later, and a lower QUIC packet number signifies that the packet was sent earlier.  When a packet containing frames is deemed lost, QUIC rebundles necessary frames in a new packet with a new packet number, removing ambiguity about which packet is acknowledged when an ACK is received.  Consequently, more accurate RTT measurements can be made, spurious retransmissions are trivially detected, and mechanisms such as Fast Retransmit can be applied universally, based only on packet number.</p>
 <p id="rfc.section.2.1.2.p.3">This design point significantly simplifies loss detection mechanisms for QUIC.  Most TCP mechanisms implicitly attempt to infer transmission ordering based on TCP sequence numbers - a non-trivial task, especially when TCP timestamps are not available.</p>
 <h3 id="rfc.section.2.1.3">
@@ -631,9 +631,9 @@ ul.toc li {
 <h3 id="rfc.section.3.2.1">
 <a href="#rfc.section.3.2.1">3.2.1.</a> <a href="#fast-retransmit" id="fast-retransmit">Fast Retransmit</a>
 </h3>
-<p id="rfc.section.3.2.1.p.1">An unacknowledged packet is marked as lost when an acknowledgment is received for a packet that was sent a threshold number of packets (kReorderingThreshold) after the unacknowledged packet. Receipt of the ack indicates that a later packet was received, while kReorderingThreshold provides some tolerance for reordering of packets in the network.</p>
-<p id="rfc.section.3.2.1.p.2">The RECOMMENDED initial value for kReorderingThreshold is 3.</p>
-<p id="rfc.section.3.2.1.p.3">We derive this recommendation from TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. It is possible for networks to exhibit higher degrees of reordering, causing a sender to detect spurious losses. Detecting spurious losses leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience, though care should be taken to map TCP specifics to QUIC correctly. Similarly, using time-based loss detection to deal with reordering, such as in PR-TCP, should be more readily usable in QUIC. Making QUIC deal with such networks is important open research, and implementers are encouraged to explore this space.</p>
+<p id="rfc.section.3.2.1.p.1">An unacknowledged packet is marked as lost when an acknowledgment is received for a packet that was sent a threshold number of packets (kReorderingThreshold) and/or a threshold amount of time after the unacknowledged packet. Receipt of the acknowledgement indicates that a later packet was received, while the reordering threshold provides some tolerance for reordering of packets in the network.</p>
+<p id="rfc.section.3.2.1.p.2">The RECOMMENDED initial value for kReorderingThreshold is 3, based on TCP loss recovery <a href="#RFC5681" class="xref">[RFC5681]</a> <a href="#RFC6675" class="xref">[RFC6675]</a>. Some networks may exhibit higher degrees of reordering, causing a sender to detect spurious losses. Spuriously declaring packets lost leads to unnecessary retransmissions and may result in degraded performance due to the actions of the congestion controller upon detecting loss. Implementers MAY use algorithms developed for TCP, such as TCP-NCR <a href="#RFC4653" class="xref">[RFC4653]</a>, to improve QUIC&#8217;s reordering resilience.</p>
+<p id="rfc.section.3.2.1.p.3">QUIC implementations can use time-based loss detection to handle reordering based on time elapsed since the packet was sent.  This may be used either as a replacement for a packet reordering threshold or in addition to it.  The RECOMMENDED time threshold, expressed as a fraction of the round-trip time (kTimeReorderingFraction), is 1/8.</p>
 <h3 id="rfc.section.3.2.2">
 <a href="#rfc.section.3.2.2">3.2.2.</a> <a href="#early-retransmit" id="early-retransmit">Early Retransmit</a>
 </h3>
@@ -652,7 +652,7 @@ ul.toc li {
 <h2 id="rfc.section.3.3">
 <a href="#rfc.section.3.3">3.3.</a> <a href="#timer-based-detection" id="timer-based-detection">Timer-based Detection</a>
 </h2>
-<p id="rfc.section.3.3.p.1">Timer-based loss detection implements a handshake retransmission timer that is optimized for QUIC as well as the spirit of TCP&#8217;s Tail Loss Probe and Retransmission Timeout mechanisms.</p>
+<p id="rfc.section.3.3.p.1">Timer-based loss detection recovers from losses that cannot be handled by ack-based loss detection.  It uses a single timer which switches between a handshake retransmission timer, a Tail Loss Probe timer and Retransmission Timeout mechanisms.</p>
 <h3 id="rfc.section.3.3.1">
 <a href="#rfc.section.3.3.1">3.3.1.</a> <a href="#crypto-handshake-timeout" id="crypto-handshake-timeout">Crypto Handshake Timeout</a>
 </h3>
@@ -835,7 +835,7 @@ ul.toc li {
 <li>packet_number: The packet number of the sent packet.</li>
 <li>ack_only: A boolean that indicates whether a packet contains only ACK or PADDING frame(s).  If true, it is still expected an ack will be received for this packet, but it is not retransmittable.</li>
 <li>in_flight: A boolean that indicates whether the packet counts towards bytes in flight.</li>
-<li>is_handshake_packet: A boolean that indicates whether a packet contains handshake data.</li>
+<li>is_handshake_packet: A boolean that indicates whether the packet contains cryptographic handshake messages critical to the completion of the QUIC handshake. In this version of QUIC, this includes any packet with the long header that includes a CRYPTO frame.</li>
 <li>sent_bytes: The number of bytes sent in the packet, not including UDP or IP overhead, but including QUIC framing overhead.</li>
 </ul>
 <p id="rfc.section.3.5.4.p.3">Pseudocode for OnPacketSent follows:</p>
@@ -858,7 +858,7 @@ ul.toc li {
 <h3 id="rfc.section.3.5.5">
 <a href="#rfc.section.3.5.5">3.5.5.</a> <a href="#on-receiving-an-acknowledgment" id="on-receiving-an-acknowledgment">On Receiving an Acknowledgment</a>
 </h3>
-<p id="rfc.section.3.5.5.p.1">When an ACK frame is received, it may acknowledge 0 or more packets.</p>
+<p id="rfc.section.3.5.5.p.1">When an ACK frame is received, it may newly acknowledge any number of packets.</p>
 <p id="rfc.section.3.5.5.p.2">Pseudocode for OnAckReceived and UpdateRtt follow:</p>
 <pre>
   OnAckReceived(ack):
