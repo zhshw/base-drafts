@@ -332,10 +332,13 @@ ul.toc li {
 <link href="#rfc.section.4.8.7" rel="Chapter" title="4.8.7 Process ECN Information">
 <link href="#rfc.section.4.8.8" rel="Chapter" title="4.8.8 On Packets Lost">
 <link href="#rfc.section.4.8.9" rel="Chapter" title="4.8.9 On Retransmission Timeout Verified">
-<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations">
-<link href="#rfc.references" rel="Chapter" title="6 References">
-<link href="#rfc.references.1" rel="Chapter" title="6.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="6.2 Informative References">
+<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations">
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Congestion Signals">
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Traffic Analysis">
+<link href="#rfc.section.6" rel="Chapter" title="6 IANA Considerations">
+<link href="#rfc.references" rel="Chapter" title="7 References">
+<link href="#rfc.references.1" rel="Chapter" title="7.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="7.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
 <link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-recovery-12">
 <link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-recovery-11">
@@ -520,13 +523,19 @@ ul.toc li {
 </li>
 <li>4.8.9.   <a href="#rfc.section.4.8.9">On Retransmission Timeout Verified</a>
 </li>
-</ul></ul><li>5.   <a href="#rfc.section.5">IANA Considerations</a>
+</ul></ul><li>5.   <a href="#rfc.section.5">Security Considerations</a>
 </li>
-<li>6.   <a href="#rfc.references">References</a>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Congestion Signals</a>
 </li>
-<ul><li>6.1.   <a href="#rfc.references.1">Normative References</a>
+<li>5.2.   <a href="#rfc.section.5.2">Traffic Analysis</a>
 </li>
-<li>6.2.   <a href="#rfc.references.2">Informative References</a>
+</ul><li>6.   <a href="#rfc.section.6">IANA Considerations</a>
+</li>
+<li>7.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>7.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>7.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
@@ -1219,13 +1228,24 @@ DetectLostPackets(largest_acked):
      congestion_window = kMinimumWindow
 </pre>
 <h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+<a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.5.p.1">This document has no IANA actions.  Yet.</p>
+<h2 id="rfc.section.5.1">
+<a href="#rfc.section.5.1">5.1.</a> <a href="#congestion-signals" id="congestion-signals">Congestion Signals</a>
+</h2>
+<p id="rfc.section.5.1.p.1">Congestion control fundamentally involves the consumption of signals &#8211; both loss and ECN codepoints &#8211; from unauthenticated entities.  On-path attackers can spoof or alter these signals.  An attacker can cause endpoints to reduce their sending rate by dropping packets, or alter send rate by changing ECN codepoints.</p>
+<h2 id="rfc.section.5.2">
+<a href="#rfc.section.5.2">5.2.</a> <a href="#traffic-analysis" id="traffic-analysis">Traffic Analysis</a>
+</h2>
+<p id="rfc.section.5.2.p.1">Packets that carry only ACK frames can be heuristically identified by observing packet size.  Acknowledgement patterns may expose information about link characteristics or application behavior.  Endpoints can use PADDING frames or bundle acknowledgments with other frames to reduce leaked information.</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
+</h1>
+<p id="rfc.section.6.p.1">This document has no IANA actions.  Yet.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">6.</a> References</h1>
+<a href="#rfc.references">7.</a> References</h1>
 <h2 id="rfc.references.1">
-<a href="#rfc.references.1">6.1.</a> Normative References</h2>
+<a href="#rfc.references.1">7.1.</a> Normative References</h2>
 <table><tbody>
 <tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
@@ -1249,7 +1269,7 @@ DetectLostPackets(largest_acked):
 </tr>
 </tbody></table>
 <h2 id="rfc.references.2">
-<a href="#rfc.references.2">6.2.</a> Informative References</h2>
+<a href="#rfc.references.2">7.2.</a> Informative References</h2>
 <table><tbody>
 <tr>
 <td class="reference"><b id="RFC3465">[RFC3465]</b></td>

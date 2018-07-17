@@ -129,26 +129,29 @@ Internet-Draft             QUIC Loss Detection                 July 2018
        4.8.7.  Process ECN Information . . . . . . . . . . . . . . .  27
        4.8.8.  On Packets Lost . . . . . . . . . . . . . . . . . . .  27
        4.8.9.  On Retransmission Timeout Verified  . . . . . . . . .  27
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  28
-   6.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     6.1.  Normative References  . . . . . . . . . . . . . . . . . .  28
-     6.2.  Informative References  . . . . . . . . . . . . . . . . .  28
-     6.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  29
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  28
+     5.1.  Congestion Signals  . . . . . . . . . . . . . . . . . . .  28
+     5.2.  Traffic Analysis  . . . . . . . . . . . . . . . . . . . .  28
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  28
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  28
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  29
+     7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .  30
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  30
      A.1.  Since draft-ietf-quic-recovery-12 . . . . . . . . . . . .  30
      A.2.  Since draft-ietf-quic-recovery-11 . . . . . . . . . . . .  30
      A.3.  Since draft-ietf-quic-recovery-10 . . . . . . . . . . . .  30
-     A.4.  Since draft-ietf-quic-recovery-09 . . . . . . . . . . . .  30
-     A.5.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  30
-     A.6.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  30
+     A.4.  Since draft-ietf-quic-recovery-09 . . . . . . . . . . . .  31
+     A.5.  Since draft-ietf-quic-recovery-08 . . . . . . . . . . . .  31
+     A.6.  Since draft-ietf-quic-recovery-07 . . . . . . . . . . . .  31
      A.7.  Since draft-ietf-quic-recovery-06 . . . . . . . . . . . .  31
      A.8.  Since draft-ietf-quic-recovery-05 . . . . . . . . . . . .  31
      A.9.  Since draft-ietf-quic-recovery-04 . . . . . . . . . . . .  31
      A.10. Since draft-ietf-quic-recovery-03 . . . . . . . . . . . .  31
      A.11. Since draft-ietf-quic-recovery-02 . . . . . . . . . . . .  31
-     A.12. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  31
-     A.13. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  31
-     A.14. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  31
+     A.12. Since draft-ietf-quic-recovery-01 . . . . . . . . . . . .  32
+     A.13. Since draft-ietf-quic-recovery-00 . . . . . . . . . . . .  32
+     A.14. Since draft-iyengar-quic-loss-recovery-01 . . . . . . . .  32
    Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  32
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
 
@@ -159,9 +162,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    mechanisms that make it attractive as a modern general-purpose
    transport.  The QUIC protocol is described in [QUIC-TRANSPORT].
 
-   QUIC implements the spirit of known TCP loss recovery mechanisms,
-   described in RFCs, various Internet-drafts, and also those prevalent
-   in the Linux TCP implementation.  This document describes QUIC
 
 
 
@@ -170,6 +170,9 @@ Iyengar & Swett         Expires January 18, 2019                [Page 3]
 Internet-Draft             QUIC Loss Detection                 July 2018
 
 
+   QUIC implements the spirit of known TCP loss recovery mechanisms,
+   described in RFCs, various Internet-drafts, and also those prevalent
+   in the Linux TCP implementation.  This document describes QUIC
    congestion control and loss recovery, and where applicable,
    attributes the TCP equivalent in RFCs, Internet-drafts, academic
    papers, and/or TCP implementations.
@@ -215,9 +218,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    o  Packets that contain only ACK and ACK_ECN frames do not count
       toward congestion control limits and are not considered in-flight.
       Note that this means PADDING frames cause packets to contribute
-      toward bytes in flight without directly causing an acknowledgment
-      to be sent.  The rest of this document uses "ACK frames" to refer
-      to both ACK and ACK_ECN frames.
 
 
 
@@ -225,6 +225,10 @@ Iyengar & Swett         Expires January 18, 2019                [Page 4]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+      toward bytes in flight without directly causing an acknowledgment
+      to be sent.  The rest of this document uses "ACK frames" to refer
+      to both ACK and ACK_ECN frames.
 
 2.1.  Relevant Differences Between QUIC and TCP
 
@@ -270,10 +274,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    for QUIC.  Most TCP mechanisms implicitly attempt to infer
    transmission ordering based on TCP sequence numbers - a non-trivial
    task, especially when TCP timestamps are not available.
-
-
-
-
 
 
 
@@ -1517,13 +1517,31 @@ Internet-Draft             QUIC Loss Detection                 July 2018
       OnRetransmissionTimeoutVerified()
         congestion_window = kMinimumWindow
 
-5.  IANA Considerations
+5.  Security Considerations
+
+5.1.  Congestion Signals
+
+   Congestion control fundamentally involves the consumption of signals
+   - both loss and ECN codepoints - from unauthenticated entities.  On-
+   path attackers can spoof or alter these signals.  An attacker can
+   cause endpoints to reduce their sending rate by dropping packets, or
+   alter send rate by changing ECN codepoints.
+
+5.2.  Traffic Analysis
+
+   Packets that carry only ACK frames can be heuristically identified by
+   observing packet size.  Acknowledgement patterns may expose
+   information about link characteristics or application behavior.
+   Endpoints can use PADDING frames or bundle acknowledgments with other
+   frames to reduce leaked information.
+
+6.  IANA Considerations
 
    This document has no IANA actions.  Yet.
 
-6.  References
+7.  References
 
-6.1.  Normative References
+7.1.  Normative References
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
@@ -1544,7 +1562,15 @@ Internet-Draft             QUIC Loss Detection                 July 2018
               DOI 10.17487/RFC8311, January 2018,
               <https://www.rfc-editor.org/info/rfc8311>.
 
-6.2.  Informative References
+
+
+
+Iyengar & Swett         Expires January 18, 2019               [Page 28]
+
+Internet-Draft             QUIC Loss Detection                 July 2018
+
+
+7.2.  Informative References
 
    [RFC3465]  Allman, M., "TCP Congestion Control with Appropriate Byte
               Counting (ABC)", RFC 3465, DOI 10.17487/RFC3465, February
@@ -1558,17 +1584,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    [RFC5681]  Allman, M., Paxson, V., and E. Blanton, "TCP Congestion
               Control", RFC 5681, DOI 10.17487/RFC5681, September 2009,
               <https://www.rfc-editor.org/info/rfc5681>.
-
-
-
-
-
-
-
-Iyengar & Swett         Expires January 18, 2019               [Page 28]
-
-Internet-Draft             QUIC Loss Detection                 July 2018
-
 
    [RFC5682]  Sarolahti, P., Kojo, M., Yamamoto, K., and M. Hata,
               "Forward RTO-Recovery (F-RTO): An Algorithm for Detecting
@@ -1603,21 +1618,6 @@ Internet-Draft             QUIC Loss Detection                 July 2018
               DOI 10.17487/RFC6928, April 2013,
               <https://www.rfc-editor.org/info/rfc6928>.
 
-   [TLP]      Dukkipati, N., Cardwell, N., Cheng, Y., and M. Mathis,
-              "Tail Loss Probe (TLP): An Algorithm for Fast Recovery of
-              Tail Losses", draft-dukkipati-tcpm-tcp-loss-probe-01 (work
-              in progress), February 2013.
-
-6.3.  URIs
-
-   [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
-
-   [2] https://github.com/quicwg
-
-   [3] https://github.com/quicwg/base-drafts/labels/-recovery
-
-
-
 
 
 
@@ -1625,6 +1625,19 @@ Iyengar & Swett         Expires January 18, 2019               [Page 29]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   [TLP]      Dukkipati, N., Cardwell, N., Cheng, Y., and M. Mathis,
+              "Tail Loss Probe (TLP): An Algorithm for Fast Recovery of
+              Tail Losses", draft-dukkipati-tcpm-tcp-loss-probe-01 (work
+              in progress), February 2013.
+
+7.3.  URIs
+
+   [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
+
+   [2] https://github.com/quicwg
+
+   [3] https://github.com/quicwg/base-drafts/labels/-recovery
 
 Appendix A.  Change Log
 
@@ -1657,6 +1670,18 @@ A.3.  Since draft-ietf-quic-recovery-10
    o  Minimum RTT (min_rtt) is initialized with an infinite value
       (#1169)
 
+
+
+
+
+
+
+
+Iyengar & Swett         Expires January 18, 2019               [Page 30]
+
+Internet-Draft             QUIC Loss Detection                 July 2018
+
+
 A.4.  Since draft-ietf-quic-recovery-09
 
    No significant changes.
@@ -1674,13 +1699,6 @@ A.6.  Since draft-ietf-quic-recovery-07
    o  Default RTT and Slow Start (#590)
 
    o  Many editorial fixes.
-
-
-
-Iyengar & Swett         Expires January 18, 2019               [Page 30]
-
-Internet-Draft             QUIC Loss Detection                 July 2018
-
 
 A.7.  Since draft-ietf-quic-recovery-06
 
@@ -1709,6 +1727,17 @@ A.11.  Since draft-ietf-quic-recovery-02
 
    o  Simplify RTO calculations (#142, #417)
 
+
+
+
+
+
+
+Iyengar & Swett         Expires January 18, 2019               [Page 31]
+
+Internet-Draft             QUIC Loss Detection                 July 2018
+
+
 A.12.  Since draft-ietf-quic-recovery-01
 
    o  Overview added to loss detection
@@ -1731,13 +1760,6 @@ A.14.  Since draft-iyengar-quic-loss-recovery-01
 
    o  Updated authors/editors list
 
-
-
-Iyengar & Swett         Expires January 18, 2019               [Page 31]
-
-Internet-Draft             QUIC Loss Detection                 July 2018
-
-
    o  Added table of contents
 
 Acknowledgments
@@ -1754,28 +1776,6 @@ Authors' Addresses
    Google
 
    Email: ianswett@google.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
