@@ -438,7 +438,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-16" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-17" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -462,12 +462,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 17, 2019</td>
+<td class="left">Expires: January 18, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 16, 2018</td>
+<td class="right">July 17, 2018</td>
 </tr>
 
     	
@@ -486,7 +486,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 17, 2019.</p>
+<p>This Internet-Draft will expire on January 18, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1678,7 +1678,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.6.8.p.4">To verify that both a path and the peer support ECN, an endpoint MUST set one of the ECN Capable Transport (ECT) codepoints &#8211; ECT(0) or ECT(1) &#8211; in the IP header <a href="#RFC8311" class="xref">[RFC8311]</a> of all outgoing packets.</p>
 <p id="rfc.section.6.8.p.5">If an ECT codepoint set in the IP header is not corrupted by a network device, then a received packet contains either the codepoint sent by the peer or the Congestion Experienced (CE) codepoint set by a network device that is experiencing congestion.</p>
 <p id="rfc.section.6.8.p.6">On receiving a packet with an ECT or CE codepoint, an endpoint that supports ECN increases the corresponding ECT(0), ECT(1), or CE count, and includes these counters in subsequent (see <a href="#processing-and-ack" class="xref">Section 8.1</a>) ACK_ECN frames (see <a href="#frame-ack-ecn" class="xref">Section 7.16</a>).</p>
-<p id="rfc.section.6.8.p.7">A packet detected by a receiver as a duplicate does not affect the receiver&#8217;s local ECN codepoint counts to mitigate security concerns (<a href="#security-ecn" class="xref">Section 12.7</a>).</p>
+<p id="rfc.section.6.8.p.7">A packet detected by a receiver as a duplicate does not affect the receiver&#8217;s local ECN codepoint counts; see (<a href="#security-ecn" class="xref">Section 12.7</a>) for relevant security concerns.</p>
 <p id="rfc.section.6.8.p.8">If an endpoint receives a packet without an ECT or CE codepoint, it responds per <a href="#processing-and-ack" class="xref">Section 8.1</a> with an ACK frame.</p>
 <p id="rfc.section.6.8.p.9">If an endpoint does not support ECN or does not have access to received ECN codepoints, it acknowledges received packets per <a href="#processing-and-ack" class="xref">Section 8.1</a> with an ACK frame.</p>
 <p id="rfc.section.6.8.p.10">If a packet sent with an ECT codepoint is newly acknowledged by the peer in an ACK frame, the endpoint stops setting ECT codepoints in subsequent packets, with the expectation that either the network or the peer no longer supports ECN.</p>
@@ -1686,13 +1686,13 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p></p>
 
 <ul>
-<li>The total increase in ECT(0), ECT(1), and CE counters reported in the ACK_ECN frame MUST be equal to the total number of packets newly acknowledged in this ACK_ECN frame.</li>
-<li>The increase in ECT(0) and ECT(1) counters MUST be no greater than the number of packets newly acknowledged that were sent with the corresponding codepoint.</li>
-<li>If the increase in the ECT(0), ECT(1) and CE counters are greater than the number of newly acknowledged packets, and the received ACK&#8217;s smallest acknowledged is larger than the previous largest acknowledged, then it&#8217;s likely acknowledgements were missed, and the above comparison MUST NOT be performed. Instead a new comparison point is stored by the sender so that only changes after this point will be used in the future comparisons.</li>
+<li>The increase in ECT(0) and ECT(1) counters MUST be at least the number of packets newly acknowledged that were sent with the corresponding codepoint.</li>
+<li>The total increase in ECT(0), ECT(1), and CE counters reported in the ACK_ECN frame MUST be at least the total number of packets newly acknowledged in this ACK_ECN frame.</li>
 </ul>
-<p id="rfc.section.6.8.p.13">Upon successful verification, an endpoint continues to set ECT codepoints in subsequent packets with the expectation that the path is ECN-capable.</p>
-<p id="rfc.section.6.8.p.14">If verification fails, then the endpoint ceases setting ECT codepoints in subsequent packets with the expectation that either the network or the peer does not support ECN.</p>
-<p id="rfc.section.6.8.p.15">If an endpoint sets ECT codepoints on outgoing packets and encounters a retransmission timeout due to the absence of acknowledgments from the peer (see <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), the endpoint MAY cease setting ECT codepoints in subsequent packets. Doing so allows the connection to traverse network elements that drop packets carrying ECT or CE codepoints in the IP header.</p>
+<p id="rfc.section.6.8.p.13">An endpoint could miss acknowledgements for a packet when ACK frames are lost.  It is therefore possible for the total increase in ECT(0), ECT(1), and CE counters to be greater than the number of packets acknowledged in an ACK frame.  When this happens, the local reference counts MUST be increased to match the counters in the ACK frame.</p>
+<p id="rfc.section.6.8.p.14">Upon successful verification, an endpoint continues to set ECT codepoints in subsequent packets with the expectation that the path is ECN-capable.</p>
+<p id="rfc.section.6.8.p.15">If verification fails, then the endpoint ceases setting ECT codepoints in subsequent packets with the expectation that either the network or the peer does not support ECN.</p>
+<p id="rfc.section.6.8.p.16">If an endpoint sets ECT codepoints on outgoing packets and encounters a retransmission timeout due to the absence of acknowledgments from the peer (see <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), or if an endpoint has reason to believe that a network element might be corrupting ECN codepoints, the endpoint MAY cease setting ECT codepoints in subsequent packets. Doing so allows the connection to traverse network elements that drop or corrupt ECN codepoints in the IP header.</p>
 <h2 id="rfc.section.6.9">
 <a href="#rfc.section.6.9">6.9.</a> <a href="#address-validation" id="address-validation">Proof of Source Address Ownership</a>
 </h2>
