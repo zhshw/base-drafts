@@ -1654,6 +1654,9 @@ A.1.  Since draft-ietf-quic-recovery-13
    o  Corrected the lack of ssthresh reduction in CongestionEvent
       pseudocode (#1598)
 
+   o  Early retransmit threshold different from time-loss reordering
+      threshold (#945)
+
 A.2.  Since draft-ietf-quic-recovery-12
 
    o  Changes to manage separate packet number spaces and encryption
@@ -1672,15 +1675,14 @@ A.4.  Since draft-ietf-quic-recovery-10
 
    o  Make references to TCP recovery mechanisms informational (#1195)
 
-   o  Define time_of_last_sent_handshake_packet (#1171)
-
-
 
 
 Iyengar & Swett         Expires January 26, 2019               [Page 30]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   o  Define time_of_last_sent_handshake_packet (#1171)
 
    o  Added signal from TLS the data it includes needs to be sent in a
       Retry packet (#1061, #1199)
@@ -1728,8 +1730,6 @@ A.12.  Since draft-ietf-quic-recovery-02
 
    o  Add congestion control (#545, #395)
 
-   o  Require connection abort if a skipped packet was acknowledged
-      (#415)
 
 
 
@@ -1737,6 +1737,9 @@ Iyengar & Swett         Expires January 26, 2019               [Page 31]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
+
+   o  Require connection abort if a skipped packet was acknowledged
+      (#415)
 
    o  Simplify RTO calculations (#142, #417)
 
@@ -1778,9 +1781,6 @@ Authors' Addresses
    Google
 
    Email: ianswett@google.com
-
-
-
 
 
 
