@@ -193,7 +193,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    ACK frames:  ACK frames refer to both ACK and ACK_ECN frames in this
       document.
 
-   ACK-only:  Any packet containing only an ACK frame.
+   ACK-only:  Any packet containing only an ACK or ACK_ECN frame.
 
    In-flight:  Packets are considered in-flight when they have been sent
       and neither acknowledged or declared lost, and they are not ACK-
