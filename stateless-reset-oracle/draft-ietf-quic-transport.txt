@@ -5871,9 +5871,9 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 12.8.  Stateless Reset Oracle
 
-   An attacker that can cause a server to emit a stateless reset token
-   can force the closure of any connection that uses the same connection
-   ID and method of producing the token.  This creates a possible denial
+   Stateless resets create a possible denial of service attack analogous
+   to a TCP reset injection.  This attack is possible if an attacker is
+   able to cause a stateless reset token to be generated for a
 
 
 
@@ -5882,18 +5882,24 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 105]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   connection with a selected connection ID.  An attacker that can cause
+   this token to be generated can reset an active connection with the
+   same connection ID.
+
+   An attacker that can cause a server to emit a stateless reset token
+   can force the closure of any connection that uses the same connection
+   ID and method of producing the token.  This creates a possible denial
    of service attack on existing connections if the attacker is able to
    cause a stateless reset token to be generated for a connection with a
-   selected connection ID.  That is, an attack is possible if an
-   attacker can alter packet routing so that a packet is received by an
-   instance that uses the same stateless reset key, but no connection
-   state for the connection ID.
+   selected connection ID.
 
-   To defend against this style of denial service, endpoints that
-   operate in clusters and that share a static key for stateless reset
-   (see Section 6.13.4.2) MUST be arranged so that packets with a given
-   connection ID always arrive at an instance that has connection state,
-   unless that connection is no longer active.
+   If a packet can be routed to different instances that share a static
+   key, for example by changing an IP address or port, then an attacker
+   can cause the server to send a stateless reset.  To defend against
+   this style of denial service, endpoints that share a static key for
+   stateless reset (see Section 6.13.4.2) MUST be arranged so that
+   packets with a given connection ID always arrive at an instance that
+   has connection state, unless that connection is no longer active.
 
    In the case of a cluster that uses dynamic load balancing, it's
    possible that a change in load balancer configuration could happen
@@ -5924,12 +5930,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Value:  The numeric value of the assignment (registrations will be
       between 0x0000 and 0xfeff).
 
-   Parameter Name:  A short mnemonic for the parameter.
-
-   Specification:  A reference to a publicly available specification for
-      the value.
-
-
 
 
 
@@ -5937,6 +5937,11 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 106]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   Parameter Name:  A short mnemonic for the parameter.
+
+   Specification:  A reference to a publicly available specification for
+      the value.
 
    The nominated expert(s) verify that a specification exists and is
    readily accessible.  Expert(s) are encouraged to be biased towards
@@ -5981,11 +5986,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    IANA [SHALL add/has added] a registry for "QUIC Frame Types" under a
    "QUIC Protocol" heading.
 
-   The "QUIC Frame Types" registry governs a 62-bit space.  This space
-   is split into three spaces that are governed by different policies.
-   Values between 0x00 and 0x3f (in hexadecimal) are assigned via the
-   Standards Action or IESG Review policies [RFC8126].  Values from 0x40
-
 
 
 
@@ -5994,6 +5994,10 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 107]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   The "QUIC Frame Types" registry governs a 62-bit space.  This space
+   is split into three spaces that are governed by different policies.
+   Values between 0x00 and 0x3f (in hexadecimal) are assigned via the
+   Standards Action or IESG Review policies [RFC8126].  Values from 0x40
    to 0x3fff operate on the Specification Required policy [RFC8126].
    All other values are assigned to Private Use [RFC8126].
 
@@ -6038,10 +6042,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Value:  The numeric value of the assignment (registrations will be
       between 0x0000 and 0xfeff).
 
-   Code:  A short mnemonic for the parameter.
-
-   Description:  A brief description of the error code semantics, which
-      MAY be a summary if a specification reference is provided.
 
 
 
@@ -6049,6 +6049,11 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 108]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   Code:  A short mnemonic for the parameter.
+
+   Description:  A brief description of the error code semantics, which
+      MAY be a summary if a specification reference is provided.
 
    Specification:  A reference to a publicly available specification for
       the value.
@@ -6093,11 +6098,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    |      |                           | negotiation    |               |
    |      |                           | failure        |               |
    |      |                           |                |               |
-   | 0xA  | PROTOCOL_VIOLATION        | Generic        | Section 11.3  |
-   |      |                           | protocol       |               |
-   |      |                           | violation      |               |
-   |      |                           |                |               |
-   | 0xB  | UNSOLICITED_PATH_RESPONSE | Unsolicited    | Section 11.3  |
 
 
 
@@ -6106,6 +6106,11 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 109]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   | 0xA  | PROTOCOL_VIOLATION        | Generic        | Section 11.3  |
+   |      |                           | protocol       |               |
+   |      |                           | violation      |               |
+   |      |                           |                |               |
+   | 0xB  | UNSOLICITED_PATH_RESPONSE | Unsolicited    | Section 11.3  |
    |      |                           | PATH_RESPONSE  |               |
    |      |                           | frame          |               |
    |      |                           |                |               |
@@ -6148,11 +6153,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
               Layer Security (TLS) to Secure QUIC", draft-ietf-quic-tls
               (work in progress), July 2018.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
-
 
 
 
@@ -6161,6 +6161,11 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 110]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC3168]  Ramakrishnan, K., Floyd, S., and D. Black, "The Addition
               of Explicit Congestion Notification (ECN) to IP",
@@ -6205,11 +6210,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
               Thomson, M., "Version-Independent Properties of QUIC",
               draft-ietf-quic-invariants (work in progress), July 2018.
 
-   [RFC2018]  Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, "TCP
-              Selective Acknowledgment Options", RFC 2018,
-              DOI 10.17487/RFC2018, October 1996,
-              <https://www.rfc-editor.org/info/rfc2018>.
-
 
 
 
@@ -6217,6 +6217,11 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 111]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   [RFC2018]  Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, "TCP
+              Selective Acknowledgment Options", RFC 2018,
+              DOI 10.17487/RFC2018, October 1996,
+              <https://www.rfc-editor.org/info/rfc2018>.
 
    [RFC2104]  Krawczyk, H., Bellare, M., and R. Canetti, "HMAC: Keyed-
               Hashing for Message Authentication", RFC 2104,
@@ -6255,11 +6260,6 @@ Appendix A.  Sample Packet Number Decoding Algorithm
 
    The following pseudo-code shows how an implementation can decode
    packet numbers after packet number protection has been removed.
-
-
-
-
-
 
 
 
