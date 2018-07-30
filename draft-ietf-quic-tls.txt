@@ -787,13 +787,15 @@ Internet-Draft                QUIC over TLS                    July 2018
 
 
    initial_salt = 0x9c108f98520a5c5c32968e950e8a2c5fe06d6c38
-   initial_secret =
-       HKDF-Extract(initial_salt, client_dst_connection_id)
+   initial_secret = HKDF-Extract(initial_salt,
+                                 client_dst_connection_id)
 
-   client_initial_secret =
-      HKDF-Expand-Label(initial_secret, "client in", Hash.length)
-   server_initial_secret =
-      HKDF-Expand-Label(initial_secret, "server in", Hash.length)
+   client_initial_secret = HKDF-Expand-Label(initial_secret,
+                                             "client in", "",
+                                             Hash.length)
+   server_initial_secret = HKDF-Expand-Label(initial_secret,
+                                             "server in", "",
+                                             Hash.length)
 
    Note that if the server sends a Retry, the client's Initial will
    correspond to a new connection and thus use the server provided
@@ -832,8 +834,6 @@ Internet-Draft                QUIC over TLS                    July 2018
 
    All QUIC packets other than Version Negotiation and Retry packets are
    protected with an AEAD algorithm [AEAD].  Prior to establishing a
-   shared secret, packets are protected with AEAD_AES_128_GCM and a key
-   derived from the destination connection ID in the client's first
 
 
 
@@ -842,6 +842,8 @@ Thomson & Turner        Expires January 31, 2019               [Page 15]
 Internet-Draft                QUIC over TLS                    July 2018
 
 
+   shared secret, packets are protected with AEAD_AES_128_GCM and a key
+   derived from the destination connection ID in the client's first
    Initial packet (see Section 5.1.1).  This provides protection against
    off-path attackers and robustness against QUIC version unaware
    middleboxes, but not against on-path attackers.
@@ -888,8 +890,6 @@ Internet-Draft                QUIC over TLS                    July 2018
    there is insufficient space in the packet for sampling.  The sampled
    ciphertext starts after allowing for a 4 octet packet number unless
    this would cause the sample to extend past the end of the packet.  If
-   the sample would extend past the end of the packet, the end of the
-   packet is sampled.
 
 
 
@@ -897,6 +897,9 @@ Thomson & Turner        Expires January 31, 2019               [Page 16]
 
 Internet-Draft                QUIC over TLS                    July 2018
 
+
+   the sample would extend past the end of the packet, the end of the
+   packet is sampled.
 
    For example, the sampled ciphertext for a packet with a short header
    can be determined by:
@@ -943,9 +946,6 @@ Internet-Draft                QUIC over TLS                    July 2018
    value is used as the counter input to AES-CTR.
 
    encrypted_pn = AES-CTR(pn_key, sample, packet_number)
-
-
-
 
 
 

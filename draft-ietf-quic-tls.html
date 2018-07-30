@@ -834,13 +834,15 @@ Handshake Received
 <p id="rfc.section.5.1.1.p.1">Initial packets are protected with a secret derived from the Destination Connection ID field from the client&#8217;s first Initial packet of the connection. Specifically:</p>
 <pre>
 initial_salt = 0x9c108f98520a5c5c32968e950e8a2c5fe06d6c38
-initial_secret =
-    HKDF-Extract(initial_salt, client_dst_connection_id)
+initial_secret = HKDF-Extract(initial_salt,
+                              client_dst_connection_id)
 
-client_initial_secret =
-   HKDF-Expand-Label(initial_secret, "client in", Hash.length)
-server_initial_secret =
-   HKDF-Expand-Label(initial_secret, "server in", Hash.length)
+client_initial_secret = HKDF-Expand-Label(initial_secret,
+                                          "client in", "",
+                                          Hash.length)
+server_initial_secret = HKDF-Expand-Label(initial_secret,
+                                          "server in", "",
+                                          Hash.length)
 </pre>
 <p id="rfc.section.5.1.1.p.2">Note that if the server sends a Retry, the client&#8217;s Initial will correspond to a new connection and thus use the server provided Destination Connection ID.</p>
 <p id="rfc.section.5.1.1.p.3">The hash function for HKDF when deriving handshake secrets and keys is SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  The connection ID used with HKDF-Expand-Label is the initial Destination Connection ID.</p>
