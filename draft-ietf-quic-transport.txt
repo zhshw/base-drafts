@@ -226,7 +226,7 @@ Iyengar & Thomson       Expires January 31, 2019                [Page 4]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . . 106
+     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . . 105
      13.2.  QUIC Frame Type Registry . . . . . . . . . . . . . . . . 107
      13.3.  QUIC Transport Error Codes Registry  . . . . . . . . . . 108
    14. References  . . . . . . . . . . . . . . . . . . . . . . . . . 110
@@ -4173,7 +4173,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
    If the content of a PATH_RESPONSE frame does not match the content of
    a PATH_CHALLENGE frame previously sent by the endpoint, the endpoint
-   MAY generate a connection error of type UNSOLICITED_PATH_RESPONSE.
+   MAY generate a connection error of type PROTOCOL_VIOLATION.
 
 7.19.  NEW_TOKEN frame
 
@@ -5645,11 +5645,11 @@ Internet-Draft           QUIC Transport Protocol               July 2018
       protocol compliance that was not covered by more specific error
       codes.
 
-   UNSOLICITED_PATH_RESPONSE (0xB):  An endpoint received a
-      PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE
-      frame that it previously sent.
+   INVALID_MIGRATION (0xC):  A peer has migrated to a different network
+      when the endpoint had disabled migration.
 
-
+   CRYPTO_ERROR (0x1XX):  The cryptographic handshake failed.  A range
+      of 256 values is reserved for carrying error codes specific to the
 
 
 
@@ -5658,11 +5658,6 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 101]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-   INVALID_MIGRATION (0xC):  A peer has migrated to a different network
-      when the endpoint had disabled migration.
-
-   CRYPTO_ERROR (0x1XX):  The cryptographic handshake failed.  A range
-      of 256 values is reserved for carrying error codes specific to the
       cryptographic handshake that is used.  Codes for errors occuring
       when TLS is used for the crypto handshake are described in
       Section 4.8 of [QUIC-TLS].
@@ -5706,6 +5701,11 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    IDs, which are required to match those set by a peer.  Except for an
    Initial and stateless reset packets, an endpoint only accepts packets
    that include a destination connection that matches a connection ID
+   the endpoint previously chose.  This is the only protection offered
+   for Version Negotiation packets.
+
+   The destination connection ID in an Initial packet is selected by a
+   client to be unpredictable, which serves an additional purpose.  The
 
 
 
@@ -5714,11 +5714,6 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 102]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-   the endpoint previously chose.  This is the only protection offered
-   for Version Negotiation packets.
-
-   The destination connection ID in an Initial packet is selected by a
-   client to be unpredictable, which serves an additional purpose.  The
    packets that carry the cryptographic handshake are protected with a
    key that is derived from this connection ID and salt specific to the
    QUIC version.  This allows endpoints to use the same process for
@@ -5763,6 +5758,11 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    server sees an acknowledgment for a packet that was never sent, the
    connection can be aborted.
 
+   The second mitigation is that the server can require that
+   acknowledgments for sent packets match the encryption level of the
+   sent packet.  This mitigation is useful if the connection has an
+   ephemeral forward-secure key that is generated and used for every new
+
 
 
 Iyengar & Thomson       Expires January 31, 2019              [Page 103]
@@ -5770,10 +5770,6 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 103]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-   The second mitigation is that the server can require that
-   acknowledgments for sent packets match the encryption level of the
-   sent packet.  This mitigation is useful if the connection has an
-   ephemeral forward-secure key that is generated and used for every new
    connection.  If a packet sent is protected with a forward-secure key,
    then any acknowledgments that are received for them MUST also be
    forward-secure protected.  Since the attacker will not have the
@@ -5818,6 +5814,10 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    available memory.  However, some receivers will over-commit memory
    and advertise flow control offsets in the aggregate that exceed
    actual available memory.  The over-commitment strategy can lead to
+   better performance when endpoints are well behaved, but renders
+   endpoints vulnerable to the stream fragmentation attack.
+
+
 
 
 
@@ -5825,9 +5825,6 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 104]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
-
-   better performance when endpoints are well behaved, but renders
-   endpoints vulnerable to the stream fragmentation attack.
 
    QUIC deployments SHOULD provide mitigations against the stream
    fragmentation attack.  Mitigations could consist of avoiding over-
@@ -5871,7 +5868,10 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 13.  IANA Considerations
 
+13.1.  QUIC Transport Parameter Registry
 
+   IANA [SHALL add/has added] a registry for "QUIC Transport Parameters"
+   under a "QUIC Protocol" heading.
 
 
 
@@ -5881,11 +5881,6 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 105]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
-
-13.1.  QUIC Transport Parameter Registry
-
-   IANA [SHALL add/has added] a registry for "QUIC Transport Parameters"
-   under a "QUIC Protocol" heading.
 
    The "QUIC Transport Parameters" registry governs a 16-bit space.
    This space is split into two spaces that are governed by different
@@ -5911,6 +5906,11 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    architecturally dubious).
 
    The initial contents of this registry are shown in Table 7.
+
+
+
+
+
 
 
 
@@ -6039,9 +6039,9 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    The initial contents of this registry are shown in Table 8.  Values
    from 0xFF00 to 0xFFFF are reserved for Private Use [RFC8126].
 
-   +------+---------------------------+----------------+---------------+
-   | Valu | Error                     | Description    | Specification |
-   | e    |                           |                |               |
+
+
+
 
 
 
@@ -6050,6 +6050,9 @@ Iyengar & Thomson       Expires January 31, 2019              [Page 108]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   +------+---------------------------+----------------+---------------+
+   | Valu | Error                     | Description    | Specification |
+   | e    |                           |                |               |
    +------+---------------------------+----------------+---------------+
    | 0x0  | NO_ERROR                  | No error       | Section 11.3  |
    |      |                           |                |               |
@@ -6088,16 +6091,13 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    |      |                           | protocol       |               |
    |      |                           | violation      |               |
    |      |                           |                |               |
-   | 0xB  | UNSOLICITED_PATH_RESPONSE | Unsolicited    | Section 11.3  |
-   |      |                           | PATH_RESPONSE  |               |
-   |      |                           | frame          |               |
-   |      |                           |                |               |
    | 0xC  | INVALID_MIGRATION         | Violated       | Section 11.3  |
    |      |                           | disabled       |               |
    |      |                           | migration      |               |
    +------+---------------------------+----------------+---------------+
 
             Table 8: Initial QUIC Transport Error Codes Entries
+
 
 
 

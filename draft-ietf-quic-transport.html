@@ -2439,7 +2439,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.7.18">7.18.</a> <a href="#frame-path-response" id="frame-path-response">PATH_RESPONSE Frame</a>
 </h2>
 <p id="rfc.section.7.18.p.1">The PATH_RESPONSE frame (type=0x0f) is sent in response to a PATH_CHALLENGE frame.  Its format is identical to the PATH_CHALLENGE frame (<a href="#frame-path-challenge" class="xref">Section 7.17</a>).</p>
-<p id="rfc.section.7.18.p.2">If the content of a PATH_RESPONSE frame does not match the content of a PATH_CHALLENGE frame previously sent by the endpoint, the endpoint MAY generate a connection error of type UNSOLICITED_PATH_RESPONSE.</p>
+<p id="rfc.section.7.18.p.2">If the content of a PATH_RESPONSE frame does not match the content of a PATH_CHALLENGE frame previously sent by the endpoint, the endpoint MAY generate a connection error of type PROTOCOL_VIOLATION.</p>
 <h2 id="rfc.section.7.19">
 <a href="#rfc.section.7.19">7.19.</a> <a href="#frame-new-token" id="frame-new-token">NEW_TOKEN frame</a>
 </h2>
@@ -2987,8 +2987,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dd style="margin-left: 8">An endpoint received transport parameters that contained version negotiation parameters that disagreed with the version negotiation that it performed.  This error code indicates a potential version downgrade attack.</dd>
 <dt>PROTOCOL_VIOLATION (0xA):</dt>
 <dd style="margin-left: 8">An endpoint detected an error with protocol compliance that was not covered by more specific error codes.</dd>
-<dt>UNSOLICITED_PATH_RESPONSE (0xB):</dt>
-<dd style="margin-left: 8">An endpoint received a PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE frame that it previously sent.</dd>
 <dt>INVALID_MIGRATION (0xC):</dt>
 <dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
 <dt>CRYPTO_ERROR (0x1XX):</dt>
@@ -3251,12 +3249,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="left">0xA</td>
 <td class="left">PROTOCOL_VIOLATION</td>
 <td class="left">Generic protocol violation</td>
-<td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
-</tr>
-<tr>
-<td class="left">0xB</td>
-<td class="left">UNSOLICITED_PATH_RESPONSE</td>
-<td class="left">Unsolicited PATH_RESPONSE frame</td>
 <td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
 </tr>
 <tr>
