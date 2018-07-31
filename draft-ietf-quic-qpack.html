@@ -601,11 +601,11 @@ d = count of entries dropped
 <p></p>
 
 <ul>
-<li>Successful processing of a header block</li>
+<li>Complete processing of a header block</li>
 <li>Abandonment of a stream which might have remaining header blocks</li>
 <li>Receipt of new dynamic table entries</li>
 </ul>
-<p id="rfc.section.2.3.1.p.3">Regardless of whether a header block contained blocking references, the knowledge that it was processed successfully permits the encoder to evict entries to which no unacknowledged references remain; see <a href="#blocked-eviction" class="xref">Section 7.3.1</a>.  When a stream is reset or abandoned, the indication that these header blocks will never be processed serves a similar function; see <a href="#stream-cancellation" class="xref">Section 5.3.3</a>.</p>
+<p id="rfc.section.2.3.1.p.3">Regardless of whether a header block contained blocking references, the knowledge that it has been processed permits the encoder to evict entries to which no unacknowledged references remain; see <a href="#blocked-eviction" class="xref">Section 7.3.1</a>.  When a stream is reset or abandoned, the indication that these header blocks will never be processed serves a similar function; see <a href="#stream-cancellation" class="xref">Section 5.3.3</a>.</p>
 <p id="rfc.section.2.3.1.p.4">For the encoder to identify which dynamic table entries can be safely used without a stream becoming blocked, the encoder tracks the absolute index of the decoder&#8217;s Largest Known Received entry.</p>
 <p id="rfc.section.2.3.1.p.5">When blocking references are permitted, the encoder uses acknowledgement of header blocks to identify the Largest Known Received index, as described in <a href="#header-acknowledgement" class="xref">Section 5.3.2</a>.</p>
 <p id="rfc.section.2.3.1.p.6">To acknowledge dynamic table entries which are not referenced by header blocks, for example because the encoder or the decoder have chosen not to risk blocked streams, the decoder sends a Table State Synchronize instruction (see <a href="#table-state-synchronize" class="xref">Section 5.3.1</a>).</p>
