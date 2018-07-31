@@ -5,8 +5,8 @@
 QUIC                                                     J. Iyengar, Ed.
 Internet-Draft                                                    Fastly
 Intended status: Standards Track                           I. Swett, Ed.
-Expires: January 31, 2019                                         Google
-                                                           July 30, 2018
+Expires: February 1, 2019                                         Google
+                                                           July 31, 2018
 
 
                QUIC Loss Detection and Congestion Control
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 31, 2019.
+   This Internet-Draft will expire on February 1, 2019.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 1]
+Iyengar & Swett         Expires February 1, 2019                [Page 1]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 2]
+Iyengar & Swett         Expires February 1, 2019                [Page 2]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -165,7 +165,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 3]
+Iyengar & Swett         Expires February 1, 2019                [Page 3]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -221,7 +221,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 4]
+Iyengar & Swett         Expires February 1, 2019                [Page 4]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -277,7 +277,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 5]
+Iyengar & Swett         Expires February 1, 2019                [Page 5]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -333,7 +333,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 6]
+Iyengar & Swett         Expires February 1, 2019                [Page 6]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -355,9 +355,9 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
    MaxAckDelay is the maximum ack delay supplied in an all incoming ACK
    frames.  MaxAckDelay excludes ack delays that aren't included in an
-   RTT sample because they're too large or the largest acked has already
-   been acknowledged.  MaxAckDelay also excludes ack delays where the
-   largest acked references an ACK-only packet.
+   RTT sample because they're too large or the largest acknowledged has
+   already been acknowledged.  MaxAckDelay also excludes ack delays
+   where the largest acknowledged references an ACK-only packet.
 
 3.2.  Ack-based Detection
 
@@ -389,7 +389,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 7]
+Iyengar & Swett         Expires February 1, 2019                [Page 7]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -445,7 +445,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 8]
+Iyengar & Swett         Expires February 1, 2019                [Page 8]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -501,7 +501,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019                [Page 9]
+Iyengar & Swett         Expires February 1, 2019                [Page 9]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -557,7 +557,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 10]
+Iyengar & Swett         Expires February 1, 2019               [Page 10]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -613,7 +613,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 11]
+Iyengar & Swett         Expires February 1, 2019               [Page 11]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -669,7 +669,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 12]
+Iyengar & Swett         Expires February 1, 2019               [Page 12]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -692,10 +692,11 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 3.4.3.  Receiver Tracking of ACK Frames
 
-   When a packet containing an ACK frame is sent, the largest acked in
-   that frame may be saved.  When a packet containing an ACK frame is
-   acknowledged, the receiver can stop acknowledging packets less than
-   or equal to the largest acknowledged in the sent ACK frame.
+   When a packet containing an ACK frame is sent, the largest
+   acknowledged in that frame may be saved.  When a packet containing an
+   ACK frame is acknowledged, the receiver can stop acknowledging
+   packets less than or equal to the largest acknowledged in the sent
+   ACK frame.
 
    In cases without ACK frame loss, this algorithm allows for a minimum
    of 1 RTT of reordering.  In cases with ACK frame loss, this approach
@@ -724,8 +725,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-
-Iyengar & Swett         Expires January 31, 2019               [Page 13]
+Iyengar & Swett         Expires February 1, 2019               [Page 13]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -781,7 +781,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 14]
+Iyengar & Swett         Expires February 1, 2019               [Page 14]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -804,7 +804,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
       those that create an RTT sample less than min_rtt.
 
    reordering_threshold:  The largest packet number gap between the
-      largest acked retransmittable packet and an unacknowledged
+      largest acknowledged retransmittable packet and an unacknowledged
       retransmittable packet before it is declared lost.
 
    time_reordering_fraction:  The reordering window as a fraction of
@@ -837,7 +837,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 15]
+Iyengar & Swett         Expires February 1, 2019               [Page 15]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -893,7 +893,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 16]
+Iyengar & Swett         Expires February 1, 2019               [Page 16]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -949,14 +949,15 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 17]
+Iyengar & Swett         Expires February 1, 2019               [Page 17]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
 
      OnAckReceived(ack):
        largest_acked_packet = ack.largest_acked
-       // If the largest acked is newly acked, update the RTT.
+       // If the largest acknowledged is newly acked,
+       // update the RTT.
        if (sent_packets[ack.largest_acked]):
          latest_rtt = now - sent_packets[ack.largest_acked].time
          UpdateRtt(latest_rtt, ack.ack_delay)
@@ -1004,8 +1005,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-
-Iyengar & Swett         Expires January 31, 2019               [Page 18]
+Iyengar & Swett         Expires February 1, 2019               [Page 18]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 19]
+Iyengar & Swett         Expires February 1, 2019               [Page 19]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 20]
+Iyengar & Swett         Expires February 1, 2019               [Page 20]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 21]
+Iyengar & Swett         Expires February 1, 2019               [Page 21]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 22]
+Iyengar & Swett         Expires February 1, 2019               [Page 22]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 23]
+Iyengar & Swett         Expires February 1, 2019               [Page 23]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 24]
+Iyengar & Swett         Expires February 1, 2019               [Page 24]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 25]
+Iyengar & Swett         Expires February 1, 2019               [Page 25]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 26]
+Iyengar & Swett         Expires February 1, 2019               [Page 26]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1509,7 +1509,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 27]
+Iyengar & Swett         Expires February 1, 2019               [Page 27]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1565,7 +1565,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 28]
+Iyengar & Swett         Expires February 1, 2019               [Page 28]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1621,7 +1621,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 29]
+Iyengar & Swett         Expires February 1, 2019               [Page 29]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1677,7 +1677,7 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 30]
+Iyengar & Swett         Expires February 1, 2019               [Page 30]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1733,7 +1733,7 @@ A.4.  Since draft-ietf-quic-recovery-10
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 31]
+Iyengar & Swett         Expires February 1, 2019               [Page 31]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1789,7 +1789,7 @@ A.12.  Since draft-ietf-quic-recovery-02
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 32]
+Iyengar & Swett         Expires February 1, 2019               [Page 32]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
@@ -1845,4 +1845,4 @@ Authors' Addresses
 
 
 
-Iyengar & Swett         Expires January 31, 2019               [Page 33]
+Iyengar & Swett         Expires February 1, 2019               [Page 33]
