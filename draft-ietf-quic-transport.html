@@ -1122,7 +1122,7 @@ ul.toc li {
 <p id="rfc.section.4.4.p.4">The server populates the Destination Connection ID with the connection ID that the client included in the Source Connection ID of the Initial packet.</p>
 <p id="rfc.section.4.4.p.5">The server includes a connection ID of its choice in the Source Connection ID field.  The client MUST use this connection ID in the Destination Connection ID of subsequent packets that it sends.</p>
 <p id="rfc.section.4.4.p.6">A Retry packet does not include a packet number and cannot be explictly acknowledged by a client.</p>
-<p id="rfc.section.4.4.p.7">A server MUST only send a Retry in response to a client Initial packet.</p>
+<p id="rfc.section.4.4.p.7">A server MUST NOT send a Retry in response to packets other than Initial or 0-RTT packets.  A server MAY choose to only send Retry in response to Initial packets and discard or buffer 0-RTT packets corresponding to unvalidated client addresses.</p>
 <p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
 <p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
 <p id="rfc.section.4.4.p.10">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT packets to the connection ID provided by the server.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
