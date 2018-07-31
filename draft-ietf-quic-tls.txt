@@ -711,9 +711,8 @@ Internet-Draft                QUIC over TLS                    July 2018
 4.6.  Rejecting 0-RTT
 
    A server rejects 0-RTT by rejecting 0-RTT at the TLS layer.  This
-   also prevents QUIC from sending 0-RTT data.  A client that attempts
-   0-RTT MUST also consider 0-RTT to be rejected if it receives a
-   Version Negotiation packet.
+   also prevents QUIC from sending 0-RTT data.  A server will always
+   reject 0-RTT if it sends a TLS HelloRetryRequest.
 
    When 0-RTT is rejected, all connection characteristics that the
    client assumed might be incorrect.  This includes the choice of
@@ -725,10 +724,15 @@ Internet-Draft                QUIC over TLS                    July 2018
 
 
 
+
 Thomson & Turner        Expires February 1, 2019               [Page 13]
 
 Internet-Draft                QUIC over TLS                    July 2018
 
+
+   A client MAY attempt to send 0-RTT again if it receives a Retry or
+   Version Negotiation packet.  These packets do not signify rejection
+   of 0-RTT.
 
 4.7.  HelloRetryRequest
 
@@ -774,10 +778,6 @@ Internet-Draft                QUIC over TLS                    July 2018
 
    The keys for the remaining encryption level are computed in the same
    fashion as the corresponding TLS keys (see Section 7 of [TLS13]),
-   except that the label for HKDF-Expand-Label uses the prefix "quic "
-   rather than "tls13 ".  A different label provides key separation
-   between TLS and QUIC.
-
 
 
 
@@ -785,6 +785,10 @@ Thomson & Turner        Expires February 1, 2019               [Page 14]
 
 Internet-Draft                QUIC over TLS                    July 2018
 
+
+   except that the label for HKDF-Expand-Label uses the prefix "quic "
+   rather than "tls13 ".  A different label provides key separation
+   between TLS and QUIC.
 
 5.1.1.  Initial Secrets
 
@@ -830,10 +834,6 @@ Internet-Draft                QUIC over TLS                    July 2018
    The Authentication Encryption with Associated Data (AEAD) [AEAD]
    function used for QUIC packet protection is the AEAD that is
    negotiated for use with the TLS connection.  For example, if TLS is
-   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
-   used.
-
-
 
 
 
@@ -841,6 +841,9 @@ Thomson & Turner        Expires February 1, 2019               [Page 15]
 
 Internet-Draft                QUIC over TLS                    July 2018
 
+
+   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
+   used.
 
    QUIC packets are protected prior to applying packet number encryption
    (Section 5.3).  The unprotected packet number is part of the
@@ -887,9 +890,6 @@ Internet-Draft                QUIC over TLS                    July 2018
    the current set of secrets.  The key derived using the "pn" label is
    used to protect the packet number from casual observation.  The
    packet number protection algorithm depends on the negotiated AEAD.
-
-
-
 
 
 

@@ -699,10 +699,10 @@ ul.toc li {
 <p id="rfc.section.4.3.1.p.6">When CRYPTO frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO frames were sent at 1RTT encryption.</p>
 <p id="rfc.section.4.3.1.p.7">When an acknowledgement is received for a handshake packet, the new RTT is computed and the timer SHOULD be set for twice the newly computed smoothed RTT.</p>
 <h4 id="rfc.section.4.3.1.1">
-<a href="#rfc.section.4.3.1.1">4.3.1.1.</a> <a href="#retry" id="retry">Retry</a>
+<a href="#rfc.section.4.3.1.1">4.3.1.1.</a> <a href="#retry-and-version-negotiation" id="retry-and-version-negotiation">Retry and Version Negotiation</a>
 </h4>
-<p id="rfc.section.4.3.1.1.p.1">A Retry packet causes the content of the client&#8217;s Initial packet to be immediately retransmitted along with the token present in the Retry.</p>
-<p id="rfc.section.4.3.1.1.p.2">The Retry indicates that the Initial was received but not processed.  It MUST NOT be treated as an acknowledgment for the Initial, but it MAY be used for an RTT measurement.</p>
+<p id="rfc.section.4.3.1.1.p.1">A Retry or Version Negotiation packet causes a client to send another Initial packet, effectively restarting the connection process.</p>
+<p id="rfc.section.4.3.1.1.p.2">Either packet indicates that the Initial was received but not processed.  Neither packet can be treated as an acknowledgment for the Initial, but they MAY be used to improve the RTT estimate.</p>
 <h3 id="rfc.section.4.3.2">
 <a href="#rfc.section.4.3.2">4.3.2.</a> <a href="#tlp" id="tlp">Tail Loss Probe</a>
 </h3>

@@ -89,23 +89,23 @@ Table of Contents
        4.6.1.  Connection IDs  . . . . . . . . . . . . . . . . . . .  18
        4.6.2.  Tokens  . . . . . . . . . . . . . . . . . . . . . . .  19
        4.6.3.  Starting Packet Numbers . . . . . . . . . . . . . . .  20
-       4.6.4.  Minimum Packet Size . . . . . . . . . . . . . . . . .  20
+       4.6.4.  0-RTT Packet Numbers  . . . . . . . . . . . . . . . .  20
+       4.6.5.  Minimum Packet Size . . . . . . . . . . . . . . . . .  20
      4.7.  Handshake Packet  . . . . . . . . . . . . . . . . . . . .  20
      4.8.  Protected Packets . . . . . . . . . . . . . . . . . . . .  21
      4.9.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  22
-     4.10. Connection ID Encoding  . . . . . . . . . . . . . . . . .  22
-     4.11. Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  23
+     4.10. Connection ID Encoding  . . . . . . . . . . . . . . . . .  23
+     4.11. Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  24
    5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  26
-     5.1.  Extension Frames  . . . . . . . . . . . . . . . . . . . .  28
-   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  28
-     6.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  29
-     6.2.  Matching Packets to Connections . . . . . . . . . . . . .  30
-       6.2.1.  Client Packet Handling  . . . . . . . . . . . . . . .  30
-       6.2.2.  Server Packet Handling  . . . . . . . . . . . . . . .  31
-     6.3.  Version Negotiation . . . . . . . . . . . . . . . . . . .  31
-       6.3.1.  Sending Version Negotiation Packets . . . . . . . . .  32
-       6.3.2.  Handling Version Negotiation Packets  . . . . . . . .  32
-       6.3.3.  Using Reserved Versions . . . . . . . . . . . . . . .  33
+     5.1.  Extension Frames  . . . . . . . . . . . . . . . . . . . .  29
+   6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  29
+     6.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  30
+     6.2.  Matching Packets to Connections . . . . . . . . . . . . .  31
+       6.2.1.  Client Packet Handling  . . . . . . . . . . . . . . .  31
+       6.2.2.  Server Packet Handling  . . . . . . . . . . . . . . .  32
+     6.3.  Version Negotiation . . . . . . . . . . . . . . . . . . .  32
+       6.3.1.  Sending Version Negotiation Packets . . . . . . . . .  33
+       6.3.2.  Handling Version Negotiation Packets  . . . . . . . .  33
 
 
 
@@ -114,54 +114,54 @@ Iyengar & Thomson       Expires February 1, 2019                [Page 2]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-     6.4.  Cryptographic and Transport Handshake . . . . . . . . . .  33
-     6.5.  Example Handshake Flows . . . . . . . . . . . . . . . . .  34
-     6.6.  Transport Parameters  . . . . . . . . . . . . . . . . . .  36
-       6.6.1.  Transport Parameter Definitions . . . . . . . . . . .  38
-       6.6.2.  Values of Transport Parameters for 0-RTT  . . . . . .  40
-       6.6.3.  New Transport Parameters  . . . . . . . . . . . . . .  41
-       6.6.4.  Version Negotiation Validation  . . . . . . . . . . .  41
-     6.7.  Stateless Retries . . . . . . . . . . . . . . . . . . . .  43
-     6.8.  Using Explicit Congestion Notification  . . . . . . . . .  43
-     6.9.  Proof of Source Address Ownership . . . . . . . . . . . .  45
-       6.9.1.  Client Address Validation Procedure . . . . . . . . .  46
-       6.9.2.  Address Validation for Future Connections . . . . . .  46
-       6.9.3.  Address Validation Token Integrity  . . . . . . . . .  47
-     6.10. Path Validation . . . . . . . . . . . . . . . . . . . . .  47
-       6.10.1.  Initiation . . . . . . . . . . . . . . . . . . . . .  48
-       6.10.2.  Response . . . . . . . . . . . . . . . . . . . . . .  48
-       6.10.3.  Completion . . . . . . . . . . . . . . . . . . . . .  49
-       6.10.4.  Abandonment  . . . . . . . . . . . . . . . . . . . .  49
-     6.11. Connection Migration  . . . . . . . . . . . . . . . . . .  50
-       6.11.1.  Probing a New Path . . . . . . . . . . . . . . . . .  50
-       6.11.2.  Initiating Connection Migration  . . . . . . . . . .  51
-       6.11.3.  Responding to Connection Migration . . . . . . . . .  51
-       6.11.4.  Loss Detection and Congestion Control  . . . . . . .  53
-       6.11.5.  Privacy Implications of Connection Migration . . . .  54
-     6.12. Server's Preferred Address  . . . . . . . . . . . . . . .  54
-       6.12.1.  Communicating A Preferred Address  . . . . . . . . .  55
-       6.12.2.  Responding to Connection Migration . . . . . . . . .  55
+       6.3.3.  Using Reserved Versions . . . . . . . . . . . . . . .  34
+     6.4.  Cryptographic and Transport Handshake . . . . . . . . . .  34
+     6.5.  Example Handshake Flows . . . . . . . . . . . . . . . . .  35
+     6.6.  Transport Parameters  . . . . . . . . . . . . . . . . . .  37
+       6.6.1.  Transport Parameter Definitions . . . . . . . . . . .  39
+       6.6.2.  Values of Transport Parameters for 0-RTT  . . . . . .  41
+       6.6.3.  New Transport Parameters  . . . . . . . . . . . . . .  42
+       6.6.4.  Version Negotiation Validation  . . . . . . . . . . .  42
+     6.7.  Stateless Retries . . . . . . . . . . . . . . . . . . . .  44
+     6.8.  Using Explicit Congestion Notification  . . . . . . . . .  44
+     6.9.  Proof of Source Address Ownership . . . . . . . . . . . .  46
+       6.9.1.  Client Address Validation Procedure . . . . . . . . .  47
+       6.9.2.  Address Validation for Future Connections . . . . . .  47
+       6.9.3.  Address Validation Token Integrity  . . . . . . . . .  48
+     6.10. Path Validation . . . . . . . . . . . . . . . . . . . . .  48
+       6.10.1.  Initiation . . . . . . . . . . . . . . . . . . . . .  49
+       6.10.2.  Response . . . . . . . . . . . . . . . . . . . . . .  49
+       6.10.3.  Completion . . . . . . . . . . . . . . . . . . . . .  50
+       6.10.4.  Abandonment  . . . . . . . . . . . . . . . . . . . .  50
+     6.11. Connection Migration  . . . . . . . . . . . . . . . . . .  51
+       6.11.1.  Probing a New Path . . . . . . . . . . . . . . . . .  51
+       6.11.2.  Initiating Connection Migration  . . . . . . . . . .  52
+       6.11.3.  Responding to Connection Migration . . . . . . . . .  52
+       6.11.4.  Loss Detection and Congestion Control  . . . . . . .  54
+       6.11.5.  Privacy Implications of Connection Migration . . . .  55
+     6.12. Server's Preferred Address  . . . . . . . . . . . . . . .  55
+       6.12.1.  Communicating A Preferred Address  . . . . . . . . .  56
+       6.12.2.  Responding to Connection Migration . . . . . . . . .  56
        6.12.3.  Interaction of Client Migration and Preferred
-                Address  . . . . . . . . . . . . . . . . . . . . . .  55
-     6.13. Connection Termination  . . . . . . . . . . . . . . . . .  56
-       6.13.1.  Closing and Draining Connection States . . . . . . .  56
-       6.13.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . .  57
-       6.13.3.  Immediate Close  . . . . . . . . . . . . . . . . . .  58
-       6.13.4.  Stateless Reset  . . . . . . . . . . . . . . . . . .  59
-   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  62
-     7.1.  Variable-Length Integer Encoding  . . . . . . . . . . . .  62
-     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  63
-     7.3.  RST_STREAM Frame  . . . . . . . . . . . . . . . . . . . .  63
-     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  64
-     7.5.  APPLICATION_CLOSE frame . . . . . . . . . . . . . . . . .  65
-     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  66
-     7.7.  MAX_STREAM_DATA Frame . . . . . . . . . . . . . . . . . .  66
-     7.8.  MAX_STREAM_ID Frame . . . . . . . . . . . . . . . . . . .  67
-     7.9.  PING Frame  . . . . . . . . . . . . . . . . . . . . . . .  68
-     7.10. BLOCKED Frame . . . . . . . . . . . . . . . . . . . . . .  69
-     7.11. STREAM_BLOCKED Frame  . . . . . . . . . . . . . . . . . .  69
-     7.12. STREAM_ID_BLOCKED Frame . . . . . . . . . . . . . . . . .  70
-     7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  70
+                Address  . . . . . . . . . . . . . . . . . . . . . .  56
+     6.13. Connection Termination  . . . . . . . . . . . . . . . . .  57
+       6.13.1.  Closing and Draining Connection States . . . . . . .  57
+       6.13.2.  Idle Timeout . . . . . . . . . . . . . . . . . . . .  58
+       6.13.3.  Immediate Close  . . . . . . . . . . . . . . . . . .  59
+       6.13.4.  Stateless Reset  . . . . . . . . . . . . . . . . . .  60
+   7.  Frame Types and Formats . . . . . . . . . . . . . . . . . . .  63
+     7.1.  Variable-Length Integer Encoding  . . . . . . . . . . . .  63
+     7.2.  PADDING Frame . . . . . . . . . . . . . . . . . . . . . .  64
+     7.3.  RST_STREAM Frame  . . . . . . . . . . . . . . . . . . . .  64
+     7.4.  CONNECTION_CLOSE frame  . . . . . . . . . . . . . . . . .  65
+     7.5.  APPLICATION_CLOSE frame . . . . . . . . . . . . . . . . .  66
+     7.6.  MAX_DATA Frame  . . . . . . . . . . . . . . . . . . . . .  67
+     7.7.  MAX_STREAM_DATA Frame . . . . . . . . . . . . . . . . . .  67
+     7.8.  MAX_STREAM_ID Frame . . . . . . . . . . . . . . . . . . .  68
+     7.9.  PING Frame  . . . . . . . . . . . . . . . . . . . . . . .  69
+     7.10. BLOCKED Frame . . . . . . . . . . . . . . . . . . . . . .  70
+     7.11. STREAM_BLOCKED Frame  . . . . . . . . . . . . . . . . . .  70
+     7.12. STREAM_ID_BLOCKED Frame . . . . . . . . . . . . . . . . .  71
 
 
 
@@ -170,54 +170,54 @@ Iyengar & Thomson       Expires February 1, 2019                [Page 3]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-     7.14. STOP_SENDING Frame  . . . . . . . . . . . . . . . . . . .  71
-     7.15. ACK Frame . . . . . . . . . . . . . . . . . . . . . . . .  72
-       7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  73
-       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  75
-       7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  76
-     7.16. ACK_ECN Frame . . . . . . . . . . . . . . . . . . . . . .  76
-     7.17. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  77
-     7.18. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  78
-     7.19. NEW_TOKEN frame . . . . . . . . . . . . . . . . . . . . .  78
-     7.20. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  78
-     7.21. CRYPTO Frame  . . . . . . . . . . . . . . . . . . . . . .  80
-   8.  Packetization and Reliability . . . . . . . . . . . . . . . .  81
-     8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  82
-     8.2.  Retransmission of Information . . . . . . . . . . . . . .  82
-     8.3.  Packet Size . . . . . . . . . . . . . . . . . . . . . . .  84
-     8.4.  Path Maximum Transmission Unit  . . . . . . . . . . . . .  85
-       8.4.1.  IPv4 PMTU Discovery . . . . . . . . . . . . . . . . .  85
+     7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  71
+     7.14. STOP_SENDING Frame  . . . . . . . . . . . . . . . . . . .  72
+     7.15. ACK Frame . . . . . . . . . . . . . . . . . . . . . . . .  73
+       7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  74
+       7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  76
+       7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  77
+     7.16. ACK_ECN Frame . . . . . . . . . . . . . . . . . . . . . .  77
+     7.17. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  78
+     7.18. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  79
+     7.19. NEW_TOKEN frame . . . . . . . . . . . . . . . . . . . . .  79
+     7.20. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  79
+     7.21. CRYPTO Frame  . . . . . . . . . . . . . . . . . . . . . .  81
+   8.  Packetization and Reliability . . . . . . . . . . . . . . . .  82
+     8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  83
+     8.2.  Retransmission of Information . . . . . . . . . . . . . .  83
+     8.3.  Packet Size . . . . . . . . . . . . . . . . . . . . . . .  85
+     8.4.  Path Maximum Transmission Unit  . . . . . . . . . . . . .  86
+       8.4.1.  IPv4 PMTU Discovery . . . . . . . . . . . . . . . . .  86
        8.4.2.  Special Considerations for Packetization Layer PMTU
-               Discovery . . . . . . . . . . . . . . . . . . . . . .  86
-   9.  Streams: QUIC's Data Structuring Abstraction  . . . . . . . .  86
-     9.1.  Stream Identifiers  . . . . . . . . . . . . . . . . . . .  87
-     9.2.  Stream States . . . . . . . . . . . . . . . . . . . . . .  88
-       9.2.1.  Send Stream States  . . . . . . . . . . . . . . . . .  89
-       9.2.2.  Receive Stream States . . . . . . . . . . . . . . . .  91
-       9.2.3.  Permitted Frame Types . . . . . . . . . . . . . . . .  94
-       9.2.4.  Bidirectional Stream States . . . . . . . . . . . . .  94
-     9.3.  Solicited State Transitions . . . . . . . . . . . . . . .  95
-     9.4.  Stream Concurrency  . . . . . . . . . . . . . . . . . . .  96
-     9.5.  Sending and Receiving Data  . . . . . . . . . . . . . . .  97
-     9.6.  Stream Prioritization . . . . . . . . . . . . . . . . . .  97
-   10. Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  98
-     10.1.  Edge Cases and Other Considerations  . . . . . . . . . .  99
-       10.1.1.  Response to a RST_STREAM . . . . . . . . . . . . . . 100
-       10.1.2.  Data Limit Increments  . . . . . . . . . . . . . . . 100
-     10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . . 101
-       10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . . 101
-     10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . . 101
-     10.4.  Flow Control for Crytographic Handshake  . . . . . . . . 102
-   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . . 102
-     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . . 102
-     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . . 103
-     11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . . 103
-     11.4.  Application Protocol Error Codes . . . . . . . . . . . . 105
-   12. Security Considerations . . . . . . . . . . . . . . . . . . . 105
-     12.1.  Handshake Denial of Service  . . . . . . . . . . . . . . 105
-     12.2.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . . 106
-     12.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . . 107
-     12.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 107
+               Discovery . . . . . . . . . . . . . . . . . . . . . .  87
+   9.  Streams: QUIC's Data Structuring Abstraction  . . . . . . . .  87
+     9.1.  Stream Identifiers  . . . . . . . . . . . . . . . . . . .  88
+     9.2.  Stream States . . . . . . . . . . . . . . . . . . . . . .  89
+       9.2.1.  Send Stream States  . . . . . . . . . . . . . . . . .  90
+       9.2.2.  Receive Stream States . . . . . . . . . . . . . . . .  92
+       9.2.3.  Permitted Frame Types . . . . . . . . . . . . . . . .  95
+       9.2.4.  Bidirectional Stream States . . . . . . . . . . . . .  95
+     9.3.  Solicited State Transitions . . . . . . . . . . . . . . .  96
+     9.4.  Stream Concurrency  . . . . . . . . . . . . . . . . . . .  97
+     9.5.  Sending and Receiving Data  . . . . . . . . . . . . . . .  98
+     9.6.  Stream Prioritization . . . . . . . . . . . . . . . . . .  98
+   10. Flow Control  . . . . . . . . . . . . . . . . . . . . . . . .  99
+     10.1.  Edge Cases and Other Considerations  . . . . . . . . . . 100
+       10.1.1.  Response to a RST_STREAM . . . . . . . . . . . . . . 101
+       10.1.2.  Data Limit Increments  . . . . . . . . . . . . . . . 101
+     10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . . 102
+       10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . . 102
+     10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . . 102
+     10.4.  Flow Control for Crytographic Handshake  . . . . . . . . 103
+   11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . . 103
+     11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . . 103
+     11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . . 104
+     11.3.  Transport Error Codes  . . . . . . . . . . . . . . . . . 104
+     11.4.  Application Protocol Error Codes . . . . . . . . . . . . 106
+   12. Security Considerations . . . . . . . . . . . . . . . . . . . 106
+     12.1.  Handshake Denial of Service  . . . . . . . . . . . . . . 106
+     12.2.  Spoofed ACK Attack . . . . . . . . . . . . . . . . . . . 107
+     12.3.  Optimistic ACK Attack  . . . . . . . . . . . . . . . . . 108
 
 
 
@@ -226,36 +226,37 @@ Iyengar & Thomson       Expires February 1, 2019                [Page 4]
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
-     12.5.  Stream Fragmentation and Reassembly Attacks  . . . . . . 107
-     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 108
-     12.7.  Explicit Congestion Notification Attacks . . . . . . . . 108
-     12.8.  Stateless Reset Oracle . . . . . . . . . . . . . . . . . 108
-   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 109
-     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . . 109
-     13.2.  QUIC Frame Type Registry . . . . . . . . . . . . . . . . 110
-     13.3.  QUIC Transport Error Codes Registry  . . . . . . . . . . 111
-   14. References  . . . . . . . . . . . . . . . . . . . . . . . . . 113
-     14.1.  Normative References . . . . . . . . . . . . . . . . . . 113
-     14.2.  Informative References . . . . . . . . . . . . . . . . . 114
-   Appendix A.  Sample Packet Number Decoding Algorithm  . . . . . . 115
-   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . . 116
-     B.1.  Since draft-ietf-quic-transport-12  . . . . . . . . . . . 116
-     B.2.  Since draft-ietf-quic-transport-11  . . . . . . . . . . . 117
-     B.3.  Since draft-ietf-quic-transport-10  . . . . . . . . . . . 117
-     B.4.  Since draft-ietf-quic-transport-09  . . . . . . . . . . . 118
-     B.5.  Since draft-ietf-quic-transport-08  . . . . . . . . . . . 119
-     B.6.  Since draft-ietf-quic-transport-07  . . . . . . . . . . . 119
-     B.7.  Since draft-ietf-quic-transport-06  . . . . . . . . . . . 120
-     B.8.  Since draft-ietf-quic-transport-05  . . . . . . . . . . . 121
-     B.9.  Since draft-ietf-quic-transport-04  . . . . . . . . . . . 121
-     B.10. Since draft-ietf-quic-transport-03  . . . . . . . . . . . 122
-     B.11. Since draft-ietf-quic-transport-02  . . . . . . . . . . . 122
-     B.12. Since draft-ietf-quic-transport-01  . . . . . . . . . . . 123
-     B.13. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 125
-     B.14. Since draft-hamilton-quic-transport-protocol-01 . . . . . 125
-   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 125
-   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 125
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 126
+     12.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 108
+     12.5.  Stream Fragmentation and Reassembly Attacks  . . . . . . 108
+     12.6.  Stream Commitment Attack . . . . . . . . . . . . . . . . 109
+     12.7.  Explicit Congestion Notification Attacks . . . . . . . . 109
+     12.8.  Stateless Reset Oracle . . . . . . . . . . . . . . . . . 109
+   13. IANA Considerations . . . . . . . . . . . . . . . . . . . . . 110
+     13.1.  QUIC Transport Parameter Registry  . . . . . . . . . . . 110
+     13.2.  QUIC Frame Type Registry . . . . . . . . . . . . . . . . 111
+     13.3.  QUIC Transport Error Codes Registry  . . . . . . . . . . 112
+   14. References  . . . . . . . . . . . . . . . . . . . . . . . . . 114
+     14.1.  Normative References . . . . . . . . . . . . . . . . . . 114
+     14.2.  Informative References . . . . . . . . . . . . . . . . . 115
+   Appendix A.  Sample Packet Number Decoding Algorithm  . . . . . . 116
+   Appendix B.  Change Log . . . . . . . . . . . . . . . . . . . . . 117
+     B.1.  Since draft-ietf-quic-transport-12  . . . . . . . . . . . 117
+     B.2.  Since draft-ietf-quic-transport-11  . . . . . . . . . . . 118
+     B.3.  Since draft-ietf-quic-transport-10  . . . . . . . . . . . 118
+     B.4.  Since draft-ietf-quic-transport-09  . . . . . . . . . . . 119
+     B.5.  Since draft-ietf-quic-transport-08  . . . . . . . . . . . 120
+     B.6.  Since draft-ietf-quic-transport-07  . . . . . . . . . . . 120
+     B.7.  Since draft-ietf-quic-transport-06  . . . . . . . . . . . 121
+     B.8.  Since draft-ietf-quic-transport-05  . . . . . . . . . . . 122
+     B.9.  Since draft-ietf-quic-transport-04  . . . . . . . . . . . 122
+     B.10. Since draft-ietf-quic-transport-03  . . . . . . . . . . . 123
+     B.11. Since draft-ietf-quic-transport-02  . . . . . . . . . . . 123
+     B.12. Since draft-ietf-quic-transport-01  . . . . . . . . . . . 124
+     B.13. Since draft-ietf-quic-transport-00  . . . . . . . . . . . 126
+     B.14. Since draft-hamilton-quic-transport-protocol-01 . . . . . 126
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . . 126
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . . 126
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . . 127
 
 1.  Introduction
 
@@ -273,7 +274,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    o  Stream multiplexing
 
    o  Stream and connection-level flow control
-
 
 
 
@@ -822,6 +822,11 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    includes the provided Retry Token to continue connection
    establishment.
 
+   A client MAY attempt 0-RTT after receiving a Retry packet by sending
+   0-RTT packets to the connection ID provided by the server.  A client
+   that sends additional 0-RTT packets MUST NOT reset the packet number
+   to 0 after a Retry packet, see Section 4.6.4.
+
    A server that might send another Retry packet in response to a
    subsequent Initial packet MUST set the Source Connection ID to a new
    value of at least 8 octets in length.  This allows clients to
@@ -829,11 +834,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    rounds of Retry packets.  Consequently, a valid Retry packet will
    always have an Original Destinagion Connection ID that is at least 8
    octets long; clients MUST discard Retry packets that include a
-   shorter value.  A server that will not send additional Retry packets
-   can set the Source Connection ID to any value.
-
-
-
 
 
 
@@ -841,6 +841,9 @@ Iyengar & Thomson       Expires February 1, 2019               [Page 15]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+   shorter value.  A server that will not send additional Retry packets
+   can set the Source Connection ID to any value.
 
 4.5.  Cryptographic Handshake Packets
 
@@ -867,9 +870,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
    The Initial packet (shown in Figure 5) has two additional header
    fields that are added to the Long Header before the Length field.
-
-
-
 
 
 
@@ -1023,7 +1023,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    NEW_TOKEN frame.  Tokens obtained in Retry packets MUST NOT be
    discarded.
 
-   A client SHOULD NOT reuse a token.  Reusing a token on allows
+   A client SHOULD NOT reuse a token.  Reusing a token allows
    connections to be linked by entities on the network path (see
    Section 6.11.5).  A client MUST NOT reuse a token if it believes that
    its point of network attachment has changed since the token was last
@@ -1073,7 +1073,35 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    thereafter.  Initial packets are in a different packet number space
    to other packets (see Section 4.11).
 
-4.6.4.  Minimum Packet Size
+4.6.4.  0-RTT Packet Numbers
+
+   Packet numbers for 0-RTT protected packets use the same space as
+   1-RTT protected packets.
+
+   After a client receives a Retry or Version Negotiation packet, 0-RTT
+   packets are likely to have been lost or discarded by the server.  A
+   client MAY attempt to resend data in 0-RTT packets after it sends a
+   new Initial packet.
+
+   A client MUST NOT reset the packet number it uses for 0-RTT packets.
+   The keys used to protect 0-RTT packets will not change as a result of
+   responding to a Retry or Version Negotiation packet unless the client
+   also regenerates the cryptographic handshake message.  Sending
+   packets with the same packet number in that case would compromise the
+   packet protection for all 0-RTT packets.
+
+   Receiving a Retry or Version Negotiation packet, especially a Retry
+   that changes the connection ID used for subsequent packets, indicates
+   a strong possibility that 0-RTT packets could be lost.  A client only
+   receives acknowledgments for its 0-RTT packets once the handshake is
+   complete.  Consequently, a server might expect 0-RTT packets to start
+   with a packet number of 0.  Therefore, in determining the length of
+   the packet number encoding for 0-RTT packets, a client MUST assume
+   that all packets up to the current packet number are in flight,
+   starting from a packet number of 0.  Thus, 0-RTT packets could need
+   to use a longer packet number encoding.
+
+4.6.5.  Minimum Packet Size
 
    The payload of a UDP datagram carrying the Initial packet MUST be
    expanded to at least 1200 octets (see Section 8), by adding PADDING
@@ -1085,6 +1113,14 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    A Handshake packet uses long headers with a type value of 0x7D.  It
    is used to carry acknowledgments and cryptographic handshake messages
    from the server and client.
+
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 20]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
 
    A server sends its cryptographic handshake in one or more Handshake
    packets in response to an Initial packet if it does not send a Retry
@@ -1112,16 +1148,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    PADDING, or ACK frames.  Handshake packets MAY contain
    CONNECTION_CLOSE frames if the handshake is unsuccessful.
 
-
-
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 20]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
-
 4.8.  Protected Packets
 
    All QUIC packets use packet protection.  Packets that are protected
@@ -1143,6 +1169,14 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    confidentiality and data origin authentication; the cryptographic
    handshake ensures that only the communicating endpoints receive the
    corresponding keys.
+
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 21]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
 
    Packets protected with 0-RTT keys use a type value of 0x7C.  The
    connection ID fields for a 0-RTT packet MUST match the values used in
@@ -1166,17 +1200,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    describes packet protection in detail.  After decryption, the
    plaintext consists of a sequence of frames, as described in
    Section 5.
-
-
-
-
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 21]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
 
 4.9.  Coalescing Packets
 
@@ -1203,6 +1226,14 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Every QUIC packet that is coalesced into a single UDP datagram is
    separate and complete.  Though the values of some fields in the
    packet header might be redundant, no fields are omitted.  The
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 22]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
+
    receiver of coalesced QUIC packets MUST individually process each
    QUIC packet and separately acknowledge them, as if they were received
    as the payload of different UDP datagrams.  If one or more packets in
@@ -1226,14 +1257,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    establish the connection ID that each endpoint uses.  Each endpoint
    uses the Source Connection ID field to specify the connection ID that
    is used in the Destination Connection ID field of packets being sent
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 22]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
-
    to them.  Upon receiving a packet, each endpoint sets the Destination
    Connection ID it sends to match the value of the Source Connection ID
    that they receive.
@@ -1260,6 +1283,13 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    which allows the entire connection ID to vary in length and still be
    used by the load balancer.
 
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 23]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
+
    The very first packet sent by a client includes a random value for
    Destination Connection ID.  The same value MUST be used for all 0-RTT
    packets sent on that connection (Section 4.8).  This randomized value
@@ -1281,14 +1311,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    is used in determining the cryptographic nonce for packet encryption.
    Each endpoint maintains a separate packet number for sending and
    receiving.
-
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 23]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
 
    Packet numbers are divided into 3 spaces in QUIC:
 
@@ -1314,6 +1336,16 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    starts at packet number 0.  Subsequent packets sent in the same
    packet number space MUST increase the packet number by at least one.
 
+
+
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 24]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
+
    0-RTT and 1-RTT data exist in the same packet number space to make
    loss recovery algorithms easier to implement between the two packet
    types.
@@ -1330,21 +1362,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    a variable number of the least significant bits of the packet number.
    One or two of the most significant bits of the first octet determine
    how many bits of the packet number are provided, as shown in Table 2.
-
-
-
-
-
-
-
-
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 24]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
 
           +---------------------+----------------+--------------+
           | First octet pattern | Encoded Length | Bits Present |
@@ -1378,6 +1395,13 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    0xaa8309b3.  Example pseudo-code for packet number decoding can be
    found in Appendix A.
 
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 25]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
+
    The sender MUST use a packet number size able to represent more than
    twice as large a range than the difference between the largest
    acknowledged packet and packet number being sent.  A peer receiving
@@ -1394,14 +1418,6 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
    For example, if an endpoint has received an acknowledgment for packet
    0x6afa2f, sending a packet with a number of 0x6b2d79 requires a
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 25]
-
-Internet-Draft           QUIC Transport Protocol               July 2018
-
-
    packet number encoding with 14 bits or more; whereas the 30-bit
    packet number encoding is needed to send a packet with a number of
    0x6bc107.
@@ -1433,6 +1449,15 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Protected payloads MUST contain at least one frame, and MAY contain
    multiple frames and multiple frame types.
 
+
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 26]
+
+Internet-Draft           QUIC Transport Protocol               July 2018
+
+
    Frames MUST fit within a single QUIC packet and MUST NOT span a QUIC
    packet boundary.  Each frame begins with a Frame Type, indicating its
    type, followed by additional type-dependent fields:
@@ -1450,16 +1475,44 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    The frame types defined in this specification are listed in Table 3.
    The Frame Type in STREAM frames is used to carry other frame-specific
    flags.  For all other frames, the Frame Type field simply identifies
+   the frame.  These frames are explained in more detail as they are
+   referenced later in the document.
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 26]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 27]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
-
-   the frame.  These frames are explained in more detail as they are
-   referenced later in the document.
 
             +-------------+-------------------+--------------+
             | Type Value  | Frame Type Name   | Definition   |
@@ -1509,7 +1562,10 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 27]
+
+
+
+Iyengar & Thomson       Expires February 1, 2019               [Page 28]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -1565,7 +1621,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 28]
+Iyengar & Thomson       Expires February 1, 2019               [Page 29]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -1621,7 +1677,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 29]
+Iyengar & Thomson       Expires February 1, 2019               [Page 30]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -1677,7 +1733,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 30]
+Iyengar & Thomson       Expires February 1, 2019               [Page 31]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -1733,7 +1789,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 31]
+Iyengar & Thomson       Expires February 1, 2019               [Page 32]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -1789,13 +1845,17 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 32]
+Iyengar & Thomson       Expires February 1, 2019               [Page 33]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
    A client MUST ignore a Version Negotiation packet that lists the
    client's chosen version.
+
+   A client MAY attempt 0-RTT after receiving a Version Negotiation
+   packet.  A client that sends additional 0-RTT packets MUST NOT reset
+   the packet number to 0 as a result, see Section 4.6.4.
 
    Version negotiation packets have no cryptographic protection.  The
    result of the negotiation MUST be revalidated as part of the
@@ -1839,16 +1899,14 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
       *  a client is optionally authenticated,
 
-      *  every connection produces distinct and unrelated keys,
 
 
-
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 33]
+Iyengar & Thomson       Expires February 1, 2019               [Page 34]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
+
+      *  every connection produces distinct and unrelated keys,
 
       *  keying material is usable for packet protection for both 0-RTT
          and 1-RTT packets, and
@@ -1896,16 +1954,16 @@ Internet-Draft           QUIC Transport Protocol               July 2018
    Note that multiple QUIC packets - even of different encryption levels
    - may be coalesced into a single UDP datagram (see Section 4.9, and
    so this handshake may consist of as few as 4 UDP datagrams, or any
-   number more.  For instance, the server's first flight contains
-   packets from the Initial encryption level (obfuscation), the
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 34]
+Iyengar & Thomson       Expires February 1, 2019               [Page 35]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
 
+   number more.  For instance, the server's first flight contains
+   packets from the Initial encryption level (obfuscation), the
    Handshake level, and "0.5-RTT data" from the server at the 1-RTT
    encryption level.
 
@@ -1955,9 +2013,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-
-
-Iyengar & Thomson       Expires February 1, 2019               [Page 35]
+Iyengar & Thomson       Expires February 1, 2019               [Page 36]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2013,7 +2069,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 36]
+Iyengar & Thomson       Expires February 1, 2019               [Page 37]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2069,7 +2125,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 37]
+Iyengar & Thomson       Expires February 1, 2019               [Page 38]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2125,7 +2181,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 38]
+Iyengar & Thomson       Expires February 1, 2019               [Page 39]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2181,7 +2237,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 39]
+Iyengar & Thomson       Expires February 1, 2019               [Page 40]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2237,7 +2293,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 40]
+Iyengar & Thomson       Expires February 1, 2019               [Page 41]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2293,7 +2349,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 41]
+Iyengar & Thomson       Expires February 1, 2019               [Page 42]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2349,7 +2405,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 42]
+Iyengar & Thomson       Expires February 1, 2019               [Page 43]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2405,7 +2461,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 43]
+Iyengar & Thomson       Expires February 1, 2019               [Page 44]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2461,7 +2517,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 44]
+Iyengar & Thomson       Expires February 1, 2019               [Page 45]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2517,7 +2573,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 45]
+Iyengar & Thomson       Expires February 1, 2019               [Page 46]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2573,7 +2629,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 46]
+Iyengar & Thomson       Expires February 1, 2019               [Page 47]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2629,7 +2685,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 47]
+Iyengar & Thomson       Expires February 1, 2019               [Page 48]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2685,7 +2741,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 48]
+Iyengar & Thomson       Expires February 1, 2019               [Page 49]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2741,7 +2797,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 49]
+Iyengar & Thomson       Expires February 1, 2019               [Page 50]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2797,7 +2853,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 50]
+Iyengar & Thomson       Expires February 1, 2019               [Page 51]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2853,7 +2909,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 51]
+Iyengar & Thomson       Expires February 1, 2019               [Page 52]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2909,7 +2965,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 52]
+Iyengar & Thomson       Expires February 1, 2019               [Page 53]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -2965,7 +3021,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 53]
+Iyengar & Thomson       Expires February 1, 2019               [Page 54]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3021,7 +3077,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 54]
+Iyengar & Thomson       Expires February 1, 2019               [Page 55]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3077,7 +3133,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 55]
+Iyengar & Thomson       Expires February 1, 2019               [Page 56]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3133,7 +3189,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 56]
+Iyengar & Thomson       Expires February 1, 2019               [Page 57]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3189,7 +3245,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 57]
+Iyengar & Thomson       Expires February 1, 2019               [Page 58]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3245,7 +3301,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 58]
+Iyengar & Thomson       Expires February 1, 2019               [Page 59]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3301,7 +3357,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 59]
+Iyengar & Thomson       Expires February 1, 2019               [Page 60]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3357,7 +3413,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 60]
+Iyengar & Thomson       Expires February 1, 2019               [Page 61]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3413,7 +3469,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 61]
+Iyengar & Thomson       Expires February 1, 2019               [Page 62]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3469,7 +3525,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 62]
+Iyengar & Thomson       Expires February 1, 2019               [Page 63]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3525,7 +3581,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 63]
+Iyengar & Thomson       Expires February 1, 2019               [Page 64]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3581,7 +3637,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 64]
+Iyengar & Thomson       Expires February 1, 2019               [Page 65]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3637,7 +3693,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 65]
+Iyengar & Thomson       Expires February 1, 2019               [Page 66]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3693,7 +3749,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 66]
+Iyengar & Thomson       Expires February 1, 2019               [Page 67]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3749,7 +3805,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 67]
+Iyengar & Thomson       Expires February 1, 2019               [Page 68]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3805,7 +3861,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 68]
+Iyengar & Thomson       Expires February 1, 2019               [Page 69]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3861,7 +3917,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 69]
+Iyengar & Thomson       Expires February 1, 2019               [Page 70]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3917,7 +3973,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 70]
+Iyengar & Thomson       Expires February 1, 2019               [Page 71]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -3973,7 +4029,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 71]
+Iyengar & Thomson       Expires February 1, 2019               [Page 72]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4029,7 +4085,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 72]
+Iyengar & Thomson       Expires February 1, 2019               [Page 73]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4085,7 +4141,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 73]
+Iyengar & Thomson       Expires February 1, 2019               [Page 74]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4141,7 +4197,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 74]
+Iyengar & Thomson       Expires February 1, 2019               [Page 75]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4197,7 +4253,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 75]
+Iyengar & Thomson       Expires February 1, 2019               [Page 76]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4253,7 +4309,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 76]
+Iyengar & Thomson       Expires February 1, 2019               [Page 77]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4309,7 +4365,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 77]
+Iyengar & Thomson       Expires February 1, 2019               [Page 78]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4365,7 +4421,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 78]
+Iyengar & Thomson       Expires February 1, 2019               [Page 79]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4421,7 +4477,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 79]
+Iyengar & Thomson       Expires February 1, 2019               [Page 80]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4477,7 +4533,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 80]
+Iyengar & Thomson       Expires February 1, 2019               [Page 81]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4533,7 +4589,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 81]
+Iyengar & Thomson       Expires February 1, 2019               [Page 82]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4589,7 +4645,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 82]
+Iyengar & Thomson       Expires February 1, 2019               [Page 83]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4645,7 +4701,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 83]
+Iyengar & Thomson       Expires February 1, 2019               [Page 84]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4701,7 +4757,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 84]
+Iyengar & Thomson       Expires February 1, 2019               [Page 85]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4757,7 +4813,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 85]
+Iyengar & Thomson       Expires February 1, 2019               [Page 86]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4813,7 +4869,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 86]
+Iyengar & Thomson       Expires February 1, 2019               [Page 87]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4869,7 +4925,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 87]
+Iyengar & Thomson       Expires February 1, 2019               [Page 88]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4925,7 +4981,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 88]
+Iyengar & Thomson       Expires February 1, 2019               [Page 89]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -4981,7 +5037,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 89]
+Iyengar & Thomson       Expires February 1, 2019               [Page 90]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5037,7 +5093,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 90]
+Iyengar & Thomson       Expires February 1, 2019               [Page 91]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5093,7 +5149,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 91]
+Iyengar & Thomson       Expires February 1, 2019               [Page 92]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5149,7 +5205,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 92]
+Iyengar & Thomson       Expires February 1, 2019               [Page 93]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5205,7 +5261,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 93]
+Iyengar & Thomson       Expires February 1, 2019               [Page 94]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5261,7 +5317,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 94]
+Iyengar & Thomson       Expires February 1, 2019               [Page 95]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5317,7 +5373,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 95]
+Iyengar & Thomson       Expires February 1, 2019               [Page 96]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5373,7 +5429,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 96]
+Iyengar & Thomson       Expires February 1, 2019               [Page 97]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5429,7 +5485,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 97]
+Iyengar & Thomson       Expires February 1, 2019               [Page 98]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5485,7 +5541,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 98]
+Iyengar & Thomson       Expires February 1, 2019               [Page 99]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5541,7 +5597,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019               [Page 99]
+Iyengar & Thomson       Expires February 1, 2019              [Page 100]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5597,7 +5653,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 100]
+Iyengar & Thomson       Expires February 1, 2019              [Page 101]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5653,7 +5709,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 101]
+Iyengar & Thomson       Expires February 1, 2019              [Page 102]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5709,7 +5765,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 102]
+Iyengar & Thomson       Expires February 1, 2019              [Page 103]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5765,7 +5821,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 103]
+Iyengar & Thomson       Expires February 1, 2019              [Page 104]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5821,7 +5877,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 104]
+Iyengar & Thomson       Expires February 1, 2019              [Page 105]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5877,7 +5933,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 105]
+Iyengar & Thomson       Expires February 1, 2019              [Page 106]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5933,7 +5989,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 106]
+Iyengar & Thomson       Expires February 1, 2019              [Page 107]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -5989,7 +6045,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 107]
+Iyengar & Thomson       Expires February 1, 2019              [Page 108]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6045,7 +6101,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 108]
+Iyengar & Thomson       Expires February 1, 2019              [Page 109]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6101,7 +6157,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 109]
+Iyengar & Thomson       Expires February 1, 2019              [Page 110]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6157,7 +6213,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 110]
+Iyengar & Thomson       Expires February 1, 2019              [Page 111]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6213,7 +6269,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 111]
+Iyengar & Thomson       Expires February 1, 2019              [Page 112]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6269,7 +6325,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 112]
+Iyengar & Thomson       Expires February 1, 2019              [Page 113]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6325,7 +6381,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 113]
+Iyengar & Thomson       Expires February 1, 2019              [Page 114]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6381,7 +6437,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 114]
+Iyengar & Thomson       Expires February 1, 2019              [Page 115]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6437,7 +6493,7 @@ Appendix A.  Sample Packet Number Decoding Algorithm
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 115]
+Iyengar & Thomson       Expires February 1, 2019              [Page 116]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6493,7 +6549,7 @@ B.1.  Since draft-ietf-quic-transport-12
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 116]
+Iyengar & Thomson       Expires February 1, 2019              [Page 117]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6549,7 +6605,7 @@ B.3.  Since draft-ietf-quic-transport-10
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 117]
+Iyengar & Thomson       Expires February 1, 2019              [Page 118]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6605,7 +6661,7 @@ B.4.  Since draft-ietf-quic-transport-09
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 118]
+Iyengar & Thomson       Expires February 1, 2019              [Page 119]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6661,7 +6717,7 @@ B.6.  Since draft-ietf-quic-transport-07
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 119]
+Iyengar & Thomson       Expires February 1, 2019              [Page 120]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6717,7 +6773,7 @@ B.7.  Since draft-ietf-quic-transport-06
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 120]
+Iyengar & Thomson       Expires February 1, 2019              [Page 121]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6773,7 +6829,7 @@ B.9.  Since draft-ietf-quic-transport-04
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 121]
+Iyengar & Thomson       Expires February 1, 2019              [Page 122]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6829,7 +6885,7 @@ B.11.  Since draft-ietf-quic-transport-02
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 122]
+Iyengar & Thomson       Expires February 1, 2019              [Page 123]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6885,7 +6941,7 @@ B.12.  Since draft-ietf-quic-transport-01
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 123]
+Iyengar & Thomson       Expires February 1, 2019              [Page 124]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6941,7 +6997,7 @@ Internet-Draft           QUIC Transport Protocol               July 2018
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 124]
+Iyengar & Thomson       Expires February 1, 2019              [Page 125]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -6997,7 +7053,7 @@ Contributors
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 125]
+Iyengar & Thomson       Expires February 1, 2019              [Page 126]
 
 Internet-Draft           QUIC Transport Protocol               July 2018
 
@@ -7053,4 +7109,4 @@ Authors' Addresses
 
 
 
-Iyengar & Thomson       Expires February 1, 2019              [Page 126]
+Iyengar & Thomson       Expires February 1, 2019              [Page 127]

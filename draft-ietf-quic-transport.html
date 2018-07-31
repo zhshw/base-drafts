@@ -295,7 +295,8 @@ ul.toc li {
 <link href="#rfc.section.4.6.1" rel="Chapter" title="4.6.1 Connection IDs">
 <link href="#rfc.section.4.6.2" rel="Chapter" title="4.6.2 Tokens">
 <link href="#rfc.section.4.6.3" rel="Chapter" title="4.6.3 Starting Packet Numbers">
-<link href="#rfc.section.4.6.4" rel="Chapter" title="4.6.4 Minimum Packet Size">
+<link href="#rfc.section.4.6.4" rel="Chapter" title="4.6.4 0-RTT Packet Numbers">
+<link href="#rfc.section.4.6.5" rel="Chapter" title="4.6.5 Minimum Packet Size">
 <link href="#rfc.section.4.7" rel="Chapter" title="4.7 Handshake Packet">
 <link href="#rfc.section.4.8" rel="Chapter" title="4.8 Protected Packets">
 <link href="#rfc.section.4.9" rel="Chapter" title="4.9 Coalescing Packets">
@@ -529,7 +530,9 @@ ul.toc li {
 </li>
 <li>4.6.3.   <a href="#rfc.section.4.6.3">Starting Packet Numbers</a>
 </li>
-<li>4.6.4.   <a href="#rfc.section.4.6.4">Minimum Packet Size</a>
+<li>4.6.4.   <a href="#rfc.section.4.6.4">0-RTT Packet Numbers</a>
+</li>
+<li>4.6.5.   <a href="#rfc.section.4.6.5">Minimum Packet Size</a>
 </li>
 </ul><li>4.7.   <a href="#rfc.section.4.7">Handshake Packet</a>
 </li>
@@ -1122,7 +1125,8 @@ ul.toc li {
 <p id="rfc.section.4.4.p.7">A server MUST only send a Retry in response to a client Initial packet.</p>
 <p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
 <p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
-<p id="rfc.section.4.4.p.10">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to a new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destinagion Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
+<p id="rfc.section.4.4.p.10">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT packets to the connection ID provided by the server.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
+<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to a new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destinagion Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
 </h2>
@@ -1186,7 +1190,7 @@ ul.toc li {
 </h3>
 <p id="rfc.section.4.6.2.p.1">If the client has a token received in a NEW_TOKEN frame on a previous connection to what it believes to be the same server, it can include that value in the Token field of its Initial packet.</p>
 <p id="rfc.section.4.6.2.p.2">A token allows a server to correlate activity between connections.  Specifically, the connection where the token was issued, and any connection where it is used.  Clients that want to break continuity of identity with a server MAY discard tokens provided using the NEW_TOKEN frame.  Tokens obtained in Retry packets MUST NOT be discarded.</p>
-<p id="rfc.section.4.6.2.p.3">A client SHOULD NOT reuse a token.  Reusing a token on allows connections to be linked by entities on the network path (see <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since the token was last used; that is, if there is a change in its local IP address or network interface.  A client needs to start the connection process over if it migrates prior to completing the handshake.</p>
+<p id="rfc.section.4.6.2.p.3">A client SHOULD NOT reuse a token.  Reusing a token allows connections to be linked by entities on the network path (see <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since the token was last used; that is, if there is a change in its local IP address or network interface.  A client needs to start the connection process over if it migrates prior to completing the handshake.</p>
 <p id="rfc.section.4.6.2.p.4">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
 <p id="rfc.section.4.6.2.p.5">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
 <p></p>
@@ -1200,9 +1204,16 @@ ul.toc li {
 </h3>
 <p id="rfc.section.4.6.3.p.1">The first Initial packet sent by either endpoint contains a packet number of 0. The packet number MUST increase monotonically thereafter.  Initial packets are in a different packet number space to other packets (see <a href="#packet-numbers" class="xref">Section 4.11</a>).</p>
 <h3 id="rfc.section.4.6.4">
-<a href="#rfc.section.4.6.4">4.6.4.</a> <a href="#minimum-packet-size" id="minimum-packet-size">Minimum Packet Size</a>
+<a href="#rfc.section.4.6.4">4.6.4.</a> <a href="#retry-0rtt-pn" id="retry-0rtt-pn">0-RTT Packet Numbers</a>
 </h3>
-<p id="rfc.section.4.6.4.p.1">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-coalesce" class="xref">Section 4.9</a>).</p>
+<p id="rfc.section.4.6.4.p.1">Packet numbers for 0-RTT protected packets use the same space as 1-RTT protected packets.</p>
+<p id="rfc.section.4.6.4.p.2">After a client receives a Retry or Version Negotiation packet, 0-RTT packets are likely to have been lost or discarded by the server.  A client MAY attempt to resend data in 0-RTT packets after it sends a new Initial packet.</p>
+<p id="rfc.section.4.6.4.p.3">A client MUST NOT reset the packet number it uses for 0-RTT packets.  The keys used to protect 0-RTT packets will not change as a result of responding to a Retry or Version Negotiation packet unless the client also regenerates the cryptographic handshake message.  Sending packets with the same packet number in that case would compromise the packet protection for all 0-RTT packets.</p>
+<p id="rfc.section.4.6.4.p.4">Receiving a Retry or Version Negotiation packet, especially a Retry that changes the connection ID used for subsequent packets, indicates a strong possibility that 0-RTT packets could be lost.  A client only receives acknowledgments for its 0-RTT packets once the handshake is complete.  Consequently, a server might expect 0-RTT packets to start with a packet number of 0.  Therefore, in determining the length of the packet number encoding for 0-RTT packets, a client MUST assume that all packets up to the current packet number are in flight, starting from a packet number of 0.  Thus, 0-RTT packets could need to use a longer packet number encoding.</p>
+<h3 id="rfc.section.4.6.5">
+<a href="#rfc.section.4.6.5">4.6.5.</a> <a href="#minimum-packet-size" id="minimum-packet-size">Minimum Packet Size</a>
+</h3>
+<p id="rfc.section.4.6.5.p.1">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-coalesce" class="xref">Section 4.9</a>).</p>
 <h2 id="rfc.section.4.7">
 <a href="#rfc.section.4.7">4.7.</a> <a href="#packet-handshake" id="packet-handshake">Handshake Packet</a>
 </h2>
@@ -1504,7 +1515,8 @@ ul.toc li {
 <p id="rfc.section.6.3.2.p.3">The client MUST use the long header format and include its selected version on all packets until it has 1-RTT keys and it has received a packet from the server which is not a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.4">A client MUST NOT change the version it uses unless it is in response to a Version Negotiation packet from the server.  Once a client receives a packet from the server which is not a Version Negotiation packet, it MUST discard other Version Negotiation packets on the same connection.  Similarly, a client MUST ignore a Version Negotiation packet if it has already received and acted on a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.5">A client MUST ignore a Version Negotiation packet that lists the client&#8217;s chosen version.</p>
-<p id="rfc.section.6.3.2.p.6">Version negotiation packets have no cryptographic protection. The result of the negotiation MUST be revalidated as part of the cryptographic handshake (see <a href="#version-validation" class="xref">Section 6.6.4</a>).</p>
+<p id="rfc.section.6.3.2.p.6">A client MAY attempt 0-RTT after receiving a Version Negotiation packet.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 as a result, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
+<p id="rfc.section.6.3.2.p.7">Version negotiation packets have no cryptographic protection. The result of the negotiation MUST be revalidated as part of the cryptographic handshake (see <a href="#version-validation" class="xref">Section 6.6.4</a>).</p>
 <h3 id="rfc.section.6.3.3">
 <a href="#rfc.section.6.3.3">6.3.3.</a> <a href="#using-reserved-versions" id="using-reserved-versions">Using Reserved Versions</a>
 </h3>

@@ -516,15 +516,14 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    RTT is computed and the timer SHOULD be set for twice the newly
    computed smoothed RTT.
 
-4.3.1.1.  Retry
+4.3.1.1.  Retry and Version Negotiation
 
-   A Retry packet causes the content of the client's Initial packet to
-   be immediately retransmitted along with the token present in the
-   Retry.
+   A Retry or Version Negotiation packet causes a client to send another
+   Initial packet, effectively restarting the connection process.
 
-   The Retry indicates that the Initial was received but not processed.
-   It MUST NOT be treated as an acknowledgment for the Initial, but it
-   MAY be used for an RTT measurement.
+   Either packet indicates that the Initial was received but not
+   processed.  Neither packet can be treated as an acknowledgment for
+   the Initial, but they MAY be used to improve the RTT estimate.
 
 4.3.2.  Tail Loss Probe
 
@@ -552,8 +551,9 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    outstanding.  TCP's TLP assumes if at least 2 packets are
    outstanding, acks will not be delayed.
 
-
-
+   A PTO value of at least 1.5*SRTT ensures that the ACK is overdue.
+   The 1.5 is based on [TLP], but implementations MAY experiment with
+   other constants.
 
 
 
@@ -561,10 +561,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 10]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
-
-   A PTO value of at least 1.5*SRTT ensures that the ACK is overdue.
-   The 1.5 is based on [TLP], but implementations MAY experiment with
-   other constants.
 
    To reduce latency, it is RECOMMENDED that the sender set and allow
    the TLP timer to fire twice before setting an RTO timer.  In other
@@ -609,7 +605,11 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    subsequent consecutive RTO events.  Sending a single packet on an RTO
    event therefore makes the connection very sensitive to single packet
    loss.  Sending two packets instead of one significantly increases
+   resilience to packet drop in both directions, thus reducing the
+   probability of consecutive RTO events.
 
+   QUIC's RTO algorithm differs from TCP in that the firing of an RTO
+   timer is not considered a strong enough signal of packet loss, so
 
 
 
@@ -618,11 +618,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 11]
 Internet-Draft             QUIC Loss Detection                 July 2018
 
 
-   resilience to packet drop in both directions, thus reducing the
-   probability of consecutive RTO events.
-
-   QUIC's RTO algorithm differs from TCP in that the firing of an RTO
-   timer is not considered a strong enough signal of packet loss, so
    does not result in an immediate change to congestion window or
    recovery state.  An RTO timer expires only when there's a prolonged
    period of network silence, which could be caused by a change in the
@@ -665,7 +660,12 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
    Out-of-order packets SHOULD be acknowledged more quickly, in order to
    accelerate loss recovery.  The receiver SHOULD send an immediate ACK
+   when it receives a new packet which is not one greater than the
+   largest received packet number.
 
+   Similarly, packets marked with the ECN Congestion Experienced (CE)
+   codepoint in the IP header SHOULD be acknowledged immediately, to
+   reduce the peer's response time to congestion events.
 
 
 
@@ -673,13 +673,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 12]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
-
-   when it receives a new packet which is not one greater than the
-   largest received packet number.
-
-   Similarly, packets marked with the ECN Congestion Experienced (CE)
-   codepoint in the IP header SHOULD be acknowledged immediately, to
-   reduce the peer's response time to congestion events.
 
    As an optimization, a receiver MAY process multiple packets before
    sending any ACK frames in response.  In this case they can determine
@@ -722,6 +715,13 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    of 1 RTT of reordering.  In cases with ACK frame loss, this approach
    does not guarantee that every acknowledgement is seen by the sender
    before it is no longer included in the ACK frame.  Packets could be
+   received out of order and all subsequent ACK frames containing them
+   could be lost.  In this case, the loss recovery algorithm may cause
+   spurious retransmits, but the sender will continue making forward
+   progress.
+
+
+
 
 
 
@@ -729,11 +729,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 13]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
-
-   received out of order and all subsequent ACK frames containing them
-   could be lost.  In this case, the loss recovery algorithm may cause
-   spurious retransmits, but the sender will continue making forward
-   progress.
 
 4.5.  Pseudocode
 
@@ -779,15 +774,17 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    handshake_count:  The number of times all unacknowledged handshake
       data has been retransmitted without receiving an ack.
 
+   tlp_count:  The number of times a tail loss probe has been sent
+      without receiving an ack.
+
+
+
 
 
 Iyengar & Swett         Expires February 1, 2019               [Page 14]
 
 Internet-Draft             QUIC Loss Detection                 July 2018
 
-
-   tlp_count:  The number of times a tail loss probe has been sent
-      without receiving an ack.
 
    rto_count:  The number of times an rto has been sent without
       receiving an ack.
@@ -834,6 +831,9 @@ Internet-Draft             QUIC Loss Detection                 July 2018
 
    sent_packets:  An association of packet numbers to information about
       them, including a number field indicating the packet number, a
+      time field indicating the time a packet was sent, a boolean
+      indicating whether the packet is ack-only, a boolean indicating
+      whether it counts towards bytes in flight, and a bytes field
 
 
 
@@ -842,9 +842,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 15]
 Internet-Draft             QUIC Loss Detection                 July 2018
 
 
-      time field indicating the time a packet was sent, a boolean
-      indicating whether the packet is ack-only, a boolean indicating
-      whether it counts towards bytes in flight, and a bytes field
       indicating the packet's size.  sent_packets is ordered by packet
       number, and packets remain in sent_packets until acknowledged or
       lost.  A sent_packets data structure is maintained per packet
@@ -890,6 +887,9 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    o  in_flight: A boolean that indicates whether the packet counts
       towards bytes in flight.
 
+   o  is_handshake_packet: A boolean that indicates whether the packet
+      contains cryptographic handshake messages critical to the
+      completion of the QUIC handshake.  In this version of QUIC, this
 
 
 
@@ -898,9 +898,6 @@ Iyengar & Swett         Expires February 1, 2019               [Page 16]
 Internet-Draft             QUIC Loss Detection                 July 2018
 
 
-   o  is_handshake_packet: A boolean that indicates whether the packet
-      contains cryptographic handshake messages critical to the
-      completion of the QUIC handshake.  In this version of QUIC, this
       includes any packet with the long header that includes a CRYPTO
       frame.
 
@@ -930,6 +927,9 @@ Internet-Draft             QUIC Loss Detection                 July 2018
    packets.
 
    Pseudocode for OnAckReceived and UpdateRtt follow:
+
+
+
 
 
 
