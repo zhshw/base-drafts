@@ -888,6 +888,9 @@ sample = packet[sample_offset..sample_offset+sample_length]
 sample_offset = 6 + len(destination_connection_id) +
                     len(source_connection_id) +
                     len(payload_length) + 4
+if packet_type == Initial:
+    sample_offset += len(token_length) +
+                     len(token)
 </pre>
 <p id="rfc.section.5.3.p.6">To ensure that this process does not sample the packet number, packet number protection algorithms MUST NOT sample more ciphertext than the minimum expansion of the corresponding AEAD.</p>
 <p id="rfc.section.5.3.p.7">Packet number protection is applied to the packet number encoded as described in Section 4.8 of <a href="#QUIC-TRANSPORT" class="xref">[QUIC-TRANSPORT]</a>. Since the length of the packet number is stored in the first octet of the encoded packet number, it may be necessary to progressively decrypt the packet number.</p>
