@@ -405,6 +405,7 @@ ul.toc li {
 <link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Fragmentation and Reassembly Attacks">
 <link href="#rfc.section.12.6" rel="Chapter" title="12.6 Stream Commitment Attack">
 <link href="#rfc.section.12.7" rel="Chapter" title="12.7 Explicit Congestion Notification Attacks">
+<link href="#rfc.section.12.8" rel="Chapter" title="12.8 Stateless Reset Oracle">
 <link href="#rfc.section.13" rel="Chapter" title="13 IANA Considerations">
 <link href="#rfc.section.13.1" rel="Chapter" title="13.1 QUIC Transport Parameter Registry">
 <link href="#rfc.section.13.2" rel="Chapter" title="13.2 QUIC Frame Type Registry">
@@ -438,7 +439,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-30" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-07-31" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -462,12 +463,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 31, 2019</td>
+<td class="left">Expires: February 1, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 30, 2018</td>
+<td class="right">July 31, 2018</td>
 </tr>
 
     	
@@ -486,7 +487,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 31, 2019.</p>
+<p>This Internet-Draft will expire on February 1, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -743,6 +744,8 @@ ul.toc li {
 <li>12.6.   <a href="#rfc.section.12.6">Stream Commitment Attack</a>
 </li>
 <li>12.7.   <a href="#rfc.section.12.7">Explicit Congestion Notification Attacks</a>
+</li>
+<li>12.8.   <a href="#rfc.section.12.8">Stateless Reset Oracle</a>
 </li>
 </ul><li>13.   <a href="#rfc.section.13">IANA Considerations</a>
 </li>
@@ -1925,13 +1928,13 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h4>
 <p id="rfc.section.6.13.4.1.p.1">An endpoint detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The endpoint then compares the last 16 octets of the packet with the Stateless Reset Token provided by its peer, either in a NEW_CONNECTION_ID frame or the server&#8217;s transport parameters.  If these values are identical, the endpoint MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
 <h4 id="rfc.section.6.13.4.2">
-<a href="#rfc.section.6.13.4.2">6.13.4.2.</a> <a href="#calculating-a-stateless-reset-token" id="calculating-a-stateless-reset-token">Calculating a Stateless Reset Token</a>
+<a href="#rfc.section.6.13.4.2">6.13.4.2.</a> <a href="#reset-token" id="reset-token">Calculating a Stateless Reset Token</a>
 </h4>
 <p id="rfc.section.6.13.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, an endpoint could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple instances in a cluster or a storage problem for a endpoint that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
-<p id="rfc.section.6.13.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 6.1</a>), and an instance identifier.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, instance_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with instance and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
-<p id="rfc.section.6.13.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.  An instance that receives a packet for another instance might be able to recover the instance identifier using the connection ID.  Alternatively, the instance identifier might be omitted from the calculation of the Stateless Reset Token so that all instances are equally able to generate a stateless reset.</p>
+<p id="rfc.section.6.13.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes a static key and the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 6.1</a>) as input.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with the connection ID as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
+<p id="rfc.section.6.13.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.</p>
 <p id="rfc.section.6.13.4.2.p.4">This design relies on the peer always sending a connection ID in its packets so that the endpoint can use the connection ID from a packet to reset the connection.  An endpoint that uses this design cannot allow its peers to send packets with a zero-length destination connection ID.</p>
-<p id="rfc.section.6.13.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same instance without first changing to use a different static key or instance identifier.</p>
+<p id="rfc.section.6.13.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of connection ID and static key cannot occur for another connection.  A denial of service attack is possible if the same connection ID is used by instances that share a static key, or if an attacker can cause a packet to be routed to an instance that has no state but the same static key (see <a href="#reset-oracle" class="xref">Section 12.8</a>).  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at nodes that share a static key.</p>
 <p id="rfc.section.6.13.4.2.p.6">Note that Stateless Reset messages do not have any cryptographic protection.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#frame-types-and-formats" id="frame-types-and-formats">Frame Types and Formats</a>
@@ -3044,6 +3047,12 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.12.7.p.1">An on-path attacker could manipulate the value of ECN codepoints in the IP header to influence the sender&#8217;s rate. <a href="#RFC3168" class="xref">[RFC3168]</a> discusses manipulations and their effects in more detail.</p>
 <p id="rfc.section.12.7.p.2">An on-the-side attacker can duplicate and send packets with modified ECN codepoints to affect the sender&#8217;s rate.  If duplicate packets are discarded by a receiver, an off-path attacker will need to race the duplicate packet against the original to be successful in this attack.  Therefore, QUIC receivers ignore ECN codepoints set in duplicate packets (see <a href="#using-ecn" class="xref">Section 6.8</a>).</p>
+<h2 id="rfc.section.12.8">
+<a href="#rfc.section.12.8">12.8.</a> <a href="#reset-oracle" id="reset-oracle">Stateless Reset Oracle</a>
+</h2>
+<p id="rfc.section.12.8.p.1">Stateless resets create a possible denial of service attack analogous to a TCP reset injection. This attack is possible if an attacker is able to cause a stateless reset token to be generated for a connection with a selected connection ID. An attacker that can cause this token to be generated can reset an active connection with the same connection ID.</p>
+<p id="rfc.section.12.8.p.2">If a packet can be routed to different instances that share a static key, for example by changing an IP address or port, then an attacker can cause the server to send a stateless reset.  To defend against this style of denial service, endpoints that share a static key for stateless reset (see <a href="#reset-token" class="xref">Section 6.13.4.2</a>) MUST be arranged so that packets with a given connection ID always arrive at an instance that has connection state, unless that connection is no longer active.</p>
+<p id="rfc.section.12.8.p.3">In the case of a cluster that uses dynamic load balancing, it&#8217;s possible that a change in load balancer configuration could happen while an active instance retains connection state; even if an instance retains connection state, the change in routing and resulting stateless reset will result in the connection being terminated.  If there is no chance in the packet being routed to the correct instance, it is better to send a stateless reset than wait for connections to time out.  However, this is acceptable only if the routing cannot be influenced by an attacker.</p>
 <h1 id="rfc.section.13">
 <a href="#rfc.section.13">13.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
