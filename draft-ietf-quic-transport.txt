@@ -208,7 +208,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
      10.2.  Stream Limit Increment . . . . . . . . . . . . . . . . . 102
        10.2.1.  Blocking on Flow Control . . . . . . . . . . . . . . 102
      10.3.  Stream Final Offset  . . . . . . . . . . . . . . . . . . 102
-     10.4.  Flow Control for Crytographic Handshake  . . . . . . . . 103
+     10.4.  Flow Control for Cryptographic Handshake . . . . . . . . 103
    11. Error Handling  . . . . . . . . . . . . . . . . . . . . . . . 103
      11.1.  Connection Errors  . . . . . . . . . . . . . . . . . . . 103
      11.2.  Stream Errors  . . . . . . . . . . . . . . . . . . . . . 104
@@ -808,7 +808,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Destination Connection ID of subsequent packets that it sends.
 
    A Retry packet does not include a packet number and cannot be
-   explictly acknowledged by a client.
+   explicitly acknowledged by a client.
 
    A server MUST NOT send a Retry in response to packets other than
    Initial or 0-RTT packets.  A server MAY choose to only send Retry in
@@ -842,7 +842,7 @@ Iyengar & Thomson       Expires February 2, 2019               [Page 15]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-   always have an Original Destinagion Connection ID that is at least 8
+   always have an Original Destination Connection ID that is at least 8
    octets long; clients MUST discard Retry packets that include a
    shorter value.  A server that will not send additional Retry packets
    can set the Source Connection ID to any value.
@@ -1690,7 +1690,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    implementation, the connection ID MUST NOT include the unprotected
    sequence number.  Endpoints need to be able to recover the sequence
    number associated with each connection ID they generate without
-   relying on information available to unaffiliate parties.  A
+   relying on information available to unaffiliated parties.  A
    connection ID that encodes an unencrypted sequence number could be
    used to correlate connection IDs across network paths.
 
@@ -4392,7 +4392,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 7.19.  NEW_TOKEN frame
 
    A server sends a NEW_TOKEN frame (type=0x19) to provide the client a
-   token to send in a the header of an Initial packet for a future
+   token to send in the header of an Initial packet for a future
    connection.
 
    The NEW_TOKEN frame is as follows:
@@ -4853,7 +4853,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    minimum packet size.  Paths that do not support this size cannot
    deliver Initial packets, and therefore are not QUIC-compliant.
 
-   Section 7.3 of [PLPMTUD] discusses tradeoffs between small and large
+   Section 7.3 of [PLPMTUD] discusses trade-offs between small and large
    increases in the size of probe packets.  As QUIC probe packets need
    not contain application data, aggressive increases in probe size
    carry fewer consequences.
@@ -5643,7 +5643,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    undesirable.  At the same time, infrequent updates require larger
    increments to limits if blocking is to be avoided.  Thus, larger
    updates require a receiver to commit to larger resource commitments.
-   Thus there is a tradeoff between resource commitment and overhead
+   Thus there is a trade-off between resource commitment and overhead
    when determining how large a limit is advertised.
 
    A receiver MAY use an autotuning mechanism to tune the frequency and
@@ -5685,7 +5685,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    For smooth operation of the congestion controller, it is generally
    considered best to not let the sender go into quiescence if
    avoidable.  To avoid blocking a sender, and to reasonably account for
-   the possibiity of loss, a receiver should send a MAX_DATA or
+   the possibility of loss, a receiver should send a MAX_DATA or
    MAX_STREAM_DATA frame at least two round trips before it expects the
    sender to get blocked.
 
@@ -5727,7 +5727,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    that the endpoint needs to maintain the final offset state for closed
    streams, which could mean a significant state commitment.
 
-10.4.  Flow Control for Crytographic Handshake
+10.4.  Flow Control for Cryptographic Handshake
 
    Data sent in CRYPTO frames is not flow controlled in the same way as
    STREAM frames.  QUIC relies on the cryptographic protocol
@@ -5882,7 +5882,7 @@ Iyengar & Thomson       Expires February 2, 2019              [Page 105]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-      cryptographic handshake that is used.  Codes for errors occuring
+      cryptographic handshake that is used.  Codes for errors occurring
       when TLS is used for the crypto handshake are described in
       Section 4.8 of [QUIC-TLS].
 
@@ -6073,9 +6073,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    The number of active streams is limited by the concurrent stream
    limit transport parameter, as explained in Section 9.4.  If chosen
-   judisciously, this limit mitigates the effect of the stream
-   commitment attack.  However, setting the limit too low could affect
-   performance when applications expect to open large number of streams.
+   judiciously, this limit mitigates the effect of the stream commitment
+   attack.  However, setting the limit too low could affect performance
+   when applications expect to open large number of streams.
 
 12.7.  Explicit Congestion Notification Attacks
 
@@ -6722,7 +6722,7 @@ Iyengar & Thomson       Expires February 2, 2019              [Page 120]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-      *  Stream limits now have separate uni- and bi-directinal
+      *  Stream limits now have separate uni- and bi-directional
          transport parameters (#909, #958)
 
       *  Stream limit transport parameters are now optional and default

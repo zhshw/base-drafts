@@ -396,7 +396,7 @@ ul.toc li {
 <link href="#rfc.section.10.2" rel="Chapter" title="10.2 Stream Limit Increment">
 <link href="#rfc.section.10.2.1" rel="Chapter" title="10.2.1 Blocking on Flow Control">
 <link href="#rfc.section.10.3" rel="Chapter" title="10.3 Stream Final Offset">
-<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow Control for Crytographic Handshake">
+<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow Control for Cryptographic Handshake">
 <link href="#rfc.section.11" rel="Chapter" title="11 Error Handling">
 <link href="#rfc.section.11.1" rel="Chapter" title="11.1 Connection Errors">
 <link href="#rfc.section.11.2" rel="Chapter" title="11.2 Stream Errors">
@@ -732,7 +732,7 @@ ul.toc li {
 </li>
 </ul><li>10.3.   <a href="#rfc.section.10.3">Stream Final Offset</a>
 </li>
-<li>10.4.   <a href="#rfc.section.10.4">Flow Control for Crytographic Handshake</a>
+<li>10.4.   <a href="#rfc.section.10.4">Flow Control for Cryptographic Handshake</a>
 </li>
 </ul><li>11.   <a href="#rfc.section.11">Error Handling</a>
 </li>
@@ -1121,12 +1121,12 @@ ul.toc li {
 </dl>
 <p id="rfc.section.4.4.p.4">The server populates the Destination Connection ID with the connection ID that the client included in the Source Connection ID of the Initial packet.</p>
 <p id="rfc.section.4.4.p.5">The server includes a connection ID of its choice in the Source Connection ID field.  The client MUST use this connection ID in the Destination Connection ID of subsequent packets that it sends.</p>
-<p id="rfc.section.4.4.p.6">A Retry packet does not include a packet number and cannot be explictly acknowledged by a client.</p>
+<p id="rfc.section.4.4.p.6">A Retry packet does not include a packet number and cannot be explicitly acknowledged by a client.</p>
 <p id="rfc.section.4.4.p.7">A server MUST NOT send a Retry in response to packets other than Initial or 0-RTT packets.  A server MAY choose to only send Retry in response to Initial packets and discard or buffer 0-RTT packets corresponding to unvalidated client addresses.</p>
 <p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
 <p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
 <p id="rfc.section.4.4.p.10">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT packets to the connection ID provided by the server.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
-<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to a new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destinagion Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
+<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to a new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destination Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
 <h2 id="rfc.section.4.5">
 <a href="#rfc.section.4.5">4.5.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
 </h2>
@@ -1474,7 +1474,7 @@ ul.toc li {
 <p id="rfc.section.6.1.p.5">Each connection ID MUST be used on only one local address. When packets are sent for the first time on a new local address, a new connection ID MUST be used with a higher sequence number than any connection ID previously used on any local address.  At any time, an endpoint MAY change to a new connection ID on a local address already in use.</p>
 <p id="rfc.section.6.1.p.6">An endpoint MUST NOT send packets with a connection ID which has a lower sequence number than the highest sequence number of any connection ID ever sent or received on that local address.  This ensures that when an endpoint migrates to a new path or changes connection ID on an existing path, the packets will use a new connection ID in both directions.</p>
 <p id="rfc.section.6.1.p.7">Implementations SHOULD ensure that peers have a connection ID with a matching sequence number available when changing to a new connection ID.  An implementation could do this by always supplying a corresponding connection ID to a peer for each connection ID received from that peer.</p>
-<p id="rfc.section.6.1.p.8">While endpoints select connection IDs as appropriate for their implementation, the connection ID MUST NOT include the unprotected sequence number.  Endpoints need to be able to recover the sequence number associated with each connection ID they generate without relying on information available to unaffiliate parties. A connection ID that encodes an unencrypted sequence number could be used to correlate connection IDs across network paths.</p>
+<p id="rfc.section.6.1.p.8">While endpoints select connection IDs as appropriate for their implementation, the connection ID MUST NOT include the unprotected sequence number.  Endpoints need to be able to recover the sequence number associated with each connection ID they generate without relying on information available to unaffiliated parties. A connection ID that encodes an unencrypted sequence number could be used to correlate connection IDs across network paths.</p>
 <h2 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#packet-handling" id="packet-handling">Matching Packets to Connections</a>
 </h2>
@@ -2507,7 +2507,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h2 id="rfc.section.7.19">
 <a href="#rfc.section.7.19">7.19.</a> <a href="#frame-new-token" id="frame-new-token">NEW_TOKEN frame</a>
 </h2>
-<p id="rfc.section.7.19.p.1">A server sends a NEW_TOKEN frame (type=0x19) to provide the client a token to send in a the header of an Initial packet for a future connection.</p>
+<p id="rfc.section.7.19.p.1">A server sends a NEW_TOKEN frame (type=0x19) to provide the client a token to send in the header of an Initial packet for a future connection.</p>
 <p id="rfc.section.7.19.p.2">The NEW_TOKEN frame is as follows:</p>
 <pre>
  0                   1                   2                   3
@@ -2674,7 +2674,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h3>
 <p id="rfc.section.8.4.2.p.1">The PADDING frame provides a useful option for PMTU probe packets. PADDING frames generate acknowledgements, but they need not be delivered reliably. As a result, the loss of PADDING frames in probe packets does not require delay-inducing retransmission. However, PADDING frames do consume congestion window, which may delay the transmission of subsequent application data.</p>
 <p id="rfc.section.8.4.2.p.2">When implementing the algorithm in Section 7.2 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a>, the initial value of search_low SHOULD be consistent with the IPv6 minimum packet size.  Paths that do not support this size cannot deliver Initial packets, and therefore are not QUIC-compliant.</p>
-<p id="rfc.section.8.4.2.p.3">Section 7.3 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a> discusses tradeoffs between small and large increases in the size of probe packets. As QUIC probe packets need not contain application data, aggressive increases in probe size carry fewer consequences.</p>
+<p id="rfc.section.8.4.2.p.3">Section 7.3 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a> discusses trade-offs between small and large increases in the size of probe packets. As QUIC probe packets need not contain application data, aggressive increases in probe size carry fewer consequences.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#streams" id="streams">Streams: QUIC&#8217;s Data Structuring Abstraction</a>
 </h1>
@@ -2978,7 +2978,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.10.1.2">
 <a href="#rfc.section.10.1.2">10.1.2.</a> <a href="#fc-credit" id="fc-credit">Data Limit Increments</a>
 </h3>
-<p id="rfc.section.10.1.2.p.1">This document leaves when and how many bytes to advertise in a MAX_DATA or MAX_STREAM_DATA to implementations, but offers a few considerations.  These frames contribute to connection overhead.  Therefore frequently sending frames with small changes is undesirable.  At the same time, infrequent updates require larger increments to limits if blocking is to be avoided.  Thus, larger updates require a receiver to commit to larger resource commitments.  Thus there is a tradeoff between resource commitment and overhead when determining how large a limit is advertised.</p>
+<p id="rfc.section.10.1.2.p.1">This document leaves when and how many bytes to advertise in a MAX_DATA or MAX_STREAM_DATA to implementations, but offers a few considerations.  These frames contribute to connection overhead.  Therefore frequently sending frames with small changes is undesirable.  At the same time, infrequent updates require larger increments to limits if blocking is to be avoided.  Thus, larger updates require a receiver to commit to larger resource commitments.  Thus there is a trade-off between resource commitment and overhead when determining how large a limit is advertised.</p>
 <p id="rfc.section.10.1.2.p.2">A receiver MAY use an autotuning mechanism to tune the frequency and amount that it increases data limits based on a round-trip time estimate and the rate at which the receiving application consumes data, similar to common TCP implementations.</p>
 <h2 id="rfc.section.10.2">
 <a href="#rfc.section.10.2">10.2.</a> <a href="#stream-limit-increment" id="stream-limit-increment">Stream Limit Increment</a>
@@ -2989,7 +2989,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.10.2.1">10.2.1.</a> <a href="#blocking" id="blocking">Blocking on Flow Control</a>
 </h3>
 <p id="rfc.section.10.2.1.p.1">If a sender does not receive a MAX_DATA or MAX_STREAM_DATA frame when it has run out of flow control credit, the sender will be blocked and SHOULD send a BLOCKED or STREAM_BLOCKED frame.  These frames are expected to be useful for debugging at the receiver; they do not require any other action.  A receiver SHOULD NOT wait for a BLOCKED or STREAM_BLOCKED frame before sending MAX_DATA or MAX_STREAM_DATA, since doing so will mean that a sender is unable to send for an entire round trip.</p>
-<p id="rfc.section.10.2.1.p.2">For smooth operation of the congestion controller, it is generally considered best to not let the sender go into quiescence if avoidable.  To avoid blocking a sender, and to reasonably account for the possibiity of loss, a receiver should send a MAX_DATA or MAX_STREAM_DATA frame at least two round trips before it expects the sender to get blocked.</p>
+<p id="rfc.section.10.2.1.p.2">For smooth operation of the congestion controller, it is generally considered best to not let the sender go into quiescence if avoidable.  To avoid blocking a sender, and to reasonably account for the possibility of loss, a receiver should send a MAX_DATA or MAX_STREAM_DATA frame at least two round trips before it expects the sender to get blocked.</p>
 <p id="rfc.section.10.2.1.p.3">A sender sends a single BLOCKED or STREAM_BLOCKED frame only once when it reaches a data limit.  A sender SHOULD NOT send multiple BLOCKED or STREAM_BLOCKED frames for the same data limit, unless the original frame is determined to be lost.  Another BLOCKED or STREAM_BLOCKED frame can be sent after the data limit is increased.</p>
 <h2 id="rfc.section.10.3">
 <a href="#rfc.section.10.3">10.3.</a> <a href="#final-offset" id="final-offset">Stream Final Offset</a>
@@ -2999,7 +2999,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.10.3.p.3">An endpoint MUST NOT send data on a stream at or beyond the final offset.</p>
 <p id="rfc.section.10.3.p.4">Once a final offset for a stream is known, it cannot change.  If a RST_STREAM or STREAM frame causes the final offset to change for a stream, an endpoint SHOULD respond with a FINAL_OFFSET_ERROR error (see <a href="#error-handling" class="xref">Section 11</a>).  A receiver SHOULD treat receipt of data at or beyond the final offset as a FINAL_OFFSET_ERROR error, even after a stream is closed.  Generating these errors is not mandatory, but only because requiring that an endpoint generate these errors also means that the endpoint needs to maintain the final offset state for closed streams, which could mean a significant state commitment.</p>
 <h2 id="rfc.section.10.4">
-<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow Control for Crytographic Handshake</a>
+<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow Control for Cryptographic Handshake</a>
 </h2>
 <p id="rfc.section.10.4.p.1">Data sent in CRYPTO frames is not flow controlled in the same way as STREAM frames.  QUIC relies on the cryptographic protocol implementation to avoid excessive buffering of data, see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  The implementation SHOULD provide an interface to QUIC to tell it about its buffering limits so that there is not excessive buffering at multiple layers.</p>
 <h1 id="rfc.section.11">
@@ -3054,7 +3054,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>INVALID_MIGRATION (0xC):</dt>
 <dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
 <dt>CRYPTO_ERROR (0x1XX):</dt>
-<dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occuring when TLS is used for the crypto handshake are described in Section 4.8 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
+<dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occurring when TLS is used for the crypto handshake are described in Section 4.8 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
 </dl>
 <p id="rfc.section.11.3.p.4">See <a href="#iana-error-codes" class="xref">Section 13.3</a> for details of registering new error codes.</p>
 <h2 id="rfc.section.11.4">
@@ -3101,7 +3101,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.12.6.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
 <p id="rfc.section.12.6.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
-<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
+<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judiciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
 <h2 id="rfc.section.12.7">
 <a href="#rfc.section.12.7">12.7.</a> <a href="#security-ecn" id="security-ecn">Explicit Congestion Notification Attacks</a>
 </h2>
@@ -3597,7 +3597,7 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Packet types are assigned new codepoints and the Connection ID Flag is inverted (#426, #956)</li>
 <li>Removed type for Version Negotiation and use Version 0 (#963, #968)</li>
 <li>Streams are split into unidirectional and bidirectional (#643, #656, #720, #872, #175, #885) <ul>
-<li>Stream limits now have separate uni- and bi-directinal transport parameters (#909, #958)</li>
+<li>Stream limits now have separate uni- and bi-directional transport parameters (#909, #958)</li>
 <li>Stream limit transport parameters are now optional and default to 0 (#970, #971)</li>
 </ul>
 </li>
