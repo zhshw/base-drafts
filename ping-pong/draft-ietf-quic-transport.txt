@@ -3394,7 +3394,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    o  The packet might not reach the peer.  If the Destination
       Connection ID is critical for routing toward the peer, then this
-      packet could be incorrectly routed.  This might also triggering
+      packet could be incorrectly routed.  This might also trigger
       another Stateless Reset in response, see Section 6.13.4.3.  A
       Stateless Reset that is not correctly routed is ineffective in
       causing errors to be quickly detected and recovered.  In this

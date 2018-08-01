@@ -1979,7 +1979,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p></p>
 
 <ul>
-<li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This might also triggering another Stateless Reset in response, see <a href="#reset-looping" class="xref">Section 6.13.4.3</a>.  A Stateless Reset that is not correctly routed is ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
+<li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This might also trigger another Stateless Reset in response, see <a href="#reset-looping" class="xref">Section 6.13.4.3</a>.  A Stateless Reset that is not correctly routed is ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
 <li>The randomly generated connection ID can be used by entities other than the peer to identify this as a potential stateless reset.  An endpoint that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
 </ul>
 <p id="rfc.section.6.13.4.p.12">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
