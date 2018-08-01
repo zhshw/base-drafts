@@ -5421,11 +5421,11 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    (Section 11), unless this is a result of a change in the initial
    limits (see Section 6.6.2).
 
-   A receiver MUST NOT renege on an advertisement; that is, once a
-   receiver advertises a stream ID via a MAX_STREAM_ID frame, it MUST
-   NOT subsequently advertise a smaller maximum ID.  A sender may
-   receive MAX_STREAM_ID frames out of order; a sender MUST therefore
-   ignore any MAX_STREAM_ID that does not increase the maximum.
+   A receiver cannot renege on an advertisement; that is, once a
+   receiver advertises a stream ID via a MAX_STREAM_ID frame,
+   advertising a smaller maximum ID has no effect.  A sender MUST ignore
+   any MAX_STREAM_ID frame that does not increase the maximum stream ID.
+
 
 
 
@@ -5552,12 +5552,11 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    the maximum of the sum of the absolute byte offsets of all streams.
 
    A receiver MAY advertise a larger offset at any point by sending
-   MAX_DATA or MAX_STREAM_DATA frames.  A receiver MUST NOT renege on an
-   advertisement; that is, once a receiver advertises an offset, it MUST
-   NOT subsequently advertise a smaller offset.  A sender could receive
-   MAX_DATA or MAX_STREAM_DATA frames out of order; a sender MUST
-   therefore ignore any flow control offset that does not move the
-   window forward.
+   MAX_DATA or MAX_STREAM_DATA frames.  A receiver cannot renege on an
+   advertisement; that is, once a receiver advertises an offset,
+   advertising a smaller offset has no effect.  A sender MUST therefore
+   ignore any MAX_DATA or MAX_STREAM_DATA frames that do not increase
+   flow control limits.
 
    A receiver MUST close the connection with a FLOW_CONTROL_ERROR error
    (Section 11) if the peer violates the advertised connection or stream
@@ -5594,6 +5593,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    Conversely if a sender believes it is blocked, while endpoint B
    expects more data can be received, then the connection can be in a
+
 
 
 
