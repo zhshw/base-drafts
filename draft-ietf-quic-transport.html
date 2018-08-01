@@ -944,7 +944,7 @@ ul.toc li {
 <dt>Length:</dt>
 <dd style="margin-left: 8">The length of the remainder of the packet (that is, the Packet Number and Payload fields) in octets, encoded as a variable-length integer (<a href="#integer-encoding" class="xref">Section 7.1</a>).</dd>
 <dt>Packet Number:</dt>
-<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.6 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
+<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.3 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
 <dt>Payload:</dt>
 <dd style="margin-left: 8">The payload of the packet.</dd>
 </dl>
@@ -1038,7 +1038,7 @@ ul.toc li {
 <dt>Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 6.1</a> for more details.</dd>
 <dt>Packet Number:</dt>
-<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.6 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
+<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.3 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
 <dt>Protected Payload:</dt>
 <dd style="margin-left: 8">Packets with a short header always include a 1-RTT protected payload.</dd>
 </dl>
@@ -1249,7 +1249,7 @@ ul.toc li {
 <p id="rfc.section.4.10.p.3">During the handshake, an endpoint might receive multiple packets with the long header, and thus be given multiple opportunities to update the Destination Connection ID it sends.  A client MUST only change the value it sends in the Destination Connection ID in response to the first packet of each type it receives from the server (Retry or Initial); a server MUST set its value based on the Initial packet.  Any additional changes are not permitted; if subsequent packets of those types include a different Source Connection ID, they MUST be discarded.  This avoids problems that might arise from stateless processing of multiple Initial packets producing different connection IDs.</p>
 <p id="rfc.section.4.10.p.4">Short headers only include the Destination Connection ID and omit the explicit length.  The length of the Destination Connection ID field is expected to be known to endpoints.</p>
 <p id="rfc.section.4.10.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
-<p id="rfc.section.4.10.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.8</a>).  This randomized value is used to determine the handshake packet protection keys (see Section 5.3.2 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
+<p id="rfc.section.4.10.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.8</a>).  This randomized value is used to determine the packet protection keys for Initial packets (see Section 5.1.1 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
 <p id="rfc.section.4.10.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
 <p id="rfc.section.4.10.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.11</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
 <h2 id="rfc.section.4.11">
@@ -1298,7 +1298,7 @@ ul.toc li {
 </tbody>
 </table>
 <p id="rfc.section.4.11.p.10">Note that these encodings are similar to those in <a href="#integer-encoding" class="xref">Section 7.1</a>, but use different values.</p>
-<p id="rfc.section.4.11.p.11">The encoded packet number is protected as described in Section 5.6 <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. Protection of the packet number is removed prior to recovering the full packet number. The full packet number is reconstructed at the receiver based on the number of significant bits present, the content of those bits, and the largest packet number received on a successfully authenticated packet. Recovering the full packet number is necessary to successfully remove packet protection.</p>
+<p id="rfc.section.4.11.p.11">The encoded packet number is protected as described in Section 5.3 <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. Protection of the packet number is removed prior to recovering the full packet number. The full packet number is reconstructed at the receiver based on the number of significant bits present, the content of those bits, and the largest packet number received on a successfully authenticated packet. Recovering the full packet number is necessary to successfully remove packet protection.</p>
 <p id="rfc.section.4.11.p.12">Once packet number protection is removed, the packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 14-bit value of 0x9b3 will be decoded as 0xaa8309b3.  Example pseudo-code for packet number decoding can be found in <a href="#sample-packet-number-decoding" class="xref">Appendix A</a>.</p>
 <p id="rfc.section.4.11.p.13">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
 <p id="rfc.section.4.11.p.14">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
@@ -1598,7 +1598,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.6.6">6.6.</a> <a href="#transport-parameters" id="transport-parameters">Transport Parameters</a>
 </h2>
 <p id="rfc.section.6.6.p.1">During connection establishment, both endpoints make authenticated declarations of their transport parameters.  These declarations are made unilaterally by each endpoint.  Endpoints are required to comply with the restrictions implied by these parameters; the description of each parameter includes rules for its handling.</p>
-<p id="rfc.section.6.6.p.2">The format of the transport parameters is the TransportParameters struct from <a href="#figure-transport-parameters" class="xref">Figure 10</a>.  This is described using the presentation language from Section 3 of <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>.</p>
+<p id="rfc.section.6.6.p.2">The format of the transport parameters is the TransportParameters struct from <a href="#figure-transport-parameters" class="xref">Figure 10</a>.  This is described using the presentation language from Section 3 of <a href="#TLS13" class="xref">[TLS13]</a>.</p>
 <div id="rfc.figure.10"></div>
 <div id="figure-transport-parameters"></div>
 <pre>
@@ -2438,7 +2438,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h3>
 <p id="rfc.section.7.15.3.p.1">ACK frames MUST only be carried in a packet that has the same packet number space as the packet being ACKed (see <a href="#packet-protected" class="xref">Section 4.8</a>). For instance, packets that are protected with 1-RTT keys MUST be acknowledged in packets that are also protected with 1-RTT keys.</p>
 <p id="rfc.section.7.15.3.p.2">Packets that a client sends with 0-RTT packet protection MUST be acknowledged by the server in packets protected by 1-RTT keys.  This can mean that the client is unable to use these acknowledgments if the server cryptographic handshake messages are delayed or lost.  Note that the same limitation applies to other data sent by the server protected by the 1-RTT keys.</p>
-<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO frames with a reduced delay; see Section 3.5.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
+<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO frames with a reduced delay; see Section 4.3.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
 <h2 id="rfc.section.7.16">
 <a href="#rfc.section.7.16">7.16.</a> <a href="#frame-ack-ecn" id="frame-ack-ecn">ACK_ECN Frame</a>
 </h2>
@@ -3334,11 +3334,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.references.1">14.1.</a> Normative References</h2>
 <table><tbody>
 <tr>
-<td class="reference"><b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b></td>
-<td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
-</tr>
-<tr>
 <td class="reference"><b id="PLPMTUD">[PLPMTUD]</b></td>
 <td class="top">
 <a>Mathis, M.</a> and <a>J. Heffner</a>, "<a href="https://tools.ietf.org/html/rfc4821">Packetization Layer Path MTU Discovery</a>", RFC 4821, DOI 10.17487/RFC4821, March 2007.</td>
@@ -3397,6 +3392,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="reference"><b id="RFC8311">[RFC8311]</b></td>
 <td class="top">
 <a>Black, D.</a>, "<a href="https://tools.ietf.org/html/rfc8311">Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation</a>", RFC 8311, DOI 10.17487/RFC8311, January 2018.</td>
+</tr>
+<tr>
+<td class="reference"><b id="TLS13">[TLS13]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
 </tr>
 </tbody></table>
 <h2 id="rfc.references.2">

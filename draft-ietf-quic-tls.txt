@@ -430,7 +430,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
                  Table 1: Encryption Levels by Packet Type
 
-   Section 6.3 of [QUIC-TRANSPORT] shows how packets at the various
+   Section 6.5 of [QUIC-TRANSPORT] shows how packets at the various
    encryption levels fit into the handshake process.
 
 4.1.  Interface to TLS
@@ -742,9 +742,9 @@ Internet-Draft                QUIC over TLS                  August 2018
    perspective of QUIC, this just looks like additional messages carried
    in the Initial encryption level.  Although it is in principle
    possible to use this feature for address verification in QUIC, QUIC
-   implementations SHOULD instead use the Retry feature (see
-   Section 4.4.2 of [QUIC-TRANSPORT]).  HelloRetryRequest is still used
-   to request key shares.
+   implementations SHOULD instead use the Retry feature (see Section 4.4
+   of [QUIC-TRANSPORT]).  HelloRetryRequest is still used to request key
+   shares.
 
 4.8.  TLS Errors
 
@@ -776,8 +776,8 @@ Internet-Draft                QUIC over TLS                  August 2018
    client's initial Destination Connection ID, as described in
    Section 5.1.1.
 
-   The keys for the remaining encryption level are computed in the same
-   fashion as the corresponding TLS keys (see Section 7 of [TLS13]),
+   The keys for other encryption levels are computed in the same fashion
+   as the corresponding TLS keys (see Section 7 of [TLS13]), except that
 
 
 
@@ -786,9 +786,9 @@ Thomson & Turner        Expires February 2, 2019               [Page 14]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-   except that the label for HKDF-Expand-Label uses the prefix "quic "
-   rather than "tls13 ".  A different label provides key separation
-   between TLS and QUIC.
+   the label for HKDF-Expand-Label uses the prefix "quic " rather than
+   "tls13 ".  A different label provides key separation between TLS and
+   QUIC.
 
 5.1.1.  Initial Secrets
 
@@ -935,7 +935,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    minimum expansion of the corresponding AEAD.
 
    Packet number protection is applied to the packet number encoded as
-   described in Section 4.8 of [QUIC-TRANSPORT].  Since the length of
+   described in Section 4.11 of [QUIC-TRANSPORT].  Since the length of
    the packet number is stored in the first octet of the encoded packet
    number, it may be necessary to progressively decrypt the packet
    number.
@@ -1268,7 +1268,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    containing a ClientHello MUST be padded to a minimum size.  Second,
    if responding to an unverified source address, the server is
    forbidden to send more than three UDP datagrams in its first flight
-   (see Section 4.4.3 of [QUIC-TRANSPORT]).  Finally, because
+   (see Section 4.7 of [QUIC-TRANSPORT]).  Finally, because
    acknowledgements of Handshake packets are authenticated, a blind
    attacker cannot forge them.  Put together, these defenses limit the
    level of amplification.
