@@ -1600,8 +1600,8 @@ Internet-Draft             QUIC Loss Detection               August 2018
 
    An endpoint can misreport ECN markings to alter the congestion
    response of a peer.  Suppressing reports of ECN-CE markings could
-   cause a peer to increase their send rate beyond the point at which
-   the chokepoint on the path becomes congested.
+   cause a peer to increase their send rate.  This can increase could
+   result in congestion and loss at which the chokepoint on the path.
 
    An endpoint MAY attempt to detect suppression of reports by marking
    occasional packets that they send with ECN-CE.  If a packet marked
@@ -1614,9 +1614,9 @@ Internet-Draft             QUIC Loss Detection               August 2018
    so.
 
    Endpoints choose the congestion controller that they use.  Though
-   congestion controllers ideally use ECN markings as input, the exact
-   response for each controller could be different.  Failure to
-   correctly respond to information about ECN markings is therefore
+   congestion controllers ideally use reports of ECN markings as input,
+   the exact response for each controller could be different.  Failure
+   to correctly respond to information about ECN markings is therefore
    difficult to detect.
 
 
