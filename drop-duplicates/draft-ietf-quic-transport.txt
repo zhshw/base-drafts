@@ -1425,7 +1425,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    An endpoint MUST discard packets with duplicate packet numbers.  That
    is, a packet is discarded if the reconstructed packet number is equal
    to the reconstructed packet number of a previously received and
-   processed packet.
+   processed packet.  Note however that endpoints MUST attempt to remove
+   packet protection before discarding packets (see Section 9.3 of
+   [QUIC-TLS]).
 
    A Version Negotiation packet (Section 4.3) does not include a packet
    number.  The Retry packet (Section 4.4) has special rules for
@@ -1436,6 +1438,25 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    The payload of all packets, after removing packet protection,
    consists of a sequence of frames, as shown in Figure 6.  Version
    Negotiation and Stateless Reset do not contain frames.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires February 2, 2019               [Page 26]
+
+Internet-Draft           QUIC Transport Protocol             August 2018
+
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1450,13 +1471,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                   Figure 6: Contents of Protected Payload
-
-
-
-Iyengar & Thomson       Expires February 2, 2019               [Page 26]
-
-Internet-Draft           QUIC Transport Protocol             August 2018
-
 
    Protected payloads MUST contain at least one frame, and MAY contain
    multiple frames and multiple frame types.
@@ -1480,20 +1494,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    flags.  For all other frames, the Frame Type field simply identifies
    the frame.  These frames are explained in more detail as they are
    referenced later in the document.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
