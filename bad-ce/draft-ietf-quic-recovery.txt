@@ -1600,12 +1600,12 @@ Internet-Draft             QUIC Loss Detection               August 2018
 
    An endpoint can misreport ECN markings to alter the congestion
    response of a peer.  Suppressing reports of ECN-CE markings could
-   cause a peer to increase their send rate.  This can increase could
-   result in congestion and loss at which the chokepoint on the path.
+   cause a peer to increase their send rate.  This increase could result
+   in congestion and loss.
 
    An endpoint MAY attempt to detect suppression of reports by marking
    occasional packets that they send with ECN-CE.  If a packet marked
-   with ECN-CE is not faithfully reported when the packet is
+   with ECN-CE is not reported as having been marked when the packet is
    acknowledged, the endpoint SHOULD then disable ECN for that path.
 
    Reporting additional ECN-CE markings will cause a peer to reduce
