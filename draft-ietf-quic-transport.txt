@@ -1244,6 +1244,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    later processing, just as if the packets were received out-of-order
    in separate datagrams.
 
+   Retry (Section 4.4) and Version Negotiation (Section 4.3) packets
+   cannot be coalesced.
+
 4.10.  Connection ID Encoding
 
    A connection ID is used to ensure consistent routing of packets, as
@@ -1279,9 +1282,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    Endpoints using a connection-ID based load balancer could agree with
    the load balancer on a fixed or minimum length and on an encoding for
-   connection IDs.  This fixed portion could encode an explicit length,
-   which allows the entire connection ID to vary in length and still be
-   used by the load balancer.
 
 
 
@@ -1289,6 +1289,10 @@ Iyengar & Thomson       Expires February 2, 2019               [Page 23]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   connection IDs.  This fixed portion could encode an explicit length,
+   which allows the entire connection ID to vary in length and still be
+   used by the load balancer.
 
    The very first packet sent by a client includes a random value for
    Destination Connection ID.  The same value MUST be used for all 0-RTT
@@ -1333,10 +1337,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    This enforces cryptographic separation between the data sent in the
    different packet sequence number spaces.  Each packet number space
-   starts at packet number 0.  Subsequent packets sent in the same
-   packet number space MUST increase the packet number by at least one.
-
-
 
 
 
@@ -1345,6 +1345,9 @@ Iyengar & Thomson       Expires February 2, 2019               [Page 24]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   starts at packet number 0.  Subsequent packets sent in the same
+   packet number space MUST increase the packet number by at least one.
 
    0-RTT and 1-RTT data exist in the same packet number space to make
    loss recovery algorithms easier to implement between the two packet
@@ -1391,9 +1394,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    next expected packet.  The next expected packet is the highest
    received packet number plus one.  For example, if the highest
    successfully authenticated packet had a packet number of 0xaa82f30e,
-   then a packet containing a 14-bit value of 0x9b3 will be decoded as
-   0xaa8309b3.  Example pseudo-code for packet number decoding can be
-   found in Appendix A.
 
 
 
@@ -1401,6 +1401,10 @@ Iyengar & Thomson       Expires February 2, 2019               [Page 25]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   then a packet containing a 14-bit value of 0x9b3 will be decoded as
+   0xaa8309b3.  Example pseudo-code for packet number decoding can be
+   found in Appendix A.
 
    The sender MUST use a packet number size able to represent more than
    twice as large a range than the difference between the largest
@@ -1446,10 +1450,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
                   Figure 6: Contents of Protected Payload
 
-   Protected payloads MUST contain at least one frame, and MAY contain
-   multiple frames and multiple frame types.
-
-
 
 
 
@@ -1457,6 +1457,9 @@ Iyengar & Thomson       Expires February 2, 2019               [Page 26]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Protected payloads MUST contain at least one frame, and MAY contain
+   multiple frames and multiple frame types.
 
    Frames MUST fit within a single QUIC packet and MUST NOT span a QUIC
    packet boundary.  Each frame begins with a Frame Type, indicating its
@@ -1477,9 +1480,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    flags.  For all other frames, the Frame Type field simply identifies
    the frame.  These frames are explained in more detail as they are
    referenced later in the document.
-
-
-
 
 
 
