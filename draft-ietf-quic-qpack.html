@@ -773,7 +773,7 @@ d = count of entries dropped
 <h3 id="rfc.section.5.3.2">
 <a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#header-acknowledgement" id="header-acknowledgement">Header Acknowledgement</a>
 </h3>
-<p id="rfc.section.5.3.2.p.1">After processing a header block on a request or push stream, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;1&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
+<p id="rfc.section.5.3.2.p.1">After processing a header block whose declared Largest Reference is not zero, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;1&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
 <p id="rfc.section.5.3.2.p.2">The same Stream ID can be identified multiple times, as multiple header blocks can be sent on a single stream in the case of intermediate responses, trailers, and pushed requests.  Since header frames on each stream are received and processed in order, this gives the encoder precise feedback on which header blocks within a stream have been fully processed.</p>
 <div id="rfc.figure.4"></div>
 <div id="fig-header-ack"></div>
