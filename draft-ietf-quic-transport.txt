@@ -91,7 +91,7 @@ Table of Contents
        4.6.3.  Starting Packet Numbers . . . . . . . . . . . . . . .  20
        4.6.4.  0-RTT Packet Numbers  . . . . . . . . . . . . . . . .  20
        4.6.5.  Minimum Packet Size . . . . . . . . . . . . . . . . .  20
-     4.7.  Handshake Packet  . . . . . . . . . . . . . . . . . . . .  20
+     4.7.  Handshake Packet  . . . . . . . . . . . . . . . . . . . .  21
      4.8.  Protected Packets . . . . . . . . . . . . . . . . . . . .  21
      4.9.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  22
      4.10. Connection ID Encoding  . . . . . . . . . . . . . . . . .  23
@@ -1087,8 +1087,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    The keys used to protect 0-RTT packets will not change as a result of
    responding to a Retry or Version Negotiation packet unless the client
    also regenerates the cryptographic handshake message.  Sending
-   packets with the same packet number in that case would compromise the
-   packet protection for all 0-RTT packets.
+   packets with the same packet number in that case could compromise the
+   packet protection for all 0-RTT packets because the combination of
+   key and nonce could be used to protect different content.
 
    Receiving a Retry or Version Negotiation packet, especially a Retry
    that changes the connection ID used for subsequent packets, indicates
@@ -1101,6 +1102,12 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    starting from a packet number of 0.  Thus, 0-RTT packets could need
    to use a longer packet number encoding.
 
+   A client MAY instead generate a fresh cryptographic handshake message
+   and start packet numbers from 0.  This ensures that new 0-RTT packets
+   will not use the same keys, avoiding any risk of key and nonce reuse;
+   this also prevents 0-RTT packets from previous handshake attempts
+   from being accepted as part of the connection.
+
 4.6.5.  Minimum Packet Size
 
    The payload of a UDP datagram carrying the Initial packet MUST be
@@ -1108,19 +1115,18 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    frames to the Initial packet and/or by combining the Initial packet
    with a 0-RTT packet (see Section 4.9).
 
-4.7.  Handshake Packet
-
-   A Handshake packet uses long headers with a type value of 0x7D.  It
-   is used to carry acknowledgments and cryptographic handshake messages
-   from the server and client.
-
-
 
 
 Iyengar & Thomson       Expires February 3, 2019               [Page 20]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+4.7.  Handshake Packet
+
+   A Handshake packet uses long headers with a type value of 0x7D.  It
+   is used to carry acknowledgments and cryptographic handshake messages
+   from the server and client.
 
    A server sends its cryptographic handshake in one or more Handshake
    packets in response to an Initial packet if it does not send a Retry
@@ -1165,18 +1171,17 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    keys necessary to remove packet protection or to generate packets
    that will be successfully authenticated.
 
-   Packets protected with 0-RTT and 1-RTT keys are expected to have
-   confidentiality and data origin authentication; the cryptographic
-   handshake ensures that only the communicating endpoints receive the
-   corresponding keys.
-
-
 
 
 Iyengar & Thomson       Expires February 3, 2019               [Page 21]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Packets protected with 0-RTT and 1-RTT keys are expected to have
+   confidentiality and data origin authentication; the cryptographic
+   handshake ensures that only the communicating endpoints receive the
+   corresponding keys.
 
    Packets protected with 0-RTT keys use a type value of 0x7C.  The
    connection ID fields for a 0-RTT packet MUST match the values used in
@@ -1220,12 +1225,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    Senders MUST NOT coalesce QUIC packets with different Destination
    Connection IDs into a single UDP datagram.  Receivers SHOULD ignore
-   any subsequent packets with a different Destination Connection ID
-   than the first packet in the datagram.
 
-   Every QUIC packet that is coalesced into a single UDP datagram is
-   separate and complete.  Though the values of some fields in the
-   packet header might be redundant, no fields are omitted.  The
 
 
 
@@ -1234,6 +1234,12 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 22]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   any subsequent packets with a different Destination Connection ID
+   than the first packet in the datagram.
+
+   Every QUIC packet that is coalesced into a single UDP datagram is
+   separate and complete.  Though the values of some fields in the
+   packet header might be redundant, no fields are omitted.  The
    receiver of coalesced QUIC packets MUST individually process each
    QUIC packet and separately acknowledge them, as if they were received
    as the payload of different UDP datagrams.  If one or more packets in
@@ -1276,12 +1282,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    processing of multiple Initial packets producing different connection
    IDs.
 
-   Short headers only include the Destination Connection ID and omit the
-   explicit length.  The length of the Destination Connection ID field
-   is expected to be known to endpoints.
-
-   Endpoints using a connection-ID based load balancer could agree with
-   the load balancer on a fixed or minimum length and on an encoding for
 
 
 
@@ -1290,6 +1290,12 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 23]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   Short headers only include the Destination Connection ID and omit the
+   explicit length.  The length of the Destination Connection ID field
+   is expected to be known to endpoints.
+
+   Endpoints using a connection-ID based load balancer could agree with
+   the load balancer on a fixed or minimum length and on an encoding for
    connection IDs.  This fixed portion could encode an explicit length,
    which allows the entire connection ID to vary in length and still be
    used by the load balancer.
@@ -1332,12 +1338,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Conceptually, a packet number space is the encryption context in
    which a packet can be processed and ACKed.  Initial packets can only
    be sent with Initial encryption keys and ACKed in packets which are
-   also Initial packets.  Similarly, Handshake packets can only be sent
-   and acknowledged in Handshake packets.
-
-   This enforces cryptographic separation between the data sent in the
-   different packet sequence number spaces.  Each packet number space
-
 
 
 
@@ -1346,6 +1346,11 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 24]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   also Initial packets.  Similarly, Handshake packets can only be sent
+   and acknowledged in Handshake packets.
+
+   This enforces cryptographic separation between the data sent in the
+   different packet sequence number spaces.  Each packet number space
    starts at packet number 0.  Subsequent packets sent in the same
    packet number space MUST increase the packet number by at least one.
 
@@ -1389,11 +1394,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    received on a successfully authenticated packet.  Recovering the full
    packet number is necessary to successfully remove packet protection.
 
-   Once packet number protection is removed, the packet number is
-   decoded by finding the packet number value that is closest to the
-   next expected packet.  The next expected packet is the highest
-   received packet number plus one.  For example, if the highest
-   successfully authenticated packet had a packet number of 0xaa82f30e,
 
 
 
@@ -1402,6 +1402,11 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 25]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   Once packet number protection is removed, the packet number is
+   decoded by finding the packet number value that is closest to the
+   next expected packet.  The next expected packet is the highest
+   received packet number plus one.  For example, if the highest
+   successfully authenticated packet had a packet number of 0xaa82f30e,
    then a packet containing a 14-bit value of 0x9b3 will be decoded as
    0xaa8309b3.  Example pseudo-code for packet number decoding can be
    found in Appendix A.
@@ -1436,6 +1441,23 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    consists of a sequence of frames, as shown in Figure 6.  Version
    Negotiation and Stateless Reset do not contain frames.
 
+
+
+
+
+
+
+
+
+
+
+
+
+Iyengar & Thomson       Expires February 3, 2019               [Page 26]
+
+Internet-Draft           QUIC Transport Protocol             August 2018
+
+
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -1449,14 +1471,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                   Figure 6: Contents of Protected Payload
-
-
-
-
-Iyengar & Thomson       Expires February 3, 2019               [Page 26]
-
-Internet-Draft           QUIC Transport Protocol             August 2018
-
 
    Protected payloads MUST contain at least one frame, and MAY contain
    multiple frames and multiple frame types.
@@ -1480,20 +1494,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    flags.  For all other frames, the Frame Type field simply identifies
    the frame.  These frames are explained in more detail as they are
    referenced later in the document.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
