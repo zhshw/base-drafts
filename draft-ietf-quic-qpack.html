@@ -523,7 +523,7 @@ ul.toc li {
 <h2 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#table-dynamic" id="table-dynamic">Dynamic Table</a>
 </h2>
-<p id="rfc.section.2.2.p.1">The dynamic table consists of a list of header fields maintained in first-in, first-out order.  The dynamic table is initially empty.  Entries are added by instructions on the Encoder Stream (see <a href="#encoder-stream" class="xref">Section 5.2</a>).</p>
+<p id="rfc.section.2.2.p.1">The dynamic table consists of a list of header fields maintained in first-in, first-out order.  The dynamic table is initially empty.  Entries are added by instructions on the encoder stream (see <a href="#encoder-stream" class="xref">Section 5.2</a>).</p>
 <p id="rfc.section.2.2.p.2">Before a new entry is added to the dynamic table, entries are evicted from the end of the dynamic table until the size of the dynamic table is less than or equal to (maximum size - new entry size) or until the table is empty.</p>
 <p id="rfc.section.2.2.p.3">If the size of the new entry is less than or equal to the maximum size, that entry is added to the table.  It is an error to attempt to add an entry that is larger than the maximum size; this MUST be treated as a connection error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.</p>
 <p id="rfc.section.2.2.p.4">A new entry can reference an entry in the dynamic table that will be evicted when adding this new entry into the dynamic table.  Implementations are cautioned to avoid deleting the referenced name if the referenced entry is evicted from the dynamic table prior to inserting the new entry.</p>
@@ -537,7 +537,7 @@ ul.toc li {
 </h3>
 <p id="rfc.section.2.2.1.p.1">Each entry possesses both an absolute index which is fixed for the lifetime of that entry and a relative index which changes over time based on the context of the reference. The first entry inserted has an absolute index of &#8220;1&#8221;; indices increase sequentially with each insertion.</p>
 <p id="rfc.section.2.2.1.p.2">The relative index begins at zero and increases in the opposite direction from the absolute index.  Determining which entry has a relative index of &#8220;0&#8221; depends on the context of the reference.</p>
-<p id="rfc.section.2.2.1.p.3">On the control stream, a relative index of &#8220;0&#8221; always refers to the most recently inserted value in the dynamic table.  Note that this means the entry referenced by a given relative index will change while interpreting instructions on the encoder stream.</p>
+<p id="rfc.section.2.2.1.p.3">On the encoder stream, a relative index of &#8220;0&#8221; always refers to the most recently inserted value in the dynamic table.  Note that this means the entry referenced by a given relative index will change while interpreting instructions on the encoder stream.</p>
 <pre>
     +---+---------------+-----------+
     | n |      ...      |   d + 1   |  Absolute Index
@@ -552,7 +552,7 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Example Dynamic Table Indexing - Control Stream</p>
-<p id="rfc.section.2.2.1.p.4">Because frames from request streams can be delivered out of order with instructions on the control stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 5.4.1</a>). The Base Index is an absolute index. When interpreting the rest of the frame, the entry identified by Base Index has a relative index of zero.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
+<p id="rfc.section.2.2.1.p.4">Because frames from request streams can be delivered out of order with instructions on the encoder stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 5.4.1</a>). The Base Index is an absolute index. When interpreting the rest of the frame, the entry identified by Base Index has a relative index of zero.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
 <pre>
              Base Index
                  |
@@ -585,7 +585,7 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Dynamic Table Indexing - Post-Base References</p>
-<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
+<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the encoder stream, this MUST be treated as a session error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#overview-hol-avoidance" id="overview-hol-avoidance">Avoiding Head-of-Line Blocking in HTTP/QUIC</a>
 </h2>
@@ -946,7 +946,7 @@ d = count of entries dropped
 <h3 id="rfc.section.7.3.2">
 <a href="#rfc.section.7.3.2">7.3.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
 </h3>
-<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 5.3</a>.  Since all table updates are processed in sequence on the control stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
+<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 5.3</a>.  Since all table updates are processed in sequence on the encoder stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
 <p id="rfc.section.7.3.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
 <h2 id="rfc.section.7.4">
 <a href="#rfc.section.7.4">7.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>

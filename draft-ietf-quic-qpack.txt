@@ -195,7 +195,7 @@ Internet-Draft                    QPACK                      August 2018
 
    The dynamic table consists of a list of header fields maintained in
    first-in, first-out order.  The dynamic table is initially empty.
-   Entries are added by instructions on the Encoder Stream (see
+   Entries are added by instructions on the encoder stream (see
    Section 5.2).
 
    Before a new entry is added to the dynamic table, entries are evicted
@@ -258,7 +258,7 @@ Internet-Draft                    QPACK                      August 2018
    direction from the absolute index.  Determining which entry has a
    relative index of "0" depends on the context of the reference.
 
-   On the control stream, a relative index of "0" always refers to the
+   On the encoder stream, a relative index of "0" always refers to the
    most recently inserted value in the dynamic table.  Note that this
    means the entry referenced by a given relative index will change
    while interpreting instructions on the encoder stream.
@@ -297,7 +297,7 @@ Internet-Draft                    QPACK                      August 2018
               Example Dynamic Table Indexing - Control Stream
 
    Because frames from request streams can be delivered out of order
-   with instructions on the control stream, relative indices are
+   with instructions on the encoder stream, relative indices are
    relative to the Base Index at the beginning of the header block (see
    Section 5.4.1).  The Base Index is an absolute index.  When
    interpreting the rest of the frame, the entry identified by Base
@@ -356,7 +356,7 @@ Internet-Draft                    QPACK                      August 2018
    been dropped from the table or which is greater than the declared
    Largest Reference (see Section 5.4.1), this MUST be treated as a
    stream error of type "HTTP_QPACK_DECOMPRESSION_FAILED" error code.
-   If this reference occurs on the control stream, this MUST be treated
+   If this reference occurs on the encoder stream, this MUST be treated
    as a session error.
 
 2.3.  Avoiding Head-of-Line Blocking in HTTP/QUIC
@@ -1133,7 +1133,7 @@ Internet-Draft                    QPACK                      August 2018
    For header blocks encoded in non-blocking mode, the encoder needs to
    forego indexed representations that refer to table updates which have
    not yet been acknowledged with Section 5.3.  Since all table updates
-   are processed in sequence on the control stream, an index into the
+   are processed in sequence on the encoder stream, an index into the
    dynamic table is sufficient to track which entries have been
    acknowledged.
 
