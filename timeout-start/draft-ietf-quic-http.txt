@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                           July 31, 2018
-Expires: February 1, 2019
+Intended status: Standards Track                         August 02, 2018
+Expires: February 3, 2019
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 1, 2019.
+   This Internet-Draft will expire on February 3, 2019.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Bishop                  Expires February 1, 2019                [Page 1]
+Bishop                  Expires February 3, 2019                [Page 1]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Bishop                  Expires February 1, 2019                [Page 2]
+Bishop                  Expires February 3, 2019                [Page 2]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
        4.2.9.  MAX_PUSH_ID . . . . . . . . . . . . . . . . . . . . .  26
@@ -165,9 +165,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 3]
+Bishop                  Expires February 3, 2019                [Page 3]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    identifies HTTP/2 features that are subsumed by QUIC, and describes
@@ -221,9 +221,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 4]
+Bishop                  Expires February 3, 2019                [Page 4]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    that any label MUST conform to the "token" syntax defined in
@@ -277,9 +277,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 5]
+Bishop                  Expires February 3, 2019                [Page 5]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    Clients MUST ignore any included versions which they do not support.
@@ -333,9 +333,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 6]
+Bishop                  Expires February 3, 2019                [Page 6]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    which nominates the endpoint as a valid HTTP Alternative Service for
@@ -389,9 +389,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 7]
+Bishop                  Expires February 3, 2019                [Page 7]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    An HTTP message (request or response) consists of:
@@ -445,9 +445,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 8]
+Bishop                  Expires February 3, 2019                [Page 8]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 3.1.1.  Header Formatting and Compression
@@ -501,9 +501,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019                [Page 9]
+Bishop                  Expires February 3, 2019                [Page 9]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    header field.  Once this connection is successfully established, the
@@ -557,9 +557,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 10]
+Bishop                  Expires February 3, 2019               [Page 10]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    If a stream is cancelled after receiving a complete response, the
@@ -613,9 +613,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 11]
+Bishop                  Expires February 3, 2019               [Page 11]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    the server commits to maintain these IDs in the tree, clients can use
@@ -669,9 +669,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 12]
+Bishop                  Expires February 3, 2019               [Page 12]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    Clients SHOULD assume the server is actively performing such pruning
@@ -725,9 +725,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 13]
+Bishop                  Expires February 3, 2019               [Page 13]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 3.3.2.  Control Streams
@@ -781,9 +781,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 14]
+Bishop                  Expires February 3, 2019               [Page 14]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    Only servers can push; if a server receives a client-initiated push
@@ -837,9 +837,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 15]
+Bishop                  Expires February 3, 2019               [Page 15]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
     0                   1                   2                   3
@@ -893,9 +893,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 16]
+Bishop                  Expires February 3, 2019               [Page 16]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
     0                   1                   2                   3
@@ -949,9 +949,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 17]
+Bishop                  Expires February 3, 2019               [Page 17]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
     0                   1                   2                   3
@@ -1005,9 +1005,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 18]
+Bishop                  Expires February 3, 2019               [Page 18]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    server push using a Push ID (see Section 4.2.7), or a placeholder
@@ -1061,9 +1061,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 19]
+Bishop                  Expires February 3, 2019               [Page 19]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    to avoid opening a stream.  If the push stream has been opened by the
@@ -1117,9 +1117,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 20]
+Bishop                  Expires February 3, 2019               [Page 20]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    Different values for the same parameter can be advertised by each
@@ -1173,9 +1173,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 21]
+Bishop                  Expires February 3, 2019               [Page 21]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 4.2.6.1.  Integer encoding
@@ -1229,9 +1229,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 22]
+Bishop                  Expires February 3, 2019               [Page 22]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
     0                   1                   2                   3
@@ -1285,9 +1285,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 23]
+Bishop                  Expires February 3, 2019               [Page 23]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 4.2.8.  GOAWAY
@@ -1341,9 +1341,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 24]
+Bishop                  Expires February 3, 2019               [Page 24]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    If the client has sent requests on streams with a higher Stream ID
@@ -1397,9 +1397,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 25]
+Bishop                  Expires February 3, 2019               [Page 25]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    server MAY send another GOAWAY frame with an updated last Stream ID.
@@ -1453,9 +1453,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 26]
+Bishop                  Expires February 3, 2019               [Page 26]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    previously received MUST be treated as a connection error of type
@@ -1509,9 +1509,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 27]
+Bishop                  Expires February 3, 2019               [Page 27]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    HTTP_INTERNAL_ERROR (0x03):  An internal error has occurred in the
@@ -1565,9 +1565,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 28]
+Bishop                  Expires February 3, 2019               [Page 28]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 7.  Extensions to HTTP/QUIC
@@ -1621,9 +1621,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 29]
+Bishop                  Expires February 3, 2019               [Page 29]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    primarily where necessary to accommodate the differences in behavior
@@ -1677,9 +1677,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 30]
+Bishop                  Expires February 3, 2019               [Page 30]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    priority assignments in PRIORITY frames and (optionally) in HEADERS
@@ -1733,9 +1733,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 31]
+Bishop                  Expires February 3, 2019               [Page 31]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    SETTINGS (0x4):  SETTINGS frames are sent only at the beginning of
@@ -1789,9 +1789,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 32]
+Bishop                  Expires February 3, 2019               [Page 32]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    SETTINGS_INITIAL_WINDOW_SIZE:  QUIC requires both stream and
@@ -1845,9 +1845,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 33]
+Bishop                  Expires February 3, 2019               [Page 33]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    CANCEL (0x8):  HTTP_REQUEST_CANCELLED in Section 6.1.
@@ -1901,9 +1901,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 34]
+Bishop                  Expires February 3, 2019               [Page 34]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 10.2.  Registration of QUIC Version Hint Alt-Svc Parameter
@@ -1957,9 +1957,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 35]
+Bishop                  Expires February 3, 2019               [Page 35]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
                   +--------------+------+---------------+
@@ -2013,9 +2013,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 36]
+Bishop                  Expires February 3, 2019               [Page 36]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    effort SHOULD be made to avoid assigning the corresponding value to
@@ -2069,9 +2069,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 37]
+Bishop                  Expires February 3, 2019               [Page 37]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    New registrations are advised to provide the following information:
@@ -2125,9 +2125,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 38]
+Bishop                  Expires February 3, 2019               [Page 38]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    |                         |       | load          |                 |
@@ -2181,9 +2181,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 39]
+Bishop                  Expires February 3, 2019               [Page 39]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    New entries in this registry require the following information:
@@ -2226,20 +2226,20 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
               Header Compression for HTTP over QUIC", draft-ietf-quic-
-              qpack (work in progress), July 2018.
+              qpack (work in progress), August 2018.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), July 2018.
+              transport (work in progress), August 2018.
 
 
 
 
 
-Bishop                  Expires February 1, 2019               [Page 40]
+Bishop                  Expires February 3, 2019               [Page 40]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
@@ -2293,9 +2293,9 @@ Internet-Draft               HTTP over QUIC                    July 2018
 
 
 
-Bishop                  Expires February 1, 2019               [Page 41]
+Bishop                  Expires February 3, 2019               [Page 41]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
@@ -2349,9 +2349,9 @@ A.3.  Since draft-ietf-quic-http-10
 
 
 
-Bishop                  Expires February 1, 2019               [Page 42]
+Bishop                  Expires February 3, 2019               [Page 42]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
 A.4.  Since draft-ietf-quic-http-09
@@ -2405,9 +2405,9 @@ A.9.  Since draft-ietf-quic-http-04
 
 
 
-Bishop                  Expires February 1, 2019               [Page 43]
+Bishop                  Expires February 3, 2019               [Page 43]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    o  Identify server push using Push ID rather than a stream ID
@@ -2461,9 +2461,9 @@ A.13.  Since draft-ietf-quic-http-00
 
 
 
-Bishop                  Expires February 1, 2019               [Page 44]
+Bishop                  Expires February 3, 2019               [Page 44]
 
-Internet-Draft               HTTP over QUIC                    July 2018
+Internet-Draft               HTTP over QUIC                  August 2018
 
 
    o  Reworked SETTINGS_ACK to account for indeterminate inter-stream
@@ -2517,4 +2517,4 @@ Author's Address
 
 
 
-Bishop                  Expires February 1, 2019               [Page 45]
+Bishop                  Expires February 3, 2019               [Page 45]

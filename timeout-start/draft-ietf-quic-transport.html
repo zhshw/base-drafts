@@ -439,7 +439,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-31" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-02" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -463,12 +463,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 1, 2019</td>
+<td class="left">Expires: February 3, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 31, 2018</td>
+<td class="right">August 02, 2018</td>
 </tr>
 
     	
@@ -487,7 +487,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 1, 2019.</p>
+<p>This Internet-Draft will expire on February 3, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1871,7 +1871,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h3>
 <p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the advertised idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
 <p id="rfc.section.6.13.2.p.2">Endpoints use the value they advertise when determining an idle timeout.  The idle timeout starts from the last packet received, or the first packet sent after sending that packet.  The latter condition ensures that initiating new activity postpones a timeout.</p>
-<p id="rfc.section.6.13.2.p.3">The value for an idle timeout can be asymmetric.  The value advertised by a peer is only used to determine whether the connection is live at a peer.  An endpoint that sends packets near the end of the idle timeout period of a peer risks having those packets discarded if its peer enters the draining state before the packets arrive.  If a peer could be in within an RTO (see Section 4.3.3 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>) of an idle timeout, it is advisable to test for liveness before sending any data that cannot be retried safely.</p>
+<p id="rfc.section.6.13.2.p.3">The value for an idle timeout can be asymmetric.  The value advertised by a peer is only used to determine whether the connection is live at a peer.  An endpoint that sends packets near the end of the idle timeout period of a peer risks having those packets discarded if its peer enters the draining state before the packets arrive.  If a peer could timeout within an RTO (see Section 4.3.3 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), it is advisable to test for liveness before sending any data that cannot be retried safely.</p>
 <h3 id="rfc.section.6.13.3">
 <a href="#rfc.section.6.13.3">6.13.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
 </h3>
@@ -3298,12 +3298,12 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-RECOVERY">[QUIC-RECOVERY]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, July 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="QUIC-TLS">[QUIC-TLS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, July 2018.</td>
+<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -3357,7 +3357,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, July 2018.</td>
+<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2018">[RFC2018]</b></td>
