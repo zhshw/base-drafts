@@ -3084,8 +3084,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    Each endpoint advertises their own idle timeout to their peer.  The
    idle timeout starts from the last packet received, or the first
-   packet sent after sending that packet.  The latter condition ensures
-   that initiating new activity postpones a timeout.
+   packet sent after the last received packet.  The latter condition
+   ensures that initiating new activity postpones a timeout.
 
    The value for an idle timeout can be asymmetric.  The value
    advertised by an endpoint is only used to determine whether the
