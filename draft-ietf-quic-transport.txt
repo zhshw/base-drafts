@@ -3237,9 +3237,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 6.13.2.  Idle Timeout
 
-   A connection that remains idle for longer than the idle timeout (see
-   Section 6.6.1) is closed.  A connection enters the draining state
-   when the idle timeout expires.
+   A connection that remains idle for longer than the advertised idle
+   timeout (see Section 6.6.1) is closed.  A connection enters the
+   draining state when the idle timeout expires.
 
 
 
@@ -3250,10 +3250,19 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 58]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-   The time at which an idle timeout takes effect won't be perfectly
-   synchronized on both endpoints.  An endpoint that sends packets near
-   the end of an idle period could have those packets discarded if its
-   peer enters the draining state before the packet is received.
+   Each endpoint advertises their own idle timeout to their peer.  The
+   idle timeout starts from the last packet received, or the first
+   packet sent after the last received packet.  The latter condition
+   ensures that initiating new activity postpones a timeout.
+
+   The value for an idle timeout can be asymmetric.  The value
+   advertised by an endpoint is only used to determine whether the
+   connection is live at that endpoint.  An endpoint that sends packets
+   near the end of the idle timeout period of a peer risks having those
+   packets discarded if its peer enters the draining state before the
+   packets arrive.  If a peer could timeout within an RTO (see
+   Section 4.3.3 of [QUIC-RECOVERY]), it is advisable to test for
+   liveness before sending any data that cannot be retried safely.
 
 6.13.3.  Immediate Close
 
@@ -3288,15 +3297,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    constant exchange of closing frames until the closing period on
    either peer ended.
 
-   An immediate close can be used after an application protocol has
-   arranged to close a connection.  This might be after the application
-   protocols negotiates a graceful shutdown.  The application protocol
-   exchanges whatever messages that are needed to cause both endpoints
-   to agree to close the connection, after which the application
-   requests that the connection be closed.  The application protocol can
-   use an APPLICATION_CLOSE message with an appropriate error code to
-   signal closure.
-
 
 
 
@@ -3305,6 +3305,15 @@ Iyengar & Thomson       Expires February 3, 2019               [Page 59]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   An immediate close can be used after an application protocol has
+   arranged to close a connection.  This might be after the application
+   protocols negotiates a graceful shutdown.  The application protocol
+   exchanges whatever messages that are needed to cause both endpoints
+   to agree to close the connection, after which the application
+   requests that the connection be closed.  The application protocol can
+   use an APPLICATION_CLOSE message with an appropriate error code to
+   signal closure.
 
 6.13.4.  Stateless Reset
 
@@ -3345,6 +3354,14 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    possible - indistinguishable from a regular packet with a short
    header.
 
+
+
+
+Iyengar & Thomson       Expires February 3, 2019               [Page 60]
+
+Internet-Draft           QUIC Transport Protocol             August 2018
+
+
    The message consists of a header octet, followed by an arbitrary
    number of random octets, followed by a Stateless Reset Token.
 
@@ -3354,14 +3371,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    values.  This is intended to allow for a destination connection ID of
    the maximum length permitted, a packet number, and minimal payload.
    The Stateless Reset Token corresponds to the minimum expansion of the
-
-
-
-Iyengar & Thomson       Expires February 3, 2019               [Page 60]
-
-Internet-Draft           QUIC Transport Protocol             August 2018
-
-
    packet protection AEAD.  More random octets might be necessary if the
    endpoint could have negotiated a packet protection scheme with a
    larger minimum AEAD expansion.
@@ -3400,6 +3409,15 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    o  The randomly generated connection ID can be used by entities other
       than the peer to identify this as a potential stateless reset.  An
+
+
+
+
+Iyengar & Thomson       Expires February 3, 2019               [Page 61]
+
+Internet-Draft           QUIC Transport Protocol             August 2018
+
+
       endpoint that occasionally uses different connection IDs might
       introduce some uncertainty about this.
 
@@ -3410,13 +3428,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    An endpoint that wishes to communicate a fatal connection error MUST
    use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has
    sufficient state to do so.
-
-
-
-Iyengar & Thomson       Expires February 3, 2019               [Page 61]
-
-Internet-Draft           QUIC Transport Protocol             August 2018
-
 
    This stateless reset design is specific to QUIC version 1.  An
    endpoint that supports multiple versions of QUIC needs to generate a
@@ -3454,6 +3465,15 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    endpoint could use HMAC [RFC2104] (for example, HMAC(static_key,
    connection_id)) or HKDF [RFC5869] (for example, using the static key
    as input keying material, with the connection ID as salt).  The
+
+
+
+
+Iyengar & Thomson       Expires February 3, 2019               [Page 62]
+
+Internet-Draft           QUIC Transport Protocol             August 2018
+
+
    output of this function is truncated to 16 octets to produce the
    Stateless Reset Token for that connection.
 
@@ -3466,13 +3486,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    to reset the connection.  An endpoint that uses this design cannot
    allow its peers to send packets with a zero-length destination
    connection ID.
-
-
-
-Iyengar & Thomson       Expires February 3, 2019               [Page 62]
-
-Internet-Draft           QUIC Transport Protocol             August 2018
-
 
    Revealing the Stateless Reset Token allows any entity to terminate
    the connection, so a value can only be used once.  This method for
@@ -3509,19 +3522,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    This means that integers are encoded on 1, 2, 4, or 8 octets and can
    encode 6, 14, 30, or 62 bit values respectively.  Table 4 summarizes
    the encoding properties.
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -1930,8 +1930,9 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.6.13.2">
 <a href="#rfc.section.6.13.2">6.13.2.</a> <a href="#idle-timeout" id="idle-timeout">Idle Timeout</a>
 </h3>
-<p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
-<p id="rfc.section.6.13.2.p.2">The time at which an idle timeout takes effect won&#8217;t be perfectly synchronized on both endpoints.  An endpoint that sends packets near the end of an idle period could have those packets discarded if its peer enters the draining state before the packet is received.</p>
+<p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the advertised idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
+<p id="rfc.section.6.13.2.p.2">Each endpoint advertises their own idle timeout to their peer. The idle timeout starts from the last packet received, or the first packet sent after the last received packet.  The latter condition ensures that initiating new activity postpones a timeout.</p>
+<p id="rfc.section.6.13.2.p.3">The value for an idle timeout can be asymmetric.  The value advertised by an endpoint is only used to determine whether the connection is live at that endpoint.  An endpoint that sends packets near the end of the idle timeout period of a peer risks having those packets discarded if its peer enters the draining state before the packets arrive.  If a peer could timeout within an RTO (see Section 4.3.3 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), it is advisable to test for liveness before sending any data that cannot be retried safely.</p>
 <h3 id="rfc.section.6.13.3">
 <a href="#rfc.section.6.13.3">6.13.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
 </h3>
