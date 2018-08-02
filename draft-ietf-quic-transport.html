@@ -444,7 +444,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-01" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-02" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -468,12 +468,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 2, 2019</td>
+<td class="left">Expires: February 3, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 01, 2018</td>
+<td class="right">August 02, 2018</td>
 </tr>
 
     	
@@ -492,7 +492,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 2, 2019.</p>
+<p>This Internet-Draft will expire on February 3, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1467,7 +1467,7 @@ ul.toc li {
 <h2 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
 </h2>
-<p id="rfc.section.6.1.p.1">Each connection is identified by a collection of identifiers assigned to it. A connection ID can be 0 octets in length (and thus unlikely to be unique), or between 4 and 18 octets (inclusive).  Connection IDs are selected independently in each direction.</p>
+<p id="rfc.section.6.1.p.1">Each connection possesses a set of identifiers, any of which could be used to distinguish it from other connections.  A connection ID can be either 0 octets in length, or between 4 and 18 octets (inclusive).  Connection IDs are selected independently in each direction.</p>
 <p id="rfc.section.6.1.p.2">The primary function of a connection ID is to ensure that changes in addressing at lower protocol layers (UDP, IP, and below) don&#8217;t cause packets for a QUIC connection to be delivered to the wrong endpoint.  Each endpoint selects connection IDs using an implementation-specific (and perhaps deployment-specific) method which will allow packets with that connection ID to be routed back to the endpoint and identified by the endpoint upon receipt.</p>
 <p id="rfc.section.6.1.p.3">A zero-length connection ID MAY be used when the connection ID is not needed for routing and the address/port tuple of packets is sufficient to associate them to a connection. An endpoint whose peer has selected a zero-length connection ID MUST continue to use a zero-length connection ID for the lifetime of the connection and MUST NOT send packets from any other local address.</p>
 <p id="rfc.section.6.1.p.4">When an endpoint has requested a non-zero-length connection ID, it will issue a series of connection IDs over the lifetime of a connection. The series of connection IDs issued by an endpoint is ordered, with the final connection ID selected during the handshake coming first.  Additional connection IDs are provided using the NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>), each with a specified sequence number.  The series of connection IDs issued SHOULD be contiguous, but might not appear to be upon receipt due to reordering or loss.</p>
