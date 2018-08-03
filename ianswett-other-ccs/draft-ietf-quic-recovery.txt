@@ -1296,9 +1296,10 @@ Internet-Draft             QUIC Loss Detection               August 2018
    TLP or RTO timer expires, as described in Section 4.3.2 and
    Section 4.3.3.
 
-   Implementations MAY use other congestion control algorithms.  The
-   signals QUIC provides for congestion control are generic and are
-   designed to support different algorithms.
+   Implementations MAY use other congestion control algorithms, and
+   endpoints MAY use different algorithms from one another.  The signals
+   QUIC provides for congestion control are generic and are designed to
+   support different algorithms.
 
 5.1.  Explicit Congestion Notification
 
@@ -1336,7 +1337,6 @@ Internet-Draft             QUIC Loss Detection               August 2018
    being acknowledged.  This is slightly different from TCP's definition
    of recovery, which ends when the lost packet that started recovery is
    acknowledged.
-
 
 
 
