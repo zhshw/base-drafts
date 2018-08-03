@@ -1278,10 +1278,10 @@ Internet-Draft             QUIC Loss Detection               August 2018
 
 5.  Congestion Control
 
-   QUIC's congestion control is based on TCP NewReno [RFC6582]
-   congestion control to determine the congestion window.  QUIC
-   congestion control is specified in bytes due to finer control and the
-   ease of appropriate byte counting [RFC3465].
+   QUIC's congestion control is based on TCP NewReno [RFC6582].  NewReno
+   is a congestion window based congestion control.  QUIC specifies the
+   congestion window in bytes rather than packets due to finer control
+   and the ease of appropriate byte counting [RFC3465].
 
 
 
@@ -1295,6 +1295,11 @@ Internet-Draft             QUIC Loss Detection               August 2018
    congestion window, unless the packet is a probe packet sent after the
    TLP or RTO timer expires, as described in Section 4.3.2 and
    Section 4.3.3.
+
+   Implementations MAY use other congestion control algorithms, and
+   endpoints MAY use different algorithms from one another.  The signals
+   QUIC provides for congestion control are generic and are designed to
+   support different algorithms.
 
 5.1.  Explicit Congestion Notification
 
@@ -1333,11 +1338,6 @@ Internet-Draft             QUIC Loss Detection               August 2018
    of recovery, which ends when the lost packet that started recovery is
    acknowledged.
 
-   The recovery period limits congestion window reduction to once per
-   round trip.  During recovery, the congestion window remains unchanged
-   irrespective of new losses or increases in the ECN-CE counter.
-
-
 
 
 
@@ -1345,6 +1345,10 @@ Iyengar & Swett         Expires February 4, 2019               [Page 24]
 
 Internet-Draft             QUIC Loss Detection               August 2018
 
+
+   The recovery period limits congestion window reduction to once per
+   round trip.  During recovery, the congestion window remains unchanged
+   irrespective of new losses or increases in the ECN-CE counter.
 
 5.5.  Tail Loss Probe
 
@@ -1389,10 +1393,6 @@ Internet-Draft             QUIC Loss Detection               August 2018
    As an example of a well-known and publicly available implementation
    of a flow pacer, implementers are referred to the Fair Queue packet
    scheduler (fq qdisc) in Linux (3.11 onwards).
-
-
-
-
 
 
 
