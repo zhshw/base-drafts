@@ -1278,9 +1278,9 @@ DetectLostPackets(largest_acked):
 <h2 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#misreporting-ecn-markings" id="misreporting-ecn-markings">Misreporting ECN Markings</a>
 </h2>
-<p id="rfc.section.6.3.p.1">An endpoint can misreport ECN markings to alter the congestion response of a peer.  Suppressing reports of ECN-CE markings could cause a peer to increase their send rate.  This increase could result in congestion and loss.</p>
-<p id="rfc.section.6.3.p.2">An endpoint MAY attempt to detect suppression of reports by marking occasional packets that they send with ECN-CE.  If a packet marked with ECN-CE is not reported as having been marked when the packet is acknowledged, the endpoint SHOULD then disable ECN for that path.</p>
-<p id="rfc.section.6.3.p.3">Reporting additional ECN-CE markings will cause a peer to reduce their sending rate, which is similar in effect to advertising reduced connection flow control limits and so no advantage is gained by doing so.</p>
+<p id="rfc.section.6.3.p.1">A receiver can misreport ECN markings to alter the congestion response of a sender.  Suppressing reports of ECN-CE markings could cause a sender to increase their send rate.  This increase could result in congestion and loss.</p>
+<p id="rfc.section.6.3.p.2">A sender MAY attempt to detect suppression of reports by marking occasional packets that they send with ECN-CE.  If a packet marked with ECN-CE is not reported as having been marked when the packet is acknowledged, the sender SHOULD then disable ECN for that path.</p>
+<p id="rfc.section.6.3.p.3">Reporting additional ECN-CE markings will cause a sender to reduce their sending rate, which is similar in effect to advertising reduced connection flow control limits and so no advantage is gained by doing so.</p>
 <p id="rfc.section.6.3.p.4">Endpoints choose the congestion controller that they use.  Though congestion controllers generally treat reports of ECN-CE markings as equivalent to loss <a href="#RFC8311" class="xref">[RFC8311]</a>, the exact response for each controller could be different.  Failure to correctly respond to information about ECN markings is therefore difficult to detect.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
