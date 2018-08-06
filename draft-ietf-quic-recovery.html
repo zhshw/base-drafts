@@ -336,6 +336,7 @@ ul.toc li {
 <link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations">
 <link href="#rfc.section.6.1" rel="Chapter" title="6.1 Congestion Signals">
 <link href="#rfc.section.6.2" rel="Chapter" title="6.2 Traffic Analysis">
+<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Misreporting ECN Markings">
 <link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
 <link href="#rfc.references" rel="Chapter" title="8 References">
 <link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References">
@@ -532,6 +533,8 @@ ul.toc li {
 <ul><li>6.1.   <a href="#rfc.section.6.1">Congestion Signals</a>
 </li>
 <li>6.2.   <a href="#rfc.section.6.2">Traffic Analysis</a>
+</li>
+<li>6.3.   <a href="#rfc.section.6.3">Misreporting ECN Markings</a>
 </li>
 </ul><li>7.   <a href="#rfc.section.7">IANA Considerations</a>
 </li>
@@ -1272,6 +1275,13 @@ DetectLostPackets(largest_acked):
 <a href="#rfc.section.6.2">6.2.</a> <a href="#traffic-analysis" id="traffic-analysis">Traffic Analysis</a>
 </h2>
 <p id="rfc.section.6.2.p.1">Packets that carry only ACK frames can be heuristically identified by observing packet size.  Acknowledgement patterns may expose information about link characteristics or application behavior.  Endpoints can use PADDING frames or bundle acknowledgments with other frames to reduce leaked information.</p>
+<h2 id="rfc.section.6.3">
+<a href="#rfc.section.6.3">6.3.</a> <a href="#misreporting-ecn-markings" id="misreporting-ecn-markings">Misreporting ECN Markings</a>
+</h2>
+<p id="rfc.section.6.3.p.1">An endpoint can misreport ECN markings to alter the congestion response of a peer.  Suppressing reports of ECN-CE markings could cause a peer to increase their send rate.  This increase could result in congestion and loss.</p>
+<p id="rfc.section.6.3.p.2">An endpoint MAY attempt to detect suppression of reports by marking occasional packets that they send with ECN-CE.  If a packet marked with ECN-CE is not reported as having been marked when the packet is acknowledged, the endpoint SHOULD then disable ECN for that path.</p>
+<p id="rfc.section.6.3.p.3">Reporting additional ECN-CE markings will cause a peer to reduce their sending rate, which is similar in effect to advertising reduced connection flow control limits and so no advantage is gained by doing so.</p>
+<p id="rfc.section.6.3.p.4">Endpoints choose the congestion controller that they use.  Though congestion controllers generally treat reports of ECN-CE markings as equivalent to loss <a href="#RFC8311" class="xref">[RFC8311]</a>, the exact response for each controller could be different.  Failure to correctly respond to information about ECN markings is therefore difficult to detect.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
