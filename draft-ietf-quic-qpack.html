@@ -851,7 +851,7 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.2">
 <a href="#rfc.section.5.4.2.2">5.4.2.2.</a> <a href="#indexed-header-field-with-post-base-index" id="indexed-header-field-with-post-base-index">Indexed Header Field With Post-Base Index</a>
 </h4>
-<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0001&#8217; 4-bit pattern, followed by the post-base index (see <a href="#indexing" class="xref">Section 2.2.1</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0001&#8217; 4-bit pattern, followed by the post-base index (see <a href="#post-base-indexing" class="xref">Section 2.2.2</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
@@ -880,7 +880,7 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.4">
 <a href="#rfc.section.5.4.2.4">5.4.2.4.</a> <a href="#literal-header-field-with-post-base-name-reference" id="literal-header-field-with-post-base-name-reference">Literal Header Field With Post-Base Name Reference</a>
 </h4>
-<p id="rfc.section.5.4.2.4.p.1">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#indexing" class="xref">Section 2.2.1</a>) encoded as an integer with a 3-bit prefix.</p>
+<p id="rfc.section.5.4.2.4.p.1">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#post-base-indexing" class="xref">Section 2.2.2</a>) encoded as an integer with a 3-bit prefix.</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
