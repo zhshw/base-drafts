@@ -786,10 +786,10 @@ Thomson & Turner        Expires February 9, 2019               [Page 14]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-   encryption level and when it all CRYPTO frames for that encryption
-   level have been acknowledged by its peer.  However, this does not
-   guarantee that no further packets will need to be received or sent at
-   that encryption level because a peer might not have received all the
+   encryption level and when all CRYPTO frames for that encryption level
+   have been acknowledged by its peer.  However, this does not guarantee
+   that no further packets will need to be received or sent at that
+   encryption level because a peer might not have received all the
    acknowledgements necessary to reach the same state.
 
    After all CRYPTO frames for a given encryption level have been sent
