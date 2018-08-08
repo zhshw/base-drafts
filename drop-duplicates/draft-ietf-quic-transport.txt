@@ -1423,7 +1423,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    0x6bc107.
 
    A receiver MUST discard a newly unprotected packet unless it is
-   certain that it has not received another packet with the same packet
+   certain that it has not processed another packet with the same packet
    number from the same packet number space.  Duplicate suppression MUST
    happen after removing packet protection for the reasons described in
    Section 9.3 of [QUIC-TLS].  An efficient algorithm for duplicate
