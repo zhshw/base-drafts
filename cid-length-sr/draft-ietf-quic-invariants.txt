@@ -4,8 +4,8 @@
 
 QUIC                                                          M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                           July 09, 2018
-Expires: January 10, 2019
+Intended status: Standards Track                         August 08, 2018
+Expires: February 9, 2019
 
 
                  Version-Independent Properties of QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 10, 2019.
+   This Internet-Draft will expire on February 9, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson                 Expires January 10, 2019                [Page 1]
+Thomson                 Expires February 9, 2019                [Page 1]
 
-Internet-Draft               QUIC Invariants                   July 2018
+Internet-Draft               QUIC Invariants                 August 2018
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -80,13 +80,13 @@ Table of Contents
      4.4.  Version . . . . . . . . . . . . . . . . . . . . . . . . .   5
    5.  Version Negotiation . . . . . . . . . . . . . . . . . . . . .   6
    6.  Security and Privacy Considerations . . . . . . . . . . . . .   7
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   8
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   7
    8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   8
      8.1.  Normative References  . . . . . . . . . . . . . . . . . .   8
      8.2.  Informative References  . . . . . . . . . . . . . . . . .   8
      8.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   8
    Appendix A.  Incorrect Assumptions  . . . . . . . . . . . . . . .   8
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  10
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .   9
 
 1.  Introduction
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson                 Expires January 10, 2019                [Page 2]
+Thomson                 Expires February 9, 2019                [Page 2]
 
-Internet-Draft               QUIC Invariants                   July 2018
+Internet-Draft               QUIC Invariants                 August 2018
 
 
    Appendix A is a non-exhaustive list of some incorrect assumptions
@@ -125,6 +125,9 @@ Internet-Draft               QUIC Invariants                   July 2018
    "OPTIONAL" in this document are to be interpreted as described in BCP
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
+
+   This document uses terms and notational conventions from
+   [QUIC-TRANSPORT].
 
 3.  An Extremely Abstract Description of QUIC
 
@@ -162,12 +165,9 @@ Internet-Draft               QUIC Invariants                   July 2018
 
 
 
-
-
-
-Thomson                 Expires January 10, 2019                [Page 3]
+Thomson                 Expires February 9, 2019                [Page 3]
 
-Internet-Draft               QUIC Invariants                   July 2018
+Internet-Draft               QUIC Invariants                 August 2018
 
 
     0                   1                   2                   3
@@ -221,9 +221,9 @@ Internet-Draft               QUIC Invariants                   July 2018
 
 
 
-Thomson                 Expires January 10, 2019                [Page 4]
+Thomson                 Expires February 9, 2019                [Page 4]
 
-Internet-Draft               QUIC Invariants                   July 2018
+Internet-Draft               QUIC Invariants                 August 2018
 
 
     0                   1                   2                   3
@@ -277,9 +277,9 @@ Internet-Draft               QUIC Invariants                   July 2018
 
 
 
-Thomson                 Expires January 10, 2019                [Page 5]
+Thomson                 Expires February 9, 2019                [Page 5]
 
-Internet-Draft               QUIC Invariants                   July 2018
+Internet-Draft               QUIC Invariants                 August 2018
 
 
    additional properties which apply to a specific QUIC version, or to a
@@ -290,12 +290,7 @@ Internet-Draft               QUIC Invariants                   July 2018
    A QUIC endpoint that receives a packet with a long header and a
    version it either does not understand or does not support might send
    a Version Negotiation packet in response.  Packets with a short
-   header do not trigger version negotiation and are always associated
-   with an existing connection.
-
-   Consequently, until an endpoint has confirmed that its peer supports
-   the QUIC version it has chosen, it can only send packets that use the
-   long header.
+   header do not trigger version negotiation.
 
    A Version Negotiation packet sets the high bit of the first octet,
    and thus it conforms with the format of a packet with a long header
@@ -330,25 +325,26 @@ Internet-Draft               QUIC Invariants                   July 2018
    The Version Negotiation packet contains a list of Supported Version
    fields, each identifying a version that the endpoint sending the
    packet supports.  The Supported Version fields follow the Version
-
-
-
-Thomson                 Expires January 10, 2019                [Page 6]
-
-Internet-Draft               QUIC Invariants                   July 2018
-
-
    field.  A Version Negotiation packet contains no other fields.  An
    endpoint MUST ignore a packet that contains no Supported Version
    fields, or a truncated Supported Version.
+
+
+
+
+
+Thomson                 Expires February 9, 2019                [Page 6]
+
+Internet-Draft               QUIC Invariants                 August 2018
+
 
    Version Negotiation packets do not use integrity or confidentiality
    protection.  A specific QUIC version might authenticate the packet as
    part of its connection establishment process.
 
-   The server MUST include the value from the Source Connection ID field
-   of the packet it receives in the Destination Connection ID field.
-   The value for Source Connection ID MUST be copied from the
+   An endpoint MUST include the value from the Source Connection ID
+   field of the packet it receives in the Destination Connection ID
+   field.  The value for Source Connection ID MUST be copied from the
    Destination Connection ID of the received packet, which is initially
    randomly selected by a client.  Echoing both connection IDs gives
    clients some assurance that the server received the packet and that
@@ -385,18 +381,18 @@ Internet-Draft               QUIC Invariants                   July 2018
    by off-path attackers.  QUIC versions MUST define a mechanism that
    authenticates the values it contains.
 
-
-
-
-
-Thomson                 Expires January 10, 2019                [Page 7]
-
-Internet-Draft               QUIC Invariants                   July 2018
-
-
 7.  IANA Considerations
 
    This document makes no request of IANA.
+
+
+
+
+
+Thomson                 Expires February 9, 2019                [Page 7]
+
+Internet-Draft               QUIC Invariants                 August 2018
+
 
 8.  References
 
@@ -405,7 +401,7 @@ Internet-Draft               QUIC Invariants                   July 2018
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), July 2018.
+              transport (work in progress), August 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -421,7 +417,7 @@ Internet-Draft               QUIC Invariants                   July 2018
    [QUIC-TLS]
               Thomson, M., Ed. and S. Turner, Ed., "Using Transport
               Layer Security (TLS) to Secure QUIC", draft-ietf-quic-tls
-              (work in progress), July 2018.
+              (work in progress), August 2018.
 
    [RFC5116]  McGrew, D., "An Interface and Algorithms for Authenticated
               Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
@@ -441,19 +437,18 @@ Appendix A.  Incorrect Assumptions
    not protected from observation, but are nonetheless considered to be
    changeable when a new version is deployed.
 
-
-
-
-
-Thomson                 Expires January 10, 2019                [Page 8]
-
-Internet-Draft               QUIC Invariants                   July 2018
-
-
    This section lists a sampling of incorrect assumptions that might be
    made based on knowledge of QUIC version 1.  Some of these statements
    are not even true for QUIC version 1.  This is not an exhaustive
    list, it is intended to be illustrative only.
+
+
+
+
+Thomson                 Expires February 9, 2019                [Page 8]
+
+Internet-Draft               QUIC Invariants                 August 2018
+
 
    The following statements are NOT guaranteed to be true for every QUIC
    version:
@@ -466,6 +461,8 @@ Internet-Draft               QUIC Invariants                   July 2018
 
    o  Every flow on a given 5-tuple will include a connection
       establishment phase
+
+   o  The first packets exchanged on a flow use the long header
 
    o  QUIC forbids acknowledgments of packets that only contain ACK
       frames, therefore the last packet before a long period of
@@ -496,17 +493,18 @@ Internet-Draft               QUIC Invariants                   July 2018
    o  Only one connection at a time is established between any pair of
       QUIC endpoints
 
-
-
-
-
-
-Thomson                 Expires January 10, 2019                [Page 9]
-
-Internet-Draft               QUIC Invariants                   July 2018
-
-
 Author's Address
+
+
+
+
+
+
+
+Thomson                 Expires February 9, 2019                [Page 9]
+
+Internet-Draft               QUIC Invariants                 August 2018
+
 
    Martin Thomson
    Mozilla
@@ -557,4 +555,6 @@ Author's Address
 
 
 
-Thomson                 Expires January 10, 2019               [Page 10]
+
+
+Thomson                 Expires February 9, 2019               [Page 10]
