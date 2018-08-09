@@ -96,7 +96,7 @@ Table of Contents
        3.3.2.  Control Streams . . . . . . . . . . . . . . . . . . .  14
        3.3.3.  Server Push . . . . . . . . . . . . . . . . . . . . .  14
    4.  HTTP Framing Layer  . . . . . . . . . . . . . . . . . . . . .  15
-     4.1.  Frame Layout  . . . . . . . . . . . . . . . . . . . . . .  15
+     4.1.  Frame Layout  . . . . . . . . . . . . . . . . . . . . . .  16
      4.2.  Frame Definitions . . . . . . . . . . . . . . . . . . . .  16
        4.2.1.  Reserved Frame Types  . . . . . . . . . . . . . . . .  16
        4.2.2.  DATA  . . . . . . . . . . . . . . . . . . . . . . . .  16
@@ -439,9 +439,9 @@ Internet-Draft               HTTP over QUIC                  August 2018
    of having their request terminated abruptly, though clients can
    always discard responses at their discretion for other reasons.
 
-   Servers MUST NOT abort a response in progress as a result of
-   receiving a solicited RST_STREAM (i.e. with error code STOPPING).  If
-   the request stream terminates for any other reason without containing
+   Changes to the state of a request stream, including receiving a
+   RST_STREAM (regardless of error code), do not affect the state of the
+   server's response.  Servers MUST NOT abort a response in progress
 
 
 
@@ -450,8 +450,10 @@ Bishop                  Expires February 10, 2019               [Page 8]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
-   a fully-formed HTTP request, the server SHOULD abort its response
-   with the error code HTTP_INCOMPLETE_REQUEST.
+   solely due to a state change on the request stream.  However, if the
+   request stream terminates without containing a fully-formed HTTP
+   request, the server SHOULD abort its response with the error code
+   HTTP_INCOMPLETE_REQUEST.
 
 3.1.1.  Header Formatting and Compression
 
@@ -496,8 +498,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    A CONNECT request in HTTP/QUIC functions in the same manner as in
    HTTP/2.  The request MUST be formatted as described in [RFC7540],
    Section 8.3.  A CONNECT request that does not conform to these
-   restrictions is malformed.  The request stream MUST NOT be half-
-   closed at the end of the request.
 
 
 
@@ -505,6 +505,9 @@ Bishop                  Expires February 10, 2019               [Page 9]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   restrictions is malformed.  The request stream MUST NOT be half-
+   closed at the end of the request.
 
    A proxy that supports CONNECT establishes a TCP connection
    ([RFC0793]) to the server identified in the ":authority" pseudo-
@@ -541,18 +544,15 @@ Internet-Draft               HTTP over QUIC                  August 2018
    Either client or server can cancel requests by aborting the stream
    (QUIC RST_STREAM or STOP_SENDING frames, as appropriate) with an
    error code of HTTP_REQUEST_CANCELLED (Section 6.1).  When the client
-   cancels a request or response, it indicates that the response is no
-   longer of interest.  Clients SHOULD cancel requests by aborting both
-   directions of a stream.
+   cancels a response, it indicates that this response is no longer of
+   interest.  Clients SHOULD cancel requests by aborting both directions
+   of a stream.
 
-   When the server cancels either direction of the request stream using
+   When the server cancels its response stream using
    HTTP_REQUEST_CANCELLED, it indicates that no application processing
    was performed.  The client can treat requests cancelled by the server
    as though they had never been sent at all, thereby allowing them to
    be retried later on a new connection.  Servers MUST NOT use the
-   HTTP_REQUEST_CANCELLED status for requests which were partially or
-   fully processed.
-
 
 
 
@@ -561,6 +561,9 @@ Bishop                  Expires February 10, 2019              [Page 10]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   HTTP_REQUEST_CANCELLED status for requests which were partially or
+   fully processed.
 
    Note:  In this context, "processed" means that some data from the
       stream was passed to some higher layer of software that might have
@@ -607,9 +610,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    In HTTP/2, certain implementations used closed or unused streams as
    placeholders in describing the relative priority of requests.
    However, this created confusion as servers could not reliably
-   identify which elements of the priority tree could safely be
-   discarded.  Clients could potentially reference closed streams long
-
 
 
 
@@ -618,6 +618,8 @@ Bishop                  Expires February 10, 2019              [Page 11]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   identify which elements of the priority tree could safely be
+   discarded.  Clients could potentially reference closed streams long
    after the server had discarded state, leading to disparate views of
    the prioritization the client had attempted to express.
 
@@ -663,9 +665,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
                 Figure 1: Example of Priority Tree Pruning
 
-   In the example in Figure 1, "P" represents a Placeholder, "A"
-   represents an active node, and "I" represents an inactive node.  In
-   the first step, the server discards two inactive branches (each a
+
 
 
 
@@ -674,6 +674,9 @@ Bishop                  Expires February 10, 2019              [Page 12]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   In the example in Figure 1, "P" represents a Placeholder, "A"
+   represents an active node, and "I" represents an inactive node.  In
+   the first step, the server discards two inactive branches (each a
    single node).  In the second step, the server condenses an interior
    inactive node.  Note that these transformations will result in no
    change in the resources allocated to a particular active stream.
@@ -719,9 +722,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    Stream types of the format "0x1f * N" are reserved to exercise the
    requirement that unknown types be ignored.  These streams have no
    semantic meaning, and can be sent when application-layer padding is
-   desired.  They MAY also be sent on connections where no request data
-   is currently being transferred.  Endpoints MUST NOT consider these
-   streams to have any meaning upon receipt.
 
 
 
@@ -729,6 +729,10 @@ Bishop                  Expires February 10, 2019              [Page 13]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   desired.  They MAY also be sent on connections where no request data
+   is currently being transferred.  Endpoints MUST NOT consider these
+   streams to have any meaning upon receipt.
 
    The payload and length of the stream are selected in any manner the
    implementation chooses.
@@ -774,10 +778,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    A push stream is indicated by a stream type of "0x50" (ASCII 'P'),
    followed by the Push ID of the promise that it fulfills, encoded as a
    variable-length integer.  The remaining data on this stream consists
-   of HTTP/QUIC frames, as defined in Section 4.2, and carries the
-   response side of an HTTP message exchange as described in
-   Section 3.1.  The request headers of the exchange are carried by a
-   PUSH_PROMISE frame (see Section 4.2.7) on the request stream which
 
 
 
@@ -786,6 +786,10 @@ Bishop                  Expires February 10, 2019              [Page 14]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   of HTTP/QUIC frames, as defined in Section 4.2, and carries the
+   response side of an HTTP message exchange as described in
+   Section 3.1.  The request headers of the exchange are carried by a
+   PUSH_PROMISE frame (see Section 4.2.7) on the request stream which
    generated the push.  Promised requests MUST conform to the
    requirements in Section 8.2 of [RFC7540].
 
@@ -829,10 +833,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    some differences from HTTP/2 framing.  For more detail on differences
    from HTTP/2, see Section 8.2.
 
-4.1.  Frame Layout
-
-   All frames have the following format:
-
 
 
 
@@ -841,6 +841,10 @@ Bishop                  Expires February 10, 2019              [Page 15]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+4.1.  Frame Layout
+
+   All frames have the following format:
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -885,10 +889,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    a DATA frame is received on either control stream, the recipient MUST
    respond with a connection error (Section 6) of type
    HTTP_WRONG_STREAM.
-
-
-
-
 
 
 
