@@ -850,7 +850,7 @@ server_initial_secret = HKDF-Expand-Label(initial_secret,
                                           Hash.length)
 </pre>
 <p id="rfc.section.5.1.1.p.2">Note that if the server sends a Retry, the client&#8217;s Initial will correspond to a new connection and thus use the server provided Destination Connection ID.</p>
-<p id="rfc.section.5.1.1.p.3">The hash function for HKDF when deriving handshake secrets and keys is SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  The connection ID used with HKDF-Expand-Label is the initial Destination Connection ID.</p>
+<p id="rfc.section.5.1.1.p.3">The hash function for HKDF when deriving initial secrets and keys is SHA-256 <a href="#SHA" class="xref">[SHA]</a>.  The connection ID used with HKDF-Expand-Label is the initial Destination Connection ID.</p>
 <p id="rfc.section.5.1.1.p.4">The value of initial_salt is a 20 octet sequence shown in the figure in hexadecimal notation. Future versions of QUIC SHOULD generate a new salt value, thus ensuring that the keys are different for each version of QUIC. This prevents a middlebox that only recognizes one version of QUIC from seeing or modifying the contents of handshake packets from future versions.</p>
 <p></p>
 
