@@ -440,7 +440,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
    always discard responses at their discretion for other reasons.
 
    Changes to the state of a request stream, including receiving a
-   RST_STREAM (regardless of error code), do not affect the state of the
+   RST_STREAM with any error code, do not affect the state of the
    server's response.  Servers do not abort a response in progress
 
 
