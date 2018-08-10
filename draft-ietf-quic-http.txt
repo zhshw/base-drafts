@@ -104,7 +104,7 @@ Table of Contents
        4.2.4.  PRIORITY  . . . . . . . . . . . . . . . . . . . . . .  17
        4.2.5.  CANCEL_PUSH . . . . . . . . . . . . . . . . . . . . .  19
        4.2.6.  SETTINGS  . . . . . . . . . . . . . . . . . . . . . .  20
-       4.2.7.  PUSH_PROMISE  . . . . . . . . . . . . . . . . . . . .  22
+       4.2.7.  PUSH_PROMISE  . . . . . . . . . . . . . . . . . . . .  23
        4.2.8.  GOAWAY  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 
@@ -1210,22 +1210,22 @@ Internet-Draft               HTTP over QUIC                  August 2018
    requests will be sent before the arrival of the server's SETTINGS
    frame.  Clients MUST store the settings the server provided in the
    session being resumed and MUST comply with stored settings until the
-   server's current settings are received.
+   server's current settings are received.  Remembered settings apply to
+   the new connection until the server's SETTINGS frame is received.
 
-   Servers MAY continue processing data from clients which exceed its
-   current configuration during the initial flight.  In this case, the
-   client MUST apply the new settings immediately upon receipt.
+   A server can remember the settings that it advertised, or store an
+   integrity-protected copy of the values in the ticket and recover the
+   information when accepting 0-RTT data.  A server uses the HTTP/QUIC
+   settings values in determining whether to accept 0-RTT data.
+
+   A server MAY accept 0-RTT and subsequently provide different settings
+   in its SETTINGS frame.  If 0-RTT data is accepted by the server, its
+   SETTINGS frame MUST NOT reduce any limits or alter any values that
+   might be violated by the client with its 0-RTT data.
 
    When a 1-RTT QUIC connection is being used, the client MUST NOT send
    requests prior to receiving and processing the server's SETTINGS
    frame.
-
-4.2.7.  PUSH_PROMISE
-
-   The PUSH_PROMISE frame (type=0x05) is used to carry a request header
-   set from server to client, as in HTTP/2.
-
-
 
 
 
@@ -1233,6 +1233,11 @@ Bishop                  Expires February 11, 2019              [Page 22]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+4.2.7.  PUSH_PROMISE
+
+   The PUSH_PROMISE frame (type=0x05) is used to carry a request header
+   set from server to client, as in HTTP/2.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1277,11 +1282,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    Allowing duplicate references to the same Push ID is primarily to
    reduce duplication caused by concurrent requests.  A server SHOULD
    avoid reusing a Push ID over a long period.  Clients are likely to
-   consume server push responses and not retain them for reuse over
-   time.  Clients that see a PUSH_PROMISE that uses a Push ID that they
-   have since consumed and discarded are forced to ignore the
-   PUSH_PROMISE.
-
 
 
 
@@ -1289,6 +1289,11 @@ Bishop                  Expires February 11, 2019              [Page 23]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   consume server push responses and not retain them for reuse over
+   time.  Clients that see a PUSH_PROMISE that uses a Push ID that they
+   have since consumed and discarded are forced to ignore the
+   PUSH_PROMISE.
 
 4.2.8.  GOAWAY
 
@@ -1333,11 +1338,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
    Once sent, the server MUST cancel requests sent on streams with an
    identifier higher than the included last Stream ID.  Clients MUST NOT
-   send new requests on the connection after receiving GOAWAY, although
-   requests might already be in transit.  A new connection can be
-   established for new requests.
-
-
 
 
 
@@ -1345,6 +1345,10 @@ Bishop                  Expires February 11, 2019              [Page 24]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   send new requests on the connection after receiving GOAWAY, although
+   requests might already be in transit.  A new connection can be
+   established for new requests.
 
    If the client has sent requests on streams with a higher Stream ID
    than indicated in the GOAWAY frame, those requests are considered
@@ -1390,10 +1394,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    in flight when the server closes the connection.  A server that is
    attempting to gracefully shut down a connection SHOULD send an
    initial GOAWAY frame with the last Stream ID set to the current value
-   of QUIC's MAX_STREAM_ID and SHOULD NOT increase the MAX_STREAM_ID
-   thereafter.  This signals to the client that a shutdown is imminent
-   and that initiating further requests is prohibited.  After allowing
-   time for any in-flight requests (at least one round-trip time), the
 
 
 
@@ -1402,6 +1402,10 @@ Bishop                  Expires February 11, 2019              [Page 25]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   of QUIC's MAX_STREAM_ID and SHOULD NOT increase the MAX_STREAM_ID
+   thereafter.  This signals to the client that a shutdown is imminent
+   and that initiating further requests is prohibited.  After allowing
+   time for any in-flight requests (at least one round-trip time), the
    server MAY send another GOAWAY frame with an updated last Stream ID.
    This ensures that a connection can be cleanly shut down without
    losing requests.
@@ -1445,10 +1449,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
                    Figure 12: MAX_PUSH_ID frame payload
 
-   The MAX_PUSH_ID frame carries a single variable-length integer that
-   identifies the maximum value for a Push ID that the server can use
-   (see Section 4.2.7).  A MAX_PUSH_ID frame cannot reduce the maximum
-   Push ID; receipt of a MAX_PUSH_ID that contains a smaller value than
 
 
 
@@ -1458,6 +1458,10 @@ Bishop                  Expires February 11, 2019              [Page 26]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   The MAX_PUSH_ID frame carries a single variable-length integer that
+   identifies the maximum value for a Push ID that the server can use
+   (see Section 4.2.7).  A MAX_PUSH_ID frame cannot reduce the maximum
+   Push ID; receipt of a MAX_PUSH_ID that contains a smaller value than
    previously received MUST be treated as a connection error of type
    HTTP_MALFORMED_FRAME.
 
@@ -1502,10 +1506,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    HTTP_NO_ERROR (0x01):  No error.  This is used when the connection or
       stream needs to be closed, but there is no error to signal.
 
-   HTTP_PUSH_REFUSED (0x02):  The server has attempted to push content
-      which the client will not accept on this connection.
-
-
 
 
 
@@ -1513,6 +1513,9 @@ Bishop                  Expires February 11, 2019              [Page 27]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   HTTP_PUSH_REFUSED (0x02):  The server has attempted to push content
+      which the client will not accept on this connection.
 
    HTTP_INTERNAL_ERROR (0x03):  An internal error has occurred in the
       HTTP stack.
@@ -1559,9 +1562,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
    HTTP_MALFORMED_FRAME (0x01XX):  An error in a specific frame type.
       The frame type is included as the last octet of the error code.
-      For example, an error in a MAX_PUSH_ID frame would be indicated
-      with the code (0x10D).
-
 
 
 
@@ -1569,6 +1569,9 @@ Bishop                  Expires February 11, 2019              [Page 28]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+      For example, an error in a MAX_PUSH_ID frame would be indicated
+      with the code (0x10D).
 
 7.  Extensions to HTTP/QUIC
 
@@ -1616,9 +1619,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    HTTP/QUIC, points out important differences from HTTP/2, and
    describes how to map HTTP/2 extensions into HTTP/QUIC.
 
-   HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
-   feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
-
 
 
 Bishop                  Expires February 11, 2019              [Page 29]
@@ -1626,6 +1626,8 @@ Bishop                  Expires February 11, 2019              [Page 29]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   HTTP/QUIC begins from the premise that HTTP/2 code reuse is a useful
+   feature, but not a hard requirement.  HTTP/QUIC departs from HTTP/2
    primarily where necessary to accommodate the differences in behavior
    between QUIC and TCP (lack of ordering, support for streams).  We
    intend to avoid gratuitous changes which make it difficult or
@@ -1672,8 +1674,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    notion of in-order delivery of priority changes (i.e., dependency
    tree mutations): since operations on the dependency tree such as
    reparenting a subtree are not commutative, both sender and receiver
-   must apply them in the same order to ensure that both sides have a
-   consistent view of the stream dependency tree.  HTTP/2 specifies
 
 
 
@@ -1682,6 +1682,8 @@ Bishop                  Expires February 11, 2019              [Page 30]
 Internet-Draft               HTTP over QUIC                  August 2018
 
 
+   must apply them in the same order to ensure that both sides have a
+   consistent view of the stream dependency tree.  HTTP/2 specifies
    priority assignments in PRIORITY frames and (optionally) in HEADERS
    frames.  To achieve in-order delivery of priority changes in HTTP/
    QUIC, PRIORITY frames are sent on the control stream and the PRIORITY
@@ -1728,8 +1730,6 @@ Internet-Draft               HTTP over QUIC                  August 2018
    RST_STREAM (0x3):  RST_STREAM frames do not exist, since QUIC
       provides stream lifecycle management.  The same code point is used
       for the CANCEL_PUSH frame (Section 4.2.5).
-
-
 
 
 
