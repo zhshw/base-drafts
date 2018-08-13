@@ -2320,9 +2320,12 @@ Appendix A.  Change Log
 
 A.1.  Since draft-ietf-quic-http-13
 
-   o  Reserved some frame types for grease (#1490, #1525)
+   o  Reserved some frame types for grease (#1333, #1446)
 
-   o  Require settings to be remembered for 0-RTT, probit reductions
+   o  Unknown unidirectional stream types are tolerated, not errors;
+      some reserved for grease (#1490, #1525)
+
+   o  Require settings to be remembered for 0-RTT, prohibit reductions
       (#1541, #1641)
 
 A.2.  Since draft-ietf-quic-http-12
@@ -2342,9 +2345,6 @@ A.2.  Since draft-ietf-quic-http-12
 
    o  Priority mechanism now uses explicit placeholders to enable
       persistent structure in the tree (#441,#1421,#1422)
-
-
-
 
 
 
