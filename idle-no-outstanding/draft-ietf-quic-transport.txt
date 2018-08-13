@@ -3251,9 +3251,13 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
    Each endpoint advertises their own idle timeout to their peer.  The
-   idle timeout starts from the last packet received, or any time a
-   packet is sent when there are no outstanding packets.  The latter
-   condition ensures that initiating new activity postpones a timeout.
+   idle timeout starts from the last packet received.  In order to
+   ensure that initiating new activity postpones an idle timeout, an
+   endpoint restarts this timer when sending a packet if there are no
+   other packets outstanding.  This condition only applies to packets
+   that contain other than ACK or PADDING frames; those packets could
+   remain outstanding longer and prevent the timeout from being
+   extended.
 
    The value for an idle timeout can be asymmetric.  The value
    advertised by an endpoint is only used to determine whether the
@@ -3294,10 +3298,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    containing a closing frame before entering the draining state, using
    a CONNECTION_CLOSE frame and a NO_ERROR code if appropriate.  An
    endpoint MUST NOT send further packets, which could result in a
-   constant exchange of closing frames until the closing period on
-   either peer ended.
-
-
 
 
 
@@ -3305,6 +3305,9 @@ Iyengar & Thomson       Expires February 14, 2019              [Page 59]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   constant exchange of closing frames until the closing period on
+   either peer ended.
 
    An immediate close can be used after an application protocol has
    arranged to close a connection.  This might be after the application
@@ -3351,9 +3354,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
                      Figure 11: Stateless Reset Packet
-
-
-
 
 
 
