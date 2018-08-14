@@ -297,6 +297,7 @@ ul.toc li {
 <link href="#rfc.section.4.6" rel="Chapter" title="4.6 Rejecting 0-RTT">
 <link href="#rfc.section.4.7" rel="Chapter" title="4.7 HelloRetryRequest">
 <link href="#rfc.section.4.8" rel="Chapter" title="4.8 TLS Errors">
+<link href="#rfc.section.4.9" rel="Chapter" title="4.9 Discarding Unused Keys">
 <link href="#rfc.section.5" rel="Chapter" title="5 QUIC Packet Protection">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 QUIC Packet Encryption Keys">
 <link href="#rfc.section.5.1.1" rel="Chapter" title="5.1.1 Initial Secrets">
@@ -433,6 +434,8 @@ ul.toc li {
 <li>4.7.   <a href="#rfc.section.4.7">HelloRetryRequest</a>
 </li>
 <li>4.8.   <a href="#rfc.section.4.8">TLS Errors</a>
+</li>
+<li>4.9.   <a href="#rfc.section.4.9">Discarding Unused Keys</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">QUIC Packet Protection</a>
 </li>
@@ -823,6 +826,16 @@ Handshake Received
 <p id="rfc.section.4.8.p.1">If TLS experiences an error, it generates an appropriate alert as defined in Section 6 of <a href="#TLS13" class="xref">[TLS13]</a>.</p>
 <p id="rfc.section.4.8.p.2">A TLS alert is turned into a QUIC connection error by converting the one-octet alert description into a QUIC error code.  The alert description is added to 0x100 to produce a QUIC error code from the range reserved for CRYPTO_ERROR.  The resulting value is sent in a QUIC CONNECTION_CLOSE frame.</p>
 <p id="rfc.section.4.8.p.3">The alert level of all TLS alerts is &#8220;fatal&#8221;; a TLS stack MUST NOT generate alerts at the &#8220;warning&#8221; level.</p>
+<h2 id="rfc.section.4.9">
+<a href="#rfc.section.4.9">4.9.</a> <a href="#discarding-unused-keys" id="discarding-unused-keys">Discarding Unused Keys</a>
+</h2>
+<p id="rfc.section.4.9.p.1">After QUIC moves to a new encryption level, packet protection keys for previous encryption levels can be discarded.  This occurs several times during the handshake, as well as when keys are updated (see <a href="#key-update" class="xref">Section 6</a>).</p>
+<p id="rfc.section.4.9.p.2">Packet protection keys are not discarded immediately when new keys are availble.  If packets from a lower encryption level contain CRYPTO frames, frames that retransmit that data MUST be sent at the same encryption level.  Similarly, an endpoint generates acknowledgements for packets at the same encryption level as the packet being acknowledged.  Thus, it is possible that keys for a lower encryption level are needed for a short time after keys for a newer encryption level are available.</p>
+<p id="rfc.section.4.9.p.3">An endpoint cannot discard keys for a given encryption level unless it has both received and acknowledged all CRYPTO frames for that encryption level and when all CRYPTO frames for that encryption level have been acknowledged by its peer.  However, this does not guarantee that no further packets will need to be received or sent at that encryption level because a peer might not have received all the acknowledgements necessary to reach the same state.</p>
+<p id="rfc.section.4.9.p.4">After all CRYPTO frames for a given encryption level have been sent and all expected CRYPTO frames received, and all the corresponding acknowledgments have been received or sent, an endpoint starts a timer.  To limit the effect of packet loss around a change in keys, endpoints MUST retain packet protection keys for that encryption level for at least three times the current Retramsmission Timeout (RTO) interval as defined in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.  Retaining keys for this interval allows packets containing CRYPTO or ACK frames at that encryption level to be sent if packets are determined to be lost or new packets require acknowledgment.</p>
+<p id="rfc.section.4.9.p.5">Though an endpoint might retain older keys, new data MUST be sent at the highest currently-available encryption level.  Only ACK frames and retransmissions of data in CRYPTO frames are sent at a previous encryption level.  These packets MAY also include PADDING frames.</p>
+<p id="rfc.section.4.9.p.6">Once this timer expires, an endpoint MUST NOT either accept or generate new packets using those packet protection keys.  An endpoint can discard packet protection keys for that encryption level.</p>
+<p id="rfc.section.4.9.p.7">Key updates (see <a href="#key-update" class="xref">Section 6</a>) can be used to update 1-RTT keys before keys from other encryption levels are discarded.  In that case, packets protected with the newest packet protection keys and packets sent two updates prior will appear to use the same keys.  After the handshake is complete, endpoints only need to maintain the two latest sets of packet protection keys and MAY discard older keys.  Updating keys multiple times rapidly can cause packets to be effectively lost if packets are significantly delayed.  Because key updates can only be performed once per round trip time, only packets that are delayed by more than a round trip will be lost as a result of changing keys; such packets will be marked as lost before this, as they leave a gap in the sequence of packet numbers.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#packet-protection" id="packet-protection">QUIC Packet Protection</a>
 </h1>
@@ -1058,6 +1071,11 @@ encrypted_pn = packet_number XOR PRF(pn_key, sample)
 <a>Nir, Y.</a> and <a>A. Langley</a>, "<a href="https://tools.ietf.org/html/rfc8439">ChaCha20 and Poly1305 for IETF Protocols</a>", RFC 8439, DOI 10.17487/RFC8439, June 2018.</td>
 </tr>
 <tr>
+<td class="reference"><b id="QUIC-RECOVERY">[QUIC-RECOVERY]</b></td>
+<td class="top">
+<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, August 2018.</td>
+</tr>
+<tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
 <a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, August 2018.</td>
@@ -1110,11 +1128,6 @@ encrypted_pn = packet_number XOR PRF(pn_key, sample)
 <td class="reference"><b id="QUIC-HTTP">[QUIC-HTTP]</b></td>
 <td class="top">
 <a title="Microsoft">Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http, August 2018.</td>
-</tr>
-<tr>
-<td class="reference"><b id="QUIC-RECOVERY">[QUIC-RECOVERY]</b></td>
-<td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2818">[RFC2818]</b></td>
