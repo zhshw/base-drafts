@@ -641,8 +641,9 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.3.1.p.5">PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) MAY be interleaved with the frames of a response message indicating a pushed resource related to the response. These PUSH_PROMISE frames are not part of the response, but carry the headers of a separate HTTP request message.  See <a href="#server-push" class="xref">Section 3.3.3</a> for more details.</p>
 <p id="rfc.section.3.1.p.6">The &#8220;chunked&#8221; transfer encoding defined in Section 4.1 of <a href="#RFC7230" class="xref">[RFC7230]</a> MUST NOT be used.</p>
 <p id="rfc.section.3.1.p.7">Trailing header fields are carried in an additional header block following the body. Senders MUST send only one header block in the trailers section; receivers MUST discard any subsequent header blocks.</p>
-<p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a QUIC stream. After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
-<p id="rfc.section.3.1.p.9">A server can send a complete response prior to the client sending an entire request if the response does not depend on any portion of the request that has not been sent and received. When this is true, a server MAY request that the client abort transmission of a request without error by triggering a QUIC STOP_SENDING with error code HTTP_EARLY_RESPONSE, sending a complete response, and cleanly closing its streams. Clients MUST NOT discard complete responses as a result of having their request terminated abruptly, though clients can always discard responses at their discretion for other reasons.  Servers MUST NOT abort a response in progress as a result of receiving a solicited RST_STREAM.</p>
+<p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a bidirectional QUIC stream.  After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
+<p id="rfc.section.3.1.p.9">A server can send a complete response prior to the client sending an entire request if the response does not depend on any portion of the request that has not been sent and received. When this is true, a server MAY request that the client abort transmission of a request without error by triggering a QUIC STOP_SENDING with error code HTTP_EARLY_RESPONSE, sending a complete response, and cleanly closing its streams. Clients MUST NOT discard complete responses as a result of having their request terminated abruptly, though clients can always discard responses at their discretion for other reasons.</p>
+<p id="rfc.section.3.1.p.10">Changes to the state of a request stream, including receiving a RST_STREAM with any error code, do not affect the state of the server&#8217;s response. Servers do not abort a response in progress solely due to a state change on the request stream.  However, if the request stream terminates without containing a usable HTTP request, the server SHOULD abort its response with the error code HTTP_INCOMPLETE_REQUEST.</p>
 <h3 id="rfc.section.3.1.1">
 <a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#header-formatting-and-compression" id="header-formatting-and-compression">Header Formatting and Compression</a>
 </h3>
@@ -662,8 +663,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h3 id="rfc.section.3.1.3">
 <a href="#rfc.section.3.1.3">3.1.3.</a> <a href="#request-cancellation" id="request-cancellation">Request Cancellation</a>
 </h3>
-<p id="rfc.section.3.1.3.p.1">Either client or server can cancel requests by closing the stream (QUIC RST_STREAM or STOP_SENDING frames, as appropriate) with an error type of HTTP_REQUEST_CANCELLED (<a href="#http-error-codes" class="xref">Section 6.1</a>).  When the client cancels a request or response, it indicates that the response is no longer of interest.</p>
-<p id="rfc.section.3.1.3.p.2">When the server cancels either direction of the request stream using HTTP_REQUEST_CANCELLED, it indicates that no application processing was performed.  The client can treat requests cancelled by the server as though they had never been sent at all, thereby allowing them to be retried later on a new connection.  Servers MUST NOT use the HTTP_REQUEST_CANCELLED status for requests which were partially or fully processed.</p>
+<p id="rfc.section.3.1.3.p.1">Either client or server can cancel requests by aborting the stream (QUIC RST_STREAM or STOP_SENDING frames, as appropriate) with an error code of HTTP_REQUEST_CANCELLED (<a href="#http-error-codes" class="xref">Section 6.1</a>).  When the client cancels a response, it indicates that this response is no longer of interest. Clients SHOULD cancel requests by aborting both directions of a stream.</p>
+<p id="rfc.section.3.1.3.p.2">When the server cancels its response stream using HTTP_REQUEST_CANCELLED, it indicates that no application processing was performed.  The client can treat requests cancelled by the server as though they had never been sent at all, thereby allowing them to be retried later on a new connection.  Servers MUST NOT use the HTTP_REQUEST_CANCELLED status for requests which were partially or fully processed.</p>
 <p></p>
 
 <dl>
@@ -1086,6 +1087,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">The server has attempted to push content which the client has cached.</dd>
 <dt>HTTP_REQUEST_CANCELLED (0x05):</dt>
 <dd style="margin-left: 8">The client no longer needs the requested data.</dd>
+<dt>HTTP_INCOMPLETE_REQUEST (0x06):</dt>
+<dd style="margin-left: 8">The client&#8217;s stream terminated without containing a fully-formed request.</dd>
 <dt>HTTP_CONNECT_ERROR (0x07):</dt>
 <dd style="margin-left: 8">The connection established in response to a CONNECT request was reset or abnormally closed.</dd>
 <dt>HTTP_EXCESSIVE_LOAD (0x08):</dt>
@@ -1106,6 +1109,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">A stream required by the connection was closed or reset.</dd>
 <dt>HTTP_WRONG_STREAM_DIRECTION (0x0010):</dt>
 <dd style="margin-left: 8">A unidirectional stream type was used by a peer which is not permitted to do so.</dd>
+<dt>HTTP_EARLY_RESPONSE (0x0011):</dt>
+<dd style="margin-left: 8">The remainder of the client&#8217;s request is not needed to produce a response.  For use in STOP_SENDING only.</dd>
 <dt>HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):</dt>
 <dd style="margin-left: 8">Peer violated protocol requirements in a way which doesn&#8217;t match a more specific error code, or endpoint declines to use the more specific error code.</dd>
 <dt>HTTP_MALFORMED_FRAME (0x01XX):</dt>
@@ -1478,6 +1483,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
 </tr>
 <tr>
+<td class="left">HTTP_INCOMPLETE_REQUEST</td>
+<td class="left">0x0006</td>
+<td class="left">Stream terminated early</td>
+<td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
+</tr>
+<tr>
 <td class="left">HTTP_CONNECT_ERROR</td>
 <td class="left">0x0007</td>
 <td class="left">TCP reset or error on CONNECT request</td>
@@ -1535,6 +1546,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <td class="left">HTTP_WRONG_STREAM_DIRECTION</td>
 <td class="left">0x0010</td>
 <td class="left">Unidirectional stream in wrong direction</td>
+<td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
+</tr>
+<tr>
+<td class="left">HTTP_EARLY_RESPONSE</td>
+<td class="left">0x0011</td>
+<td class="left">Remainder of request not needed</td>
 <td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
 </tr>
 <tr>
