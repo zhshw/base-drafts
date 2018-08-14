@@ -6401,8 +6401,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
               <https://www.rfc-editor.org/info/rfc8311>.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", draft-ietf-tls-tls13-28 (work in progress),
-              March 2018.
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
 
 14.2.  Informative References
 
