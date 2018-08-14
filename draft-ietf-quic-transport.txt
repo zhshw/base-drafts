@@ -1952,7 +1952,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    carrying the ClientHello.
 
    Note that multiple QUIC packets - even of different encryption levels
-   - may be coalesced into a single UDP datagram (see Section 4.9, and
+   - may be coalesced into a single UDP datagram (see Section 4.9), and
    so this handshake may consist of as few as 4 UDP datagrams, or any
 
 
