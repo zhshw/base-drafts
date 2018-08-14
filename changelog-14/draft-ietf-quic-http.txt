@@ -2328,6 +2328,8 @@ A.1.  Since draft-ietf-quic-http-13
    o  Require settings to be remembered for 0-RTT, prohibit reductions
       (#1541, #1641)
 
+   o  Specify behavior for truncated requests (#1596,#1643)
+
 A.2.  Since draft-ietf-quic-http-12
 
    o  TLS SNI extension isn't mandatory if an alternative method is used
@@ -2343,8 +2345,6 @@ A.2.  Since draft-ietf-quic-http-12
    o  Unidirectional streams carry a type byte and are extensible
       (#910,#1359)
 
-   o  Priority mechanism now uses explicit placeholders to enable
-      persistent structure in the tree (#441,#1421,#1422)
 
 
 
@@ -2353,6 +2353,9 @@ Bishop                  Expires February 15, 2019              [Page 42]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
+
+   o  Priority mechanism now uses explicit placeholders to enable
+      persistent structure in the tree (#441,#1421,#1422)
 
 A.3.  Since draft-ietf-quic-http-11
 
@@ -2399,9 +2402,6 @@ A.9.  Since draft-ietf-quic-http-05
    o  Guidance about keep-alive and QUIC PINGs (#729)
 
    o  Expanded text on GOAWAY and cancellation (#757)
-
-
-
 
 
 
