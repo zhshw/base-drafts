@@ -744,7 +744,7 @@ Internet-Draft             QUIC Loss Detection               August 2018
    negotiated in order to better suit a variety of environments.
 
    kMaxTLPs:  Maximum number of tail loss probes before an RTO expires.
-      RECOMMENDED value is 2.
+      The RECOMMENDED value is 2.
 
    kReorderingThreshold:  Maximum reordering in packet number space
       before FACK style loss detection considers a packet lost.  The
