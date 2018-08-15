@@ -4,8 +4,8 @@
 
 QUIC                                                      M. Bishop, Ed.
 Internet-Draft                                                    Akamai
-Intended status: Standards Track                         August 14, 2018
-Expires: February 15, 2019
+Intended status: Standards Track                         August 15, 2018
+Expires: February 16, 2019
 
 
               Hypertext Transfer Protocol (HTTP) over QUIC
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on February 15, 2019.
+   This Internet-Draft will expire on February 16, 2019.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Bishop                  Expires February 15, 2019               [Page 1]
+Bishop                  Expires February 16, 2019               [Page 1]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Bishop                  Expires February 15, 2019               [Page 2]
+Bishop                  Expires February 16, 2019               [Page 2]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -137,22 +137,23 @@ Internet-Draft               HTTP over QUIC                  August 2018
      11.2.  Informative References . . . . . . . . . . . . . . . . .  42
      11.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  42
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  42
-     A.1.  Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  42
-     A.2.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  43
-     A.3.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  43
-     A.4.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  43
-     A.5.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  43
-     A.6.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  43
-     A.7.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  43
-     A.8.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  43
-     A.9.  Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  44
-     A.10. Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  44
-     A.11. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  44
-     A.12. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  44
-     A.13. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  45
-     A.14. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  45
+     A.1.  Since draft-ietf-quic-http-13 . . . . . . . . . . . . . .  42
+     A.2.  Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  42
+     A.3.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  43
+     A.4.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  43
+     A.5.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  43
+     A.6.  Since draft-ietf-quic-http-08 . . . . . . . . . . . . . .  43
+     A.7.  Since draft-ietf-quic-http-07 . . . . . . . . . . . . . .  43
+     A.8.  Since draft-ietf-quic-http-06 . . . . . . . . . . . . . .  44
+     A.9.  Since draft-ietf-quic-http-05 . . . . . . . . . . . . . .  44
+     A.10. Since draft-ietf-quic-http-04 . . . . . . . . . . . . . .  44
+     A.11. Since draft-ietf-quic-http-03 . . . . . . . . . . . . . .  44
+     A.12. Since draft-ietf-quic-http-02 . . . . . . . . . . . . . .  44
+     A.13. Since draft-ietf-quic-http-01 . . . . . . . . . . . . . .  44
+     A.14. Since draft-ietf-quic-http-00 . . . . . . . . . . . . . .  45
+     A.15. Since draft-shade-quic-http2-mapping-00 . . . . . . . . .  45
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  45
-   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  45
+   Author's Address  . . . . . . . . . . . . . . . . . . . . . . . .  46
 
 1.  Introduction
 
@@ -164,8 +165,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-
-Bishop                  Expires February 15, 2019               [Page 3]
+Bishop                  Expires February 16, 2019               [Page 3]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -221,7 +221,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 4]
+Bishop                  Expires February 16, 2019               [Page 4]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -277,7 +277,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 5]
+Bishop                  Expires February 16, 2019               [Page 5]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -333,7 +333,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 6]
+Bishop                  Expires February 16, 2019               [Page 6]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -389,7 +389,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 7]
+Bishop                  Expires February 16, 2019               [Page 7]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -445,7 +445,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 8]
+Bishop                  Expires February 16, 2019               [Page 8]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -501,7 +501,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019               [Page 9]
+Bishop                  Expires February 16, 2019               [Page 9]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -557,7 +557,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 10]
+Bishop                  Expires February 16, 2019              [Page 10]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -613,7 +613,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 11]
+Bishop                  Expires February 16, 2019              [Page 11]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -669,7 +669,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 12]
+Bishop                  Expires February 16, 2019              [Page 12]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -725,7 +725,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 13]
+Bishop                  Expires February 16, 2019              [Page 13]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -781,7 +781,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 14]
+Bishop                  Expires February 16, 2019              [Page 14]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -837,7 +837,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 15]
+Bishop                  Expires February 16, 2019              [Page 15]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -893,7 +893,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 16]
+Bishop                  Expires February 16, 2019              [Page 16]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -949,7 +949,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 17]
+Bishop                  Expires February 16, 2019              [Page 17]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 18]
+Bishop                  Expires February 16, 2019              [Page 18]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 19]
+Bishop                  Expires February 16, 2019              [Page 19]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 20]
+Bishop                  Expires February 16, 2019              [Page 20]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 21]
+Bishop                  Expires February 16, 2019              [Page 21]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 22]
+Bishop                  Expires February 16, 2019              [Page 22]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 23]
+Bishop                  Expires February 16, 2019              [Page 23]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 24]
+Bishop                  Expires February 16, 2019              [Page 24]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1397,7 +1397,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 25]
+Bishop                  Expires February 16, 2019              [Page 25]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1453,7 +1453,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 26]
+Bishop                  Expires February 16, 2019              [Page 26]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1509,7 +1509,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 27]
+Bishop                  Expires February 16, 2019              [Page 27]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1565,7 +1565,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 28]
+Bishop                  Expires February 16, 2019              [Page 28]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1621,7 +1621,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 29]
+Bishop                  Expires February 16, 2019              [Page 29]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1677,7 +1677,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 30]
+Bishop                  Expires February 16, 2019              [Page 30]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1733,7 +1733,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 31]
+Bishop                  Expires February 16, 2019              [Page 31]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1789,7 +1789,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 32]
+Bishop                  Expires February 16, 2019              [Page 32]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1845,7 +1845,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 33]
+Bishop                  Expires February 16, 2019              [Page 33]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1901,7 +1901,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 34]
+Bishop                  Expires February 16, 2019              [Page 34]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -1957,7 +1957,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 35]
+Bishop                  Expires February 16, 2019              [Page 35]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2013,7 +2013,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 36]
+Bishop                  Expires February 16, 2019              [Page 36]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2069,7 +2069,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 37]
+Bishop                  Expires February 16, 2019              [Page 37]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2125,7 +2125,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 38]
+Bishop                  Expires February 16, 2019              [Page 38]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2181,7 +2181,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 39]
+Bishop                  Expires February 16, 2019              [Page 39]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2237,7 +2237,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 40]
+Bishop                  Expires February 16, 2019              [Page 40]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2293,7 +2293,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
 
-Bishop                  Expires February 15, 2019              [Page 41]
+Bishop                  Expires February 16, 2019              [Page 41]
 
 Internet-Draft               HTTP over QUIC                  August 2018
 
@@ -2329,10 +2329,30 @@ Appendix A.  Change Log
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
-A.1.  Since draft-ietf-quic-http-12
+A.1.  Since draft-ietf-quic-http-13
+
+   o  Reserved some frame types for grease (#1333, #1446)
+
+   o  Unknown unidirectional stream types are tolerated, not errors;
+      some reserved for grease (#1490, #1525)
+
+   o  Require settings to be remembered for 0-RTT, prohibit reductions
+      (#1541, #1641)
+
+   o  Specify behavior for truncated requests (#1596, #1643)
+
+A.2.  Since draft-ietf-quic-http-12
 
    o  TLS SNI extension isn't mandatory if an alternative method is used
       (#1459, #1462, #1466)
+
+
+
+
+Bishop                  Expires February 16, 2019              [Page 42]
+
+Internet-Draft               HTTP over QUIC                  August 2018
+
 
    o  Removed flags from HTTP/QUIC frames (#1388, #1398)
 
@@ -2347,24 +2367,17 @@ A.1.  Since draft-ietf-quic-http-12
    o  Priority mechanism now uses explicit placeholders to enable
       persistent structure in the tree (#441,#1421,#1422)
 
-
-
-Bishop                  Expires February 15, 2019              [Page 42]
-
-Internet-Draft               HTTP over QUIC                  August 2018
-
-
-A.2.  Since draft-ietf-quic-http-11
+A.3.  Since draft-ietf-quic-http-11
 
    o  Moved QPACK table updates and acknowledgments to dedicated streams
       (#1121, #1122, #1238)
 
-A.3.  Since draft-ietf-quic-http-10
+A.4.  Since draft-ietf-quic-http-10
 
    o  Settings need to be remembered when attempting and accepting 0-RTT
       (#1157, #1207)
 
-A.4.  Since draft-ietf-quic-http-09
+A.5.  Since draft-ietf-quic-http-09
 
    o  Selected QCRAM for header compression (#228, #1117)
 
@@ -2373,11 +2386,11 @@ A.4.  Since draft-ietf-quic-http-09
    o  Specified handling of unsupported versions in Alt-Svc (#1093,
       #1097)
 
-A.5.  Since draft-ietf-quic-http-08
+A.6.  Since draft-ietf-quic-http-08
 
    o  Clarified connection coalescing rules (#940, #1024)
 
-A.6.  Since draft-ietf-quic-http-07
+A.7.  Since draft-ietf-quic-http-07
 
    o  Changes for integer encodings in QUIC (#595,#905)
 
@@ -2387,11 +2400,21 @@ A.6.  Since draft-ietf-quic-http-07
 
    o  Improve description of server push usage (#947, #950, #957)
 
-A.7.  Since draft-ietf-quic-http-06
+
+
+
+
+
+Bishop                  Expires February 16, 2019              [Page 43]
+
+Internet-Draft               HTTP over QUIC                  August 2018
+
+
+A.8.  Since draft-ietf-quic-http-06
 
    o  Track changes in QUIC error code usage (#485)
 
-A.8.  Since draft-ietf-quic-http-05
+A.9.  Since draft-ietf-quic-http-05
 
    o  Made push ID sequential, add MAX_PUSH_ID, remove
       SETTINGS_ENABLE_PUSH (#709)
@@ -2400,17 +2423,7 @@ A.8.  Since draft-ietf-quic-http-05
 
    o  Expanded text on GOAWAY and cancellation (#757)
 
-
-
-
-
-
-Bishop                  Expires February 15, 2019              [Page 43]
-
-Internet-Draft               HTTP over QUIC                  August 2018
-
-
-A.9.  Since draft-ietf-quic-http-04
+A.10.  Since draft-ietf-quic-http-04
 
    o  Cite RFC 5234 (#404)
 
@@ -2427,15 +2440,15 @@ A.9.  Since draft-ietf-quic-http-04
 
    o  DATA frames cannot be empty (#700)
 
-A.10.  Since draft-ietf-quic-http-03
+A.11.  Since draft-ietf-quic-http-03
 
    None.
 
-A.11.  Since draft-ietf-quic-http-02
+A.12.  Since draft-ietf-quic-http-02
 
    o  Track changes in transport draft
 
-A.12.  Since draft-ietf-quic-http-01
+A.13.  Since draft-ietf-quic-http-01
 
    o  SETTINGS changes (#181):
 
@@ -2445,6 +2458,13 @@ A.12.  Since draft-ietf-quic-http-01
       *  SETTINGS_ACK removed
 
       *  Settings can only occur in the SETTINGS frame a single time
+
+
+
+Bishop                  Expires February 16, 2019              [Page 44]
+
+Internet-Draft               HTTP over QUIC                  August 2018
+
 
       *  Boolean format updated
 
@@ -2458,18 +2478,10 @@ A.12.  Since draft-ietf-quic-http-01
 
    o  0-RTT guidance added
 
-
-
-
-Bishop                  Expires February 15, 2019              [Page 44]
-
-Internet-Draft               HTTP over QUIC                  August 2018
-
-
    o  Guide to differences from HTTP/2 and porting HTTP/2 extensions
       added (#127,#242)
 
-A.13.  Since draft-ietf-quic-http-00
+A.14.  Since draft-ietf-quic-http-00
 
    o  Changed "HTTP/2-over-QUIC" to "HTTP/QUIC" throughout (#11,#29)
 
@@ -2488,7 +2500,7 @@ A.13.  Since draft-ietf-quic-http-00
 
    o  Application-layer-defined error codes (#19,#74)
 
-A.14.  Since draft-shade-quic-http2-mapping-00
+A.15.  Since draft-shade-quic-http2-mapping-00
 
    o  Adopted as base for draft-ietf-quic-http
 
@@ -2501,6 +2513,14 @@ Acknowledgements
 
    A substantial portion of Mike's contribution was supported by
    Microsoft during his employment there.
+
+
+
+
+Bishop                  Expires February 16, 2019              [Page 45]
+
+Internet-Draft               HTTP over QUIC                  August 2018
+
 
 Author's Address
 
@@ -2517,4 +2537,40 @@ Author's Address
 
 
 
-Bishop                  Expires February 15, 2019              [Page 45]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Bishop                  Expires February 16, 2019              [Page 46]
