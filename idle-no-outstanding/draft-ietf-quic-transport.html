@@ -444,7 +444,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-13" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-15" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -468,12 +468,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 14, 2019</td>
+<td class="left">Expires: February 16, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 13, 2018</td>
+<td class="right">August 15, 2018</td>
 </tr>
 
     	
@@ -492,7 +492,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 14, 2019.</p>
+<p>This Internet-Draft will expire on February 16, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1932,7 +1932,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.6.13.2">6.13.2.</a> <a href="#idle-timeout" id="idle-timeout">Idle Timeout</a>
 </h3>
 <p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the advertised idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
-<p id="rfc.section.6.13.2.p.2">Each endpoint advertises their own idle timeout to their peer. The idle timeout starts from the last packet received.  In order to ensure that initiating new activity postpones an idle timeout, an endpoint restarts this timer when sending a packet if there are no other packets outstanding.  This condition only applies to packets that contain other than ACK or PADDING frames; those packets could remain outstanding longer and prevent the timeout from being extended.</p>
+<p id="rfc.section.6.13.2.p.2">Each endpoint advertises their own idle timeout to their peer. The idle timeout starts from the last packet received.  In order to ensure that initiating new activity postpones an idle timeout, an endpoint restarts this timer when sending a packet.  An endpoint does not postpone the idle timeout if another packet has been sent containing frames other than ACK or PADDING, and that other packet has not been acknowledged or declared lost.  Packets that contain only ACK or PADDING frames are not acknowledged until an endpoint has other frames to send, so they could prevent the timeout from being refreshed.</p>
 <p id="rfc.section.6.13.2.p.3">The value for an idle timeout can be asymmetric.  The value advertised by an endpoint is only used to determine whether the connection is live at that endpoint.  An endpoint that sends packets near the end of the idle timeout period of a peer risks having those packets discarded if its peer enters the draining state before the packets arrive.  If a peer could timeout within an RTO (see Section 4.3.3 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), it is advisable to test for liveness before sending any data that cannot be retried safely.</p>
 <h3 id="rfc.section.6.13.3">
 <a href="#rfc.section.6.13.3">6.13.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
