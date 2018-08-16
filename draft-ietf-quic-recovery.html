@@ -366,7 +366,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and I. Swett, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-recovery-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-15" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-16" />
   <meta name="dct.abstract" content="This document describes loss detection and congestion control mechanisms for QUIC." />
   <meta name="description" content="This document describes loss detection and congestion control mechanisms for QUIC." />
 
@@ -390,12 +390,12 @@ ul.toc li {
 <td class="right">I. Swett, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 16, 2019</td>
+<td class="left">Expires: February 17, 2019</td>
 <td class="right">Google</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 15, 2018</td>
+<td class="right">August 16, 2018</td>
 </tr>
 
     	
@@ -414,7 +414,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 16, 2019.</p>
+<p>This Internet-Draft will expire on February 17, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -774,22 +774,22 @@ ul.toc li {
 <p></p>
 
 <dl>
-<dt>kMaxTLPs (RECOMMENDED 2):</dt>
-<dd style="margin-left: 8">Maximum number of tail loss probes before an RTO expires.</dd>
-<dt>kReorderingThreshold (RECOMMENDED 3):</dt>
-<dd style="margin-left: 8">Maximum reordering in packet number space before FACK style loss detection considers a packet lost.</dd>
-<dt>kTimeReorderingFraction (RECOMMENDED 1/8):</dt>
-<dd style="margin-left: 8">Maximum reordering in time space before time based loss detection considers a packet lost.  In fraction of an RTT.</dd>
-<dt>kUsingTimeLossDetection (RECOMMENDED false):</dt>
-<dd style="margin-left: 8">Whether time based loss detection is in use.  If false, uses FACK style loss detection.</dd>
-<dt>kMinTLPTimeout (RECOMMENDED 10ms):</dt>
-<dd style="margin-left: 8">Minimum time in the future a tail loss probe timer may be set for.</dd>
-<dt>kMinRTOTimeout (RECOMMENDED 200ms):</dt>
-<dd style="margin-left: 8">Minimum time in the future an RTO timer may be set for.</dd>
-<dt>kDelayedAckTimeout (RECOMMENDED 25ms):</dt>
-<dd style="margin-left: 8">The length of the peer&#8217;s delayed ack timer.</dd>
-<dt>kInitialRtt (RECOMMENDED 100ms):</dt>
-<dd style="margin-left: 8">The RTT used before an RTT sample is taken.</dd>
+<dt>kMaxTLPs:</dt>
+<dd style="margin-left: 8">Maximum number of tail loss probes before an RTO expires.  The RECOMMENDED value is 2.</dd>
+<dt>kReorderingThreshold:</dt>
+<dd style="margin-left: 8">Maximum reordering in packet number space before FACK style loss detection considers a packet lost. The RECOMMENDED value is 3.</dd>
+<dt>kTimeReorderingFraction:</dt>
+<dd style="margin-left: 8">Maximum reordering in time space before time based loss detection considers a packet lost.  In fraction of an RTT. The RECOMMENDED value is 1/8.</dd>
+<dt>kUsingTimeLossDetection:</dt>
+<dd style="margin-left: 8">Whether time based loss detection is in use.  If false, uses FACK style loss detection. The RECOMMENDED value is false.</dd>
+<dt>kMinTLPTimeout:</dt>
+<dd style="margin-left: 8">Minimum time in the future a tail loss probe timer may be set for.  The RECOMMENDED value is 10ms.</dd>
+<dt>kMinRTOTimeout:</dt>
+<dd style="margin-left: 8">Minimum time in the future an RTO timer may be set for. The RECOMMENDED value is 200ms.</dd>
+<dt>kDelayedAckTimeout:</dt>
+<dd style="margin-left: 8">The length of the peer&#8217;s delayed ack timer. The RECOMMENDED value is 25ms.</dd>
+<dt>kInitialRtt:</dt>
+<dd style="margin-left: 8">The RTT used before an RTT sample is taken. The RECOMMENDED value is 100ms.</dd>
 </dl>
 <h3 id="rfc.section.4.5.2">
 <a href="#rfc.section.4.5.2">4.5.2.</a> <a href="#variables-of-interest" id="variables-of-interest">Variables of interest</a>
@@ -1138,16 +1138,14 @@ DetectLostPackets(largest_acked):
 <p></p>
 
 <dl>
-<dt>kMaxDatagramSize (RECOMMENDED 1200 bytes):</dt>
-<dd style="margin-left: 8">The sender&#8217;s maximum payload size. Does not include UDP or IP overhead. The max packet size is used for calculating initial and minimum congestion windows.</dd>
-<dt>kInitialWindow (RECOMMENDED min(10 * kMaxDatagramSize,</dt>
-<dd style="margin-left: 8"></dd>
-<dt>                                max(2* kMaxDatagramSize, 14600))):</dt>
-<dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.</dd>
-<dt>kMinimumWindow (RECOMMENDED 2 * kMaxDatagramSize):</dt>
-<dd style="margin-left: 8">Minimum congestion window in bytes.</dd>
-<dt>kLossReductionFactor (RECOMMENDED 0.5):</dt>
-<dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.</dd>
+<dt>kMaxDatagramSize:</dt>
+<dd style="margin-left: 8">The sender&#8217;s maximum payload size. Does not include UDP or IP overhead. The max packet size is used for calculating initial and minimum congestion windows. The RECOMMENDED value is 1200 bytes.</dd>
+<dt>kInitialWindow:</dt>
+<dd style="margin-left: 8">Default limit on the initial amount of outstanding data in bytes.  Taken from <a href="#RFC6928" class="xref">[RFC6928]</a>.  The RECOMMENDED value is the minimum of 10 * kMaxDatagramSize and max(2* kMaxDatagramSize, 14600)).</dd>
+<dt>kMinimumWindow:</dt>
+<dd style="margin-left: 8">Minimum congestion window in bytes. The RECOMMENDED value is 2 * kMaxDatagramSize.</dd>
+<dt>kLossReductionFactor:</dt>
+<dd style="margin-left: 8">Reduction in congestion window when a new loss event is detected.  The RECOMMENDED value is 0.5.</dd>
 </dl>
 <h3 id="rfc.section.5.8.2">
 <a href="#rfc.section.5.8.2">5.8.2.</a> <a href="#vars-of-interest" id="vars-of-interest">Variables of interest</a>
