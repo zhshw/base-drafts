@@ -3562,8 +3562,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    An endpoint that wants to improve the chances that it triggers a
    Stateless Reset when its peer loses state can pad all packets it
-   sends - aside from those containing only ACK and PADDING frames - to
-   38 octets.
+   sends to 38 octets.
 
 7.  Frame Types and Formats
 
@@ -3577,7 +3576,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    integer values.  This encoding ensures that smaller integer values
    need fewer octets to encode.
 
-
+   The QUIC variable-length integer encoding reserves the two most
+   significant bits of the first octet to encode the base 2 logarithm of
 
 
 
@@ -3586,8 +3586,6 @@ Iyengar & Thomson       Expires February 18, 2019              [Page 64]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-   The QUIC variable-length integer encoding reserves the two most
-   significant bits of the first octet to encode the base 2 logarithm of
    the integer encoding length in octets.  The integer value is encoded
    on the remaining bits, in network byte order.
 
@@ -3633,6 +3631,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    An endpoint may use a RST_STREAM frame (type=0x01) to abruptly
    terminate a stream.
 
+   After sending a RST_STREAM, an endpoint ceases transmission and
+   retransmission of STREAM frames on the identified stream.  A receiver
 
 
 
@@ -3642,8 +3642,6 @@ Iyengar & Thomson       Expires February 18, 2019              [Page 65]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
-   After sending a RST_STREAM, an endpoint ceases transmission and
-   retransmission of STREAM frames on the identified stream.  A receiver
    of RST_STREAM can discard any data that it already received on that
    stream.
 
@@ -3686,6 +3684,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    are implicitly closed when the connection is closed.
 
    The CONNECTION_CLOSE frame is as follows:
+
+
 
 
 
