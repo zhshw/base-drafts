@@ -5,7 +5,7 @@
 QUIC                                                    B. Trammell, Ed.
 Internet-Draft                                             M. Kuehlewind
 Intended status: Experimental                                 ETH Zurich
-Expires: November 16, 2018                                  May 15, 2018
+Expires: February 21, 2019                               August 20, 2018
 
 
                        The QUIC Latency Spin Bit
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 1]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 1]
 
-Internet-Draft                QUIC Spin Bit                     May 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
    working documents as Internet-Drafts.  The list of current Internet-
@@ -66,7 +66,7 @@ Internet-Draft                QUIC Spin Bit                     May 2018
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 16, 2018.
+   This Internet-Draft will expire on February 21, 2019.
 
 Copyright Notice
 
@@ -85,20 +85,34 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   2
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
    2.  The Spin Bit Mechanism  . . . . . . . . . . . . . . . . . . .   3
      2.1.  Proposed Short Header Format Including Spin Bit . . . . .   3
      2.2.  Setting the Spin Bit on Outgoing Packets  . . . . . . . .   4
      2.3.  Resetting Spin Value State  . . . . . . . . . . . . . . .   4
    3.  Using the Spin Bit for Passive RTT Measurement  . . . . . . .   4
    4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .   5
-   5.  Security and Privacy Considerations . . . . . . . . . . . . .   5
-   6.  Acknowledgments . . . . . . . . . . . . . . . . . . . . . . .   6
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   6
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .   6
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .   7
-     7.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
+   5.  Security and Privacy Considerations . . . . . . . . . . . . .   6
+   6.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .   6
+     6.1.  Since draft-ietf-spin-exp-00  . . . . . . . . . . . . . .   6
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .   6
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .   7
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .   7
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .   7
+     8.3.  URIs  . . . . . . . . . . . . . . . . . . . . . . . . . .   7
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .   8
+
+
+
+
+
+
+
+
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 2]
+
+Internet-Draft                QUIC Spin Bit                  August 2018
+
 
 1.  Introduction
 
@@ -106,14 +120,6 @@ Table of Contents
    Security (TLS) [TLS] to encrypt most of its protocol internals.  In
    contrast to TCP where the sequence and acknowledgement numbers and
    timestamps (if the respective option is in use) can be seen by on-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 2]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
-
    path observers and used to estimate end-to-end latency, QUIC's wire
    image (see [WIRE-IMAGE]) currently does not expose any information
    that can be used for passive latency measurement techniques that rely
@@ -144,7 +150,7 @@ Internet-Draft                QUIC Spin Bit                     May 2018
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
    +-+-+-+-+-+-+-+-+
-   |0|K|1|1|0|S|T T|
+   |0|K|1|1|0|S|R R|
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
    |                Destination Connection ID (0..144)           ...
    +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -156,19 +162,19 @@ Internet-Draft                QUIC Spin Bit                     May 2018
 
          Figure 1: Short Header Format including proposed Spin Bit
 
+
+
+
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 3]
+
+Internet-Draft                QUIC Spin Bit                  August 2018
+
+
    S: The Spin bit is set 0 or 1 depending on the stored spin value that
    is updated on packet reception as explained in Section 2.2.
 
-
-
-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 3]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
+   R: Two additional bits are reserved for experimentation in the short
+   header.
 
 2.2.  Setting the Spin Bit on Outgoing Packets
 
@@ -213,19 +219,17 @@ Internet-Draft                QUIC Spin Bit                     May 2018
    from 1 to 0 or 0 to 1) in the spin bit signal in a single direction
    to measure one sample of end-to-end RTT.
 
+
+
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 4]
+
+Internet-Draft                QUIC Spin Bit                  August 2018
+
+
    An observer can store the largest observed packet number per flow,
    and reject edges that do not have a monotonically increasing packet
    number (greater than the largest observed packet number).  This will
    avoid detecting spurious edges caused by reordering events that
-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 4]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
-
    include an edge, which would lead to very low RTT estimates if not
    ignored.
 
@@ -269,30 +273,39 @@ Internet-Draft                QUIC Spin Bit                     May 2018
 
    This document has no actions for IANA.
 
+
+
+
+
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 5]
+
+Internet-Draft                QUIC Spin Bit                  August 2018
+
+
 5.  Security and Privacy Considerations
 
    The spin bit is intended to expose end-to-end RTT to observers along
    the path, so the privacy considerations for the latency spin bit are
    essentially the same as those for passive RTT measurement in general.
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 5]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
-
    It has been shown [PAM-RTT] that RTT measurements do not provide more
    information for geolocation than is available in the most basic,
    freely-available IP address based location databases.  The risk of
    exposure of per-flow network RTT to on-path devices is therefore
    negligible.
 
-6.  Acknowledgments
+6.  Change Log
 
-   This document is derived from [I-D.trammell-quic-spin], which was the
-   work of the following authors in addition to the editor of this
-   document:
+      *RFC Editor's Note:* Please remove this section prior to
+      publication of a final version of this document.
+
+6.1.  Since draft-ietf-spin-exp-00
+
+   Nothing yet.
+
+Acknowledgments
+
+   This document is derived from [QUIC-SPIN], which was the work of the
+   following authors in addition to the editor of this document:
 
    o  Piet De Vaere, ETH Zurich
 
@@ -317,39 +330,28 @@ Internet-Draft                QUIC Spin Bit                     May 2018
    for Education, Research, and Innovation under contract no. 15.0268.
    This support does not imply endorsement.
 
-7.  References
 
-7.1.  Normative References
+
+
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 6]
+
+Internet-Draft                QUIC Spin Bit                  August 2018
+
+
+8.  References
+
+8.1.  Normative References
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), May 2018.
+              transport (work in progress), August 2018.
 
-
-
-
-
-
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 6]
-
-Internet-Draft                QUIC Spin Bit                     May 2018
-
-
-7.2.  Informative References
+8.2.  Informative References
 
    [CACM-TCP]
               Strowes, S., "Passively Measuring TCP Round-Trip Times (in
               Communications of the ACM)", October 2013.
-
-   [I-D.trammell-quic-spin]
-              Trammell, B., Vaere, P., Even, R., Fioccola, G., Fossati,
-              T., Ihlar, M., Morton, A., and S. Emile, "Adding Explicit
-              Passive Measurability of Two-Way Latency to the QUIC
-              Transport Protocol", draft-trammell-quic-spin-03 (work in
-              progress), May 2018.
 
    [PAM-RTT]  Trammell, B. and M. Kuehlewind, "Revisiting the Privacy
               Implications of Two-Way Internet Latency Data (in Proc.
@@ -363,8 +365,8 @@ Internet-Draft                QUIC Spin Bit                     May 2018
               progress), May 2018.
 
    [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", draft-ietf-tls-tls13-21 (work in progress),
-              July 2017.
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
 
    [TMA-QOF]  Trammell, B., Gugelmann, D., and N. Brownlee, "Inline Data
               Integrity Signals for Passive Measurement (in Proc. TMA
@@ -375,7 +377,7 @@ Internet-Draft                QUIC Spin Bit                     May 2018
               Network Protocol", draft-trammell-wire-image-04 (work in
               progress), April 2018.
 
-7.3.  URIs
+8.3.  URIs
 
    [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
 
@@ -387,11 +389,9 @@ Internet-Draft                QUIC Spin Bit                     May 2018
 
 
 
-
-
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 7]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 7]
 
-Internet-Draft                QUIC Spin Bit                     May 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
 Authors' Addresses
@@ -445,4 +445,4 @@ Authors' Addresses
 
 
 
-Trammell & Kuehlewind   Expires November 16, 2018               [Page 8]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 8]

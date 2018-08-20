@@ -5,8 +5,8 @@
 QUIC                                                     M. Thomson, Ed.
 Internet-Draft                                                   Mozilla
 Intended status: Standards Track                          S. Turner, Ed.
-Expires: November 16, 2018                                         sn3rd
-                                                            May 15, 2018
+Expires: February 21, 2019                                         sn3rd
+                                                         August 20, 2018
 
 
           Using Transport Layer Security (TLS) to Secure QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on November 16, 2018.
+   This Internet-Draft will expire on February 21, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson & Turner        Expires November 16, 2018               [Page 1]
+Thomson & Turner        Expires February 21, 2019               [Page 1]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -70,105 +70,73 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
-   2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   4
-   3.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   4
-     3.1.  TLS Overview  . . . . . . . . . . . . . . . . . . . . . .   5
-     3.2.  TLS Handshake . . . . . . . . . . . . . . . . . . . . . .   6
-   4.  TLS Usage . . . . . . . . . . . . . . . . . . . . . . . . . .   7
-     4.1.  Handshake and Setup Sequence  . . . . . . . . . . . . . .   8
-     4.2.  Interface to TLS  . . . . . . . . . . . . . . . . . . . .   9
-       4.2.1.  Handshake Interface . . . . . . . . . . . . . . . . .  10
-       4.2.2.  Source Address Validation . . . . . . . . . . . . . .  11
-       4.2.3.  Key Ready Events  . . . . . . . . . . . . . . . . . .  12
-       4.2.4.  Secret Export . . . . . . . . . . . . . . . . . . . .  12
-       4.2.5.  TLS Interface Summary . . . . . . . . . . . . . . . .  12
-     4.3.  TLS Version . . . . . . . . . . . . . . . . . . . . . . .  13
-     4.4.  ClientHello Size  . . . . . . . . . . . . . . . . . . . .  13
-     4.5.  Peer Authentication . . . . . . . . . . . . . . . . . . .  14
+   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
+   2.  Notational Conventions  . . . . . . . . . . . . . . . . . . .   3
+     2.1.  TLS Overview  . . . . . . . . . . . . . . . . . . . . . .   4
+   3.  Protocol Overview . . . . . . . . . . . . . . . . . . . . . .   6
+   4.  Carrying TLS Messages . . . . . . . . . . . . . . . . . . . .   7
+     4.1.  Interface to TLS  . . . . . . . . . . . . . . . . . . . .   9
+       4.1.1.  Sending and Receiving Handshake Messages  . . . . . .   9
+       4.1.2.  Encryption Level Changes  . . . . . . . . . . . . . .  11
+       4.1.3.  TLS Interface Summary . . . . . . . . . . . . . . . .  11
+     4.2.  TLS Version . . . . . . . . . . . . . . . . . . . . . . .  12
+     4.3.  ClientHello Size  . . . . . . . . . . . . . . . . . . . .  13
+     4.4.  Peer Authentication . . . . . . . . . . . . . . . . . . .  13
+     4.5.  Enabling 0-RTT  . . . . . . . . . . . . . . . . . . . . .  14
      4.6.  Rejecting 0-RTT . . . . . . . . . . . . . . . . . . . . .  14
-     4.7.  TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  15
-   5.  QUIC Packet Protection  . . . . . . . . . . . . . . . . . . .  15
-     5.1.  Installing New Keys . . . . . . . . . . . . . . . . . . .  15
-     5.2.  Enabling 0-RTT  . . . . . . . . . . . . . . . . . . . . .  15
-     5.3.  QUIC Key Expansion  . . . . . . . . . . . . . . . . . . .  16
-       5.3.1.  QHKDF-Expand  . . . . . . . . . . . . . . . . . . . .  16
-       5.3.2.  Handshake Secrets . . . . . . . . . . . . . . . . . .  17
-       5.3.3.  0-RTT Secret  . . . . . . . . . . . . . . . . . . . .  17
-       5.3.4.  1-RTT Secrets . . . . . . . . . . . . . . . . . . . .  18
-       5.3.5.  Updating 1-RTT Secrets  . . . . . . . . . . . . . . .  18
-       5.3.6.  Packet Protection Keys  . . . . . . . . . . . . . . .  18
-     5.4.  QUIC AEAD Usage . . . . . . . . . . . . . . . . . . . . .  19
-     5.5.  Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  20
-     5.6.  Packet Number Protection  . . . . . . . . . . . . . . . .  21
-       5.6.1.  AES-Based Packet Number Protection  . . . . . . . . .  22
-       5.6.2.  ChaCha20-Based Packet Number Protection . . . . . . .  22
-     5.7.  Receiving Protected Packets . . . . . . . . . . . . . . .  22
-   6.  Key Phases  . . . . . . . . . . . . . . . . . . . . . . . . .  23
-     6.1.  Packet Protection for the TLS Handshake . . . . . . . . .  23
+     4.7.  HelloRetryRequest . . . . . . . . . . . . . . . . . . . .  14
+     4.8.  TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  15
+     4.9.  Discarding Unused Keys  . . . . . . . . . . . . . . . . .  15
+   5.  QUIC Packet Protection  . . . . . . . . . . . . . . . . . . .  16
+     5.1.  QUIC Packet Encryption Keys . . . . . . . . . . . . . . .  16
+       5.1.1.  Initial Secrets . . . . . . . . . . . . . . . . . . .  17
+     5.2.  QUIC AEAD Usage . . . . . . . . . . . . . . . . . . . . .  17
+     5.3.  Packet Number Protection  . . . . . . . . . . . . . . . .  18
+       5.3.1.  AES-Based Packet Number Protection  . . . . . . . . .  20
+       5.3.2.  ChaCha20-Based Packet Number Protection . . . . . . .  20
+     5.4.  Receiving Protected Packets . . . . . . . . . . . . . . .  20
+     5.5.  Use of 0-RTT Keys . . . . . . . . . . . . . . . . . . . .  21
+     5.6.  Receiving Out-of-Order Protected Frames . . . . . . . . .  21
+   6.  Key Update  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+   7.  Security of Initial Messages  . . . . . . . . . . . . . . . .  23
+   8.  QUIC-Specific Additions to the TLS Handshake  . . . . . . . .  24
+     8.1.  Protocol and Version Negotiation  . . . . . . . . . . . .  24
+     8.2.  QUIC Transport Parameters Extension . . . . . . . . . . .  24
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  25
+     9.1.  Packet Reflection Attack Mitigation . . . . . . . . . . .  25
+     9.2.  Peer Denial of Service  . . . . . . . . . . . . . . . . .  25
+     9.3.  Packet Number Protection Analysis . . . . . . . . . . . .  26
 
 
 
-Thomson & Turner        Expires November 16, 2018               [Page 2]
+Thomson & Turner        Expires February 21, 2019               [Page 2]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-       6.1.1.  Initial Key Transitions . . . . . . . . . . . . . . .  24
-       6.1.2.  Retransmission and Acknowledgment of Unprotected
-               Packets . . . . . . . . . . . . . . . . . . . . . . .  24
-     6.2.  Key Update  . . . . . . . . . . . . . . . . . . . . . . .  25
-   7.  Client Address Validation . . . . . . . . . . . . . . . . . .  27
-     7.1.  HelloRetryRequest Address Validation  . . . . . . . . . .  27
-       7.1.1.  Stateless Address Validation  . . . . . . . . . . . .  28
-       7.1.2.  Sending HelloRetryRequest . . . . . . . . . . . . . .  28
-     7.2.  NewSessionTicket Address Validation . . . . . . . . . . .  29
-     7.3.  Address Validation Token Integrity  . . . . . . . . . . .  29
-   8.  Pre-handshake QUIC Messages . . . . . . . . . . . . . . . . .  29
-     8.1.  Unprotected Packets Prior to Handshake Completion . . . .  30
-       8.1.1.  STREAM Frames . . . . . . . . . . . . . . . . . . . .  31
-       8.1.2.  ACK Frames  . . . . . . . . . . . . . . . . . . . . .  31
-       8.1.3.  Updates to Data and Stream Limits . . . . . . . . . .  31
-       8.1.4.  Handshake Failures  . . . . . . . . . . . . . . . . .  32
-       8.1.5.  Address Verification  . . . . . . . . . . . . . . . .  32
-       8.1.6.  Denial of Service with Unprotected Packets  . . . . .  32
-     8.2.  Use of 0-RTT Keys . . . . . . . . . . . . . . . . . . . .  33
-     8.3.  Receiving Out-of-Order Protected Frames . . . . . . . . .  33
-   9.  QUIC-Specific Additions to the TLS Handshake  . . . . . . . .  34
-     9.1.  Protocol and Version Negotiation  . . . . . . . . . . . .  34
-     9.2.  QUIC Transport Parameters Extension . . . . . . . . . . .  34
-   10. Security Considerations . . . . . . . . . . . . . . . . . . .  35
-     10.1.  Packet Reflection Attack Mitigation  . . . . . . . . . .  35
-     10.2.  Peer Denial of Service . . . . . . . . . . . . . . . . .  35
-     10.3.  Packet Number Protection Analysis  . . . . . . . . . . .  36
-   11. Error Codes . . . . . . . . . . . . . . . . . . . . . . . . .  37
-   12. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  37
-   13. References  . . . . . . . . . . . . . . . . . . . . . . . . .  38
-     13.1.  Normative References . . . . . . . . . . . . . . . . . .  38
-     13.2.  Informative References . . . . . . . . . . . . . . . . .  39
-     13.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  40
-   Appendix A.  Contributors . . . . . . . . . . . . . . . . . . . .  40
-   Appendix B.  Acknowledgments  . . . . . . . . . . . . . . . . . .  40
-   Appendix C.  Change Log . . . . . . . . . . . . . . . . . . . . .  40
-     C.1.  Since draft-ietf-quic-tls-10  . . . . . . . . . . . . . .  41
-     C.2.  Since draft-ietf-quic-tls-09  . . . . . . . . . . . . . .  41
-     C.3.  Since draft-ietf-quic-tls-08  . . . . . . . . . . . . . .  41
-     C.4.  Since draft-ietf-quic-tls-07  . . . . . . . . . . . . . .  41
-     C.5.  Since draft-ietf-quic-tls-05  . . . . . . . . . . . . . .  41
-     C.6.  Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  41
-     C.7.  Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  41
-     C.8.  Since draft-ietf-quic-tls-02  . . . . . . . . . . . . . .  41
-     C.9.  Since draft-ietf-quic-tls-01  . . . . . . . . . . . . . .  41
-     C.10. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  42
-     C.11. Since draft-thomson-quic-tls-01 . . . . . . . . . . . . .  42
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  42
-
-
-
-Thomson & Turner        Expires November 16, 2018               [Page 3]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
+   10. IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
+   11. References  . . . . . . . . . . . . . . . . . . . . . . . . .  27
+     11.1.  Normative References . . . . . . . . . . . . . . . . . .  27
+     11.2.  Informative References . . . . . . . . . . . . . . . . .  28
+     11.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  29
+   Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  29
+     A.1.  Since draft-ietf-quic-tls-13  . . . . . . . . . . . . . .  29
+     A.2.  Since draft-ietf-quic-tls-12  . . . . . . . . . . . . . .  29
+     A.3.  Since draft-ietf-quic-tls-11  . . . . . . . . . . . . . .  30
+     A.4.  Since draft-ietf-quic-tls-10  . . . . . . . . . . . . . .  30
+     A.5.  Since draft-ietf-quic-tls-09  . . . . . . . . . . . . . .  30
+     A.6.  Since draft-ietf-quic-tls-08  . . . . . . . . . . . . . .  30
+     A.7.  Since draft-ietf-quic-tls-07  . . . . . . . . . . . . . .  30
+     A.8.  Since draft-ietf-quic-tls-05  . . . . . . . . . . . . . .  30
+     A.9.  Since draft-ietf-quic-tls-04  . . . . . . . . . . . . . .  30
+     A.10. Since draft-ietf-quic-tls-03  . . . . . . . . . . . . . .  30
+     A.11. Since draft-ietf-quic-tls-02  . . . . . . . . . . . . . .  30
+     A.12. Since draft-ietf-quic-tls-01  . . . . . . . . . . . . . .  30
+     A.13. Since draft-ietf-quic-tls-00  . . . . . . . . . . . . . .  31
+     A.14. Since draft-thomson-quic-tls-01 . . . . . . . . . . . . .  31
+   Acknowledgments . . . . . . . . . . . . . . . . . . . . . . . . .  31
+   Contributors  . . . . . . . . . . . . . . . . . . . . . . . . . .  31
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
 
 1.  Introduction
 
@@ -181,10 +149,8 @@ Internet-Draft                QUIC over TLS                     May 2018
    send application data immediately, that is, using a zero round trip
    setup.
 
-   This document describes how the standardized TLS 1.3 acts a security
-   component of QUIC.  The same design could work for TLS 1.2, though
-   few of the benefits QUIC provides would be realized due to the
-   handshake latency in versions of TLS prior to 1.3.
+   This document describes how the standardized TLS 1.3 acts as a
+   security component of QUIC.
 
 2.  Notational Conventions
 
@@ -196,96 +162,41 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    This document uses the terminology established in [QUIC-TRANSPORT].
 
+
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 3]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
    For brevity, the acronym TLS is used to refer to TLS 1.3.
 
-   TLS terminology is used when referring to parts of TLS.  Though TLS
-   assumes a continuous stream of octets, it divides that stream into
-   _records_. Most relevant to QUIC are the records that contain TLS
-   _handshake messages_, which are discrete messages that are used for
-   key agreement, authentication and parameter negotiation.  Ordinarily,
-   TLS records can also contain _application data_, though in the QUIC
-   usage there is no use of TLS application data.
-
-3.  Protocol Overview
-
-   QUIC [QUIC-TRANSPORT] assumes responsibility for the confidentiality
-   and integrity protection of packets.  For this it uses keys derived
-   from a TLS 1.3 connection [TLS13]; QUIC also relies on TLS 1.3 for
-   authentication and negotiation of parameters that are critical to
-   security and performance.
-
-   Rather than a strict layering, these two protocols are co-dependent:
-   QUIC uses the TLS handshake; TLS uses the reliability and ordered
-   delivery provided by QUIC streams.
-
-
-
-
-Thomson & Turner        Expires November 16, 2018               [Page 4]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   This document defines how QUIC interacts with TLS.  This includes a
-   description of how TLS is used, how keying material is derived from
-   TLS, and the application of that keying material to protect QUIC
-   packets.  Figure 1 shows the basic interactions between TLS and QUIC,
-   with the QUIC packet protection being called out specially.
-
-   +------------+                        +------------+
-   |            |------ Handshake ------>|            |
-   |            |<-- Validate Address ---|            |
-   |            |-- OK/Error/Validate -->|            |
-   |            |<----- Handshake -------|            |
-   |   QUIC     |------ Validate ------->|    TLS     |
-   |            |                        |            |
-   |            |<------ 0-RTT OK -------|            |
-   |            |<------ 1-RTT OK -------|            |
-   |            |<--- Handshake Done ----|            |
-   +------------+                        +------------+
-    |         ^                               ^ |
-    | Protect | Protected                     | |
-    v         | Packet                        | |
-   +------------+                             / /
-   |   QUIC     |                            / /
-   |  Packet    |-------- Get Secret -------' /
-   | Protection |<-------- Secret -----------'
-   +------------+
-
-                    Figure 1: QUIC and TLS Interactions
-
-   The initial state of a QUIC connection has packets exchanged without
-   any form of protection.  In this state, QUIC is limited to using
-   stream 0 and associated packets.  Stream 0 is reserved for a TLS
-   connection.  This is a complete TLS connection as it would appear
-   when layered over TCP; the only difference is that QUIC provides the
-   reliability and ordering that would otherwise be provided by TCP.
-
-   At certain points during the TLS handshake, keying material is
-   exported from the TLS connection for use by QUIC.  This keying
-   material is used to derive packet protection keys.  Details on how
-   and when keys are derived and used are included in Section 5.
-
-3.1.  TLS Overview
+2.1.  TLS Overview
 
    TLS provides two endpoints with a way to establish a means of
    communication over an untrusted medium (that is, the Internet) that
    ensures that messages they exchange cannot be observed, modified, or
    forged.
 
+   Internally, TLS is a layered protocol, with the structure shown
+   below:
 
+   +--------------+--------------+--------------+
+   |  Handshake   |    Alerts    |  Application |
+   |    Layer     |              |     Data     |
+   |              |              |              |
+   +--------------+--------------+--------------+
+   |                                            |
+   |               Record Layer                 |
+   |                                            |
+   +--------------------------------------------+
 
-
-
-Thomson & Turner        Expires November 16, 2018               [Page 5]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   TLS features can be separated into two basic functions: an
-   authenticated key exchange and record protection.  QUIC primarily
-   uses the authenticated key exchange provided by TLS but provides its
-   own packet protection.
+   Each upper layer (handshake, alerts, and application data) is carried
+   as a series of typed TLS records.  Records are individually
+   cryptographically protected and then transmitted over a reliable
+   transport (typically TCP) which provides sequencing and guaranteed
+   delivery.
 
    The TLS authenticated key exchange occurs between two entities:
    client and server.  The client initiates the exchange and the server
@@ -305,9 +216,15 @@ Internet-Draft                QUIC over TLS                     May 2018
    produces shared secrets that cannot be controlled by either
    participating peer.
 
-3.2.  TLS Handshake
-
    TLS 1.3 provides two basic handshake modes of interest to QUIC:
+
+
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 4]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
 
    o  A full 1-RTT handshake in which the client is able to send
       application data after one round trip and the server immediately
@@ -321,22 +238,7 @@ Internet-Draft                QUIC over TLS                     May 2018
       idempotent action.
 
    A simplified TLS 1.3 handshake with 0-RTT application data is shown
-   in Figure 2, see [TLS13] for more options and details.
-
-
-
-
-
-
-
-
-
-
-
-Thomson & Turner        Expires November 16, 2018               [Page 6]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
+   in Figure 1, see [TLS13] for more options and details.
 
        Client                                             Server
 
@@ -351,189 +253,273 @@ Internet-Draft                QUIC over TLS                     May 2018
 
       [Application Data]        <------->      [Application Data]
 
-                    Figure 2: TLS Handshake with 0-RTT
+       () Indicates messages protected by early data (0-RTT) keys
+       {} Indicates messages protected using handshake keys
+       [] Indicates messages protected using application data
+          (1-RTT) keys
 
-   This 0-RTT handshake is only possible if the client and server have
+                    Figure 1: TLS Handshake with 0-RTT
+
+   Data is protected using a number of encryption levels:
+
+   o  Plaintext
+
+   o  Early Data (0-RTT) Keys
+
+   o  Handshake Keys
+
+   o  Application Data (1-RTT) Keys
+
+   Application data may appear only in the early data and application
+   data levels.  Handshake and Alert messages may appear in any level.
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 5]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
+   The 0-RTT handshake is only possible if the client and server have
    previously communicated.  In the 1-RTT handshake, the client is
    unable to send protected application data until it has received all
    of the handshake messages sent by the server.
 
-   Two additional variations on this basic handshake exchange are
-   relevant to this document:
+3.  Protocol Overview
 
-   o  The server can respond to a ClientHello with a HelloRetryRequest,
-      which adds an additional round trip prior to the basic exchange.
-      This is needed if the server wishes to request a different key
-      exchange key from the client.  HelloRetryRequest is also used to
-      verify that the client is correctly able to receive packets on the
-      address it claims to have (see [QUIC-TRANSPORT]).
+   QUIC [QUIC-TRANSPORT] assumes responsibility for the confidentiality
+   and integrity protection of packets.  For this it uses keys derived
+   from a TLS 1.3 handshake [TLS13], but instead of carrying TLS records
+   over QUIC (as with TCP), TLS Handshake and Alert messages are carried
+   directly over the QUIC transport, which takes over the
+   responsibilities of the TLS record layer, as shown below.
 
-   o  A pre-shared key mode can be used for subsequent handshakes to
-      reduce the number of public key operations.  This is the basis for
-      0-RTT data, even if the remainder of the connection is protected
-      by a new Diffie-Hellman exchange.
+   +--------------+--------------+ +-------------+
+   |     TLS      |     TLS      | |    QUIC     |
+   |  Handshake   |    Alerts    | | Applications|
+   |              |              | | (h2q, etc.) |
+   +--------------+--------------+-+-------------+
+   |                                             |
+   |                QUIC Transport               |
+   |   (streams, reliability, congestion, etc.)  |
+   |                                             |
+   +---------------------------------------------+
+   |                                             |
+   |            QUIC Packet Protection           |
+   |                                             |
+   +---------------------------------------------+
 
-4.  TLS Usage
+   QUIC also relies on TLS 1.3 for authentication and negotiation of
+   parameters that are critical to security and performance.
 
-   QUIC reserves stream 0 for a TLS connection.  Stream 0 contains a
-   complete TLS connection, which includes the TLS record layer.  Other
-   than the definition of a QUIC-specific extension (see Section 9.2),
-   TLS is unmodified for this use.  This means that TLS will apply
-   confidentiality and integrity protection to its records.  In
-   particular, TLS record protection is what provides confidentiality
-   protection for the TLS handshake messages sent by the server.
+   Rather than a strict layering, these two protocols are co-dependent:
+   QUIC uses the TLS handshake; TLS uses the reliability and ordered
+   delivery provided by QUIC streams.
 
-   QUIC permits a client to send frames on streams starting from the
-   first packet.  The initial packet from a client contains a stream
-   frame for stream 0 that contains the first TLS handshake messages
+   At a high level, there are two main interactions between the TLS and
+   QUIC components:
+
+   o  The TLS component sends and receives messages via the QUIC
+      component, with QUIC providing a reliable stream abstraction to
+      TLS.
+
+   o  The TLS component provides a series of updates to the QUIC
+      component, including (a) new packet protection keys to install (b)
+      state changes such as handshake completion, the server
+      certificate, etc.
 
 
 
-Thomson & Turner        Expires November 16, 2018               [Page 7]
+
+Thomson & Turner        Expires February 21, 2019               [Page 6]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   from the client.  This allows the TLS handshake to start with the
-   first packet that a client sends.
+   Figure 2 shows these interactions in more detail, with the QUIC
+   packet protection being called out specially.
 
-   QUIC packets are protected using a scheme that is specific to QUIC,
-   see Section 5.  Keys are exported from the TLS connection when they
-   become available using a TLS exporter (see Section 7.5 of [TLS13] and
-   Section 5.3).  After keys are exported from TLS, QUIC manages its own
-   key schedule.
+   +------------+                        +------------+
+   |            |<- Handshake Messages ->|            |
+   |            |<---- 0-RTT Keys -------|            |
+   |            |<--- Handshake Keys-----|            |
+   |   QUIC     |<---- 1-RTT Keys -------|    TLS     |
+   |            |<--- Handshake Done ----|            |
+   +------------+                        +------------+
+    |         ^
+    | Protect | Protected
+    v         | Packet
+   +------------+
+   |   QUIC     |
+   |  Packet    |
+   | Protection |
+   +------------+
 
-4.1.  Handshake and Setup Sequence
+                    Figure 2: QUIC and TLS Interactions
 
-   The integration of QUIC with a TLS handshake is shown in more detail
-   in Figure 3.  QUIC "STREAM" frames on stream 0 carry the TLS
-   handshake.  QUIC performs loss recovery [QUIC-RECOVERY] for this
-   stream and ensures that TLS handshake messages are delivered in the
-   correct order.
+   Unlike TLS over TCP, QUIC applications which want to send data do not
+   send it through TLS "application_data" records.  Rather, they send it
+   as QUIC STREAM frames which are then carried in QUIC packets.
 
-       Client                                             Server
+4.  Carrying TLS Messages
 
-   @H QUIC STREAM Frame(s) <0>:
-        ClientHello
-          + QUIC Extension
-                               -------->
-                           0-RTT Key => @0
+   QUIC carries TLS handshake data in CRYPTO frames, each of which
+   consists of a contiguous block of handshake data identified by an
+   offset and length.  Those frames are packaged into QUIC packets and
+   encrypted under the current TLS encryption level.  As with TLS over
+   TCP, once TLS handshake data has been delivered to QUIC, it is QUIC's
+   responsibility to deliver it reliably.  Each chunk of data that is
+   produced by TLS is associated with the set of keys that TLS is
+   currently using.  If QUIC needs to retransmit that data, it MUST use
+   the same keys even if TLS has already updated to newer keys.
 
-   @0 QUIC STREAM Frame(s) <any stream>:
-      Replayable QUIC Frames
-                               -------->
+   One important difference between TLS 1.3 records (used with TCP) and
+   QUIC CRYPTO frames is that in QUIC multiple frames may appear in the
+   same QUIC packet as long as they are associated with the same
+   encryption level.  For instance, an implementation might bundle a
+   Handshake message and an ACK for some Handshake data into the same
+   packet.
 
-                                         QUIC STREAM Frame <0>: @H
-                                                  ServerHello
-                                     {TLS Handshake Messages}
-                               <--------
-                           1-RTT Key => @1
-
-                                              QUIC Frames <any> @1
-                               <--------
-   @H QUIC STREAM Frame(s) <0>:
-        (EndOfEarlyData)
-        {Finished}
-                               -------->
-
-   @1 QUIC Frames <any>        <------->      QUIC Frames <any> @1
-
-                     Figure 3: QUIC over TLS Handshake
-
-   In Figure 3, symbols mean:
-
-
+   Each encryption level has a specific list of frames which may appear
+   in it.  The rules here generalize those of TLS, in that frames
+   associated with establishing the connection can usually appear at any
 
 
-Thomson & Turner        Expires November 16, 2018               [Page 8]
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 7]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   o  "<" and ">" enclose stream numbers.
+   encryption level, whereas those associated with transferring data can
+   only appear in the 0-RTT and 1-RTT encryption levels
 
-   o  "@" indicates the keys that are used for protecting the QUIC
-      packet (H = handshake, using keys from the well-known cleartext
-      packet secret; 0 = 0-RTT keys; 1 = 1-RTT keys).
+   o  CRYPTO frames MAY appear in packets of any encryption level.
 
-   o  "(" and ")" enclose messages that are protected with TLS 0-RTT
-      handshake or application keys.
+   o  CONNECTION_CLOSE MAY appear in packets of any encryption level
+      other than 0-RTT.
 
-   o  "{" and "}" enclose messages that are protected by the TLS
-      Handshake keys.
+   o  PADDING and PING frames MAY appear in packets of any encryption
+      level.
 
-   If 0-RTT is not attempted, then the client does not send packets
-   protected by the 0-RTT key (@0).  In that case, the only key
-   transition on the client is from handshake packets (@H) to 1-RTT
-   protection (@1), which happens after it sends its final set of TLS
-   handshake messages.
+   o  ACK frames MAY appear in packets of any encryption level other
+      than 0-RTT, but can only acknowledge packets which appeared in
+      that encryption level.
 
-   Note: two different types of packet are used during the handshake by
-   both client and server.  The Initial packet carries a TLS ClientHello
-   message; the remainder of the TLS handshake is carried in Handshake
-   packets.  The Retry packet carries a TLS HelloRetryRequest, if it is
-   needed, and Handshake packets carry the remainder of the server
-   handshake.
+   o  STREAM frames MUST ONLY appear in the 0-RTT and 1-RTT levels.
 
-   The server sends TLS handshake messages without protection (@H).  The
-   server transitions from no protection (@H) to full 1-RTT protection
-   (@1) after it sends the last of its handshake messages.
+   o  All other frame types MUST only appear at the 1-RTT levels.
 
-   Some TLS handshake messages are protected by the TLS handshake record
-   protection.  These keys are not exported from the TLS connection for
-   use in QUIC.  QUIC packets from the server are sent in the clear
-   until the final transition to 1-RTT keys.
+   Because packets could be reordered on the wire, QUIC uses the packet
+   type to indicate which level a given packet was encrypted under, as
+   shown in Table 1.  When multiple packets of different encryption
+   levels need to be sent, endpoints SHOULD use coalesced packets to
+   send them in the same UDP datagram.
 
-   The client transitions from handshake (@H) to 0-RTT keys (@0) when
-   sending 0-RTT data, and subsequently to to 1-RTT keys (@1) after its
-   second flight of TLS handshake messages.  This creates the potential
-   for unprotected packets to be received by a server in close proximity
-   to packets that are protected with 1-RTT keys.
+            +-----------------+------------------+-----------+
+            | Packet Type     | Encryption Level | PN Space  |
+            +-----------------+------------------+-----------+
+            | Initial         | Initial secrets  | Initial   |
+            |                 |                  |           |
+            | 0-RTT Protected | 0-RTT            | 0/1-RTT   |
+            |                 |                  |           |
+            | Handshake       | Handshake        | Handshake |
+            |                 |                  |           |
+            | Retry           | N/A              | N/A       |
+            |                 |                  |           |
+            | Short Header    | 1-RTT            | 0/1-RTT   |
+            +-----------------+------------------+-----------+
 
-   More information on key transitions is included in Section 6.1.
+                 Table 1: Encryption Levels by Packet Type
 
-4.2.  Interface to TLS
-
-   As shown in Figure 1, the interface from QUIC to TLS consists of four
-   primary functions: Handshake, Source Address Validation, Key Ready
-   Events, and Secret Export.
+   Section 6.5 of [QUIC-TRANSPORT] shows how packets at the various
+   encryption levels fit into the handshake process.
 
 
 
 
-Thomson & Turner        Expires November 16, 2018               [Page 9]
+
+
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 8]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
+
+4.1.  Interface to TLS
+
+   As shown in Figure 2, the interface from QUIC to TLS consists of
+   three primary functions:
+
+   o  Sending and receiving handshake messages
+
+   o  Rekeying (both transmit and receive)
+
+   o  Handshake state updates
 
    Additional functions might be needed to configure TLS.
 
-4.2.1.  Handshake Interface
+4.1.1.  Sending and Receiving Handshake Messages
 
    In order to drive the handshake, TLS depends on being able to send
-   and receive handshake messages on stream 0.  There are two basic
-   functions on this interface: one where QUIC requests handshake
-   messages and one where QUIC provides handshake packets.
+   and receive handshake messages.  There are two basic functions on
+   this interface: one where QUIC requests handshake messages and one
+   where QUIC provides handshake packets.
 
    Before starting the handshake QUIC provides TLS with the transport
-   parameters (see Section 9.2) that it wishes to carry.
+   parameters (see Section 8.2) that it wishes to carry.
 
    A QUIC client starts TLS by requesting TLS handshake octets from TLS.
    The client acquires handshake octets before sending its first packet.
+   A QUIC server starts the process by providing TLS with the client's
+   handshake octets.
 
-   A QUIC server starts the process by providing TLS with stream 0
-   octets.
+   At any given time, the TLS stack at an endpoint will have a current
+   sending encryption level and receiving encryption level.  Each
+   encryption level is associated with a different flow of bytes, which
+   is reliably transmitted to the peer in CRYPTO frames.  When TLS
+   provides handshake octets to be sent, they are appended to the
+   current flow and any packet that includes the CRYPTO frame is
+   protected using keys from the corresponding encryption level.
 
-   Each time that an endpoint receives data on stream 0, it delivers the
-   octets to TLS if it is able.  Each time that TLS is provided with new
-   data, new handshake octets are requested from TLS.  TLS might not
-   provide any octets if the handshake messages it has received are
-   incomplete or it has no data to send.
+   When an endpoint receives a QUIC packet containing a CRYPTO frame
+   from the network, it proceeds as follows:
 
-   At the server, when TLS provides handshake octets, it also needs to
-   indicate whether the octets contain a HelloRetryRequest.  A
-   HelloRetryRequest MUST always be sent in a Retry packet, so the QUIC
-   server needs to know whether the octets are a HelloRetryRequest.
+   o  If the packet was in the TLS receiving encryption level, sequence
+      the data into the input flow as usual.  As with STREAM frames, the
+      offset is used to find the proper location in the data sequence.
+      If the result of this process is that new data is available, then
+      it is delivered to TLS in order.
+
+   o  If the packet is from a previously installed encryption level, it
+      MUST not contain data which extends past the end of previously
+      received data in that flow.  Implementations MUST treat any
+
+
+
+Thomson & Turner        Expires February 21, 2019               [Page 9]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
+      violations of this requirement as a connection error of type
+      PROTOCOL_VIOLATION.
+
+   o  If the packet is from a new encryption level, it is saved for
+      later processing by TLS.  Once TLS moves to receiving from this
+      encryption level, saved data can be provided.  When providing data
+      from any new encryption level to TLS, if there is data from a
+      previous encryption level that TLS has not consumed, this MUST be
+      treated as a connection error of type PROTOCOL_VIOLATION.
+
+   Each time that TLS is provided with new data, new handshake octets
+   are requested from TLS.  TLS might not provide any octets if the
+   handshake messages it has received are incomplete or it has no data
+   to send.
 
    Once the TLS handshake is complete, this is indicated to QUIC along
    with any final handshake octets that TLS needs to send.  TLS also
@@ -548,20 +534,12 @@ Internet-Draft                QUIC over TLS                     May 2018
    client.
 
    When the handshake is complete, QUIC only needs to provide TLS with
-   any data that arrives on stream 0.  In the same way that is done
-   during the handshake, new data is requested from TLS after providing
-   received data.
+   any data that arrives in CRYPTO streams.  In the same way that is
+   done during the handshake, new data is requested from TLS after
+   providing received data.
 
    Important:  Until the handshake is reported as complete, the
       connection and key exchange are not properly authenticated at the
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 10]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
       server.  Even though 1-RTT keys are available to a server after
       receiving the first handshake messages from a client, the server
       cannot consider the client to be authenticated until it receives
@@ -570,135 +548,110 @@ Internet-Draft                QUIC over TLS                     May 2018
       The requirement for the server to wait for the client Finished
       message creates a dependency on that message being delivered.  A
       client can avoid the potential for head-of-line blocking that this
-      implies by sending a copy of the STREAM frame that carries the
+      implies by sending a copy of the CRYPTO frame that carries the
       Finished message in multiple packets.  This enables immediate
       server processing for those packets.
 
-4.2.2.  Source Address Validation
-
-   During the processing of the TLS ClientHello, TLS requests that the
-   transport make a decision about whether to request source address
-   validation from the client.
-
-   An initial TLS ClientHello that resumes a session includes an address
-   validation token in the session ticket; this includes all attempts at
-   0-RTT.  If the client does not attempt session resumption, no token
-   will be present.  While processing the initial ClientHello, TLS
-   provides QUIC with any token that is present.  In response, QUIC
-   provides one of three responses:
-
-   o  proceed with the connection,
-
-   o  ask for client address validation, or
-
-   o  abort the connection.
-
-   If QUIC requests source address validation, it also provides a new
-   address validation token.  TLS includes that along with any
-   information it requires in the cookie extension of a TLS
-   HelloRetryRequest message.  In the other cases, the connection either
-   proceeds or terminates with a handshake error.
-
-   The client echoes the cookie extension in a second ClientHello.  A
-   ClientHello that contains a valid cookie extension will always be in
-   response to a HelloRetryRequest.  If address validation was requested
-   by QUIC, then this will include an address validation token.  TLS
-   makes a second address validation request of QUIC, including the
-   value extracted from the cookie extension.  In response to this
-   request, QUIC cannot ask for client address validation, it can only
-   abort or permit the connection attempt to proceed.
-
-   QUIC can provide a new address validation token for use in session
-   resumption at any time after the handshake is complete.  Each time a
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 11]
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 10]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   new token is provided TLS generates a NewSessionTicket message, with
-   the token included in the ticket.
+4.1.2.  Encryption Level Changes
 
-   See Section 7 for more details on client address validation.
-
-4.2.3.  Key Ready Events
-
-   TLS provides QUIC with signals when 0-RTT and 1-RTT keys are ready
-   for use.  These events are not asynchronous, they always occur
-   immediately after TLS is provided with new handshake octets, or after
-   TLS produces handshake octets.
-
-   When TLS completed its handshake, 1-RTT keys can be provided to QUIC.
-   On both client and server, this occurs after sending the TLS Finished
-   message.
-
-   This ordering means that there could be frames that carry TLS
-   handshake messages ready to send at the same time that application
-   data is available.  An implementation MUST ensure that TLS handshake
-   messages are always sent in packets protected with handshake keys
-   (see Section 5.3.2).  Separate packets are required for data that
-   needs protection from 1-RTT keys.
+   As keys for new encryption levels become available, TLS provides QUIC
+   with those keys.  Separately, as TLS starts using keys at a given
+   encryption level, TLS indicates to QUIC that it is now reading or
+   writing with keys at that encryption level.  These events are not
+   asynchronous; they always occur immediately after TLS is provided
+   with new handshake octets, or after TLS produces handshake octets.
 
    If 0-RTT is possible, it is ready after the client sends a TLS
    ClientHello message or the server receives that message.  After
    providing a QUIC client with the first handshake octets, the TLS
-   stack might signal that 0-RTT keys are ready.  On the server, after
+   stack might signal the change to 0-RTT keys.  On the server, after
    receiving handshake octets that contain a ClientHello message, a TLS
    server might signal that 0-RTT keys are available.
 
-   1-RTT keys are used for packets in both directions.  0-RTT keys are
-   only used to protect packets sent by the client.
+   Although TLS only uses one encryption level at a time, QUIC may use
+   more than one level.  For instance, after sending its Finished
+   message (using a CRYPTO frame at the Handshake encryption level) an
+   endpoint can send STREAM data (in 1-RTT encryption).  If the Finished
+   message is lost, the endpoint uses the Handshake encryption level to
+   retransmit the lost message.  Reordering or loss of packets can mean
+   that QUIC will need to handle packets at multiple encryption levels.
+   During the handshake, this means potentially handling packets at
+   higher and lower encryption levels than the current encryption level
+   used by TLS.
 
-4.2.4.  Secret Export
+   In particular, server implementations need to be able to read packets
+   at the Handshake encryption level before the final TLS handshake
+   message at the 0-RTT encryption level (EndOfEarlyData) is available.
+   Though the content of CRYPTO frames at the Handshake encryption level
+   cannot be forwarded to TLS before EndOfEarlyData is processed, the
+   client could send ACK frames that the server needs to process in
+   order to detect lost Handshake packets.
 
-   Details how secrets are exported from TLS are included in
-   Section 5.3.
+4.1.3.  TLS Interface Summary
 
-4.2.5.  TLS Interface Summary
-
-   Figure 4 summarizes the exchange between QUIC and TLS for both client
-   and server.
-
-
-
-
-
-
+   Figure 3 summarizes the exchange between QUIC and TLS for both client
+   and server.  Each arrow is tagged with the encryption level used for
+   that transmission.
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 12]
+
+
+
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 11]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
    Client                                                    Server
 
    Get Handshake
-   0-RTT Key Ready
-                         --- send/receive --->
+                        Initial ------------->
+   Rekey tx to 0-RTT Keys
+                        0-RTT --------------->
                                                  Handshake Received
-                                                    0-RTT Key Ready
                                                       Get Handshake
-                                                   1-RTT Keys Ready
-                        <--- send/receive ---
+                        <------------- Initial
+                                             Rekey rx to 0-RTT keys
+                                                 Handshake Received
+                                         Rekey rx to Handshake keys
+                                                      Get Handshake
+                        <----------- Handshake
+                                             Rekey tx to 1-RTT keys
+                        <--------------- 1-RTT
+   Handshake Received
+   Rekey rx to Handshake keys
    Handshake Received
    Get Handshake
    Handshake Complete
-   1-RTT Keys Ready
-                         --- send/receive --->
+                        Handshake ----------->
+   Rekey tx to 1-RTT keys
+                        1-RTT --------------->
                                                  Handshake Received
+                                             Rekey rx to 1-RTT keys
                                                       Get Handshake
                                                  Handshake Complete
-                        <--- send/receive ---
+                        <--------------- 1-RTT
    Handshake Received
-   Get Handshake
 
-            Figure 4: Interaction Summary between QUIC and TLS
+            Figure 3: Interaction Summary between QUIC and TLS
 
-4.3.  TLS Version
+4.2.  TLS Version
 
    This document describes how TLS 1.3 [TLS13] is used with QUIC.
 
@@ -712,40 +665,51 @@ Internet-Draft                QUIC over TLS                     May 2018
    another older version of TLS.  An endpoint MUST terminate the
    connection if a version of TLS older than 1.3 is negotiated.
 
-4.4.  ClientHello Size
-
-   QUIC requires that the initial handshake packet from a client fit
-   within the payload of a single packet.  The size limits on QUIC
-   packets mean that a record containing a ClientHello needs to fit
-   within 1129 octets, though endpoints can reduce the size of their
-   connection ID to increase by up to 22 octets.
-
-   A TLS ClientHello can fit within this limit with ample space
-   remaining.  However, there are several variables that could cause
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 13]
+
+Thomson & Turner        Expires February 21, 2019              [Page 12]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   this limit to be exceeded.  Implementations are reminded that large
-   session tickets or HelloRetryRequest cookies, multiple or large key
-   shares, and long lists of supported ciphers, signature algorithms,
-   versions, QUIC transport parameters, and other negotiable parameters
-   and extensions could cause this message to grow.
+4.3.  ClientHello Size
 
-   For servers, the size of the session tickets and HelloRetryRequest
-   cookie extension can have an effect on a client's ability to connect.
-   Choosing a small value increases the probability that these values
-   can be successfully used by a client.
+   QUIC requires that the first Initial packet from a client contain an
+   entire crytographic handshake message, which for TLS is the
+   ClientHello.  Though a packet larger than 1200 octets might be
+   supported by the path, a client improves the likelihood that a packet
+   is accepted if it ensures that the first ClientHello message is small
+   enough to stay within this limit.
+
+   QUIC packet and framing add at least 36 octets of overhead to the
+   ClientHello message.  That overhead increases if the client chooses a
+   connection ID without zero length.  Overheads also do not include the
+   token or a connection ID longer than 8 octets, both of which might be
+   required if a server sends a Retry packet.
+
+   A typical TLS ClientHello can easily fit into a 1200 octet packet.
+   However, in addition to the overheads added by QUIC, there are
+   several variables that could cause this limit to be exceeded.  Large
+   session tickets, multiple or large key shares, and long lists of
+   supported ciphers, signature algorithms, versions, QUIC transport
+   parameters, and other negotiable parameters and extensions could
+   cause this message to grow.
+
+   For servers, in addition to connection ID and tokens, the size of TLS
+   session tickets can have an effect on a client's ability to connect.
+   Minimizing the size of these values increases the probability that
+   they can be successfully used by a client.
+
+   A client is not required to fit the ClientHello that it sends in
+   response to a HelloRetryRequest message into a single UDP datagram.
 
    The TLS implementation does not need to ensure that the ClientHello
    is sufficiently large.  QUIC PADDING frames are added to increase the
    size of the packet as necessary.
 
-4.5.  Peer Authentication
+4.4.  Peer Authentication
 
    The requirements for authentication depend on the application
    protocol that is in use.  TLS provides server authentication and
@@ -758,90 +722,26 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    A server MAY request that the client authenticate during the
    handshake.  A server MAY refuse a connection if the client is unable
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 13]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
    to authenticate when requested.  The requirements for client
    authentication vary based on application protocol and deployment.
 
    A server MUST NOT use post-handshake client authentication (see
    Section 4.6.2 of [TLS13]).
 
-4.6.  Rejecting 0-RTT
-
-   A server rejects 0-RTT by rejecting 0-RTT at the TLS layer.  This
-   results in early exporter keys being unavailable, thereby preventing
-   the use of 0-RTT for QUIC.
-
-   A client that attempts 0-RTT MUST also consider 0-RTT to be rejected
-   if it receives a Retry or Version Negotiation packet.
-
-   When 0-RTT is rejected, all connection characteristics that the
-   client assumed might be incorrect.  This includes the choice of
-   application protocol, transport parameters, and any application
-   configuration.  The client therefore MUST reset the state of all
-   streams, including application state bound to those streams.
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 14]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-4.7.  TLS Errors
-
-   Errors in the TLS connection SHOULD be signaled using TLS alerts on
-   stream 0.  A failure in the handshake MUST be treated as a QUIC
-   connection error of type TLS_HANDSHAKE_FAILED.  Once the handshake is
-   complete, an error in the TLS connection that causes a TLS alert to
-   be sent or received MUST be treated as a QUIC connection error of
-   type TLS_FATAL_ALERT_GENERATED or TLS_FATAL_ALERT_RECEIVED
-   respectively.
-
-5.  QUIC Packet Protection
-
-   QUIC packet protection provides authenticated encryption of packets.
-   This provides confidentiality and integrity protection for the
-   content of packets (see Section 5.4).  Packet protection uses keys
-   that are exported from the TLS connection (see Section 5.3).
-
-   Different keys are used for QUIC packet protection and TLS record
-   protection.  TLS handshake messages are protected solely with TLS
-   record protection, but post-handshake messages are redundantly
-   protected with both the QUIC packet protection and the TLS record
-   protection.  These messages are limited in number, and so the
-   additional overhead is small.
-
-5.1.  Installing New Keys
-
-   As TLS reports the availability of keying material, the packet
-   protection keys and initialization vectors (IVs) are updated (see
-   Section 5.3).  The selection of AEAD function is also updated to
-   match the AEAD negotiated by TLS.
-
-   For packets other than any handshake packets (see Section 6.1), once
-   a change of keys has been made, packets with higher packet numbers
-   MUST be sent with the new keying material.  The KEY_PHASE bit on
-   these packets is inverted each time new keys are installed to signal
-   the use of the new keys to the recipient (see Section 6 for details).
-
-   An endpoint retransmits stream data in a new packet.  New packets
-   have new packet numbers and use the latest packet protection keys.
-   This simplifies key management when there are key updates (see
-   Section 6.2).
-
-5.2.  Enabling 0-RTT
+4.5.  Enabling 0-RTT
 
    In order to be usable for 0-RTT, TLS MUST provide a NewSessionTicket
    message that contains the "max_early_data" extension with the value
    0xffffffff; the amount of data which the client can send in 0-RTT is
    controlled by the "initial_max_data" transport parameter supplied by
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 15]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
    the server.  A client MUST treat receipt of a NewSessionTicket that
    contains a "max_early_data" extension with any other value as a
    connection error of type PROTOCOL_VIOLATION.
@@ -851,333 +751,303 @@ Internet-Draft                QUIC over TLS                     May 2018
    on the TLS connection as a connection error of type
    PROTOCOL_VIOLATION.
 
-5.3.  QUIC Key Expansion
+4.6.  Rejecting 0-RTT
 
-   QUIC uses a system of packet protection secrets, keys and IVs that
-   are modelled on the system used in TLS [TLS13].  The secrets that
-   QUIC uses as the basis of its key schedule are obtained using TLS
-   exporters (see Section 7.5 of [TLS13]).
+   A server rejects 0-RTT by rejecting 0-RTT at the TLS layer.  This
+   also prevents QUIC from sending 0-RTT data.  A server will always
+   reject 0-RTT if it sends a TLS HelloRetryRequest.
 
-5.3.1.  QHKDF-Expand
+   When 0-RTT is rejected, all connection characteristics that the
+   client assumed might be incorrect.  This includes the choice of
+   application protocol, transport parameters, and any application
+   configuration.  The client therefore MUST reset the state of all
+   streams, including application state bound to those streams.
 
-   QUIC uses the Hash-based Key Derivation Function (HKDF) [HKDF] with
-   the same hash function negotiated by TLS for key derivation.  For
-   example, if TLS is using the TLS_AES_128_GCM_SHA256, the SHA-256 hash
-   function is used.
+   A client MAY attempt to send 0-RTT again if it receives a Retry or
+   Version Negotiation packet.  These packets do not signify rejection
+   of 0-RTT.
 
-   Most key derivations in this document use the QHKDF-Expand function,
-   which uses the HKDF expand function and is modelled on the HKDF-
-   Expand-Label function from TLS 1.3 (see Section 7.1 of [TLS13]).
-   QHKDF-Expand differs from HKDF-Expand-Label in that it uses a
-   different base label and omits the Context argument.
+4.7.  HelloRetryRequest
 
-   QHKDF-Expand(Secret, Label, Length) =
-      HKDF-Expand(Secret, QhkdfExpandInfo, Length)
-
-   The HKDF-Expand function used by QHKDF-Expand uses the PRF hash
-   function negotiated by TLS, except for handshake secrets and keys
-   derived from them (see Section 5.3.2).
-
-   Where the "info" parameter of HKDF-Expand is an encoded
-   "QhkdfExpandInfo" structure:
-
-   struct {
-      uint16 length = Length;
-      opaque label<6..255> = "QUIC " + Label;
-   } QhkdfExpandInfo;
-
-   For example, assuming a hash function with a 32 octet output,
-   derivation for a client packet protection key would use HKDF-Expand
-   with an "info" parameter of 0x00200851554943206b6579.
+   In TLS over TCP, the HelloRetryRequest feature (see Section 4.1.4 of
+   [TLS13]) can be used to correct a client's incorrect KeyShare
+   extension as well as for a stateless round-trip check.  From the
+   perspective of QUIC, this just looks like additional messages carried
+   in the Initial encryption level.  Although it is in principle
+   possible to use this feature for address verification in QUIC, QUIC
+   implementations SHOULD instead use the Retry feature (see Section 4.4
+   of [QUIC-TRANSPORT]).  HelloRetryRequest is still used to request key
+   shares.
 
 
 
-
-Thomson & Turner        Expires November 16, 2018              [Page 16]
+Thomson & Turner        Expires February 21, 2019              [Page 14]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-5.3.2.  Handshake Secrets
+4.8.  TLS Errors
 
-   Packets that carry the TLS handshake (Initial, Retry, and Handshake)
-   are protected with a secret derived from the Destination Connection
-   ID field from the client's Initial packet.  Specifically:
+   If TLS experiences an error, it generates an appropriate alert as
+   defined in Section 6 of [TLS13].
 
-   handshake_salt = 0x9c108f98520a5c5c32968e950e8a2c5fe06d6c38
-   handshake_secret =
-       HKDF-Extract(handshake_salt, client_dst_connection_id)
+   A TLS alert is turned into a QUIC connection error by converting the
+   one-octet alert description into a QUIC error code.  The alert
+   description is added to 0x100 to produce a QUIC error code from the
+   range reserved for CRYPTO_ERROR.  The resulting value is sent in a
+   QUIC CONNECTION_CLOSE frame.
 
-   client_handshake_secret =
-      QHKDF-Expand(handshake_secret, "client hs", Hash.length)
-   server_handshake_secret =
-      QHKDF-Expand(handshake_secret, "server hs", Hash.length)
+   The alert level of all TLS alerts is "fatal"; a TLS stack MUST NOT
+   generate alerts at the "warning" level.
 
-   The hash function for HKDF when deriving handshake secrets and keys
-   is SHA-256 [SHA].  The connection ID used with QHKDF-Expand is the
-   connection ID chosen by the client.
+4.9.  Discarding Unused Keys
 
-   The handshake salt is a 20 octet sequence shown in the figure in
-   hexadecimal notation.  Future versions of QUIC SHOULD generate a new
-   salt value, thus ensuring that the keys are different for each
+   After QUIC moves to a new encryption level, packet protection keys
+   for previous encryption levels can be discarded.  This occurs several
+   times during the handshake, as well as when keys are updated (see
+   Section 6).
+
+   Packet protection keys are not discarded immediately when new keys
+   are availble.  If packets from a lower encryption level contain
+   CRYPTO frames, frames that retransmit that data MUST be sent at the
+   same encryption level.  Similarly, an endpoint generates
+   acknowledgements for packets at the same encryption level as the
+   packet being acknowledged.  Thus, it is possible that keys for a
+   lower encryption level are needed for a short time after keys for a
+   newer encryption level are available.
+
+   An endpoint cannot discard keys for a given encryption level unless
+   it has both received and acknowledged all CRYPTO frames for that
+   encryption level and when all CRYPTO frames for that encryption level
+   have been acknowledged by its peer.  However, this does not guarantee
+   that no further packets will need to be received or sent at that
+   encryption level because a peer might not have received all the
+   acknowledgements necessary to reach the same state.
+
+   After all CRYPTO frames for a given encryption level have been sent
+   and all expected CRYPTO frames received, and all the corresponding
+   acknowledgments have been received or sent, an endpoint starts a
+   timer.  To limit the effect of packet loss around a change in keys,
+   endpoints MUST retain packet protection keys for that encryption
+   level for at least three times the current Retramsmission Timeout
+   (RTO) interval as defined in [QUIC-RECOVERY].  Retaining keys for
+   this interval allows packets containing CRYPTO or ACK frames at that
+   encryption level to be sent if packets are determined to be lost or
+   new packets require acknowledgment.
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 15]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
+   Though an endpoint might retain older keys, new data MUST be sent at
+   the highest currently-available encryption level.  Only ACK frames
+   and retransmissions of data in CRYPTO frames are sent at a previous
+   encryption level.  These packets MAY also include PADDING frames.
+
+   Once this timer expires, an endpoint MUST NOT either accept or
+   generate new packets using those packet protection keys.  An endpoint
+   can discard packet protection keys for that encryption level.
+
+   Key updates (see Section 6) can be used to update 1-RTT keys before
+   keys from other encryption levels are discarded.  In that case,
+   packets protected with the newest packet protection keys and packets
+   sent two updates prior will appear to use the same keys.  After the
+   handshake is complete, endpoints only need to maintain the two latest
+   sets of packet protection keys and MAY discard older keys.  Updating
+   keys multiple times rapidly can cause packets to be effectively lost
+   if packets are significantly delayed.  Because key updates can only
+   be performed once per round trip time, only packets that are delayed
+   by more than a round trip will be lost as a result of changing keys;
+   such packets will be marked as lost before this, as they leave a gap
+   in the sequence of packet numbers.
+
+5.  QUIC Packet Protection
+
+   As with TLS over TCP, QUIC encrypts packets with keys derived from
+   the TLS handshake, using the AEAD algorithm negotiated by TLS.
+
+5.1.  QUIC Packet Encryption Keys
+
+   QUIC derives packet encryption keys in the same way as TLS 1.3: Each
+   encryption level/direction pair has a secret value, which is then
+   used to derive the traffic keys using as described in Section 7.3 of
+   [TLS13]
+
+   The keys for the Initial encryption level are computed based on the
+   client's initial Destination Connection ID, as described in
+   Section 5.1.1.
+
+   The keys for other encryption levels are computed in the same fashion
+   as the corresponding TLS keys (see Section 7 of [TLS13]), except that
+   the label for HKDF-Expand-Label uses the prefix "quic " rather than
+   "tls13 ".  A different label provides key separation between TLS and
+   QUIC.
+
+
+
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 16]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
+5.1.1.  Initial Secrets
+
+   Initial packets are protected with a secret derived from the
+   Destination Connection ID field from the client's first Initial
+   packet of the connection.  Specifically:
+
+   initial_salt = 0x9c108f98520a5c5c32968e950e8a2c5fe06d6c38
+   initial_secret = HKDF-Extract(initial_salt,
+                                 client_dst_connection_id)
+
+   client_initial_secret = HKDF-Expand-Label(initial_secret,
+                                             "client in", "",
+                                             Hash.length)
+   server_initial_secret = HKDF-Expand-Label(initial_secret,
+                                             "server in", "",
+                                             Hash.length)
+
+   Note that if the server sends a Retry, the client's Initial will
+   correspond to a new connection and thus use the server provided
+   Destination Connection ID.
+
+   The hash function for HKDF when deriving initial secrets and keys is
+   SHA-256 [SHA].  The connection ID used with HKDF-Expand-Label is the
+   initial Destination Connection ID.
+
+   The value of initial_salt is a 20 octet sequence shown in the figure
+   in hexadecimal notation.  Future versions of QUIC SHOULD generate a
+   new salt value, thus ensuring that the keys are different for each
    version of QUIC.  This prevents a middlebox that only recognizes one
    version of QUIC from seeing or modifying the contents of handshake
    packets from future versions.
 
    Note:  The Destination Connection ID is of arbitrary length, and it
       could be zero length if the server sends a Retry packet with a
-      zero-length Source Connection ID field.  In this case, the
-      handshake keys provide no assurance to the client that the server
-      received its packet; the client has to rely on the exchange that
-      included the Retry packet for that property.
+      zero-length Source Connection ID field.  In this case, the Initial
+      keys provide no assurance to the client that the server received
+      its packet; the client has to rely on the exchange that included
+      the Retry packet for that property.
 
-5.3.3.  0-RTT Secret
-
-   0-RTT keys are those keys that are used in resumed connections prior
-   to the completion of the TLS handshake.  Data sent using 0-RTT keys
-   might be replayed and so has some restrictions on its use, see
-   Section 8.2.  0-RTT keys are used after sending or receiving a
-   ClientHello.
-
-   The secret is exported from TLS using the exporter label "EXPORTER-
-   QUIC 0rtt" and an empty context.  The size of the secret MUST be the
-   size of the hash output for the PRF hash function negotiated by TLS.
-   This uses the TLS early_exporter_secret.  The QUIC 0-RTT secret is
-   only used for protection of packets sent by the client.
-
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 17]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   client_0rtt_secret =
-      TLS-Early-Exporter("EXPORTER-QUIC 0rtt", "", Hash.length)
-
-5.3.4.  1-RTT Secrets
-
-   1-RTT keys are used by both client and server after the TLS handshake
-   completes.  There are two secrets used at any time: one is used to
-   derive packet protection keys for packets sent by the client, the
-   other for packet protection keys on packets sent by the server.
-
-   The initial client packet protection secret is exported from TLS
-   using the exporter label "EXPORTER-QUIC client 1rtt"; the initial
-   server packet protection secret uses the exporter label "EXPORTER-
-   QUIC server 1rtt".  Both exporters use an empty context.  The size of
-   the secret MUST be the size of the hash output for the PRF hash
-   function negotiated by TLS.
-
-   client_pp_secret<0> =
-      TLS-Exporter("EXPORTER-QUIC client 1rtt", "", Hash.length)
-   server_pp_secret<0> =
-      TLS-Exporter("EXPORTER-QUIC server 1rtt", "", Hash.length)
-
-   These secrets are used to derive the initial client and server packet
-   protection keys.
-
-5.3.5.  Updating 1-RTT Secrets
-
-   After a key update (see Section 6.2), the 1-RTT secrets are updated
-   using QHKDF-Expand.  Updated secrets are derived from the existing
-   packet protection secret.  A Label parameter of "client 1rtt" is used
-   for the client secret and "server 1rtt" for the server.  The Length
-   is the same as the native output of the PRF hash function.
-
-   client_pp_secret<N+1> =
-     QHKDF-Expand(client_pp_secret<N>, "client 1rtt", Hash.length)
-   server_pp_secret<N+1> =
-     QHKDF-Expand(server_pp_secret<N>, "server 1rtt", Hash.length)
-
-   This allows for a succession of new secrets to be created as needed.
-
-5.3.6.  Packet Protection Keys
-
-   The complete key expansion uses a similar process for key expansion
-   to that defined in Section 7.3 of [TLS13], using QHKDF-Expand in
-   place of HKDF-Expand-Label.  QUIC uses the AEAD function negotiated
-   by TLS.
-
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 18]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   The packet protection key and IV used to protect the 0-RTT packets
-   sent by a client are derived from the QUIC 0-RTT secret.  The packet
-   protection keys and IVs for 1-RTT packets sent by the client and
-   server are derived from the current generation of client and server
-   1-RTT secrets (client_pp_secret<i> and server_pp_secret<i>)
-   respectively.
-
-   The length of the QHKDF-Expand output is determined by the
-   requirements of the AEAD function selected by TLS.  The key length is
-   the AEAD key size.  As defined in Section 5.3 of [TLS13], the IV
-   length is the larger of 8 or N_MIN (see Section 4 of [AEAD]; all
-   ciphersuites defined in [TLS13] have N_MIN set to 12).
-
-   The size of the packet protection key is determined by the packet
-   protection algorithm, see Section 5.6.
-
-   For any secret S, the AEAD key uses a label of "key", the IV uses a
-   label of "iv", packet number encryption uses a label of "pn":
-
-   key = QHKDF-Expand(S, "key", key_length)
-   iv = QHKDF-Expand(S, "iv", iv_length)
-   pn_key = QHKDF-Expand(S, "pn", pn_key_length)
-
-   Separate keys are derived for packet protection by clients and
-   servers.  Each endpoint uses the packet protection key of its peer to
-   remove packet protection.  For example, client packet protection keys
-   and IVs - which are also used by the server to remove the protection
-   added by a client - for AEAD_AES_128_GCM are derived from 1-RTT
-   secrets as follows:
-
-   client_pp_key<i> = QHKDF-Expand(client_pp_secret<i>, "key", 16)
-   client_pp_iv<i>  = QHKDF-Expand(client_pp_secret<i>, "iv", 12)
-   client_pp_pn<i>  = QHKDF-Expand(client_pp_secret<i>, "pn", 12)
-
-   The QUIC packet protection initially starts with keying material
-   derived from handshake keys.  For a client, when the TLS state
-   machine reports that the ClientHello has been sent, 0-RTT keys can be
-   generated and installed for writing, if 0-RTT is available.  Finally,
-   the TLS state machine reports completion of the handshake and 1-RTT
-   keys can be generated and installed for writing.
-
-5.4.  QUIC AEAD Usage
+5.2.  QUIC AEAD Usage
 
    The Authentication Encryption with Associated Data (AEAD) [AEAD]
-   function used for QUIC packet protection is AEAD that is negotiated
-   for use with the TLS connection.  For example, if TLS is using the
-   TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is used.
+   function used for QUIC packet protection is the AEAD that is
+   negotiated for use with the TLS connection.  For example, if TLS is
+   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
+   used.
 
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 19]
+
+Thomson & Turner        Expires February 21, 2019              [Page 17]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
    QUIC packets are protected prior to applying packet number encryption
-   (Section 5.6).  The unprotected packet number is part of the
+   (Section 5.3).  The unprotected packet number is part of the
    associated data (A).  When removing packet protection, an endpoint
    first removes the protection from the packet number.
 
-   All QUIC packets other than Version Negotiation and Stateless Reset
-   packets are protected with an AEAD algorithm [AEAD].  Prior to
-   establishing a shared secret, packets are protected with
-   AEAD_AES_128_GCM and a key derived from the client's connection ID
-   (see Section 5.3.2).  This provides protection against off-path
-   attackers and robustness against QUIC version unaware middleboxes,
-   but not against on-path attackers.
+   All QUIC packets other than Version Negotiation and Retry packets are
+   protected with an AEAD algorithm [AEAD].  Prior to establishing a
+   shared secret, packets are protected with AEAD_AES_128_GCM and a key
+   derived from the destination connection ID in the client's first
+   Initial packet (see Section 5.1.1).  This provides protection against
+   off-path attackers and robustness against QUIC version unaware
+   middleboxes, but not against on-path attackers.
 
    All ciphersuites currently defined for TLS 1.3 - and therefore QUIC -
    have a 16-byte authentication tag and produce an output 16 bytes
    larger than their input.
 
-   Once TLS has provided a key, the contents of regular QUIC packets
-   immediately after any TLS messages have been sent are protected by
-   the AEAD selected by TLS.
-
-   The key, K, is either the client packet protection key
-   (client_pp_key<i>) or the server packet protection key
-   (server_pp_key<i>), derived as defined in Section 5.3.
-
-   The nonce, N, is formed by combining the packet protection IV (either
-   client_pp_iv<i> or server_pp_iv<i>) with the packet number.  The 64
-   bits of the reconstructed QUIC packet number in network byte order is
-   left-padded with zeros to the size of the IV.  The exclusive OR of
-   the padded packet number and the IV forms the AEAD nonce.
+   The key and IV for the packet are computed as described in
+   Section 5.1.  The nonce, N, is formed by combining the packet
+   protection IV with the packet number.  The 64 bits of the
+   reconstructed QUIC packet number in network byte order are left-
+   padded with zeros to the size of the IV.  The exclusive OR of the
+   padded packet number and the IV forms the AEAD nonce.
 
    The associated data, A, for the AEAD is the contents of the QUIC
    header, starting from the flags octet in either the short or long
-   header.
+   header, up to and including the unprotected packet number.
 
    The input plaintext, P, for the AEAD is the content of the QUIC frame
    following the header, as described in [QUIC-TRANSPORT].
 
    The output ciphertext, C, of the AEAD is transmitted in place of P.
 
-5.5.  Packet Numbers
-
-   QUIC has a single, contiguous packet number space.  In comparison,
-   TLS restarts its sequence number each time that record protection
-   keys are changed.  The sequence number restart in TLS ensures that a
-   compromise of the current traffic keys does not allow an attacker to
-   truncate the data that is sent after a key update by sending
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 20]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   additional packets under the old key (causing new packets to be
-   discarded).
-
-   QUIC does not assume a reliable transport and is required to handle
-   attacks where packets are dropped in other ways.  QUIC is therefore
-   not affected by this form of truncation.
-
-   The QUIC packet number is not reset and it is not permitted to go
-   higher than its maximum value of 2^62-1.  This establishes a hard
-   limit on the number of packets that can be sent.
-
    Some AEAD functions have limits for how many packets can be encrypted
    under the same key and IV (see for example [AEBounds]).  This might
    be lower than the packet number limit.  An endpoint MUST initiate a
-   key update (Section 6.2) prior to exceeding any limit set for the
-   AEAD that is in use.
+   key update (Section 6) prior to exceeding any limit set for the AEAD
+   that is in use.
 
-   TLS maintains a separate sequence number that is used for record
-   protection on the connection that is hosted on stream 0.  This
-   sequence number is not visible to QUIC.
+5.3.  Packet Number Protection
 
-5.6.  Packet Number Protection
+   QUIC packet numbers are protected using a key that is derived from
+   the current set of secrets.  The key derived using the "pn" label is
+   used to protect the packet number from casual observation.  The
+   packet number protection algorithm depends on the negotiated AEAD.
 
-   QUIC packets are protected using a key that is derived from the
-   current set of secrets.  The key derived using the "pn" label is used
-   to protect the packet number from casual observation.  The packet
-   number protection algorithm depends on the negotiated AEAD.
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 18]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
 
    Packet number protection is applied after packet protection is
-   applied (see Section 5.4).  The ciphertext of the packet is sampled
+   applied (see Section 5.2).  The ciphertext of the packet is sampled
    and used as input to an encryption algorithm.
 
    In sampling the packet ciphertext, the packet number length is
-   assumed to be the smaller of the maximum possible packet number
-   encoding (4 octets), or the size of the protected packet minus the
-   minimum expansion for the AEAD.  For example, the sampled ciphertext
-   for a packet with a short header can be determined by:
+   assumed to be 4 octets (its maximum possible encoded length), unless
+   there is insufficient space in the packet for sampling.  The sampled
+   ciphertext starts after allowing for a 4 octet packet number unless
+   this would cause the sample to extend past the end of the packet.  If
+   the sample would extend past the end of the packet, the end of the
+   packet is sampled.
 
-   "sample_offset = min(1 + connection_id_length + 4, packet_length -
-   aead_expansion) sample =
-   packet[sample_offset..sample_offset+sample_length] "
+   For example, the sampled ciphertext for a packet with a short header
+   can be determined by:
+
+   sample_offset = 1 + len(connection_id) + 4
+
+   if sample_offset + sample_length > packet_length then
+       sample_offset = packet_length - sample_length
+   sample = packet[sample_offset..sample_offset+sample_length]
+
+   A packet with a long header is sampled in the same way, noting that
+   multiple QUIC packets might be included in the same UDP datagram and
+   that each one is handled separately.
+
+   sample_offset = 6 + len(destination_connection_id) +
+                       len(source_connection_id) +
+                       len(payload_length) + 4
+   if packet_type == Initial:
+       sample_offset += len(token_length) +
+                        len(token)
 
    To ensure that this process does not sample the packet number, packet
    number protection algorithms MUST NOT sample more ciphertext than the
    minimum expansion of the corresponding AEAD.
 
    Packet number protection is applied to the packet number encoded as
-   described in Section 4.8 of [QUIC-TRANSPORT].  Since the length of
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 21]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
+   described in Section 4.11 of [QUIC-TRANSPORT].  Since the length of
    the packet number is stored in the first octet of the encoded packet
    number, it may be necessary to progressively decrypt the packet
    number.
@@ -1186,9 +1056,17 @@ Internet-Draft                QUIC over TLS                     May 2018
    algorithm MUST be specifed for the AEAD used with that ciphersuite.
    This document defines algorithms for AEAD_AES_128_GCM,
    AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs
-   are defined in [RFC5116]), and AEAD_CHACHA20_POLY1305 ([CHACHA]).
+   are defined in [AEAD]), and AEAD_CHACHA20_POLY1305 ([CHACHA]).
 
-5.6.1.  AES-Based Packet Number Protection
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 19]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
+5.3.1.  AES-Based Packet Number Protection
 
    This section defines the packet protection algorithm for
    AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, and
@@ -1201,7 +1079,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    encrypted_pn = AES-CTR(pn_key, sample, packet_number)
 
-5.6.2.  ChaCha20-Based Packet Number Protection
+5.3.2.  ChaCha20-Based Packet Number Protection
 
    When AEAD_CHACHA20_POLY1305 is in use, packet number protection uses
    the raw ChaCha20 function as defined in Section 2.4 of [CHACHA].
@@ -1220,192 +1098,114 @@ Internet-Draft                QUIC over TLS                     May 2018
    nonce = DecodeLE(sample[4..7], sample[8..11], sample[12..15])
    encrypted_pn = ChaCha20(pn_key, counter, nonce, packet_number)
 
-5.7.  Receiving Protected Packets
+5.4.  Receiving Protected Packets
 
    Once an endpoint successfully receives a packet with a given packet
-   number, it MUST discard all packets with higher packet numbers if
-   they cannot be successfully unprotected with either the same key, or
-   - if there is a key update - the next packet protection key (see
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 22]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   Section 6.2).  Similarly, a packet that appears to trigger a key
-   update, but cannot be unprotected successfully MUST be discarded.
+   number, it MUST discard all packets in the same packet number space
+   with higher packet numbers if they cannot be successfully unprotected
+   with either the same key, or - if there is a key update - the next
+   packet protection key (see Section 6).  Similarly, a packet that
+   appears to trigger a key update, but cannot be unprotected
+   successfully MUST be discarded.
 
    Failure to unprotect a packet does not necessarily indicate the
    existence of a protocol error in a peer or an attack.  The truncated
    packet number encoding used in QUIC can cause packet numbers to be
    decoded incorrectly if they are delayed significantly.
 
-6.  Key Phases
-
-   As TLS reports the availability of 0-RTT and 1-RTT keys, new keying
-   material can be exported from TLS and used for QUIC packet
-   protection.  At each transition during the handshake a new secret is
-   exported from TLS and packet protection keys are derived from that
-   secret.
-
-   Every time that a new set of keys is used for protecting outbound
-   packets, the KEY_PHASE bit in the public flags is toggled.  0-RTT
-   protected packets use the QUIC long header, they do not use the
-   KEY_PHASE bit to select the correct keys (see Section 6.1.1).
-
-   Once the connection is fully enabled, the KEY_PHASE bit allows a
-   recipient to detect a change in keying material without necessarily
-   needing to receive the first packet that triggered the change.  An
-   endpoint that notices a changed KEY_PHASE bit can update keys and
-   decrypt the packet that contains the changed bit, see Section 6.2.
-
-   The KEY_PHASE bit is included as the 0x20 bit of the QUIC short
-   header.
-
-   Transitions between keys during the handshake are complicated by the
-   need to ensure that TLS handshake messages are sent with the correct
-   packet protection.
-
-6.1.  Packet Protection for the TLS Handshake
-
-   The initial exchange of packets that carry the TLS handshake are
-   AEAD-protected using the handshake secrets generated as described in
-   Section 5.3.2.  All TLS handshake messages up to the TLS Finished
-   message sent by either endpoint use packets protected with handshake
-   keys.
-
-   Any TLS handshake messages that are sent after completing the TLS
-   handshake do not need special packet protection rules.  Packets
-   containing these messages use the packet protection keys that are
-   current at the time of sending (or retransmission).
 
 
 
 
-
-Thomson & Turner        Expires November 16, 2018              [Page 23]
+Thomson & Turner        Expires February 21, 2019              [Page 20]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   Like the client, a server MUST send retransmissions of its
-   unprotected handshake messages or acknowledgments for unprotected
-   handshake messages sent by the client in packets protected with
-   handshake keys.
+5.5.  Use of 0-RTT Keys
 
-6.1.1.  Initial Key Transitions
+   If 0-RTT keys are available (see Section 4.5), the lack of replay
+   protection means that restrictions on their use are necessary to
+   avoid replay attacks on the protocol.
 
-   Once the TLS handshake is complete, keying material is exported from
-   TLS and used to protect QUIC packets.
+   A client MUST only use 0-RTT keys to protect data that is idempotent.
+   A client MAY wish to apply additional restrictions on what data it
+   sends prior to the completion of the TLS handshake.  A client
+   otherwise treats 0-RTT keys as equivalent to 1-RTT keys, except that
+   it MUST NOT send ACKs with 0-RTT keys.
 
-   Packets protected with 1-RTT keys initially have a KEY_PHASE bit set
-   to 0.  This bit inverts with each subsequent key update (see
-   Section 6.2).
+   A client that receives an indication that its 0-RTT data has been
+   accepted by a server can send 0-RTT data until it receives all of the
+   server's handshake messages.  A client SHOULD stop sending 0-RTT data
+   if it receives an indication that 0-RTT data has been rejected.
 
-   If the client sends 0-RTT data, it uses the 0-RTT packet type.  The
-   packet that contains the TLS EndOfEarlyData and Finished messages are
-   sent in packets protected with handshake keys.
+   A server MUST NOT use 0-RTT keys to protect packets; it uses 1-RTT
+   keys to protect acknowledgements of 0-RTT packets.  Clients MUST NOT
+   attempt to decrypt 0-RTT packets it receives and instead MUST discard
+   them.
 
-   Using distinct packet types during the handshake for handshake
-   messages, 0-RTT data, and 1-RTT data ensures that the server is able
-   to distinguish between the different keys used to remove packet
-   protection.  All of these packets can arrive concurrently at a
-   server.
+   Note:  0-RTT data can be acknowledged by the server as it receives
+      it, but any packets containing acknowledgments of 0-RTT data
+      cannot have packet protection removed by the client until the TLS
+      handshake is complete.  The 1-RTT keys necessary to remove packet
+      protection cannot be derived until the client receives all server
+      handshake messages.
 
-   A server might choose to retain 0-RTT packets that arrive before a
-   TLS ClientHello.  The server can then use those packets once the
-   ClientHello arrives.  However, the potential for denial of service
-   from buffering 0-RTT packets is significant.  These packets cannot be
-   authenticated and so might be employed by an attacker to exhaust
-   server resources.  Limiting the number of packets that are saved
-   might be necessary.
+5.6.  Receiving Out-of-Order Protected Frames
 
-   The server transitions to using 1-RTT keys after sending its first
-   flight of TLS handshake messages, ending in the Finished.  From this
-   point, the server protects all packets with 1-RTT keys.  Future
-   packets are therefore protected with 1-RTT keys.  Initially, these
-   are marked with a KEY_PHASE of 0.
+   Due to reordering and loss, protected packets might be received by an
+   endpoint before the final TLS handshake messages are received.  A
+   client will be unable to decrypt 1-RTT packets from the server,
+   whereas a server will be able to decrypt 1-RTT packets from the
+   client.
 
-6.1.2.  Retransmission and Acknowledgment of Unprotected Packets
-
-   TLS handshake messages from both client and server are critical to
-   the key exchange.  The contents of these messages determine the keys
-   used to protect later messages.  If these handshake messages are
-   included in packets that are protected with these keys, they will be
-   indecipherable to the recipient.
-
-   Even though newer keys could be available when retransmitting,
-   retransmissions of these handshake messages MUST be sent in packets
+   However, a server MUST NOT process data from incoming 1-RTT protected
+   packets before verifying either the client Finished message or - in
+   the case that the server has chosen to use a pre-shared key - the
+   pre-shared key binder (see Section 4.2.11 of [TLS13]).  Verifying
+   these values provides the server with an assurance that the
+   ClientHello has not been modified.  Packets protected with 1-RTT keys
+   MAY be stored and later decrypted and used once the handshake is
+   complete.
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 24]
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 21]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   protected with handshake keys.  An endpoint MUST generate ACK frames
-   for these messages and send them in packets protected with handshake
-   keys.
+   A server could receive packets protected with 0-RTT keys prior to
+   receiving a TLS ClientHello.  The server MAY retain these packets for
+   later decryption in anticipation of receiving a ClientHello.
 
-   A HelloRetryRequest handshake message might be used to reject an
-   initial ClientHello.  A HelloRetryRequest handshake message is sent
-   in a Retry packet; any second ClientHello that is sent in response
-   uses a Initial packet type.  These packets are only protected with a
-   predictable key (see Section 5.3.2).  This is natural, because no
-   shared secret will be available when these messages need to be sent.
-   Upon receipt of a HelloRetryRequest, a client SHOULD cease any
-   transmission of 0-RTT data; 0-RTT data will only be discarded by any
-   server that sends a HelloRetryRequest.
+6.  Key Update
 
-   The packet type ensures that protected packets are clearly
-   distinguished from unprotected packets.  Loss or reordering might
-   cause unprotected packets to arrive once 1-RTT keys are in use,
-   unprotected packets are easily distinguished from 1-RTT packets using
-   the packet type.
+   Once the 1-RTT keys are established and the short header is in use,
+   it is possible to update the keys.  The KEY_PHASE bit in the short
+   header is used to indicate whether key updates have occurred.  The
+   KEY_PHASE bit is initially set to 0 and then inverted with each key
+   update Section 6.
 
-   Once 1-RTT keys are available to an endpoint, it no longer needs the
-   TLS handshake messages that are carried in unprotected packets.
-   However, a server might need to retransmit its TLS handshake messages
-   in response to receiving an unprotected packet that contains ACK
-   frames.  A server MUST process ACK frames in unprotected packets
-   until the TLS handshake is reported as complete, or it receives an
-   ACK frame in a protected packet that acknowledges all of its
-   handshake messages.
-
-   To limit the number of key phases that could be active, an endpoint
-   MUST NOT initiate a key update while there are any unacknowledged
-   handshake messages, see Section 6.2.
-
-6.2.  Key Update
-
-   Once the TLS handshake is complete, the KEY_PHASE bit allows for
-   refreshes of keying material by either peer.  Endpoints start using
-   updated keys immediately without additional signaling; the change in
-   the KEY_PHASE bit indicates that a new key is in use.
+   The KEY_PHASE bit allows a recipient to detect a change in keying
+   material without necessarily needing to receive the first packet that
+   triggered the change.  An endpoint that notices a changed KEY_PHASE
+   bit can update keys and decrypt the packet that contains the changed
+   bit, see Section 6.
 
    An endpoint MUST NOT initiate more than one key update at a time.  A
    new key cannot be used until the endpoint has received and
-   successfully decrypted a packet with a matching KEY_PHASE.  Note that
-   when 0-RTT is attempted the value of the KEY_PHASE bit will be
-   different on packets sent by either peer.
+   successfully decrypted a packet with a matching KEY_PHASE.
 
    A receiving endpoint detects an update when the KEY_PHASE bit doesn't
-   match what it is expecting.  It creates a new secret (see
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 25]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   Section 5.3) and the corresponding read key and IV.  If the packet
-   can be decrypted and authenticated using these values, then the keys
-   it uses for packet protection are also updated.  The next packet sent
-   by the endpoint will then use the new keys.
+   match what it is expecting.  It creates a new secret (see Section 7.2
+   of [TLS13]) and the corresponding read key and IV.  If the packet can
+   be decrypted and authenticated using these values, then the keys it
+   uses for packet protection are also updated.  The next packet sent by
+   the endpoint will then use the new keys.
 
    An endpoint doesn't need to send packets immediately when it detects
    that its peer has updated keys.  The next packet that it sends will
@@ -1425,6 +1225,15 @@ Internet-Draft                QUIC over TLS                     May 2018
    Keys and their corresponding secrets SHOULD be discarded when an
    endpoint has received all packets with packet numbers lower than the
    lowest packet number used for the new key.  An endpoint might discard
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 22]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
    keys if it determines that the length of the delay to affected
    packets is excessive.
 
@@ -1444,25 +1253,7 @@ Internet-Draft                QUIC over TLS                     May 2018
                                              QUIC Frames @N
                          <--------
 
-                           Figure 5: Key Update
-
-   As shown in Figure 3 and Figure 5, there is never a situation where
-   there are more than two different sets of keying material that might
-   be received by a peer.  Once both sending and receiving keys have
-   been updated, the peers immediately begin to use them.
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 26]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   A server cannot initiate a key update until it has received the
-   client's Finished message.  Otherwise, packets protected by the
-   updated keys could be confused for retransmissions of handshake
-   messages.  A client cannot initiate a key update until all of its
-   handshake messages have been acknowledged by the server.
+                           Figure 4: Key Update
 
    A packet that triggers a key update could arrive after successfully
    processing a packet with a higher packet number.  This is only
@@ -1471,395 +1262,38 @@ Internet-Draft                QUIC over TLS                     May 2018
    cannot be differentiated from an attack, an endpoint MUST immediately
    terminate the connection if it detects this condition.
 
-7.  Client Address Validation
+7.  Security of Initial Messages
 
-   Two tools are provided by TLS to enable validation of client source
-   addresses at a server: the cookie in the HelloRetryRequest message,
-   and the ticket in the NewSessionTicket message.
+   Initial packets are not protected with a secret key, so they are
+   subject to potential tampering by an attacker.  QUIC provides
+   protection against attackers that cannot read packets, but does not
+   attempt to provide additional protection against attacks where the
+   attacker can observe and inject packets.  Some forms of tampering -
+   such as modifying the TLS messages themselves - are detectable, but
+   some - such as modifying ACKs - are not.
 
-7.1.  HelloRetryRequest Address Validation
+   For example, an attacker could inject a packet containing an ACK
+   frame that makes it appear that a packet had not been received or to
+   create a false impression of the state of the connection (e.g., by
+   modifying the ACK Delay).  Note that such a packet could cause a
+   legitimate packet to be dropped as a duplicate.  Implementations
+   SHOULD use caution in relying on any data which is contained in
+   Initial packets that is not otherwise authenticated.
 
-   The cookie extension in the TLS HelloRetryRequest message allows a
-   server to perform source address validation during the handshake.
-
-   When QUIC requests address validation during the processing of the
-   first ClientHello, the token it provides is included in the cookie
-   extension of a HelloRetryRequest.  As long as the cookie cannot be
-   successfully guessed by a client, the server can be assured that the
-   client received the HelloRetryRequest if it includes the value in a
-   second ClientHello.
-
-   An initial ClientHello never includes a cookie extension.  Thus, if a
-   server constructs a cookie that contains all the information
-   necessary to reconstruct state, it can discard local state after
-   sending a HelloRetryRequest.  Presence of a valid cookie in a
-   ClientHello indicates that the ClientHello is a second attempt from
-   the client.
-
-   An address validation token can be extracted from a second
-   ClientHello and passed to the transport for further validation.  If
-   that validation fails, the server MUST fail the TLS handshake and
-   send an illegal_parameter alert.
-
-   Combining address validation with the other uses of HelloRetryRequest
-   ensures that there are fewer ways in which an additional round-trip
-   can be added to the handshake.  In particular, this makes it possible
-   to combine a request for address validation with a request for a
-   different client key share.
+   It is also possible for the attacker to tamper with data that is
+   carried in Handshake packets, but because that tampering requires
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 27]
+Thomson & Turner        Expires February 21, 2019              [Page 23]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-   If TLS needs to send a HelloRetryRequest for other reasons, it needs
-   to ensure that it can correctly identify the reason that the
-   HelloRetryRequest was generated.  During the processing of a second
-   ClientHello, TLS does not need to consult the transport protocol
-   regarding address validation if address validation was not requested
-   originally.  In such cases, the cookie extension could either be
-   absent or it could indicate that an address validation token is not
-   present.
+   modifying TLS handshake messages, that tampering will cause the TLS
+   handshake to fail.
 
-7.1.1.  Stateless Address Validation
-
-   A server can use the cookie extension to store all state necessary to
-   continue the connection.  This allows a server to avoid committing
-   state for clients that have unvalidated source addresses.
-
-   For instance, a server could use a statically-configured key to
-   encrypt the information that it requires and include that information
-   in the cookie.  In addition to address validation information, a
-   server that uses encryption also needs to be able recover the hash of
-   the ClientHello and its length, plus any information it needs in
-   order to reconstruct the HelloRetryRequest.
-
-7.1.2.  Sending HelloRetryRequest
-
-   A server does not need to maintain state for the connection when
-   sending a HelloRetryRequest message.  This might be necessary to
-   avoid creating a denial of service exposure for the server.  However,
-   this means that information about the transport will be lost at the
-   server.  This includes the stream offset of stream 0, the packet
-   number that the server selects, and any opportunity to measure round
-   trip time.
-
-   A server MUST send a TLS HelloRetryRequest in a Retry packet.  Using
-   a Retry packet causes the client to reset stream offsets.  It also
-   avoids the need for the server select an initial packet number, which
-   would need to be remembered so that subsequent packets could be
-   correctly numbered.
-
-   A HelloRetryRequest message MUST NOT be split between multiple Retry
-   packets.  This means that HelloRetryRequest is subject to the same
-   size constraints as a ClientHello (see Section 4.4).
-
-   A client might send multiple Initial packets in response to loss.  If
-   a server sends a Retry packet in response to an Initial packet, it
-   does not have to generate the same Retry packet each time.
-   Variations in Retry packet, if used by a client, could lead to
-   multiple connections derived from the same ClientHello.  Reuse of the
-   client nonce is not supported by TLS and could lead to security
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 28]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   vulnerabilities.  Clients that receive multiple Retry packets MUST
-   use only one and discard the remainder.
-
-7.2.  NewSessionTicket Address Validation
-
-   The ticket in the TLS NewSessionTicket message allows a server to
-   provide a client with a similar sort of token.  When a client resumes
-   a TLS connection - whether or not 0-RTT is attempted - it includes
-   the ticket in the handshake message.  As with the HelloRetryRequest
-   cookie, the server includes the address validation token in the
-   ticket.  TLS provides the token it extracts from the session ticket
-   to the transport when it asks whether source address validation is
-   needed.
-
-   If both a HelloRetryRequest cookie and a session ticket are present
-   in the ClientHello, only the token from the cookie is passed to the
-   transport.  The presence of a cookie indicates that this is a second
-   ClientHello - the token from the session ticket will have been
-   provided to the transport when it appeared in the first ClientHello.
-
-   A server can send a NewSessionTicket message at any time.  This
-   allows it to update the state - and the address validation token -
-   that is included in the ticket.  This might be done to refresh the
-   ticket or token, or it might be generated in response to changes in
-   the state of the connection.  QUIC can request that a
-   NewSessionTicket be sent by providing a new address validation token.
-
-   A server that intends to support 0-RTT SHOULD provide an address
-   validation token immediately after completing the TLS handshake.
-
-7.3.  Address Validation Token Integrity
-
-   TLS MUST provide integrity protection for address validation token
-   unless the transport guarantees integrity protection by other means.
-   For a NewSessionTicket that includes confidential information - such
-   as the resumption secret - including the token under authenticated
-   encryption ensures that the token gains both confidentiality and
-   integrity protection without duplicating the overheads of that
-   protection.
-
-8.  Pre-handshake QUIC Messages
-
-   Implementations MUST NOT exchange data on any stream other than
-   stream 0 without packet protection.  QUIC requires the use of several
-   types of frame for managing loss detection and recovery during this
-   phase.  In addition, it might be useful to use the data acquired
-   during the exchange of unauthenticated messages for congestion
-   control.
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 29]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   This section generally only applies to TLS handshake messages from
-   both peers and acknowledgments of the packets carrying those
-   messages.  In many cases, the need for servers to provide
-   acknowledgments is minimal, since the messages that clients send are
-   small and implicitly acknowledged by the server's responses.
-
-   The actions that a peer takes as a result of receiving an
-   unauthenticated packet needs to be limited.  In particular, state
-   established by these packets cannot be retained once record
-   protection commences.
-
-   There are several approaches possible for dealing with
-   unauthenticated packets prior to handshake completion:
-
-   o  discard and ignore them
-
-   o  use them, but reset any state that is established once the
-      handshake completes
-
-   o  use them and authenticate them afterwards; failing the handshake
-      if they can't be authenticated
-
-   o  save them and use them when they can be properly authenticated
-
-   o  treat them as a fatal error
-
-   Different strategies are appropriate for different types of data.
-   This document proposes that all strategies are possible depending on
-   the type of message.
-
-   o  Transport parameters are made usable and authenticated as part of
-      the TLS handshake (see Section 9.2).
-
-   o  Most unprotected messages are treated as fatal errors when
-      received except for the small number necessary to permit the
-      handshake to complete (see Section 8.1).
-
-   o  Protected packets can either be discarded or saved and later used
-      (see Section 8.3).
-
-8.1.  Unprotected Packets Prior to Handshake Completion
-
-   This section describes the handling of messages that are sent and
-   received prior to the completion of the TLS handshake.
-
-   Sending and receiving unprotected messages is hazardous.  Unless
-   expressly permitted, receipt of an unprotected message of any kind
-   MUST be treated as a fatal error.
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 30]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-8.1.1.  STREAM Frames
-
-   "STREAM" frames for stream 0 are permitted.  These carry the TLS
-   handshake messages.  Once 1-RTT keys are available, unprotected
-   "STREAM" frames on stream 0 can be ignored.
-
-   Receiving unprotected "STREAM" frames for other streams MUST be
-   treated as a fatal error.
-
-8.1.2.  ACK Frames
-
-   "ACK" frames are permitted prior to the handshake being complete.
-   Information learned from "ACK" frames cannot be entirely relied upon,
-   since an attacker is able to inject these packets.  Timing and packet
-   retransmission information from "ACK" frames is critical to the
-   functioning of the protocol, but these frames might be spoofed or
-   altered.
-
-   Endpoints MUST NOT use an "ACK" frame in an unprotected packet to
-   acknowledge packets that were protected by 0-RTT or 1-RTT keys.  An
-   endpoint MUST treat receipt of an "ACK" frame in an unprotected
-   packet that claims to acknowledge protected packets as a connection
-   error of type OPTIMISTIC_ACK.  An endpoint that can read protected
-   data is always able to send protected data.
-
-   Note:  0-RTT data can be acknowledged by the server as it receives
-      it, but any packets containing acknowledgments of 0-RTT data
-      cannot have packet protection removed by the client until the TLS
-      handshake is complete.  The 1-RTT keys necessary to remove packet
-      protection cannot be derived until the client receives all server
-      handshake messages.
-
-   An endpoint SHOULD use data from "ACK" frames carried in unprotected
-   packets or packets protected with 0-RTT keys only during the initial
-   handshake.  All "ACK" frames contained in unprotected packets that
-   are received after successful receipt of a packet protected with
-   1-RTT keys MUST be discarded.  An endpoint SHOULD therefore include
-   acknowledgments for unprotected and any packets protected with 0-RTT
-   keys until it sees an acknowledgment for a packet that is both
-   protected with 1-RTT keys and contains an "ACK" frame.
-
-8.1.3.  Updates to Data and Stream Limits
-
-   "MAX_DATA", "MAX_STREAM_DATA", "BLOCKED", "STREAM_BLOCKED", and
-   "MAX_STREAM_ID" frames MUST NOT be sent unprotected.
-
-   Though data is exchanged on stream 0, the initial flow control window
-   on that stream is sufficiently large to allow the TLS handshake to
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 31]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   complete.  This limits the maximum size of the TLS handshake and
-   would prevent a server or client from using an abnormally large
-   certificate chain.
-
-   Stream 0 is exempt from the connection-level flow control window.
-
-   Consequently, there is no need to signal being blocked on flow
-   control.
-
-   Similarly, there is no need to increase the number of allowed streams
-   until the handshake completes.
-
-8.1.4.  Handshake Failures
-
-   The "CONNECTION_CLOSE" frame MAY be sent by either endpoint in a
-   Handshake packet.  This allows an endpoint to signal a fatal error
-   with connection establishment.  A "STREAM" frame carrying a TLS alert
-   MAY be included in the same packet.
-
-8.1.5.  Address Verification
-
-   In order to perform source-address verification before the handshake
-   is complete, "PATH_CHALLENGE" and "PATH_RESPONSE" frames MAY be
-   exchanged unprotected.
-
-8.1.6.  Denial of Service with Unprotected Packets
-
-   Accepting unprotected - specifically unauthenticated - packets
-   presents a denial of service risk to endpoints.  An attacker that is
-   able to inject unprotected packets can cause a recipient to drop even
-   protected packets with a matching packet number.  The spurious packet
-   shadows the genuine packet, causing the genuine packet to be ignored
-   as redundant.
-
-   Once the TLS handshake is complete, both peers MUST ignore
-   unprotected packets.  From that point onward, unprotected messages
-   can be safely dropped.
-
-   Since only TLS handshake packets and acknowledgments are sent in the
-   clear, an attacker is able to force implementations to rely on
-   retransmission for packets that are lost or shadowed.  Thus, an
-   attacker that intends to deny service to an endpoint has to drop or
-   shadow protected packets in order to ensure that their victim
-   continues to accept unprotected packets.  The ability to shadow
-   packets means that an attacker does not need to be on path.
-
-   In addition to causing valid packets to be dropped, an attacker can
-   generate packets with an intent of causing the recipient to expend
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 32]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   processing resources.  See Section 10.2 for a discussion of these
-   risks.
-
-   To avoid receiving TLS packets that contain no useful data, a TLS
-   implementation MUST reject empty TLS handshake records and any record
-   that is not permitted by the TLS state machine.  Any TLS application
-   data or alerts that are received prior to the end of the handshake
-   MUST be treated as a connection error of type PROTOCOL_VIOLATION.
-
-8.2.  Use of 0-RTT Keys
-
-   If 0-RTT keys are available (see Section 5.2), the lack of replay
-   protection means that restrictions on their use are necessary to
-   avoid replay attacks on the protocol.
-
-   A client MUST only use 0-RTT keys to protect data that is idempotent.
-   A client MAY wish to apply additional restrictions on what data it
-   sends prior to the completion of the TLS handshake.  A client
-   otherwise treats 0-RTT keys as equivalent to 1-RTT keys.
-
-   A client that receives an indication that its 0-RTT data has been
-   accepted by a server can send 0-RTT data until it receives all of the
-   server's handshake messages.  A client SHOULD stop sending 0-RTT data
-   if it receives an indication that 0-RTT data has been rejected.
-
-   A server MUST NOT use 0-RTT keys to protect packets.
-
-   If a server rejects 0-RTT, then the TLS stream will not include any
-   TLS records protected with 0-RTT keys.
-
-8.3.  Receiving Out-of-Order Protected Frames
-
-   Due to reordering and loss, protected packets might be received by an
-   endpoint before the final TLS handshake messages are received.  A
-   client will be unable to decrypt 1-RTT packets from the server,
-   whereas a server will be able to decrypt 1-RTT packets from the
-   client.
-
-   Packets protected with 1-RTT keys MAY be stored and later decrypted
-   and used once the handshake is complete.  A server MUST NOT use 1-RTT
-   protected packets before verifying either the client Finished message
-   or - in the case that the server has chosen to use a pre-shared key -
-   the pre-shared key binder (see Section 4.2.8 of [TLS13]).  Verifying
-   these values provides the server with an assurance that the
-   ClientHello has not been modified.
-
-
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 33]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   A server could receive packets protected with 0-RTT keys prior to
-   receiving a TLS ClientHello.  The server MAY retain these packets for
-   later decryption in anticipation of receiving a ClientHello.
-
-   Receiving and verifying the TLS Finished message is critical in
-   ensuring the integrity of the TLS handshake.  A server MUST NOT use
-   protected packets from the client prior to verifying the client
-   Finished message if its response depends on client authentication.
-
-9.  QUIC-Specific Additions to the TLS Handshake
+8.  QUIC-Specific Additions to the TLS Handshake
 
    QUIC uses the TLS handshake for more than just negotiation of
    cryptographic parameters.  The TLS handshake validates protocol
@@ -1867,7 +1301,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    parameters, and allows a server to perform return routeability checks
    on clients.
 
-9.1.  Protocol and Version Negotiation
+8.1.  Protocol and Version Negotiation
 
    The QUIC version negotiation mechanism is used to negotiate the
    version of QUIC that is used prior to the completion of the
@@ -1891,7 +1325,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    MUST abort a connection if the server picks an incompatible
    combination of QUIC version and ALPN identifier.
 
-9.2.  QUIC Transport Parameters Extension
+8.2.  QUIC Transport Parameters Extension
 
    QUIC transport parameters are carried in a TLS extension.  Different
    versions of QUIC might define a different format for this struct.
@@ -1899,16 +1333,18 @@ Internet-Draft                QUIC over TLS                     May 2018
    Including transport parameters in the TLS handshake provides
    integrity protection for these values.
 
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 34]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
       enum {
-         quic_transport_parameters(26), (65535)
+         quic_transport_parameters(0xffa5), (65535)
       } ExtensionType;
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 24]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
 
    The "extension_data" field of the quic_transport_parameters extension
    contains a value that is defined by the version of QUIC that is in
@@ -1919,7 +1355,13 @@ Internet-Draft                QUIC over TLS                     May 2018
    The quic_transport_parameters extension is carried in the ClientHello
    and the EncryptedExtensions messages during the handshake.
 
-10.  Security Considerations
+   While the transport parameters are technically available prior to the
+   completion of the handshake, they cannot be fully trusted until the
+   handshake completes, and reliance on them should be minimized.
+   However, any tampering with the parameters will cause the handshake
+   to fail.
+
+9.  Security Considerations
 
    There are likely to be some real clangers here eventually, but the
    current set of issues is well captured in the relevant sections of
@@ -1928,23 +1370,22 @@ Internet-Draft                QUIC over TLS                     May 2018
    Never assume that because it isn't in the security considerations
    section it doesn't affect security.  Most of this document does.
 
-10.1.  Packet Reflection Attack Mitigation
+9.1.  Packet Reflection Attack Mitigation
 
    A small ClientHello that results in a large block of handshake
    messages from a server can be used in packet reflection attacks to
    amplify the traffic generated by an attacker.
 
-   Certificate caching [RFC7924] can reduce the size of the server's
-   handshake messages significantly.
+   QUIC includes three defenses against this attack.  First, the packet
+   containing a ClientHello MUST be padded to a minimum size.  Second,
+   if responding to an unverified source address, the server is
+   forbidden to send more than three UDP datagrams in its first flight
+   (see Section 4.7 of [QUIC-TRANSPORT]).  Finally, because
+   acknowledgements of Handshake packets are authenticated, a blind
+   attacker cannot forge them.  Put together, these defenses limit the
+   level of amplification.
 
-   QUIC requires that the packet containing a ClientHello be padded to a
-   minimum size.  A server is less likely to generate a packet
-   reflection attack if the data it sends is a small multiple of this
-   size.  A server SHOULD use a HelloRetryRequest if the size of the
-   handshake messages it sends is likely to significantly exceed the
-   size of the packet containing the ClientHello.
-
-10.2.  Peer Denial of Service
+9.2.  Peer Denial of Service
 
    QUIC, TLS and HTTP/2 all contain a messages that have legitimate uses
    in some contexts, but that can be abused to cause a peer to expend
@@ -1956,31 +1397,22 @@ Internet-Draft                QUIC over TLS                     May 2018
 
 
 
-
-Thomson & Turner        Expires November 16, 2018              [Page 35]
+Thomson & Turner        Expires February 21, 2019              [Page 25]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
    QUIC prohibits the sending of empty "STREAM" frames unless they are
    marked with the FIN bit.  This prevents "STREAM" frames from being
    sent that only waste effort.
 
-   TLS records SHOULD always contain at least one octet of a handshake
-   messages or alert.  Records containing only padding are permitted
-   during the handshake, but an excessive number might be used to
-   generate unnecessary work.  Once the TLS handshake is complete,
-   endpoints MUST NOT send TLS application data records.  Receiving TLS
-   application data MUST be treated as a connection error of type
-   PROTOCOL_VIOLATION.
-
    While there are legitimate uses for some redundant packets,
    implementations SHOULD track redundant packets and treat excessive
    volumes of any non-productive packets as indicative of an attack.
 
-10.3.  Packet Number Protection Analysis
+9.3.  Packet Number Protection Analysis
 
-   Packet number protection relies the packet protection AEAD being a
+   Packet number protection relies on the packet protection AEAD being a
    pseudorandom function (PRF), which is not a property that AEAD
    algorithms guarantee.  Therefore, no strong assurances about the
    general security of this mechanism can be shown in the general case.
@@ -1990,7 +1422,7 @@ Internet-Draft                QUIC over TLS                     May 2018
    The packet number protection algorithms defined in this document take
    the form:
 
-   "encrypted_pn = packet_number XOR PRF(pn_key, sample) "
+   encrypted_pn = packet_number XOR PRF(pn_key, sample)
 
    This construction is secure against chosen plaintext attacks (IND-
    CPA) [IMC].
@@ -2010,14 +1442,6 @@ Internet-Draft                QUIC over TLS                     May 2018
    To prevent an attacker from modifying packet numbers, values of
    packet numbers are transitively authenticated using packet
    protection; packet numbers are part of the authenticated additional
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 36]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
    data.  A falsified or modified packet number can only be detected
    once the packet protection is removed.
 
@@ -2026,6 +1450,14 @@ Internet-Draft                QUIC over TLS                     May 2018
    packet discards packets with duplicate packet numbers without
    attempting to remove packet protection they could reveal through
    timing side-channels that the packet number matches a received
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 26]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
    packet.  For authentication to be free from side-channels, the entire
    process of packet number protection removal, packet number recovery,
    and packet protection removal MUST be applied together without timing
@@ -2035,69 +1467,19 @@ Internet-Draft                QUIC over TLS                     May 2018
    payloads and packet numbers MUST be free from side-channels that
    would reveal the packet number or its encoded size.
 
-11.  Error Codes
-
-   This section defines error codes from the error code space used in
-   [QUIC-TRANSPORT].
-
-   The following error codes are defined when TLS is used for the crypto
-   handshake:
-
-   TLS_HANDSHAKE_FAILED (0x201):  The TLS handshake failed.
-
-   TLS_FATAL_ALERT_GENERATED (0x202):  A TLS fatal alert was sent,
-      causing the TLS connection to end prematurely.
-
-   TLS_FATAL_ALERT_RECEIVED (0x203):  A TLS fatal alert was received,
-      causing the TLS connection to end prematurely.
-
-12.  IANA Considerations
+10.  IANA Considerations
 
    This document does not create any new IANA registries, but it
    registers the values in the following registries:
 
-   o  QUIC Transport Error Codes Registry [QUIC-TRANSPORT] - IANA is to
-      register the three error codes found in Section 11, these are
-      summarized in Table 1.
-
    o  TLS ExtensionsType Registry [TLS-REGISTRIES] - IANA is to register
-      the quic_transport_parameters extension found in Section 9.2.
-      Assigning 26 to the extension would be greatly appreciated.  The
+      the quic_transport_parameters extension found in Section 8.2.  The
       Recommended column is to be marked Yes.  The TLS 1.3 Column is to
       include CH and EE.
 
+11.  References
 
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 37]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   o  TLS Exporter Label Registry [TLS-REGISTRIES] - IANA is requested
-      to register "EXPORTER-QUIC 0rtt" from Section 5.3.3; "EXPORTER-
-      QUIC client 1rtt" and "EXPORTER-QUIC server 1-RTT" from
-      Section 5.3.4.  The DTLS column is to be marked No.  The
-      Recommended column is to be marked Yes.
-
-   +-------+---------------------------+---------------+---------------+
-   | Value | Error                     | Description   | Specification |
-   +-------+---------------------------+---------------+---------------+
-   | 0x201 | TLS_HANDSHAKE_FAILED      | TLS handshake | Section 11    |
-   |       |                           | failure       |               |
-   |       |                           |               |               |
-   | 0x202 | TLS_FATAL_ALERT_GENERATED | Sent TLS      | Section 11    |
-   |       |                           | alert         |               |
-   |       |                           |               |               |
-   | 0x203 | TLS_FATAL_ALERT_RECEIVED  | Receives TLS  | Section 11    |
-   |       |                           | alert         |               |
-   +-------+---------------------------+---------------+---------------+
-
-                Table 1: QUIC Transport Error Codes for TLS
-
-13.  References
-
-13.1.  Normative References
+11.1.  Normative References
 
    [AEAD]     McGrew, D., "An Interface and Algorithms for Authenticated
               Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
@@ -2108,36 +1490,34 @@ Internet-Draft                QUIC over TLS                     May 2018
               DOI 10.6028/nist.fips.197, November 2001.
 
    [CHACHA]   Nir, Y. and A. Langley, "ChaCha20 and Poly1305 for IETF
-              Protocols", RFC 7539, DOI 10.17487/RFC7539, May 2015,
-              <https://www.rfc-editor.org/info/rfc7539>.
+              Protocols", RFC 8439, DOI 10.17487/RFC8439, June 2018,
+              <https://www.rfc-editor.org/info/rfc8439>.
 
-   [HKDF]     Krawczyk, H. and P. Eronen, "HMAC-based Extract-and-Expand
-              Key Derivation Function (HKDF)", RFC 5869,
-              DOI 10.17487/RFC5869, May 2010,
-              <https://www.rfc-editor.org/info/rfc5869>.
+   [QUIC-RECOVERY]
+              Iyengar, J., Ed. and I. Swett, Ed., "QUIC Loss Detection
+              and Congestion Control", draft-ietf-quic-recovery (work in
+              progress), August 2018.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), May 2018.
+              transport (work in progress), August 2018.
 
 
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 38]
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 27]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-   [RFC5116]  McGrew, D., "An Interface and Algorithms for Authenticated
-              Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
-              <https://www.rfc-editor.org/info/rfc5116>.
 
    [RFC7301]  Friedl, S., Popov, A., Langley, A., and E. Stephan,
               "Transport Layer Security (TLS) Application-Layer Protocol
@@ -2153,15 +1533,16 @@ Internet-Draft                QUIC over TLS                     May 2018
               DOI 10.6028/nist.fips.180-4, July 2015.
 
    [TLS-REGISTRIES]
-              Salowey, J. and S. Turner, "IANA Registry Updates for TLS
-              and DTLS", draft-ietf-tls-iana-registry-updates-04 (work
-              in progress), February 2018.
+              Salowey, J. and S. Turner, "IANA Registry Updates for
+              Transport Layer Security (TLS) and Datagram Transport
+              Layer Security (DTLS)", draft-ietf-tls-iana-registry-
+              updates-05 (work in progress), May 2018.
 
    [TLS13]    Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", draft-ietf-tls-tls13-21 (work in progress),
-              July 2017.
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
 
-13.2.  Informative References
+11.2.  Informative References
 
    [AEBounds]
               Luykx, A. and K. Paterson, "Limits on Authenticated
@@ -2174,26 +1555,20 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http (work in progress), May 2018.
-
-
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 39]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
-
-   [QUIC-RECOVERY]
-              Iyengar, J., Ed. and I. Swett, Ed., "QUIC Loss Detection
-              and Congestion Control", draft-ietf-quic-recovery (work in
-              progress), May 2018.
+              QUIC", draft-ietf-quic-http (work in progress), August
+              2018.
 
    [RFC2818]  Rescorla, E., "HTTP Over TLS", RFC 2818,
               DOI 10.17487/RFC2818, May 2000,
               <https://www.rfc-editor.org/info/rfc2818>.
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 28]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -2201,12 +1576,7 @@ Internet-Draft                QUIC over TLS                     May 2018
               (CRL) Profile", RFC 5280, DOI 10.17487/RFC5280, May 2008,
               <https://www.rfc-editor.org/info/rfc5280>.
 
-   [RFC7924]  Santesson, S. and H. Tschofenig, "Transport Layer Security
-              (TLS) Cached Information Extension", RFC 7924,
-              DOI 10.17487/RFC7924, July 2016,
-              <https://www.rfc-editor.org/info/rfc7924>.
-
-13.3.  URIs
+11.3.  URIs
 
    [1] https://mailarchive.ietf.org/arch/search/?email_list=quic
 
@@ -2214,71 +1584,89 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    [3] https://github.com/quicwg/base-drafts/labels/-tls
 
-Appendix A.  Contributors
-
-   Ryan Hamilton was originally an author of this specification.
-
-Appendix B.  Acknowledgments
-
-   This document has benefited from input from Dragana Damjanovic,
-   Christian Huitema, Jana Iyengar, Adam Langley, Roberto Peon, Eric
-   Rescorla, Ian Swett, and many others.
-
-Appendix C.  Change Log
+Appendix A.  Change Log
 
       *RFC Editor's Note:* Please remove this section prior to
       publication of a final version of this document.
 
    Issue and pull request numbers are listed with a leading octothorp.
 
+A.1.  Since draft-ietf-quic-tls-13
+
+   o  Updated to TLS 1.3 final (#1660)
+
+A.2.  Since draft-ietf-quic-tls-12
+
+   o  Changes to integration of the TLS handshake (#829, #1018, #1094,
+      #1165, #1190, #1233, #1242, #1252, #1450)
+
+      *  The cryptographic handshake uses CRYPTO frames, not stream 0
+
+      *  QUIC packet protection is used in place of TLS record
+         protection
+
+      *  Separate QUIC packet number spaces are used for the handshake
+
+      *  Changed Retry to be independent of the cryptographic handshake
+
+      *  Limit the use of HelloRetryRequest to address TLS needs (like
+         key shares)
+
+   o  Changed codepoint of TLS extension (#1395, #1402)
 
 
 
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 40]
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 29]
 
-Internet-Draft                QUIC over TLS                     May 2018
+Internet-Draft                QUIC over TLS                  August 2018
 
 
-C.1.  Since draft-ietf-quic-tls-10
+A.3.  Since draft-ietf-quic-tls-11
+
+   o  Encrypted packet numbers.
+
+A.4.  Since draft-ietf-quic-tls-10
 
    o  No significant changes.
 
-C.2.  Since draft-ietf-quic-tls-09
+A.5.  Since draft-ietf-quic-tls-09
 
    o  Cleaned up key schedule and updated the salt used for handshake
       packet protection (#1077)
 
-C.3.  Since draft-ietf-quic-tls-08
+A.6.  Since draft-ietf-quic-tls-08
 
    o  Specify value for max_early_data_size to enable 0-RTT (#942)
 
    o  Update key derivation function (#1003, #1004)
 
-C.4.  Since draft-ietf-quic-tls-07
+A.7.  Since draft-ietf-quic-tls-07
 
    o  Handshake errors can be reported with CONNECTION_CLOSE (#608,
       #891)
 
-C.5.  Since draft-ietf-quic-tls-05
+A.8.  Since draft-ietf-quic-tls-05
 
    No significant changes.
 
-C.6.  Since draft-ietf-quic-tls-04
+A.9.  Since draft-ietf-quic-tls-04
 
    o  Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)
 
-C.7.  Since draft-ietf-quic-tls-03
+A.10.  Since draft-ietf-quic-tls-03
 
    No significant changes.
 
-C.8.  Since draft-ietf-quic-tls-02
+A.11.  Since draft-ietf-quic-tls-02
 
    o  Updates to match changes in transport draft
 
-C.9.  Since draft-ietf-quic-tls-01
+A.12.  Since draft-ietf-quic-tls-01
 
    o  Use TLS alerts to signal TLS errors (#272, #374)
 
@@ -2287,16 +1675,15 @@ C.9.  Since draft-ietf-quic-tls-01
    o  The second client handshake flight is now sent in the clear (#262,
       #337)
 
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 30]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
+
    o  The QUIC header is included as AEAD Associated Data (#226, #243,
       #302)
-
-
-
-
-Thomson & Turner        Expires November 16, 2018              [Page 41]
-
-Internet-Draft                QUIC over TLS                     May 2018
-
 
    o  Add interface necessary for client address validation (#275)
 
@@ -2311,7 +1698,7 @@ Internet-Draft                QUIC over TLS                     May 2018
 
    o  Decouple QUIC version and ALPN (#12)
 
-C.10.  Since draft-ietf-quic-tls-00
+A.13.  Since draft-ietf-quic-tls-00
 
    o  Changed bit used to signal key phase
 
@@ -2323,13 +1710,33 @@ C.10.  Since draft-ietf-quic-tls-00
 
    o  Moved TLS error code definitions into this document
 
-C.11.  Since draft-thomson-quic-tls-01
+A.14.  Since draft-thomson-quic-tls-01
 
    o  Adopted as base for draft-ietf-quic-tls
 
    o  Updated authors/editors list
 
    o  Added status note
+
+Acknowledgments
+
+   This document has benefited from input from Dragana Damjanovic,
+   Christian Huitema, Jana Iyengar, Adam Langley, Roberto Peon, Eric
+   Rescorla, Ian Swett, and many others.
+
+Contributors
+
+   Ryan Hamilton was originally an author of this specification.
+
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 31]
+
+Internet-Draft                QUIC over TLS                  August 2018
+
 
 Authors' Addresses
 
@@ -2349,4 +1756,37 @@ Authors' Addresses
 
 
 
-Thomson & Turner        Expires November 16, 2018              [Page 42]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Thomson & Turner        Expires February 21, 2019              [Page 32]
