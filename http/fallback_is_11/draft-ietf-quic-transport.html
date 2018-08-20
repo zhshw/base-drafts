@@ -289,14 +289,19 @@ ul.toc li {
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Long Header">
 <link href="#rfc.section.4.2" rel="Chapter" title="4.2 Short Header">
 <link href="#rfc.section.4.3" rel="Chapter" title="4.3 Version Negotiation Packet">
-<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Cryptographic Handshake Packets">
-<link href="#rfc.section.4.4.1" rel="Chapter" title="4.4.1 Initial Packet">
-<link href="#rfc.section.4.4.2" rel="Chapter" title="4.4.2 Retry Packet">
-<link href="#rfc.section.4.4.3" rel="Chapter" title="4.4.3 Handshake Packet">
-<link href="#rfc.section.4.5" rel="Chapter" title="4.5 Protected Packets">
-<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Coalescing Packets">
-<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Connection ID Encoding">
-<link href="#rfc.section.4.8" rel="Chapter" title="4.8 Packet Numbers">
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Retry Packet">
+<link href="#rfc.section.4.5" rel="Chapter" title="4.5 Cryptographic Handshake Packets">
+<link href="#rfc.section.4.6" rel="Chapter" title="4.6 Initial Packet">
+<link href="#rfc.section.4.6.1" rel="Chapter" title="4.6.1 Connection IDs">
+<link href="#rfc.section.4.6.2" rel="Chapter" title="4.6.2 Tokens">
+<link href="#rfc.section.4.6.3" rel="Chapter" title="4.6.3 Starting Packet Numbers">
+<link href="#rfc.section.4.6.4" rel="Chapter" title="4.6.4 0-RTT Packet Numbers">
+<link href="#rfc.section.4.6.5" rel="Chapter" title="4.6.5 Minimum Packet Size">
+<link href="#rfc.section.4.7" rel="Chapter" title="4.7 Handshake Packet">
+<link href="#rfc.section.4.8" rel="Chapter" title="4.8 Protected Packets">
+<link href="#rfc.section.4.9" rel="Chapter" title="4.9 Coalescing Packets">
+<link href="#rfc.section.4.10" rel="Chapter" title="4.10 Connection ID Encoding">
+<link href="#rfc.section.4.11" rel="Chapter" title="4.11 Packet Numbers">
 <link href="#rfc.section.5" rel="Chapter" title="5 Frames and Frame Types">
 <link href="#rfc.section.5.1" rel="Chapter" title="5.1 Extension Frames">
 <link href="#rfc.section.6" rel="Chapter" title="6 Life of a Connection">
@@ -391,7 +396,7 @@ ul.toc li {
 <link href="#rfc.section.10.2" rel="Chapter" title="10.2 Stream Limit Increment">
 <link href="#rfc.section.10.2.1" rel="Chapter" title="10.2.1 Blocking on Flow Control">
 <link href="#rfc.section.10.3" rel="Chapter" title="10.3 Stream Final Offset">
-<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow Control for Crytographic Handshake">
+<link href="#rfc.section.10.4" rel="Chapter" title="10.4 Flow Control for Cryptographic Handshake">
 <link href="#rfc.section.11" rel="Chapter" title="11 Error Handling">
 <link href="#rfc.section.11.1" rel="Chapter" title="11.1 Connection Errors">
 <link href="#rfc.section.11.2" rel="Chapter" title="11.2 Stream Errors">
@@ -405,6 +410,7 @@ ul.toc li {
 <link href="#rfc.section.12.5" rel="Chapter" title="12.5 Stream Fragmentation and Reassembly Attacks">
 <link href="#rfc.section.12.6" rel="Chapter" title="12.6 Stream Commitment Attack">
 <link href="#rfc.section.12.7" rel="Chapter" title="12.7 Explicit Congestion Notification Attacks">
+<link href="#rfc.section.12.8" rel="Chapter" title="12.8 Stateless Reset Oracle">
 <link href="#rfc.section.13" rel="Chapter" title="13 IANA Considerations">
 <link href="#rfc.section.13.1" rel="Chapter" title="13.1 QUIC Transport Parameter Registry">
 <link href="#rfc.section.13.2" rel="Chapter" title="13.2 QUIC Frame Type Registry">
@@ -414,20 +420,21 @@ ul.toc li {
 <link href="#rfc.references.2" rel="Chapter" title="14.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Sample Packet Number Decoding Algorithm">
 <link href="#rfc.appendix.B" rel="Chapter" title="B Change Log">
-<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Since draft-ietf-quic-transport-12">
-<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Since draft-ietf-quic-transport-11">
-<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Since draft-ietf-quic-transport-10">
-<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Since draft-ietf-quic-transport-09">
-<link href="#rfc.appendix.B.5" rel="Chapter" title="B.5 Since draft-ietf-quic-transport-08">
-<link href="#rfc.appendix.B.6" rel="Chapter" title="B.6 Since draft-ietf-quic-transport-07">
-<link href="#rfc.appendix.B.7" rel="Chapter" title="B.7 Since draft-ietf-quic-transport-06">
-<link href="#rfc.appendix.B.8" rel="Chapter" title="B.8 Since draft-ietf-quic-transport-05">
-<link href="#rfc.appendix.B.9" rel="Chapter" title="B.9 Since draft-ietf-quic-transport-04">
-<link href="#rfc.appendix.B.10" rel="Chapter" title="B.10 Since draft-ietf-quic-transport-03">
-<link href="#rfc.appendix.B.11" rel="Chapter" title="B.11 Since draft-ietf-quic-transport-02">
-<link href="#rfc.appendix.B.12" rel="Chapter" title="B.12 Since draft-ietf-quic-transport-01">
-<link href="#rfc.appendix.B.13" rel="Chapter" title="B.13 Since draft-ietf-quic-transport-00">
-<link href="#rfc.appendix.B.14" rel="Chapter" title="B.14 Since draft-hamilton-quic-transport-protocol-01">
+<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Since draft-ietf-quic-transport-13">
+<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 Since draft-ietf-quic-transport-12">
+<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Since draft-ietf-quic-transport-11">
+<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Since draft-ietf-quic-transport-10">
+<link href="#rfc.appendix.B.5" rel="Chapter" title="B.5 Since draft-ietf-quic-transport-09">
+<link href="#rfc.appendix.B.6" rel="Chapter" title="B.6 Since draft-ietf-quic-transport-08">
+<link href="#rfc.appendix.B.7" rel="Chapter" title="B.7 Since draft-ietf-quic-transport-07">
+<link href="#rfc.appendix.B.8" rel="Chapter" title="B.8 Since draft-ietf-quic-transport-06">
+<link href="#rfc.appendix.B.9" rel="Chapter" title="B.9 Since draft-ietf-quic-transport-05">
+<link href="#rfc.appendix.B.10" rel="Chapter" title="B.10 Since draft-ietf-quic-transport-04">
+<link href="#rfc.appendix.B.11" rel="Chapter" title="B.11 Since draft-ietf-quic-transport-03">
+<link href="#rfc.appendix.B.12" rel="Chapter" title="B.12 Since draft-ietf-quic-transport-02">
+<link href="#rfc.appendix.B.13" rel="Chapter" title="B.13 Since draft-ietf-quic-transport-01">
+<link href="#rfc.appendix.B.14" rel="Chapter" title="B.14 Since draft-ietf-quic-transport-00">
+<link href="#rfc.appendix.B.15" rel="Chapter" title="B.15 Since draft-hamilton-quic-transport-protocol-01">
 <link href="#rfc.acknowledgments" rel="Chapter">
 <link href="#rfc.contributors" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
@@ -438,7 +445,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-19" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-20" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -462,12 +469,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: January 20, 2019</td>
+<td class="left">Expires: February 21, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 19, 2018</td>
+<td class="right">August 20, 2018</td>
 </tr>
 
     	
@@ -486,7 +493,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 20, 2019.</p>
+<p>This Internet-Draft will expire on February 21, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -512,21 +519,31 @@ ul.toc li {
 </li>
 <li>4.3.   <a href="#rfc.section.4.3">Version Negotiation Packet</a>
 </li>
-<li>4.4.   <a href="#rfc.section.4.4">Cryptographic Handshake Packets</a>
+<li>4.4.   <a href="#rfc.section.4.4">Retry Packet</a>
 </li>
-<ul><li>4.4.1.   <a href="#rfc.section.4.4.1">Initial Packet</a>
+<li>4.5.   <a href="#rfc.section.4.5">Cryptographic Handshake Packets</a>
 </li>
-<li>4.4.2.   <a href="#rfc.section.4.4.2">Retry Packet</a>
+<li>4.6.   <a href="#rfc.section.4.6">Initial Packet</a>
 </li>
-<li>4.4.3.   <a href="#rfc.section.4.4.3">Handshake Packet</a>
+<ul><li>4.6.1.   <a href="#rfc.section.4.6.1">Connection IDs</a>
 </li>
-</ul><li>4.5.   <a href="#rfc.section.4.5">Protected Packets</a>
+<li>4.6.2.   <a href="#rfc.section.4.6.2">Tokens</a>
 </li>
-<li>4.6.   <a href="#rfc.section.4.6">Coalescing Packets</a>
+<li>4.6.3.   <a href="#rfc.section.4.6.3">Starting Packet Numbers</a>
 </li>
-<li>4.7.   <a href="#rfc.section.4.7">Connection ID Encoding</a>
+<li>4.6.4.   <a href="#rfc.section.4.6.4">0-RTT Packet Numbers</a>
 </li>
-<li>4.8.   <a href="#rfc.section.4.8">Packet Numbers</a>
+<li>4.6.5.   <a href="#rfc.section.4.6.5">Minimum Packet Size</a>
+</li>
+</ul><li>4.7.   <a href="#rfc.section.4.7">Handshake Packet</a>
+</li>
+<li>4.8.   <a href="#rfc.section.4.8">Protected Packets</a>
+</li>
+<li>4.9.   <a href="#rfc.section.4.9">Coalescing Packets</a>
+</li>
+<li>4.10.   <a href="#rfc.section.4.10">Connection ID Encoding</a>
+</li>
+<li>4.11.   <a href="#rfc.section.4.11">Packet Numbers</a>
 </li>
 </ul><li>5.   <a href="#rfc.section.5">Frames and Frame Types</a>
 </li>
@@ -716,7 +733,7 @@ ul.toc li {
 </li>
 </ul><li>10.3.   <a href="#rfc.section.10.3">Stream Final Offset</a>
 </li>
-<li>10.4.   <a href="#rfc.section.10.4">Flow Control for Crytographic Handshake</a>
+<li>10.4.   <a href="#rfc.section.10.4">Flow Control for Cryptographic Handshake</a>
 </li>
 </ul><li>11.   <a href="#rfc.section.11">Error Handling</a>
 </li>
@@ -744,6 +761,8 @@ ul.toc li {
 </li>
 <li>12.7.   <a href="#rfc.section.12.7">Explicit Congestion Notification Attacks</a>
 </li>
+<li>12.8.   <a href="#rfc.section.12.8">Stateless Reset Oracle</a>
+</li>
 </ul><li>13.   <a href="#rfc.section.13">IANA Considerations</a>
 </li>
 <ul><li>13.1.   <a href="#rfc.section.13.1">QUIC Transport Parameter Registry</a>
@@ -762,33 +781,35 @@ ul.toc li {
 </li>
 <li>Appendix B.   <a href="#rfc.appendix.B">Change Log</a>
 </li>
-<ul><li>B.1.   <a href="#rfc.appendix.B.1">Since draft-ietf-quic-transport-12</a>
+<ul><li>B.1.   <a href="#rfc.appendix.B.1">Since draft-ietf-quic-transport-13</a>
 </li>
-<li>B.2.   <a href="#rfc.appendix.B.2">Since draft-ietf-quic-transport-11</a>
+<li>B.2.   <a href="#rfc.appendix.B.2">Since draft-ietf-quic-transport-12</a>
 </li>
-<li>B.3.   <a href="#rfc.appendix.B.3">Since draft-ietf-quic-transport-10</a>
+<li>B.3.   <a href="#rfc.appendix.B.3">Since draft-ietf-quic-transport-11</a>
 </li>
-<li>B.4.   <a href="#rfc.appendix.B.4">Since draft-ietf-quic-transport-09</a>
+<li>B.4.   <a href="#rfc.appendix.B.4">Since draft-ietf-quic-transport-10</a>
 </li>
-<li>B.5.   <a href="#rfc.appendix.B.5">Since draft-ietf-quic-transport-08</a>
+<li>B.5.   <a href="#rfc.appendix.B.5">Since draft-ietf-quic-transport-09</a>
 </li>
-<li>B.6.   <a href="#rfc.appendix.B.6">Since draft-ietf-quic-transport-07</a>
+<li>B.6.   <a href="#rfc.appendix.B.6">Since draft-ietf-quic-transport-08</a>
 </li>
-<li>B.7.   <a href="#rfc.appendix.B.7">Since draft-ietf-quic-transport-06</a>
+<li>B.7.   <a href="#rfc.appendix.B.7">Since draft-ietf-quic-transport-07</a>
 </li>
-<li>B.8.   <a href="#rfc.appendix.B.8">Since draft-ietf-quic-transport-05</a>
+<li>B.8.   <a href="#rfc.appendix.B.8">Since draft-ietf-quic-transport-06</a>
 </li>
-<li>B.9.   <a href="#rfc.appendix.B.9">Since draft-ietf-quic-transport-04</a>
+<li>B.9.   <a href="#rfc.appendix.B.9">Since draft-ietf-quic-transport-05</a>
 </li>
-<li>B.10.   <a href="#rfc.appendix.B.10">Since draft-ietf-quic-transport-03</a>
+<li>B.10.   <a href="#rfc.appendix.B.10">Since draft-ietf-quic-transport-04</a>
 </li>
-<li>B.11.   <a href="#rfc.appendix.B.11">Since draft-ietf-quic-transport-02</a>
+<li>B.11.   <a href="#rfc.appendix.B.11">Since draft-ietf-quic-transport-03</a>
 </li>
-<li>B.12.   <a href="#rfc.appendix.B.12">Since draft-ietf-quic-transport-01</a>
+<li>B.12.   <a href="#rfc.appendix.B.12">Since draft-ietf-quic-transport-02</a>
 </li>
-<li>B.13.   <a href="#rfc.appendix.B.13">Since draft-ietf-quic-transport-00</a>
+<li>B.13.   <a href="#rfc.appendix.B.13">Since draft-ietf-quic-transport-01</a>
 </li>
-<li>B.14.   <a href="#rfc.appendix.B.14">Since draft-hamilton-quic-transport-protocol-01</a>
+<li>B.14.   <a href="#rfc.appendix.B.14">Since draft-ietf-quic-transport-00</a>
+</li>
+<li>B.15.   <a href="#rfc.appendix.B.15">Since draft-hamilton-quic-transport-protocol-01</a>
 </li>
 </ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
@@ -920,13 +941,13 @@ ul.toc li {
 <dt>DCIL and SCIL:</dt>
 <dd style="margin-left: 8">The octet following the version contains the lengths of the two connection ID fields that follow it.  These lengths are encoded as two 4-bit unsigned integers. The Destination Connection ID Length (DCIL) field occupies the 4 high bits of the octet and the Source Connection ID Length (SCIL) field occupies the 4 low bits of the octet.  An encoded length of 0 indicates that the connection ID is also 0 octets in length.  Non-zero encoded lengths are increased by 3 to get the full length of the connection ID, producing a length between 4 and 18 octets inclusive.  For example, an octet with the value 0x50 describes an 8-octet Destination Connection ID and a zero-length Source Connection ID.</dd>
 <dt>Destination Connection ID:</dt>
-<dd style="margin-left: 8">The Destination Connection ID field follows the connection ID lengths and is either 0 octets in length or between 4 and 18 octets.  <a href="#connection-id-encoding" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
+<dd style="margin-left: 8">The Destination Connection ID field follows the connection ID lengths and is either 0 octets in length or between 4 and 18 octets.  <a href="#connection-id-encoding" class="xref">Section 4.10</a> describes the use of this field in more detail.</dd>
 <dt>Source Connection ID:</dt>
-<dd style="margin-left: 8">The Source Connection ID field follows the Destination Connection ID and is either 0 octets in length or between 4 and 18 octets.  <a href="#connection-id-encoding" class="xref">Section 4.7</a> describes the use of this field in more detail.</dd>
+<dd style="margin-left: 8">The Source Connection ID field follows the Destination Connection ID and is either 0 octets in length or between 4 and 18 octets.  <a href="#connection-id-encoding" class="xref">Section 4.10</a> describes the use of this field in more detail.</dd>
 <dt>Length:</dt>
 <dd style="margin-left: 8">The length of the remainder of the packet (that is, the Packet Number and Payload fields) in octets, encoded as a variable-length integer (<a href="#integer-encoding" class="xref">Section 7.1</a>).</dd>
 <dt>Packet Number:</dt>
-<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.6 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</dd>
+<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.3 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
 <dt>Payload:</dt>
 <dd style="margin-left: 8">The payload of the packet.</dd>
 </dl>
@@ -944,29 +965,29 @@ ul.toc li {
 <tr>
 <td class="left">0x7F</td>
 <td class="left">Initial</td>
-<td class="left"><a href="#packet-initial" class="xref">Section 4.4.1</a></td>
+<td class="left"><a href="#packet-initial" class="xref">Section 4.6</a></td>
 </tr>
 <tr>
 <td class="left">0x7E</td>
 <td class="left">Retry</td>
-<td class="left"><a href="#packet-retry" class="xref">Section 4.4.2</a></td>
+<td class="left"><a href="#packet-retry" class="xref">Section 4.4</a></td>
 </tr>
 <tr>
 <td class="left">0x7D</td>
 <td class="left">Handshake</td>
-<td class="left"><a href="#packet-handshake" class="xref">Section 4.4.3</a></td>
+<td class="left"><a href="#packet-handshake" class="xref">Section 4.7</a></td>
 </tr>
 <tr>
 <td class="left">0x7C</td>
 <td class="left">0-RTT Protected</td>
-<td class="left"><a href="#packet-protected" class="xref">Section 4.5</a></td>
+<td class="left"><a href="#packet-protected" class="xref">Section 4.8</a></td>
 </tr>
 </tbody>
 </table>
 <p id="rfc.section.4.1.p.4">The header form, type, connection ID lengths octet, destination and source connection IDs, and version fields of a long header packet are version-independent. The packet number and values for packet types defined in <a href="#long-packet-types" class="xref">Table 1</a> are version-specific.  See <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a> for details on how packets from different versions of QUIC are interpreted.</p>
 <p id="rfc.section.4.1.p.5">The interpretation of the fields and the payload are specific to a version and packet type.  Type-specific semantics for this version are described in the following sections.</p>
 <p id="rfc.section.4.1.p.6">The end of the packet is determined by the Length field.  The Length field covers the both the Packet Number and Payload fields, both of which are confidentiality protected and initially of unknown length.  The size of the Payload field is learned once the packet number protection is removed.</p>
-<p id="rfc.section.4.1.p.7">Senders can sometimes coalesce multiple packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.6</a> for more details.</p>
+<p id="rfc.section.4.1.p.7">Senders can sometimes coalesce multiple packets into one UDP datagram.  See <a href="#packet-coalesce" class="xref">Section 4.9</a> for more details.</p>
 <h2 id="rfc.section.4.2">
 <a href="#rfc.section.4.2">4.2.</a> <a href="#short-header" id="short-header">Short Header</a>
 </h2>
@@ -1020,7 +1041,7 @@ ul.toc li {
 <dt>Destination Connection ID:</dt>
 <dd style="margin-left: 8">The Destination Connection ID is a connection ID that is chosen by the intended recipient of the packet.  See <a href="#connection-id" class="xref">Section 6.1</a> for more details.</dd>
 <dt>Packet Number:</dt>
-<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.6 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</dd>
+<dd style="margin-left: 8">The packet number field is 1, 2, or 4 octets long. The packet number has confidentiality protection separate from packet protection, as described in Section 5.3 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. The length of the packet number field is encoded in the plaintext packet number. See <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</dd>
 <dt>Protected Payload:</dt>
 <dd style="margin-left: 8">Packets with a short header always include a 1-RTT protected payload.</dd>
 </dl>
@@ -1065,150 +1086,195 @@ ul.toc li {
 <p id="rfc.section.4.3.p.9">The Version Negotiation packet does not include the Packet Number and Length fields present in other packets that use the long header form.  Consequently, a Version Negotiation packet consumes an entire UDP datagram.</p>
 <p id="rfc.section.4.3.p.10">See <a href="#version-negotiation" class="xref">Section 6.3</a> for a description of the version negotiation process.</p>
 <h2 id="rfc.section.4.4">
-<a href="#rfc.section.4.4">4.4.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
+<a href="#rfc.section.4.4">4.4.</a> <a href="#packet-retry" id="packet-retry">Retry Packet</a>
 </h2>
-<p id="rfc.section.4.4.p.1">Once version negotiation is complete, the cryptographic handshake is used to agree on cryptographic keys.  The cryptographic handshake is carried in Initial (<a href="#packet-initial" class="xref">Section 4.4.1</a>) and Handshake (<a href="#packet-handshake" class="xref">Section 4.4.3</a>) packets.</p>
-<p id="rfc.section.4.4.p.2">All these packets use the long header and contain the current QUIC version in the version field.</p>
-<p id="rfc.section.4.4.p.3">In order to prevent tampering by version-unaware middleboxes, Initial packets are protected with connection- and version-specific keys (Initial keys) as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  This protection does not provide confidentiality or integrity against on-path attackers, but provides some level of protection against off-path attackers.</p>
-<h3 id="rfc.section.4.4.1">
-<a href="#rfc.section.4.4.1">4.4.1.</a> <a href="#packet-initial" id="packet-initial">Initial Packet</a>
-</h3>
-<p id="rfc.section.4.4.1.p.1">The Initial packet uses long headers with a type value of 0x7F.  It carries the first CRYPTO frames sent by the client and server to perform key exchange, and may carry ACKs in either direction. The Initial packet is protected by Initial keys as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</p>
-<p id="rfc.section.4.4.1.p.2">The Initial packet has two additional header fields that follow the normal Long Header.</p>
+<p id="rfc.section.4.4.p.1">A Retry packet uses a long packet header with a type value of 0x7E. It carries an address validation token created by the server. It is used by a server that wishes to perform a stateless retry (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
+<div id="rfc.figure.4"></div>
+<div id="retry-format"></div>
 <pre>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
++-+-+-+-+-+-+-+-+
+|1|    0x7e     |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                      Token Length (i)  ...
+|                         Version (32)                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                            Token (*)                        ...
+|DCIL(4)|SCIL(4)|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-</pre>
-<p></p>
-
-<dl>
-<dt>Token Length:</dt>
-<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  It may be zero if no token is present. Initial packets sent by the server MUST include a zero-length token.</dd>
-<dt>Token:</dt>
-<dd style="margin-left: 8">An optional token blob previously received in either a Retry packet or NEW_TOKEN frame.</dd>
-</dl>
-<p id="rfc.section.4.4.1.p.4">The client and server use the Initial packet type for any packet that contains an initial cryptographic handshake message. In addition to the first packet(s). This includes all cases where a new packet containing the initial cryptographic message needs to be created, such as the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).</p>
-<p id="rfc.section.4.4.1.p.5">A server sends its first Initial packet in response to a client Initial.  A server may send multiple Initial packets.  The cryptographic key exchange could require multiple round trips or retransmissions of this data.</p>
-<p id="rfc.section.4.4.1.p.6">The payload of an Initial packet includes a CRYPTO frame (or frames) containing a cryptographic handshake message, ACK frames, or both. The first CRYPTO frame sent always begins at an offset of 0 (see <a href="#handshake" class="xref">Section 6.4</a>). The client&#8217;s complete first message MUST fit in a single packet (see <a href="#handshake" class="xref">Section 6.4</a>). Note that if the server sends a HelloRetryRequest, the client will send a second Initial packet with a CRYPTO frame with an offset starting at the end of the CRYPTO stream in the first Initial.</p>
-<h4 id="rfc.section.4.4.1.1">
-<a href="#rfc.section.4.4.1.1">4.4.1.1.</a> <a href="#connection-ids" id="connection-ids">Connection IDs</a>
-</h4>
-<p id="rfc.section.4.4.1.1.p.1">When an Initial packet is sent by a client which has not previously received a Retry packet from the server, it populates the Destination Connection ID field with an unpredictable value.  This MUST be at least 8 octets in length. Until a packet is received from the server, the client MUST use the same value unless it abandons the connection attempt and starts a new one. The initial Destination Connection ID is used to determine packet protection keys for Initial packets.</p>
-<p id="rfc.section.4.4.1.1.p.2">The client populates the Source Connection ID field with a value of its choosing and sets the SCIL field to match.</p>
-<p id="rfc.section.4.4.1.1.p.3">The Destination Connection ID field in the server&#8217;s Initial packet contains a connection ID that is chosen by the recipient of the packet (i.e., the client); the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id" class="xref">Section 6.1</a>). The server MUST use consistent Source Connection IDs during the handshake.</p>
-<p id="rfc.section.4.4.1.1.p.4">On first receiving an Initial or Retry packet from the server, the client uses the Source Connection ID supplied by the server as the Destination Connection ID for subsequent packets.  Once a client has received an Initial packet from the server, it MUST discard any packet it receives with a different Source Connection ID.</p>
-<h4 id="rfc.section.4.4.1.2">
-<a href="#rfc.section.4.4.1.2">4.4.1.2.</a> <a href="#tokens" id="tokens">Tokens</a>
-</h4>
-<p id="rfc.section.4.4.1.2.p.1">If the client has a suitable token available from a previous connection, it SHOULD populate the Token field.</p>
-<p id="rfc.section.4.4.1.2.p.2">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
-<p id="rfc.section.4.4.1.2.p.3">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
-<p></p>
-
-<dl>
-<dt>Note:</dt>
-<dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.</dd>
-</dl>
-<h4 id="rfc.section.4.4.1.3">
-<a href="#rfc.section.4.4.1.3">4.4.1.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
-</h4>
-<p id="rfc.section.4.4.1.3.p.1">The first Initial packet contains a packet number of 0. Each packet sent after the Initial packet is associated with a packet number space and its packet number increases monotonically in that space (see <a href="#packet-numbers" class="xref">Section 4.8</a>).</p>
-<h4 id="rfc.section.4.4.1.4">
-<a href="#rfc.section.4.4.1.4">4.4.1.4.</a> <a href="#minimum-packet-size" id="minimum-packet-size">Minimum Packet Size</a>
-</h4>
-<p id="rfc.section.4.4.1.4.p.1">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-coalesce" class="xref">Section 4.6</a>).</p>
-<h3 id="rfc.section.4.4.2">
-<a href="#rfc.section.4.4.2">4.4.2.</a> <a href="#packet-retry" id="packet-retry">Retry Packet</a>
-</h3>
-<p id="rfc.section.4.4.2.p.1">A Retry packet uses long headers with a type value of 0x7E. It carries an address validation token created by the server. It is used by a server that wishes to perform a stateless retry (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
-<pre>
- 0                   1                   2                   3
- 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+|               Destination Connection ID (0/32..144)         ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|     ODCIL(8   |      Original Destination Connection ID (*)   |
+|                 Source Connection ID (0/32..144)            ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        Retry Token (*) ...
+|    ODCIL(8)   |      Original Destination Connection ID (*)   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                        Retry Token (*)                      ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p id="rfc.section.4.4.2.p.2">A Retry packet is not encrypted at all. Instead, the payload of a Retry packet contains two values in the clear.</p>
+<p class="figure">Figure 4: Retry Packet</p>
+<p id="rfc.section.4.4.p.2">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 4</a>) only uses the invariant portion of the long packet header <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a>; that is, the fields up to and including the Destination and Source Connection ID fields.  The contents of the Retry packet are not protected.  Like Version Negotiation, a Retry packet contains the long header including the connection IDs, but omits the Length, Packet Number, and Payload fields.  These are replaced with:</p>
 <p></p>
 
 <dl>
 <dt>ODCIL:</dt>
-<dd style="margin-left: 8">The length of the Original Destination Connection ID.</dd>
+<dd style="margin-left: 8">The length of the Original Destination Connection ID field.  The length is encoded in the least significant 4 bits of the octet, using the same encoding as the DCIL and SCIL fields.  The most significant 4 bits of this octet are reserved.  Unless a use for these bits has been negotiated, endpoints SHOULD send randomized values and MUST ignore any value that it receives.</dd>
 <dt>Original Destination Connection ID:</dt>
-<dd style="margin-left: 8">The Destination Connection ID from the Initial packet that this Retry is in response to. The length of this field is given in DCIL.</dd>
+<dd style="margin-left: 8">The Original Destination Connection ID contains the value of the Destination Connection ID from the Initial packet that this Retry is in response to. The length of this field is given in ODCIL.</dd>
 <dt>Retry Token:</dt>
 <dd style="margin-left: 8">An opaque token that the server can use to validate the client&#8217;s address.</dd>
 </dl>
-<p id="rfc.section.4.4.2.p.4">The server populates the Destination Connection ID with the connection ID that the client included in the Source Connection ID of the Initial packet.  This might be a zero-length value.</p>
-<p id="rfc.section.4.4.2.p.5">The server includes a connection ID of its choice in the Source Connection ID field.  The client MUST use this connection ID in the Destination Connection ID of subsequent packets that it sends.</p>
-<p id="rfc.section.4.4.2.p.6">The Packet Number field of a Retry packet MUST be set to 0.  This value is subsequently protected as normal. [[Editor&#8217;s Note: This isn&#8217;t ideal, because it creates a &#8220;cheat&#8221; where the client assumes a value.  That&#8217;s a problem, so I&#8217;m tempted to suggest that this include any value less than 2^30 so that normal processing works - and can be properly exercised.]]</p>
-<p id="rfc.section.4.4.2.p.7">A Retry packet is never explicitly acknowledged in an ACK frame by a client.</p>
-<p id="rfc.section.4.4.2.p.8">A server MUST only send a Retry in response to a client Initial packet.</p>
-<p id="rfc.section.4.4.2.p.9">If the Original Destination Connection ID field does not match the Destination Connection ID from most recent the Initial packet it sent, clients MUST discard the packet. This prevents an off-path attacker from injecting a Retry packet with a bogus new Source Connection ID.</p>
-<p id="rfc.section.4.4.2.p.10">Otherwise, the client SHOULD respond with a new Initial packet with the Token field set to the token received in the Retry packet.</p>
-<h3 id="rfc.section.4.4.3">
-<a href="#rfc.section.4.4.3">4.4.3.</a> <a href="#packet-handshake" id="packet-handshake">Handshake Packet</a>
-</h3>
-<p id="rfc.section.4.4.3.p.1">A Handshake packet uses long headers with a type value of 0x7D.  It is used to carry acknowledgments and cryptographic handshake messages from the server and client.</p>
-<p id="rfc.section.4.4.3.p.2">A server sends its cryptographic handshake in one or more Handshake packets in response to an Initial packet if it does not send a Retry packet.  Once a client has received a Handshake packet from a server, it uses Handshake packets to send subsequent cryptographic handshake messages and acknowledgments to the server.</p>
-<p id="rfc.section.4.4.3.p.3">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id-encoding" class="xref">Section 4.7</a>).</p>
-<p id="rfc.section.4.4.3.p.4">The first Handshake packet sent by a server contains a packet number of 0.  Handshake packets are their own packet number space.  Packet numbers are incremented normally for other Handshake packets.</p>
-<p id="rfc.section.4.4.3.p.5">Servers MUST NOT send more than three datagrams including Initial and Handshake packets without receiving a packet from a verified source address.  Source addresses can be verified through an address validation token (delivered via a Retry packet or a NEW_TOKEN frame) or by receiving any message from the client encrypted using the Handshake keys.</p>
-<p id="rfc.section.4.4.3.p.6">The payload of this packet contains CRYPTO frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
+<p id="rfc.section.4.4.p.4">The server populates the Destination Connection ID with the connection ID that the client included in the Source Connection ID of the Initial packet.</p>
+<p id="rfc.section.4.4.p.5">The server includes a connection ID of its choice in the Source Connection ID field.  The client MUST use this connection ID in the Destination Connection ID of subsequent packets that it sends.</p>
+<p id="rfc.section.4.4.p.6">A Retry packet does not include a packet number and cannot be explicitly acknowledged by a client.</p>
+<p id="rfc.section.4.4.p.7">A server MUST NOT send a Retry in response to packets other than Initial or 0-RTT packets.  A server MAY choose to only send Retry in response to Initial packets and discard or buffer 0-RTT packets corresponding to unvalidated client addresses.</p>
+<p id="rfc.section.4.4.p.8">If the Original Destination Connection ID field does not match the Destination Connection ID from the most recent Initial packet it sent, clients MUST discard the packet.  This prevents an off-path attacker from injecting a Retry packet.</p>
+<p id="rfc.section.4.4.p.9">The client responds to a Retry packet with an Initial packet that includes the provided Retry Token to continue connection establishment.</p>
+<p id="rfc.section.4.4.p.10">A client MAY attempt 0-RTT after receiving a Retry packet by sending 0-RTT packets to the connection ID provided by the server.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 after a Retry packet, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
+<p id="rfc.section.4.4.p.11">A server that might send another Retry packet in response to a subsequent Initial packet MUST set the Source Connection ID to a new value of at least 8 octets in length.  This allows clients to distinguish between Retry packets when the server sends multiple rounds of Retry packets.  Consequently, a valid Retry packet will always have an Original Destination Connection ID that is at least 8 octets long; clients MUST discard Retry packets that include a shorter value.  A server that will not send additional Retry packets can set the Source Connection ID to any value.</p>
 <h2 id="rfc.section.4.5">
-<a href="#rfc.section.4.5">4.5.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
+<a href="#rfc.section.4.5">4.5.</a> <a href="#handshake-packets" id="handshake-packets">Cryptographic Handshake Packets</a>
 </h2>
-<p id="rfc.section.4.5.p.1">All QUIC packets use packet protection.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.  0-RTT and 1-RTT protected packets share a single packet number space.</p>
-<p id="rfc.section.4.5.p.2">Packets protected with handshake keys only use packet protection to ensure that the sender of the packet is on the network path.  This packet protection is not effective confidentiality protection; any entity that receives the Initial packet from a client can recover the keys necessary to remove packet protection or to generate packets that will be successfully authenticated.</p>
-<p id="rfc.section.4.5.p.3">Packets protected with 0-RTT and 1-RTT keys are expected to have confidentiality and data origin authentication; the cryptographic handshake ensures that only the communicating endpoints receive the corresponding keys.</p>
-<p id="rfc.section.4.5.p.4">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>).</p>
-<p id="rfc.section.4.5.p.5">The client can send 0-RTT packets after receiving an Initial <a href="#packet-initial" class="xref">Section 4.4.1</a> or Handshake (<a href="#packet-handshake" class="xref">Section 4.4.3</a>) packet, if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id-encoding" class="xref">Section 4.7</a>.</p>
-<p id="rfc.section.4.5.p.6">The version field for protected packets is the current QUIC version.</p>
-<p id="rfc.section.4.5.p.7">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.8</a> for details.</p>
-<p id="rfc.section.4.5.p.8">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
+<p id="rfc.section.4.5.p.1">Once version negotiation is complete, the cryptographic handshake is used to agree on cryptographic keys.  The cryptographic handshake is carried in Initial (<a href="#packet-initial" class="xref">Section 4.6</a>) and Handshake (<a href="#packet-handshake" class="xref">Section 4.7</a>) packets.</p>
+<p id="rfc.section.4.5.p.2">All these packets use the long header and contain the current QUIC version in the version field.</p>
+<p id="rfc.section.4.5.p.3">In order to prevent tampering by version-unaware middleboxes, Initial packets are protected with connection- and version-specific keys (Initial keys) as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  This protection does not provide confidentiality or integrity against on-path attackers, but provides some level of protection against off-path attackers.</p>
 <h2 id="rfc.section.4.6">
-<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-coalesce" id="packet-coalesce">Coalescing Packets</a>
+<a href="#rfc.section.4.6">4.6.</a> <a href="#packet-initial" id="packet-initial">Initial Packet</a>
 </h2>
-<p id="rfc.section.4.6.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards. It is not necessary for senders to coalesce packets, though failing to do so will require sending a significantly larger number of datagrams during the handshake. Receivers MUST be able to process coalesced packets.</p>
-<p id="rfc.section.4.6.p.2">Senders SHOULD coalesce packets in order of increasing encryption levels (Initial, Handshake, 0-RTT, 1-RTT), as this makes it more likely the receiver will be able to process all the packets in a single pass.  A packet with a short header does not include a length, so it will always be the last packet included in a UDP datagram.</p>
-<p id="rfc.section.4.6.p.3">Senders MUST NOT coalesce QUIC packets with different Destination Connection IDs into a single UDP datagram. Receivers SHOULD ignore any subsequent packets with a different Destination Connection ID than the first packet in the datagram.</p>
-<p id="rfc.section.4.6.p.4">Every QUIC packet that is coalesced into a single UDP datagram is separate and complete.  Though the values of some fields in the packet header might be redundant, no fields are omitted.  The receiver of coalesced QUIC packets MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.  If one or more packets in a datagram cannot be processed yet (because the keys are not yet available) or processing fails (decryption failure, unknown type, etc.), the receiver MUST still attempt to process the remaining packets.  The skipped packets MAY either be discarded or buffered for later processing, just as if the packets were received out-of-order in separate datagrams.</p>
+<p id="rfc.section.4.6.p.1">The Initial packet uses long headers with a type value of 0x7F.  It carries the first CRYPTO frames sent by the client and server to perform key exchange, and carries ACKs in either direction. The Initial packet is protected by Initial keys as described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</p>
+<p id="rfc.section.4.6.p.2">The Initial packet (shown in <a href="#initial-format" class="xref">Figure 5</a>) has two additional header fields that are added to the Long Header before the Length field.</p>
+<div id="rfc.figure.5"></div>
+<div id="initial-format"></div>
+<pre>
++-+-+-+-+-+-+-+-+
+|1|    0x7f     |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Version (32)                          |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|DCIL(4)|SCIL(4)|
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|               Destination Connection ID (0/32..144)         ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                 Source Connection ID (0/32..144)            ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                         Token Length (i)                    ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                            Token (*)                        ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                           Length (i)                        ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                     Packet Number (8/16/32)                   |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|                          Payload (*)                        ...
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</pre>
+<p class="figure">Figure 5: Initial Packet</p>
+<p id="rfc.section.4.6.p.3">These fields include the token that was previously provided in a Retry packet or NEW_TOKEN frame:</p>
+<p></p>
+
+<dl>
+<dt>Token Length:</dt>
+<dd style="margin-left: 8">A variable-length integer specifying the length of the Token field, in bytes.  This value is zero if no token is present.  Initial packets sent by the server MUST set the Token Length field to zero; clients that receive an Initial packet with a non-zero Token Length field MUST either discard the packet or generate a connection error of type PROTOCOL_VIOLATION.</dd>
+<dt>Token:</dt>
+<dd style="margin-left: 8">The value of the token.</dd>
+</dl>
+<p id="rfc.section.4.6.p.5">The client and server use the Initial packet type for any packet that contains an initial cryptographic handshake message. This includes all cases where a new packet containing the initial cryptographic message needs to be created, such as the packets sent after receiving a Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) or Retry packet (<a href="#packet-retry" class="xref">Section 4.4</a>).</p>
+<p id="rfc.section.4.6.p.6">A server sends its first Initial packet in response to a client Initial.  A server may send multiple Initial packets.  The cryptographic key exchange could require multiple round trips or retransmissions of this data.</p>
+<p id="rfc.section.4.6.p.7">The payload of an Initial packet includes a CRYPTO frame (or frames) containing a cryptographic handshake message, ACK frames, or both.  PADDING frames are also permitted.  The first CRYPTO frame sent always begins at an offset of 0 (see <a href="#handshake" class="xref">Section 6.4</a>).</p>
+<p id="rfc.section.4.6.p.8">The first packet sent by a client always includes a CRYPTO frame that contains the entirety of the first cryptographic handshake message.  This packet, and the cryptographic handshake message, MUST fit in a single UDP datagram (see <a href="#handshake" class="xref">Section 6.4</a>).</p>
+<p id="rfc.section.4.6.p.9">Note that if the server sends a HelloRetryRequest, the client will send a second Initial packet.  This Initial packet will continue the cryptographic handshake and will contain a CRYPTO frame with an offset matching the size of the CRYPTO frame sent in the first Initial packet.  Cryptographic handshake messages subsequent to the first do not need to fit within a single UDP datagram.</p>
+<h3 id="rfc.section.4.6.1">
+<a href="#rfc.section.4.6.1">4.6.1.</a> <a href="#connection-ids" id="connection-ids">Connection IDs</a>
+</h3>
+<p id="rfc.section.4.6.1.p.1">When an Initial packet is sent by a client which has not previously received a Retry packet from the server, it populates the Destination Connection ID field with an unpredictable value.  This MUST be at least 8 octets in length. Until a packet is received from the server, the client MUST use the same value unless it abandons the connection attempt and starts a new one. The initial Destination Connection ID is used to determine packet protection keys for Initial packets.</p>
+<p id="rfc.section.4.6.1.p.2">The client populates the Source Connection ID field with a value of its choosing and sets the SCIL field to match.</p>
+<p id="rfc.section.4.6.1.p.3">The Destination Connection ID field in the server&#8217;s Initial packet contains a connection ID that is chosen by the recipient of the packet (i.e., the client); the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id" class="xref">Section 6.1</a>). The server MUST use consistent Source Connection IDs during the handshake.</p>
+<p id="rfc.section.4.6.1.p.4">On first receiving an Initial or Retry packet from the server, the client uses the Source Connection ID supplied by the server as the Destination Connection ID for subsequent packets.  Once a client has received an Initial packet from the server, it MUST discard any packet it receives with a different Source Connection ID.</p>
+<h3 id="rfc.section.4.6.2">
+<a href="#rfc.section.4.6.2">4.6.2.</a> <a href="#tokens" id="tokens">Tokens</a>
+</h3>
+<p id="rfc.section.4.6.2.p.1">If the client has a token received in a NEW_TOKEN frame on a previous connection to what it believes to be the same server, it can include that value in the Token field of its Initial packet.</p>
+<p id="rfc.section.4.6.2.p.2">A token allows a server to correlate activity between connections.  Specifically, the connection where the token was issued, and any connection where it is used.  Clients that want to break continuity of identity with a server MAY discard tokens provided using the NEW_TOKEN frame.  Tokens obtained in Retry packets MUST NOT be discarded.</p>
+<p id="rfc.section.4.6.2.p.3">A client SHOULD NOT reuse a token.  Reusing a token allows connections to be linked by entities on the network path (see <a href="#migration-linkability" class="xref">Section 6.11.5</a>).  A client MUST NOT reuse a token if it believes that its point of network attachment has changed since the token was last used; that is, if there is a change in its local IP address or network interface.  A client needs to start the connection process over if it migrates prior to completing the handshake.</p>
+<p id="rfc.section.4.6.2.p.4">If the client received a Retry packet from the server and sends an Initial packet in response, then it sets the Destination Connection ID to the value from the Source Connection ID in the Retry packet. Changing Destination Connection ID also results in a change to the keys used to protect the Initial packet. It also sets the Token field to the token provided in the Retry. The client MUST NOT change the Source Connection ID because the server could include the connection ID as part of its token validation logic.</p>
+<p id="rfc.section.4.6.2.p.5">When a server receives an Initial packet with an address validation token, it SHOULD attempt to validate it.  If the token is invalid then the server SHOULD proceed as if the client did not have a validated address, including potentially sending a Retry. If the validation succeeds, the server SHOULD then allow the handshake to proceed (see <a href="#stateless-retry" class="xref">Section 6.7</a>).</p>
+<p></p>
+
+<dl>
+<dt>Note:</dt>
+<dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.  A server MAY encode tokens provided with NEW_TOKEN frames and Retry packets differently, and validate the latter more strictly.</dd>
+</dl>
+<h3 id="rfc.section.4.6.3">
+<a href="#rfc.section.4.6.3">4.6.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
+</h3>
+<p id="rfc.section.4.6.3.p.1">The first Initial packet sent by either endpoint contains a packet number of 0. The packet number MUST increase monotonically thereafter.  Initial packets are in a different packet number space to other packets (see <a href="#packet-numbers" class="xref">Section 4.11</a>).</p>
+<h3 id="rfc.section.4.6.4">
+<a href="#rfc.section.4.6.4">4.6.4.</a> <a href="#retry-0rtt-pn" id="retry-0rtt-pn">0-RTT Packet Numbers</a>
+</h3>
+<p id="rfc.section.4.6.4.p.1">Packet numbers for 0-RTT protected packets use the same space as 1-RTT protected packets.</p>
+<p id="rfc.section.4.6.4.p.2">After a client receives a Retry or Version Negotiation packet, 0-RTT packets are likely to have been lost or discarded by the server.  A client MAY attempt to resend data in 0-RTT packets after it sends a new Initial packet.</p>
+<p id="rfc.section.4.6.4.p.3">A client MUST NOT reset the packet number it uses for 0-RTT packets.  The keys used to protect 0-RTT packets will not change as a result of responding to a Retry or Version Negotiation packet unless the client also regenerates the cryptographic handshake message.  Sending packets with the same packet number in that case is likely to compromise the packet protection for all 0-RTT packets because the same key and nonce could be used to protect different content.</p>
+<p id="rfc.section.4.6.4.p.4">Receiving a Retry or Version Negotiation packet, especially a Retry that changes the connection ID used for subsequent packets, indicates a strong possibility that 0-RTT packets could be lost.  A client only receives acknowledgments for its 0-RTT packets once the handshake is complete.  Consequently, a server might expect 0-RTT packets to start with a packet number of 0.  Therefore, in determining the length of the packet number encoding for 0-RTT packets, a client MUST assume that all packets up to the current packet number are in flight, starting from a packet number of 0.  Thus, 0-RTT packets could need to use a longer packet number encoding.</p>
+<p id="rfc.section.4.6.4.p.5">A client MAY instead generate a fresh cryptographic handshake message and start packet numbers from 0.  This ensures that new 0-RTT packets will not use the same keys, avoiding any risk of key and nonce reuse; this also prevents 0-RTT packets from previous handshake attempts from being accepted as part of the connection.</p>
+<h3 id="rfc.section.4.6.5">
+<a href="#rfc.section.4.6.5">4.6.5.</a> <a href="#minimum-packet-size" id="minimum-packet-size">Minimum Packet Size</a>
+</h3>
+<p id="rfc.section.4.6.5.p.1">The payload of a UDP datagram carrying the Initial packet MUST be expanded to at least 1200 octets (see <a href="#packetization" class="xref">Section 8</a>), by adding PADDING frames to the Initial packet and/or by combining the Initial packet with a 0-RTT packet (see <a href="#packet-coalesce" class="xref">Section 4.9</a>).</p>
 <h2 id="rfc.section.4.7">
-<a href="#rfc.section.4.7">4.7.</a> <a href="#connection-id-encoding" id="connection-id-encoding">Connection ID Encoding</a>
+<a href="#rfc.section.4.7">4.7.</a> <a href="#packet-handshake" id="packet-handshake">Handshake Packet</a>
 </h2>
-<p id="rfc.section.4.7.p.1">A connection ID is used to ensure consistent routing of packets, as described in <a href="#connection-id" class="xref">Section 6.1</a>.  The long header contains two connection IDs: the Destination Connection ID is chosen by the recipient of the packet and is used to provide consistent routing; the Source Connection ID is used to set the Destination Connection ID used by the peer.</p>
-<p id="rfc.section.4.7.p.2">During the handshake, packets with the long header are used to establish the connection ID that each endpoint uses.  Each endpoint uses the Source Connection ID field to specify the connection ID that is used in the Destination Connection ID field of packets being sent to them.  Upon receiving a packet, each endpoint sets the Destination Connection ID it sends to match the value of the Source Connection ID that they receive.</p>
-<p id="rfc.section.4.7.p.3">During the handshake, an endpoint might receive multiple packets with the long header, and thus be given multiple opportunities to update the Destination Connection ID it sends.  A client MUST only change the value it sends in the Destination Connection ID in response to the first packet of each type it receives from the server (Retry or Initial); a server MUST set its value based on the Initial packet.  Any additional changes are not permitted; if subsequent packets of those types include a different Source Connection ID, they MUST be discarded.  This avoids problems that might arise from stateless processing of multiple Initial packets producing different connection IDs.</p>
-<p id="rfc.section.4.7.p.4">Short headers only include the Destination Connection ID and omit the explicit length.  The length of the Destination Connection ID field is expected to be known to endpoints.</p>
-<p id="rfc.section.4.7.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
-<p id="rfc.section.4.7.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.5</a>).  This randomized value is used to determine the handshake packet protection keys (see Section 5.3.2 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
-<p id="rfc.section.4.7.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
-<p id="rfc.section.4.7.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.11</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
+<p id="rfc.section.4.7.p.1">A Handshake packet uses long headers with a type value of 0x7D.  It is used to carry acknowledgments and cryptographic handshake messages from the server and client.</p>
+<p id="rfc.section.4.7.p.2">A server sends its cryptographic handshake in one or more Handshake packets in response to an Initial packet if it does not send a Retry packet.  Once a client has received a Handshake packet from a server, it uses Handshake packets to send subsequent cryptographic handshake messages and acknowledgments to the server.</p>
+<p id="rfc.section.4.7.p.3">The Destination Connection ID field in a Handshake packet contains a connection ID that is chosen by the recipient of the packet; the Source Connection ID includes the connection ID that the sender of the packet wishes to use (see <a href="#connection-id-encoding" class="xref">Section 4.10</a>).</p>
+<p id="rfc.section.4.7.p.4">The first Handshake packet sent by a server contains a packet number of 0.  Handshake packets are their own packet number space.  Packet numbers are incremented normally for other Handshake packets.</p>
+<p id="rfc.section.4.7.p.5">Servers MUST NOT send more than three datagrams including Initial and Handshake packets without receiving a packet from a verified source address.  Source addresses can be verified through an address validation token (delivered via a Retry packet or a NEW_TOKEN frame) or by receiving any message from the client encrypted using the Handshake keys.</p>
+<p id="rfc.section.4.7.p.6">The payload of this packet contains CRYPTO frames and could contain PADDING, or ACK frames. Handshake packets MAY contain CONNECTION_CLOSE frames if the handshake is unsuccessful.</p>
 <h2 id="rfc.section.4.8">
-<a href="#rfc.section.4.8">4.8.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
+<a href="#rfc.section.4.8">4.8.</a> <a href="#packet-protected" id="packet-protected">Protected Packets</a>
 </h2>
-<p id="rfc.section.4.8.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.</p>
-<p id="rfc.section.4.8.p.2">Packet numbers are divided into 3 spaces in QUIC:</p>
+<p id="rfc.section.4.8.p.1">All QUIC packets use packet protection.  Packets that are protected with the static handshake keys or the 0-RTT keys are sent with long headers; all packets protected with 1-RTT keys are sent with short headers.  The different packet types explicitly indicate the encryption level and therefore the keys that are used to remove packet protection.  0-RTT and 1-RTT protected packets share a single packet number space.</p>
+<p id="rfc.section.4.8.p.2">Packets protected with handshake keys only use packet protection to ensure that the sender of the packet is on the network path.  This packet protection is not effective confidentiality protection; any entity that receives the Initial packet from a client can recover the keys necessary to remove packet protection or to generate packets that will be successfully authenticated.</p>
+<p id="rfc.section.4.8.p.3">Packets protected with 0-RTT and 1-RTT keys are expected to have confidentiality and data origin authentication; the cryptographic handshake ensures that only the communicating endpoints receive the corresponding keys.</p>
+<p id="rfc.section.4.8.p.4">Packets protected with 0-RTT keys use a type value of 0x7C.  The connection ID fields for a 0-RTT packet MUST match the values used in the Initial packet (<a href="#packet-initial" class="xref">Section 4.6</a>).</p>
+<p id="rfc.section.4.8.p.5">The client can send 0-RTT packets after receiving an Initial <a href="#packet-initial" class="xref">Section 4.6</a> or Handshake (<a href="#packet-handshake" class="xref">Section 4.7</a>) packet, if that packet does not complete the handshake.  Even if the client receives a different connection ID in the Handshake packet, it MUST continue to use the same Destination Connection ID for 0-RTT packets, see <a href="#connection-id-encoding" class="xref">Section 4.10</a>.</p>
+<p id="rfc.section.4.8.p.6">The version field for protected packets is the current QUIC version.</p>
+<p id="rfc.section.4.8.p.7">The packet number field contains a packet number, which has additional confidentiality protection that is applied after packet protection is applied (see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> for details).  The underlying packet number increases with each packet sent, see <a href="#packet-numbers" class="xref">Section 4.11</a> for details.</p>
+<p id="rfc.section.4.8.p.8">The payload is protected using authenticated encryption.  <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> describes packet protection in detail.  After decryption, the plaintext consists of a sequence of frames, as described in <a href="#frames" class="xref">Section 5</a>.</p>
+<h2 id="rfc.section.4.9">
+<a href="#rfc.section.4.9">4.9.</a> <a href="#packet-coalesce" id="packet-coalesce">Coalescing Packets</a>
+</h2>
+<p id="rfc.section.4.9.p.1">A sender can coalesce multiple QUIC packets (typically a Cryptographic Handshake packet and a Protected packet) into one UDP datagram.  This can reduce the number of UDP datagrams needed to send application data during the handshake and immediately afterwards. It is not necessary for senders to coalesce packets, though failing to do so will require sending a significantly larger number of datagrams during the handshake. Receivers MUST be able to process coalesced packets.</p>
+<p id="rfc.section.4.9.p.2">Senders SHOULD coalesce packets in order of increasing encryption levels (Initial, Handshake, 0-RTT, 1-RTT), as this makes it more likely the receiver will be able to process all the packets in a single pass.  A packet with a short header does not include a length, so it will always be the last packet included in a UDP datagram.</p>
+<p id="rfc.section.4.9.p.3">Senders MUST NOT coalesce QUIC packets with different Destination Connection IDs into a single UDP datagram. Receivers SHOULD ignore any subsequent packets with a different Destination Connection ID than the first packet in the datagram.</p>
+<p id="rfc.section.4.9.p.4">Every QUIC packet that is coalesced into a single UDP datagram is separate and complete.  Though the values of some fields in the packet header might be redundant, no fields are omitted.  The receiver of coalesced QUIC packets MUST individually process each QUIC packet and separately acknowledge them, as if they were received as the payload of different UDP datagrams.  If one or more packets in a datagram cannot be processed yet (because the keys are not yet available) or processing fails (decryption failure, unknown type, etc.), the receiver MUST still attempt to process the remaining packets.  The skipped packets MAY either be discarded or buffered for later processing, just as if the packets were received out-of-order in separate datagrams.</p>
+<p id="rfc.section.4.9.p.5">Retry (<a href="#packet-retry" class="xref">Section 4.4</a>) and Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packets cannot be coalesced.</p>
+<h2 id="rfc.section.4.10">
+<a href="#rfc.section.4.10">4.10.</a> <a href="#connection-id-encoding" id="connection-id-encoding">Connection ID Encoding</a>
+</h2>
+<p id="rfc.section.4.10.p.1">A connection ID is used to ensure consistent routing of packets, as described in <a href="#connection-id" class="xref">Section 6.1</a>.  The long header contains two connection IDs: the Destination Connection ID is chosen by the recipient of the packet and is used to provide consistent routing; the Source Connection ID is used to set the Destination Connection ID used by the peer.</p>
+<p id="rfc.section.4.10.p.2">During the handshake, packets with the long header are used to establish the connection ID that each endpoint uses.  Each endpoint uses the Source Connection ID field to specify the connection ID that is used in the Destination Connection ID field of packets being sent to them.  Upon receiving a packet, each endpoint sets the Destination Connection ID it sends to match the value of the Source Connection ID that they receive.</p>
+<p id="rfc.section.4.10.p.3">During the handshake, an endpoint might receive multiple packets with the long header, and thus be given multiple opportunities to update the Destination Connection ID it sends.  A client MUST only change the value it sends in the Destination Connection ID in response to the first packet of each type it receives from the server (Retry or Initial); a server MUST set its value based on the Initial packet.  Any additional changes are not permitted; if subsequent packets of those types include a different Source Connection ID, they MUST be discarded.  This avoids problems that might arise from stateless processing of multiple Initial packets producing different connection IDs.</p>
+<p id="rfc.section.4.10.p.4">Short headers only include the Destination Connection ID and omit the explicit length.  The length of the Destination Connection ID field is expected to be known to endpoints.</p>
+<p id="rfc.section.4.10.p.5">Endpoints using a connection-ID based load balancer could agree with the load balancer on a fixed or minimum length and on an encoding for connection IDs.  This fixed portion could encode an explicit length, which allows the entire connection ID to vary in length and still be used by the load balancer.</p>
+<p id="rfc.section.4.10.p.6">The very first packet sent by a client includes a random value for Destination Connection ID.  The same value MUST be used for all 0-RTT packets sent on that connection (<a href="#packet-protected" class="xref">Section 4.8</a>).  This randomized value is used to determine the packet protection keys for Initial packets (see Section 5.1.1 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>).</p>
+<p id="rfc.section.4.10.p.7">A Version Negotiation (<a href="#packet-version" class="xref">Section 4.3</a>) packet MUST use both connection IDs selected by the client, swapped to ensure correct routing toward the client.</p>
+<p id="rfc.section.4.10.p.8">The connection ID can change over the lifetime of a connection, especially in response to connection migration (<a href="#migration" class="xref">Section 6.11</a>). NEW_CONNECTION_ID frames (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>) are used to provide new connection ID values.</p>
+<h2 id="rfc.section.4.11">
+<a href="#rfc.section.4.11">4.11.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
+</h2>
+<p id="rfc.section.4.11.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.</p>
+<p id="rfc.section.4.11.p.2">Packet numbers are divided into 3 spaces in QUIC:</p>
 <p></p>
 
 <ul>
-<li>Initial space: All Initial packets <a href="#packet-initial" class="xref">Section 4.4.1</a> are in this space.</li>
-<li>Handshake space: All Handshake packets <a href="#packet-handshake" class="xref">Section 4.4.3</a> are in this space.</li>
-<li>Application data space: All 0-RTT and 1-RTT encrypted packets <a href="#packet-protected" class="xref">Section 4.5</a> are in this space.</li>
+<li>Initial space: All Initial packets <a href="#packet-initial" class="xref">Section 4.6</a> are in this space.</li>
+<li>Handshake space: All Handshake packets <a href="#packet-handshake" class="xref">Section 4.7</a> are in this space.</li>
+<li>Application data space: All 0-RTT and 1-RTT encrypted packets <a href="#packet-protected" class="xref">Section 4.8</a> are in this space.</li>
 </ul>
-<p id="rfc.section.4.8.p.4">As described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, each packet type uses different encryption keys.</p>
-<p id="rfc.section.4.8.p.5">Conceptually, a packet number space is the encryption context in which a packet can be processed and ACKed.  Initial packets can only be sent with Initial encryption keys and ACKed in packets which are also Initial packets.  Similarly, Handshake packets can only be sent and acknowledged in Handshake packets.</p>
-<p id="rfc.section.4.8.p.6">This enforces cryptographic separation between the data sent in the different packet sequence number spaces.  Each packet number space starts at packet number 0.  Subsequent packets sent in the same packet number space MUST increase the packet number by at least one.</p>
-<p id="rfc.section.4.8.p.7">0-RTT and 1-RTT data exist in the same packet number space to make loss recovery algorithms easier to implement between the two packet types.</p>
-<p id="rfc.section.4.8.p.8">A QUIC endpoint MUST NOT reuse a packet number within the same packet number space in one connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; an endpoint MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) in response to further packets that it receives.</p>
-<p id="rfc.section.4.8.p.9">In the QUIC long and short packet headers, the number of bits required to represent the packet number is reduced by including only a variable number of the least significant bits of the packet number.  One or two of the most significant bits of the first octet determine how many bits of the packet number are provided, as shown in <a href="#pn-encodings" class="xref">Table 2</a>.</p>
+<p id="rfc.section.4.11.p.4">As described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, each packet type uses different encryption keys.</p>
+<p id="rfc.section.4.11.p.5">Conceptually, a packet number space is the encryption context in which a packet can be processed and ACKed.  Initial packets can only be sent with Initial encryption keys and ACKed in packets which are also Initial packets.  Similarly, Handshake packets can only be sent and acknowledged in Handshake packets.</p>
+<p id="rfc.section.4.11.p.6">This enforces cryptographic separation between the data sent in the different packet sequence number spaces.  Each packet number space starts at packet number 0.  Subsequent packets sent in the same packet number space MUST increase the packet number by at least one.</p>
+<p id="rfc.section.4.11.p.7">0-RTT and 1-RTT data exist in the same packet number space to make loss recovery algorithms easier to implement between the two packet types.</p>
+<p id="rfc.section.4.11.p.8">A QUIC endpoint MUST NOT reuse a packet number within the same packet number space in one connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; an endpoint MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) in response to further packets that it receives.</p>
+<p id="rfc.section.4.11.p.9">In the QUIC long and short packet headers, the number of bits required to represent the packet number is reduced by including only a variable number of the least significant bits of the packet number.  One or two of the most significant bits of the first octet determine how many bits of the packet number are provided, as shown in <a href="#pn-encodings" class="xref">Table 2</a>.</p>
 <div id="rfc.table.2"></div>
 <div id="pn-encodings"></div>
 <table cellpadding="3" cellspacing="0" class="tt full center">
@@ -1236,18 +1302,19 @@ ul.toc li {
 </tr>
 </tbody>
 </table>
-<p id="rfc.section.4.8.p.10">Note that these encodings are similar to those in <a href="#integer-encoding" class="xref">Section 7.1</a>, but use different values.</p>
-<p id="rfc.section.4.8.p.11">The encoded packet number is protected as described in Section 5.6 <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. Protection of the packet number is removed prior to recovering the full packet number. The full packet number is reconstructed at the receiver based on the number of significant bits present, the content of those bits, and the largest packet number received on a successfully authenticated packet. Recovering the full packet number is necessary to successfully remove packet protection.</p>
-<p id="rfc.section.4.8.p.12">Once packet number protection is removed, the packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 14-bit value of 0x9b3 will be decoded as 0xaa8309b3.  Example pseudo-code for packet number decoding can be found in <a href="#sample-packet-number-decoding" class="xref">Appendix A</a>.</p>
-<p id="rfc.section.4.8.p.13">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
-<p id="rfc.section.4.8.p.14">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
-<p id="rfc.section.4.8.p.15">For example, if an endpoint has received an acknowledgment for packet 0x6afa2f, sending a packet with a number of 0x6b2d79 requires a packet number encoding with 14 bits or more; whereas the 30-bit packet number encoding is needed to send a packet with a number of 0x6bc107.</p>
-<p id="rfc.section.4.8.p.16">A Version Negotiation packet (<a href="#packet-version" class="xref">Section 4.3</a>) does not include a packet number.  The Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>) has special rules for populating the packet number field.</p>
+<p id="rfc.section.4.11.p.10">Note that these encodings are similar to those in <a href="#integer-encoding" class="xref">Section 7.1</a>, but use different values.</p>
+<p id="rfc.section.4.11.p.11">The encoded packet number is protected as described in Section 5.3 <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. Protection of the packet number is removed prior to recovering the full packet number. The full packet number is reconstructed at the receiver based on the number of significant bits present, the content of those bits, and the largest packet number received on a successfully authenticated packet. Recovering the full packet number is necessary to successfully remove packet protection.</p>
+<p id="rfc.section.4.11.p.12">Once packet number protection is removed, the packet number is decoded by finding the packet number value that is closest to the next expected packet.  The next expected packet is the highest received packet number plus one.  For example, if the highest successfully authenticated packet had a packet number of 0xaa82f30e, then a packet containing a 14-bit value of 0x9b3 will be decoded as 0xaa8309b3.  Example pseudo-code for packet number decoding can be found in <a href="#sample-packet-number-decoding" class="xref">Appendix A</a>.</p>
+<p id="rfc.section.4.11.p.13">The sender MUST use a packet number size able to represent more than twice as large a range than the difference between the largest acknowledged packet and packet number being sent.  A peer receiving the packet will then correctly decode the packet number, unless the packet is delayed in transit such that it arrives after many higher-numbered packets have been received.  An endpoint SHOULD use a large enough packet number encoding to allow the packet number to be recovered even if the packet arrives after packets that are sent afterwards.</p>
+<p id="rfc.section.4.11.p.14">As a result, the size of the packet number encoding is at least one more than the base 2 logarithm of the number of contiguous unacknowledged packet numbers, including the new packet.</p>
+<p id="rfc.section.4.11.p.15">For example, if an endpoint has received an acknowledgment for packet 0x6afa2f, sending a packet with a number of 0x6b2d79 requires a packet number encoding with 14 bits or more; whereas the 30-bit packet number encoding is needed to send a packet with a number of 0x6bc107.</p>
+<p id="rfc.section.4.11.p.16">A receiver MUST discard a newly unprotected packet unless it is certain that it has not processed another packet with the same packet number from the same packet number space. Duplicate suppression MUST happen after removing packet protection for the reasons described in Section 9.3 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>. An efficient algorithm for duplicate suppression can be found in Section 3.4.3 of <a href="#RFC2406" class="xref">[RFC2406]</a>.</p>
+<p id="rfc.section.4.11.p.17">A Version Negotiation packet (<a href="#packet-version" class="xref">Section 4.3</a>) does not include a packet number.  The Retry packet (<a href="#packet-retry" class="xref">Section 4.4</a>) has special rules for populating the packet number field.</p>
 <h1 id="rfc.section.5">
 <a href="#rfc.section.5">5.</a> <a href="#frames" id="frames">Frames and Frame Types</a>
 </h1>
-<p id="rfc.section.5.p.1">The payload of all packets, after removing packet protection, consists of a sequence of frames, as shown in <a href="#packet-frames" class="xref">Figure 4</a>.  Version Negotiation and Stateless Reset do not contain frames.</p>
-<div id="rfc.figure.4"></div>
+<p id="rfc.section.5.p.1">The payload of all packets, after removing packet protection, consists of a sequence of frames, as shown in <a href="#packet-frames" class="xref">Figure 6</a>.  Version Negotiation and Stateless Reset do not contain frames.</p>
+<div id="rfc.figure.6"></div>
 <div id="packet-frames"></div>
 <pre>
  0                   1                   2                   3
@@ -1262,10 +1329,10 @@ ul.toc li {
 |                          Frame N (*)                        ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 4: Contents of Protected Payload</p>
+<p class="figure">Figure 6: Contents of Protected Payload</p>
 <p id="rfc.section.5.p.2">Protected payloads MUST contain at least one frame, and MAY contain multiple frames and multiple frame types.</p>
 <p id="rfc.section.5.p.3">Frames MUST fit within a single QUIC packet and MUST NOT span a QUIC packet boundary. Each frame begins with a Frame Type, indicating its type, followed by additional type-dependent fields:</p>
-<div id="rfc.figure.5"></div>
+<div id="rfc.figure.7"></div>
 <div id="frame-layout"></div>
 <pre>
  0                   1                   2                   3
@@ -1276,7 +1343,7 @@ ul.toc li {
 |                   Type-Dependent Fields (*)                 ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 5: Generic Frame Layout</p>
+<p class="figure">Figure 7: Generic Frame Layout</p>
 <p id="rfc.section.5.p.4">The frame types defined in this specification are listed in <a href="#frame-types" class="xref">Table 3</a>.  The Frame Type in STREAM frames is used to carry other frame-specific flags.  For all other frames, the Frame Type field simply identifies the frame.  These frames are explained in more detail as they are referenced later in the document.</p>
 <div id="rfc.table.3"></div>
 <div id="frame-types"></div>
@@ -1405,14 +1472,14 @@ ul.toc li {
 <h2 id="rfc.section.6.1">
 <a href="#rfc.section.6.1">6.1.</a> <a href="#connection-id" id="connection-id">Connection ID</a>
 </h2>
-<p id="rfc.section.6.1.p.1">Each connection is identified by a collection of identifiers assigned to it. A connection ID can be 0 octets in length (and thus unlikely to be unique), or between 4 and 18 octets (inclusive).  Connection IDs are selected independently in each direction.</p>
+<p id="rfc.section.6.1.p.1">Each connection possesses a set of identifiers, any of which could be used to distinguish it from other connections.  A connection ID can be either 0 octets in length, or between 4 and 18 octets (inclusive).  Connection IDs are selected independently in each direction.</p>
 <p id="rfc.section.6.1.p.2">The primary function of a connection ID is to ensure that changes in addressing at lower protocol layers (UDP, IP, and below) don&#8217;t cause packets for a QUIC connection to be delivered to the wrong endpoint.  Each endpoint selects connection IDs using an implementation-specific (and perhaps deployment-specific) method which will allow packets with that connection ID to be routed back to the endpoint and identified by the endpoint upon receipt.</p>
 <p id="rfc.section.6.1.p.3">A zero-length connection ID MAY be used when the connection ID is not needed for routing and the address/port tuple of packets is sufficient to associate them to a connection. An endpoint whose peer has selected a zero-length connection ID MUST continue to use a zero-length connection ID for the lifetime of the connection and MUST NOT send packets from any other local address.</p>
 <p id="rfc.section.6.1.p.4">When an endpoint has requested a non-zero-length connection ID, it will issue a series of connection IDs over the lifetime of a connection. The series of connection IDs issued by an endpoint is ordered, with the final connection ID selected during the handshake coming first.  Additional connection IDs are provided using the NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>), each with a specified sequence number.  The series of connection IDs issued SHOULD be contiguous, but might not appear to be upon receipt due to reordering or loss.</p>
 <p id="rfc.section.6.1.p.5">Each connection ID MUST be used on only one local address. When packets are sent for the first time on a new local address, a new connection ID MUST be used with a higher sequence number than any connection ID previously used on any local address.  At any time, an endpoint MAY change to a new connection ID on a local address already in use.</p>
 <p id="rfc.section.6.1.p.6">An endpoint MUST NOT send packets with a connection ID which has a lower sequence number than the highest sequence number of any connection ID ever sent or received on that local address.  This ensures that when an endpoint migrates to a new path or changes connection ID on an existing path, the packets will use a new connection ID in both directions.</p>
 <p id="rfc.section.6.1.p.7">Implementations SHOULD ensure that peers have a connection ID with a matching sequence number available when changing to a new connection ID.  An implementation could do this by always supplying a corresponding connection ID to a peer for each connection ID received from that peer.</p>
-<p id="rfc.section.6.1.p.8">While endpoints select connection IDs as appropriate for their implementation, the connection ID MUST NOT include the unprotected sequence number.  Endpoints need to be able to recover the sequence number associated with each connection ID they generate without relying on information available to unaffiliate parties. A connection ID that encodes an unencrypted sequence number could be used to correlate connection IDs across network paths.</p>
+<p id="rfc.section.6.1.p.8">While endpoints select connection IDs as appropriate for their implementation, the connection ID MUST NOT include the unprotected sequence number.  Endpoints need to be able to recover the sequence number associated with each connection ID they generate without relying on information available to unaffiliated parties. A connection ID that encodes an unencrypted sequence number could be used to correlate connection IDs across network paths.</p>
 <h2 id="rfc.section.6.2">
 <a href="#rfc.section.6.2">6.2.</a> <a href="#packet-handling" id="packet-handling">Matching Packets to Connections</a>
 </h2>
@@ -1422,7 +1489,7 @@ ul.toc li {
 <h3 id="rfc.section.6.2.1">
 <a href="#rfc.section.6.2.1">6.2.1.</a> <a href="#client-pkt-handling" id="client-pkt-handling">Client Packet Handling</a>
 </h3>
-<p id="rfc.section.6.2.1.p.1">Valid packets sent to clients always include a Destination Connection ID that matches the value the client selects.  Clients that choose to receive zero-length connection IDs can use the address/port tuple to identify a connection.  Packets that don&#8217;t match an existing connection MAY be discarded.</p>
+<p id="rfc.section.6.2.1.p.1">Valid packets sent to clients always include a Destination Connection ID that matches the value the client selects.  Clients that choose to receive zero-length connection IDs can use the address/port tuple to identify a connection.  Packets that don&#8217;t match an existing connection are discarded.</p>
 <p id="rfc.section.6.2.1.p.2">Due to packet reordering or loss, clients might receive packets for a connection that are encrypted with a key it has not yet computed. Clients MAY drop these packets, or MAY buffer them in anticipation of later packets that allow it to compute the key.</p>
 <p id="rfc.section.6.2.1.p.3">If a client receives a packet that has an unsupported version, it MUST discard that packet.</p>
 <h3 id="rfc.section.6.2.2">
@@ -1454,7 +1521,8 @@ ul.toc li {
 <p id="rfc.section.6.3.2.p.3">The client MUST use the long header format and include its selected version on all packets until it has 1-RTT keys and it has received a packet from the server which is not a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.4">A client MUST NOT change the version it uses unless it is in response to a Version Negotiation packet from the server.  Once a client receives a packet from the server which is not a Version Negotiation packet, it MUST discard other Version Negotiation packets on the same connection.  Similarly, a client MUST ignore a Version Negotiation packet if it has already received and acted on a Version Negotiation packet.</p>
 <p id="rfc.section.6.3.2.p.5">A client MUST ignore a Version Negotiation packet that lists the client&#8217;s chosen version.</p>
-<p id="rfc.section.6.3.2.p.6">Version negotiation packets have no cryptographic protection. The result of the negotiation MUST be revalidated as part of the cryptographic handshake (see <a href="#version-validation" class="xref">Section 6.6.4</a>).</p>
+<p id="rfc.section.6.3.2.p.6">A client MAY attempt 0-RTT after receiving a Version Negotiation packet.  A client that sends additional 0-RTT packets MUST NOT reset the packet number to 0 as a result, see <a href="#retry-0rtt-pn" class="xref">Section 4.6.4</a>.</p>
+<p id="rfc.section.6.3.2.p.7">Version negotiation packets have no cryptographic protection. The result of the negotiation MUST be revalidated as part of the cryptographic handshake (see <a href="#version-validation" class="xref">Section 6.6.4</a>).</p>
 <h3 id="rfc.section.6.3.3">
 <a href="#rfc.section.6.3.3">6.3.3.</a> <a href="#using-reserved-versions" id="using-reserved-versions">Using Reserved Versions</a>
 </h3>
@@ -1489,9 +1557,9 @@ ul.toc li {
 <a href="#rfc.section.6.5">6.5.</a> <a href="#example-handshake-flows" id="example-handshake-flows">Example Handshake Flows</a>
 </h2>
 <p id="rfc.section.6.5.p.1">Details of how TLS is integrated with QUIC are provided in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, but some examples are provided here.</p>
-<p><a href="#tls-1rtt-handshake" class="xref">Figure 6</a> provides an overview of the 1-RTT handshake.  Each line shows a QUIC packet with the packet type and packet number shown first, followed by the contents. So, for instance the first packet is of type Initial, with packet number 0, and contains a CRYPTO frame carrying the ClientHello.</p>
-<p id="rfc.section.6.5.p.3">Note that multiple QUIC packets &#8211; even of different encryption levels &#8211; may be coalesced into a single UDP datagram (see <a href="#packet-coalesce" class="xref">Section 4.6</a>, and so this handshake may consist of as few as 4 UDP datagrams, or any number more. For instance, the server&#8217;s first flight contains packets from the Initial encryption level (obfuscation), the Handshake level, and &#8220;0.5-RTT data&#8221; from the server at the 1-RTT encryption level.</p>
-<div id="rfc.figure.6"></div>
+<p><a href="#tls-1rtt-handshake" class="xref">Figure 8</a> provides an overview of the 1-RTT handshake.  Each line shows a QUIC packet with the packet type and packet number shown first, followed by the contents. So, for instance the first packet is of type Initial, with packet number 0, and contains a CRYPTO frame carrying the ClientHello.</p>
+<p id="rfc.section.6.5.p.3">Note that multiple QUIC packets &#8211; even of different encryption levels &#8211; may be coalesced into a single UDP datagram (see <a href="#packet-coalesce" class="xref">Section 4.9</a>), and so this handshake may consist of as few as 4 UDP datagrams, or any number more. For instance, the server&#8217;s first flight contains packets from the Initial encryption level (obfuscation), the Handshake level, and &#8220;0.5-RTT data&#8221; from the server at the 1-RTT encryption level.</p>
+<div id="rfc.figure.8"></div>
 <div id="tls-1rtt-handshake"></div>
 <pre>
 Client                                                  Server
@@ -1509,9 +1577,9 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
                            1-RTT[1]: STREAM[55, "..."], ACK[0]
                                        &lt;- Handshake[1]: ACK[0]
 </pre>
-<p class="figure">Figure 6: Example 1-RTT Handshake</p>
-<p><a href="#tls-0rtt-handshake" class="xref">Figure 7</a> shows an example of a connection with a 0-RTT handshake and a single packet of 0-RTT data. Note that as described in <a href="#packet-numbers" class="xref">Section 4.8</a>, the server ACKs the 0-RTT data at the 1-RTT encryption level, and the client&#8217;s sequence numbers at the 1-RTT encryption level continue to increment from its 0-RTT packets.</p>
-<div id="rfc.figure.7"></div>
+<p class="figure">Figure 8: Example 1-RTT Handshake</p>
+<p><a href="#tls-0rtt-handshake" class="xref">Figure 9</a> shows an example of a connection with a 0-RTT handshake and a single packet of 0-RTT data. Note that as described in <a href="#packet-numbers" class="xref">Section 4.11</a>, the server ACKs the 0-RTT data at the 1-RTT encryption level, and the client&#8217;s sequence numbers at the 1-RTT encryption level continue to increment from its 0-RTT packets.</p>
+<div id="rfc.figure.9"></div>
 <div id="tls-0rtt-handshake"></div>
 <pre>
 Client                                                  Server
@@ -1531,13 +1599,13 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
                          1-RTT[1]: STREAM[55, "..."], ACK[1,2]
                                        &lt;- Handshake[1]: ACK[0]
 </pre>
-<p class="figure">Figure 7: Example 1-RTT Handshake</p>
+<p class="figure">Figure 9: Example 1-RTT Handshake</p>
 <h2 id="rfc.section.6.6">
 <a href="#rfc.section.6.6">6.6.</a> <a href="#transport-parameters" id="transport-parameters">Transport Parameters</a>
 </h2>
 <p id="rfc.section.6.6.p.1">During connection establishment, both endpoints make authenticated declarations of their transport parameters.  These declarations are made unilaterally by each endpoint.  Endpoints are required to comply with the restrictions implied by these parameters; the description of each parameter includes rules for its handling.</p>
-<p id="rfc.section.6.6.p.2">The format of the transport parameters is the TransportParameters struct from <a href="#figure-transport-parameters" class="xref">Figure 8</a>.  This is described using the presentation language from Section 3 of <a href="#I-D.ietf-tls-tls13" class="xref">[I-D.ietf-tls-tls13]</a>.</p>
-<div id="rfc.figure.8"></div>
+<p id="rfc.section.6.6.p.2">The format of the transport parameters is the TransportParameters struct from <a href="#figure-transport-parameters" class="xref">Figure 10</a>.  This is described using the presentation language from Section 3 of <a href="#TLS13" class="xref">[TLS13]</a>.</p>
+<div id="rfc.figure.10"></div>
 <div id="figure-transport-parameters"></div>
 <pre>
    uint32 QuicVersion;
@@ -1583,7 +1651,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
      opaque statelessResetToken[16];
    } PreferredAddress;
 </pre>
-<p class="figure">Figure 8: Definition of TransportParameters</p>
+<p class="figure">Figure 10: Definition of TransportParameters</p>
 <p id="rfc.section.6.6.p.3">The <samp>extension_data</samp> field of the quic_transport_parameters extension defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a> contains a TransportParameters value.  TLS encoding rules are therefore used to encode the transport parameters.</p>
 <p id="rfc.section.6.6.p.4">QUIC encodes transport parameters into a sequence of octets, which are then included in the cryptographic handshake.  Once the handshake completes, the transport parameters declared by the peer are available.  Each endpoint validates the value provided by its peer.  In particular, version negotiation MUST be validated (see <a href="#version-validation" class="xref">Section 6.6.4</a>) before the connection establishment is considered properly complete.</p>
 <p id="rfc.section.6.6.p.5">Definitions for each of the defined transport parameters are included in <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>.  Any given parameter MUST appear at most once in a given transport parameters extension.  An endpoint MUST treat receipt of duplicate transport parameters as a connection error of type TRANSPORT_PARAMETER_ERROR.</p>
@@ -1594,8 +1662,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p></p>
 
 <dl>
-<dt>initial_max_data (0x0001):</dt>
-<dd style="margin-left: 8">The initial maximum data parameter contains the initial value for the maximum amount of data that can be sent on the connection.  This parameter is encoded as an unsigned 32-bit integer in units of octets.  This is equivalent to sending a MAX_DATA (<a href="#frame-max-data" class="xref">Section 7.6</a>) for the connection immediately after completing the handshake.</dd>
 <dt>idle_timeout (0x0003):</dt>
 <dd style="margin-left: 8">The idle timeout is a value in seconds that is encoded as an unsigned 16-bit integer.  The maximum value is 600 seconds (10 minutes).</dd>
 </dl>
@@ -1603,12 +1669,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p></p>
 
 <dl>
+<dt>initial_max_data (0x0001):</dt>
+<dd style="margin-left: 8">The initial maximum data parameter contains the initial value for the maximum amount of data that can be sent on the connection.  This parameter is encoded as an unsigned 32-bit integer in units of octets.  This is equivalent to sending a MAX_DATA (<a href="#frame-max-data" class="xref">Section 7.6</a>) for the connection immediately after completing the handshake. If the transport parameter is absent, the connection starts with a flow control limit of 0.</dd>
 <dt>initial_max_bidi_streams (0x0002):</dt>
 <dd style="margin-left: 8">The initial maximum bidirectional streams parameter contains the initial maximum number of bidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, bidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 16 when received by a client or 17 when received by a server.</dd>
 <dt>initial_max_uni_streams (0x0008):</dt>
 <dd style="margin-left: 8">The initial maximum unidirectional streams parameter contains the initial maximum number of unidirectional streams the peer may initiate, encoded as an unsigned 16-bit integer.  If this parameter is absent or zero, unidirectional streams cannot be created until a MAX_STREAM_ID frame is sent.  Setting this parameter is equivalent to sending a MAX_STREAM_ID (<a href="#frame-max-stream-id" class="xref">Section 7.8</a>) immediately after completing the handshake containing the corresponding Stream ID. For example, a value of 0x05 would be equivalent to receiving a MAX_STREAM_ID containing 18 when received by a client or 19 when received by a server.</dd>
 <dt>max_packet_size (0x0005):</dt>
-<dd style="margin-left: 8">The maximum packet size parameter places a limit on the size of packets that the endpoint is willing to receive, encoded as an unsigned 16-bit integer.  This indicates that packets larger than this limit will be dropped.  The default for this parameter is the maximum permitted UDP payload of 65527.  Values below 1200 are invalid.  This limit only applies to protected packets (<a href="#packet-protected" class="xref">Section 4.5</a>).</dd>
+<dd style="margin-left: 8">The maximum packet size parameter places a limit on the size of packets that the endpoint is willing to receive, encoded as an unsigned 16-bit integer.  This indicates that packets larger than this limit will be dropped.  The default for this parameter is the maximum permitted UDP payload of 65527.  Values below 1200 are invalid.  This limit only applies to protected packets (<a href="#packet-protected" class="xref">Section 4.8</a>).</dd>
 <dt>ack_delay_exponent (0x0007):</dt>
 <dd style="margin-left: 8">An 8-bit unsigned integer value indicating an exponent used to decode the ACK Delay field in the ACK frame, see <a href="#frame-ack" class="xref">Section 7.15</a>.  If this value is absent, a default value of 3 is assumed (indicating a multiplier of 8).  The default value is also used for ACK frames that are sent in Initial and Handshake packets.  Values above 20 are invalid.</dd>
 <dt>disable_migration (0x0009):</dt>
@@ -1625,7 +1693,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>initial_max_stream_data_uni (0x000b):</dt>
 <dd style="margin-left: 8">The initial stream maximum data for unidirectional streams parameter contains the initial flow control limit for newly created unidirectional streams opened by the endpoint that receives the transport parameter.  In client transport parameters, this applies to streams with an identifier ending in 0x3; in server transport parameters, this applies to streams ending in 0x2.</dd>
 </dl>
-<p id="rfc.section.6.6.1.p.7">If present, transport parameters that set initial flow control limits are equivalent to sending a MAX_STREAM_DATA frame (<a href="#frame-max-stream-data" class="xref">Section 7.7</a>) on every stream of the corresponding type immediately after opening.  If the transport parameter is absent, streams of that type start with a flow control limit of 0.</p>
+<p id="rfc.section.6.6.1.p.7">If present, transport parameters that set initial stream flow control limits are equivalent to sending a MAX_STREAM_DATA frame (<a href="#frame-max-stream-data" class="xref">Section 7.7</a>) on every stream of the corresponding type immediately after opening.  If the transport parameter is absent, streams of that type start with a flow control limit of 0.</p>
 <p id="rfc.section.6.6.1.p.8">A server MAY include the following transport parameters:</p>
 <p></p>
 
@@ -1668,7 +1736,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.6.7">6.7.</a> <a href="#stateless-retry" id="stateless-retry">Stateless Retries</a>
 </h2>
 <p id="rfc.section.6.7.p.1">A server can process an initial cryptographic handshake messages from a client without committing any state. This allows a server to perform address validation (<a href="#address-validation" class="xref">Section 6.9</a>), or to defer connection establishment costs.</p>
-<p id="rfc.section.6.7.p.2">A server that generates a response to an Initial packet without retaining connection state MUST use the Retry packet (<a href="#packet-retry" class="xref">Section 4.4.2</a>).  This packet causes a client to restart the connection attempt and includes the token in the new Initial packet (<a href="#packet-initial" class="xref">Section 4.4.1</a>) to prove source address ownership.</p>
+<p id="rfc.section.6.7.p.2">A server that generates a response to an Initial packet without retaining connection state MUST use the Retry packet (<a href="#packet-retry" class="xref">Section 4.4</a>).  This packet causes a client to restart the connection attempt and includes the token in the new Initial packet (<a href="#packet-initial" class="xref">Section 4.6</a>) to prove source address ownership.</p>
 <h2 id="rfc.section.6.8">
 <a href="#rfc.section.6.8">6.8.</a> <a href="#using-ecn" id="using-ecn">Using Explicit Congestion Notification</a>
 </h2>
@@ -1698,7 +1766,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.6.9.p.1">Transport protocols commonly spend a round trip checking that a client owns the transport address (IP and port) that it claims.  Verifying that a client can receive packets sent to its claimed transport address protects against spoofing of this information by malicious clients.</p>
 <p id="rfc.section.6.9.p.2">This technique is used primarily to avoid QUIC from being used for traffic amplification attack.  In such an attack, a packet is sent to a server with spoofed source address information that identifies a victim.  If a server generates more or larger packets in response to that packet, the attacker can use the server to send more data toward the victim than it would be able to send on its own.</p>
-<p id="rfc.section.6.9.p.3">Several methods are used in QUIC to mitigate this attack.  Firstly, the initial handshake packet is padded to at least 1200 octets.  This allows a server to send a similar amount of data without risking causing an amplification attack toward an unproven remote address.</p>
+<p id="rfc.section.6.9.p.3">Several methods are used in QUIC to mitigate this attack.  Firstly, the initial handshake packet is sent in a UDP datagram that contains at least 1200 octets of UDP payload.  This allows a server to send a similar amount of data without risking causing an amplification attack toward an unproven remote address.</p>
 <p id="rfc.section.6.9.p.4">A server eventually confirms that a client has received its messages when the first Handshake-level message is received. This might be insufficient, either because the server wishes to avoid the computational cost of completing the handshake, or it might be that the size of the packets that are sent during the handshake is too large.  This is especially important for 0-RTT, where the server might wish to provide application data traffic - such as a response to a request - in response to the data carried in the early data from the client.</p>
 <p id="rfc.section.6.9.p.5">To send additional data prior to completing the cryptographic handshake, the server then needs to validate that the client owns the address that it claims.</p>
 <p id="rfc.section.6.9.p.6">Source address validation is therefore performed by the core transport protocol during the establishment of a connection.</p>
@@ -1807,7 +1875,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.6.11.4.p.2">On confirming a peer&#8217;s ownership of its new address, an endpoint SHOULD immediately reset the congestion controller and round-trip time estimator for the new path.</p>
 <p id="rfc.section.6.11.4.p.3">An endpoint MUST NOT return to the send rate used for the previous path unless it is reasonably sure that the previous send rate is valid for the new path.  For instance, a change in the client&#8217;s port number is likely indicative of a rebinding in a middlebox and not a complete change in path.  This determination likely depends on heuristics, which could be imperfect; if the new path capacity is significantly reduced, ultimately this relies on the congestion controller responding to congestion signals and reducing send rates appropriately.</p>
 <p id="rfc.section.6.11.4.p.4">There may be apparent reordering at the receiver when an endpoint sends data and probes from/to multiple addresses during the migration period, since the two resulting paths may have different round-trip times.  A receiver of packets on multiple paths will still send ACK frames covering all received packets.</p>
-<p id="rfc.section.6.11.4.p.5">While multiple paths might be used during connection migration, a single congestion control context and a single loss recovery context (as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>) may be adequate.  A sender can make exceptions for probe packets so that their loss detection is independent and does not unduly cause the congestion controller to reduce its sending rate.  An endpoint might arm a separate alarm when a PATH_CHALLENGE is sent, which is disarmed when the corresponding PATH_RESPONSE is received.  If the alarm fires before the PATH_RESPONSE is received, the endpoint might send a new PATH_CHALLENGE, and restart the alarm for a longer period of time.</p>
+<p id="rfc.section.6.11.4.p.5">While multiple paths might be used during connection migration, a single congestion control context and a single loss recovery context (as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>) may be adequate.  A sender can make exceptions for probe packets so that their loss detection is independent and does not unduly cause the congestion controller to reduce its sending rate.  An endpoint might set a separate timer when a PATH_CHALLENGE is sent, which is cancelled when the corresponding PATH_RESPONSE is received.  If the timer fires before the PATH_RESPONSE is received, the endpoint might send a new PATH_CHALLENGE, and restart the timer for a longer period of time.</p>
 <h3 id="rfc.section.6.11.5">
 <a href="#rfc.section.6.11.5">6.11.5.</a> <a href="#migration-linkability" id="migration-linkability">Privacy Implications of Connection Migration</a>
 </h3>
@@ -1866,8 +1934,9 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.6.13.2">
 <a href="#rfc.section.6.13.2">6.13.2.</a> <a href="#idle-timeout" id="idle-timeout">Idle Timeout</a>
 </h3>
-<p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
-<p id="rfc.section.6.13.2.p.2">The time at which an idle timeout takes effect won&#8217;t be perfectly synchronized on both endpoints.  An endpoint that sends packets near the end of an idle period could have those packets discarded if its peer enters the draining state before the packet is received.</p>
+<p id="rfc.section.6.13.2.p.1">A connection that remains idle for longer than the advertised idle timeout (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) is closed.  A connection enters the draining state when the idle timeout expires.</p>
+<p id="rfc.section.6.13.2.p.2">Each endpoint advertises their own idle timeout to their peer. The idle timeout starts from the last packet received.  In order to ensure that initiating new activity postpones an idle timeout, an endpoint restarts this timer when sending a packet.  An endpoint does not postpone the idle timeout if another packet has been sent containing frames other than ACK or PADDING, and that other packet has not been acknowledged or declared lost.  Packets that contain only ACK or PADDING frames are not acknowledged until an endpoint has other frames to send, so they could prevent the timeout from being refreshed.</p>
+<p id="rfc.section.6.13.2.p.3">The value for an idle timeout can be asymmetric.  The value advertised by an endpoint is only used to determine whether the connection is live at that endpoint.  An endpoint that sends packets near the end of the idle timeout period of a peer risks having those packets discarded if its peer enters the draining state before the packets arrive.  If a peer could timeout within an RTO (see Section 4.3.3 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>), it is advisable to test for liveness before sending any data that cannot be retried safely.</p>
 <h3 id="rfc.section.6.13.3">
 <a href="#rfc.section.6.13.3">6.13.3.</a> <a href="#immediate-close" id="immediate-close">Immediate Close</a>
 </h3>
@@ -1887,6 +1956,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.6.13.4.p.1">A stateless reset is provided as an option of last resort for an endpoint that does not have access to the state of a connection.  A crash or outage might result in peers continuing to send data to an endpoint that is unable to properly continue the connection.  An endpoint that wishes to communicate a fatal connection error MUST use a closing frame if it has sufficient state to do so.</p>
 <p id="rfc.section.6.13.4.p.2">To support this process, a token is sent by endpoints.  The token is carried in the NEW_CONNECTION_ID frame sent by either peer, and servers can specify the stateless_reset_token transport parameter during the handshake (clients cannot because their transport parameters don&#8217;t have confidentiality protection).  This value is protected by encryption, so only client and server know this value.</p>
 <p id="rfc.section.6.13.4.p.3">An endpoint that receives packets that it cannot process sends a packet in the following layout:</p>
+<div id="rfc.figure.11"></div>
+<div id="fig-stateless-reset"></div>
 <pre>
  0                   1                   2                   3
  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1904,34 +1975,43 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                                                               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
+<p class="figure">Figure 11: Stateless Reset Packet</p>
 <p id="rfc.section.6.13.4.p.4">This design ensures that a stateless reset packet is - to the extent possible - indistinguishable from a regular packet with a short header.</p>
 <p id="rfc.section.6.13.4.p.5">The message consists of a header octet, followed by an arbitrary number of random octets, followed by a Stateless Reset Token.</p>
 <p id="rfc.section.6.13.4.p.6">A stateless reset will be interpreted by a recipient as a packet with a short header.  For the packet to appear as valid, the Random Octets field needs to include at least 20 octets of random or unpredictable values.  This is intended to allow for a destination connection ID of the maximum length permitted, a packet number, and minimal payload.  The Stateless Reset Token corresponds to the minimum expansion of the packet protection AEAD.  More random octets might be necessary if the endpoint could have negotiated a packet protection scheme with a larger minimum AEAD expansion.</p>
 <p id="rfc.section.6.13.4.p.7">An endpoint SHOULD NOT send a stateless reset that is significantly larger than the packet it receives.  Endpoints MUST discard packets that are too small to be valid QUIC packets.  With the set of AEAD functions defined in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, packets less than 19 octets long are never valid.</p>
-<p id="rfc.section.6.13.4.p.8">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
-<p id="rfc.section.6.13.4.p.9">Using a randomized connection ID results in two problems:</p>
+<p id="rfc.section.6.13.4.p.8">An endpoint MAY send a stateless reset in response to a packet with a long header.  This would not be effective if the stateless reset token was not yet available to a peer.  In this QUIC version, packets with a long header are only used during connection establishment.   Because the stateless reset token is not available until connection establishment is complete or near completion, ignoring an unknown packet with a long header might be more effective.</p>
+<p id="rfc.section.6.13.4.p.9">An endpoint cannot determine the Source Connection ID from a packet with a short header, therefore it cannot set the Destination Connection ID in the stateless reset packet.  The destination connection ID will therefore differ from the value used in previous packets.  A random Destination Connection ID makes the connection ID appear to be the result of moving to a new connection ID that was provided using a NEW_CONNECTION_ID frame (<a href="#frame-new-connection-id" class="xref">Section 7.13</a>).</p>
+<p id="rfc.section.6.13.4.p.10">Using a randomized connection ID results in two problems:</p>
 <p></p>
 
 <ul>
-<li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This causes the stateless reset to be ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
+<li>The packet might not reach the peer.  If the Destination Connection ID is critical for routing toward the peer, then this packet could be incorrectly routed.  This might also trigger another Stateless Reset in response, see <a href="#reset-looping" class="xref">Section 6.13.4.3</a>.  A Stateless Reset that is not correctly routed is ineffective in causing errors to be quickly detected and recovered.  In this case, endpoints will need to rely on other methods - such as timers - to detect that the connection has failed.</li>
 <li>The randomly generated connection ID can be used by entities other than the peer to identify this as a potential stateless reset.  An endpoint that occasionally uses different connection IDs might introduce some uncertainty about this.</li>
 </ul>
-<p id="rfc.section.6.13.4.p.11">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
-<p id="rfc.section.6.13.4.p.12">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
-<p id="rfc.section.6.13.4.p.13">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
+<p id="rfc.section.6.13.4.p.12">Finally, the last 16 octets of the packet are set to the value of the Stateless Reset Token.</p>
+<p id="rfc.section.6.13.4.p.13">A stateless reset is not appropriate for signaling error conditions.  An endpoint that wishes to communicate a fatal connection error MUST use a CONNECTION_CLOSE or APPLICATION_CLOSE frame if it has sufficient state to do so.</p>
+<p id="rfc.section.6.13.4.p.14">This stateless reset design is specific to QUIC version 1.  An endpoint that supports multiple versions of QUIC needs to generate a stateless reset that will be accepted by peers that support any version that the endpoint might support (or might have supported prior to losing state).  Designers of new versions of QUIC need to be aware of this and either reuse this design, or use a portion of the packet other than the last 16 octets for carrying data.</p>
 <h4 id="rfc.section.6.13.4.1">
 <a href="#rfc.section.6.13.4.1">6.13.4.1.</a> <a href="#detecting-a-stateless-reset" id="detecting-a-stateless-reset">Detecting a Stateless Reset</a>
 </h4>
 <p id="rfc.section.6.13.4.1.p.1">An endpoint detects a potential stateless reset when a packet with a short header either cannot be decrypted or is marked as a duplicate packet.  The endpoint then compares the last 16 octets of the packet with the Stateless Reset Token provided by its peer, either in a NEW_CONNECTION_ID frame or the server&#8217;s transport parameters.  If these values are identical, the endpoint MUST enter the draining period and not send any further packets on this connection.  If the comparison fails, the packet can be discarded.</p>
 <h4 id="rfc.section.6.13.4.2">
-<a href="#rfc.section.6.13.4.2">6.13.4.2.</a> <a href="#calculating-a-stateless-reset-token" id="calculating-a-stateless-reset-token">Calculating a Stateless Reset Token</a>
+<a href="#rfc.section.6.13.4.2">6.13.4.2.</a> <a href="#reset-token" id="reset-token">Calculating a Stateless Reset Token</a>
 </h4>
 <p id="rfc.section.6.13.4.2.p.1">The stateless reset token MUST be difficult to guess.  In order to create a Stateless Reset Token, an endpoint could randomly generate <a href="#RFC4086" class="xref">[RFC4086]</a> a secret for every connection that it creates.  However, this presents a coordination problem when there are multiple instances in a cluster or a storage problem for a endpoint that might lose state.  Stateless reset specifically exists to handle the case where state is lost, so this approach is suboptimal.</p>
-<p id="rfc.section.6.13.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes three inputs: the static key, the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 6.1</a>), and an instance identifier.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, instance_id || connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with instance and connection identifiers as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
-<p id="rfc.section.6.13.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.  An instance that receives a packet for another instance might be able to recover the instance identifier using the connection ID.  Alternatively, the instance identifier might be omitted from the calculation of the Stateless Reset Token so that all instances are equally able to generate a stateless reset.</p>
-<p id="rfc.section.6.13.4.2.p.4">This design relies on the peer always sending a connection ID in its packets so that the endpoint can use the connection ID from a packet to reset the connection.  An endpoint that uses this design cannot allow its peers to send packets with a zero-length destination connection ID.</p>
-<p id="rfc.section.6.13.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of instance, connection ID, and static key cannot occur for another connection.  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at the same instance without first changing to use a different static key or instance identifier.</p>
-<p id="rfc.section.6.13.4.2.p.6">Note that Stateless Reset messages do not have any cryptographic protection.</p>
+<p id="rfc.section.6.13.4.2.p.2">A single static key can be used across all connections to the same endpoint by generating the proof using a second iteration of a preimage-resistant function that takes a static key and the connection ID chosen by the endpoint (see <a href="#connection-id" class="xref">Section 6.1</a>) as input.  An endpoint could use HMAC <a href="#RFC2104" class="xref">[RFC2104]</a> (for example, HMAC(static_key, connection_id)) or HKDF <a href="#RFC5869" class="xref">[RFC5869]</a> (for example, using the static key as input keying material, with the connection ID as salt).  The output of this function is truncated to 16 octets to produce the Stateless Reset Token for that connection.</p>
+<p id="rfc.section.6.13.4.2.p.3">An endpoint that loses state can use the same method to generate a valid Stateless Reset Token.  The connection ID comes from the packet that the endpoint receives.</p>
+<p id="rfc.section.6.13.4.2.p.4">This design relies on the peer always sending a connection ID in its packets so that the endpoint can use the connection ID from a packet to reset the connection.  An endpoint that uses this design MUST either use the same connection ID length for all connections or encode the length of the connection ID such that it can be recovered without state.  In addition, it MUST NOT provide a zero-length connection ID.</p>
+<p id="rfc.section.6.13.4.2.p.5">Revealing the Stateless Reset Token allows any entity to terminate the connection, so a value can only be used once.  This method for choosing the Stateless Reset Token means that the combination of connection ID and static key cannot occur for another connection.  A denial of service attack is possible if the same connection ID is used by instances that share a static key, or if an attacker can cause a packet to be routed to an instance that has no state but the same static key (see <a href="#reset-oracle" class="xref">Section 12.8</a>).  A connection ID from a connection that is reset by revealing the Stateless Reset Token cannot be reused for new connections at nodes that share a static key.</p>
+<p id="rfc.section.6.13.4.2.p.6">Note that Stateless Reset packets do not have any cryptographic protection.</p>
+<h4 id="rfc.section.6.13.4.3">
+<a href="#rfc.section.6.13.4.3">6.13.4.3.</a> <a href="#reset-looping" id="reset-looping">Looping</a>
+</h4>
+<p id="rfc.section.6.13.4.3.p.1">The design of a Stateless Reset is such that it is indistinguishable from a valid packet.  This means that a Stateless Reset might trigger the sending of a Stateless Reset in response, which could lead to infinite exchanges.</p>
+<p id="rfc.section.6.13.4.3.p.2">An endpoint MUST ensure that every Stateless Reset that it sends is smaller than the packet triggered it, unless it maintains state sufficient to prevent looping.  In the event of a loop, this results in packets eventually being too small to trigger a response.</p>
+<p id="rfc.section.6.13.4.3.p.3">An endpoint can remember the number of Stateless Reset packets that it has sent and stop generating new Stateless Reset packets once a limit is reached.  Using separate limits for different remote addresses will ensure that Stateless Reset packets can be used to close connections when other peers or connections have exhausted limits.</p>
+<p id="rfc.section.6.13.4.3.p.4">Reducing the size of a Stateless Reset below the recommended minimum size of 37 octets could mean that the packet could reveal to an observer that it is a Stateless Reset.  Conversely, refusing to send a Stateless Reset in response to a small packet might result in Stateless Reset not being useful in detecting cases of broken connections where only very small packets are sent; such failures might only be detected by other means, such as timers.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#frame-types-and-formats" id="frame-types-and-formats">Frame Types and Formats</a>
 </h1>
@@ -2281,7 +2361,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.7.15.p.3">It is expected that a sender will reuse the same packet number across different packet number spaces.  ACK frames only acknowledge the packet numbers that were transmitted by the sender in the same packet number space of the packet that the ACK was received in.</p>
 <p id="rfc.section.7.15.p.4">A client MUST NOT acknowledge Retry packets.  Retry packets include the packet number from the Initial packet it responds to.  Version Negotiation packets cannot be acknowledged because they do not contain a packet number.  Rather than relying on ACK frames, these packets are implicitly acknowledged by the next Initial packet sent by the client.</p>
 <p id="rfc.section.7.15.p.5">An ACK frame is shown below.</p>
-<div id="rfc.figure.9"></div>
+<div id="rfc.figure.12"></div>
 <div id="ack-format"></div>
 <pre>
  0                   1                   2                   3
@@ -2296,7 +2376,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                          ACK Blocks (*)                     ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 9: ACK Frame Format</p>
+<p class="figure">Figure 12: ACK Frame Format</p>
 <p id="rfc.section.7.15.p.6">The fields in the ACK frame are as follows:</p>
 <p></p>
 
@@ -2315,7 +2395,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h3>
 <p id="rfc.section.7.15.1.p.1">The ACK Block Section consists of alternating Gap and ACK Block fields in descending packet number order.  A First Ack Block field is followed by a variable number of alternating Gap and Additional ACK Blocks.  The number of Gap and Additional ACK Block fields is determined by the ACK Block Count field.</p>
 <p id="rfc.section.7.15.1.p.2">Gap and ACK Block fields use a relative integer encoding for efficiency.  Though each encoded value is positive, the values are subtracted, so that each ACK Block describes progressively lower-numbered packets.  As long as contiguous ranges of packets are small, the variable-length integer encoding ensures that each range can be expressed in a small number of octets.</p>
-<div id="rfc.figure.10"></div>
+<div id="rfc.figure.13"></div>
 <div id="ack-block-format"></div>
 <pre>
  0                   1                   2                   3
@@ -2338,7 +2418,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                    Additional ACK Block (i)                 ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 10: ACK Block Section</p>
+<p class="figure">Figure 13: ACK Block Section</p>
 <p id="rfc.section.7.15.1.p.3">Each ACK Block acknowledges a contiguous range of packets by indicating the number of acknowledged packets that precede the largest packet number in that block.  A value of zero indicates that only the largest packet number is acknowledged.  Larger ACK Block values indicate a larger range, with corresponding lower values for the smallest packet number in the range.  Thus, given a largest packet number for the ACK, the smallest value is determined by the formula:</p>
 <pre>
    smallest = largest - ack_block
@@ -2373,14 +2453,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.7.15.3">
 <a href="#rfc.section.7.15.3">7.15.3.</a> <a href="#ack-frames-and-packet-protection" id="ack-frames-and-packet-protection">ACK Frames and Packet Protection</a>
 </h3>
-<p id="rfc.section.7.15.3.p.1">ACK frames MUST only be carried in a packet that has the same packet number space as the packet being ACKed (see <a href="#packet-protected" class="xref">Section 4.5</a>). For instance, packets that are protected with 1-RTT keys MUST be acknowledged in packets that are also protected with 1-RTT keys.</p>
+<p id="rfc.section.7.15.3.p.1">ACK frames MUST only be carried in a packet that has the same packet number space as the packet being ACKed (see <a href="#packet-protected" class="xref">Section 4.8</a>). For instance, packets that are protected with 1-RTT keys MUST be acknowledged in packets that are also protected with 1-RTT keys.</p>
 <p id="rfc.section.7.15.3.p.2">Packets that a client sends with 0-RTT packet protection MUST be acknowledged by the server in packets protected by 1-RTT keys.  This can mean that the client is unable to use these acknowledgments if the server cryptographic handshake messages are delayed or lost.  Note that the same limitation applies to other data sent by the server protected by the 1-RTT keys.</p>
-<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO frames with a reduced delay; see Section 3.5.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
+<p id="rfc.section.7.15.3.p.3">Endpoints SHOULD send acknowledgments for packets containing CRYPTO frames with a reduced delay; see Section 4.3.1 of <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
 <h2 id="rfc.section.7.16">
 <a href="#rfc.section.7.16">7.16.</a> <a href="#frame-ack-ecn" id="frame-ack-ecn">ACK_ECN Frame</a>
 </h2>
 <p id="rfc.section.7.16.p.1">The ACK_ECN frame (type=0x1a) is used by an endpoint that supports ECN to acknowledge packets received with ECN codepoints of ECT(0), ECT(1), or CE in the packet&#8217;s IP header.</p>
-<div id="rfc.figure.11"></div>
+<div id="rfc.figure.14"></div>
 <div id="ACN_ECN_FRAME_FORMAT"></div>
 <pre>
  0                   1                   2                   3
@@ -2401,7 +2481,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                          ACK Blocks (*)                     ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 11: ACK_ECN Frame Format</p>
+<p class="figure">Figure 14: ACK_ECN Frame Format</p>
 <p id="rfc.section.7.16.p.2">An ACK_ECN frame contains all the elements of the ACK frame (<a href="#frame-ack" class="xref">Section 7.15</a>) with the addition of three counts following the ACK Delay field.</p>
 <p></p>
 
@@ -2416,7 +2496,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h2 id="rfc.section.7.17">
 <a href="#rfc.section.7.17">7.17.</a> <a href="#frame-path-challenge" id="frame-path-challenge">PATH_CHALLENGE Frame</a>
 </h2>
-<p id="rfc.section.7.17.p.1">Endpoints can use PATH_CHALLENGE frames (type=0x0e) to check reachability to the peer and for path validation during connection establishment and connection migration.</p>
+<p id="rfc.section.7.17.p.1">Endpoints can use PATH_CHALLENGE frames (type=0x0e) to check reachability to the peer and for path validation during connection migration.</p>
 <p id="rfc.section.7.17.p.2">PATH_CHALLENGE frames contain an 8-byte payload.</p>
 <pre>
  0                   1                   2                   3
@@ -2439,11 +2519,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.7.18">7.18.</a> <a href="#frame-path-response" id="frame-path-response">PATH_RESPONSE Frame</a>
 </h2>
 <p id="rfc.section.7.18.p.1">The PATH_RESPONSE frame (type=0x0f) is sent in response to a PATH_CHALLENGE frame.  Its format is identical to the PATH_CHALLENGE frame (<a href="#frame-path-challenge" class="xref">Section 7.17</a>).</p>
-<p id="rfc.section.7.18.p.2">If the content of a PATH_RESPONSE frame does not match the content of a PATH_CHALLENGE frame previously sent by the endpoint, the endpoint MAY generate a connection error of type UNSOLICITED_PATH_RESPONSE.</p>
+<p id="rfc.section.7.18.p.2">If the content of a PATH_RESPONSE frame does not match the content of a PATH_CHALLENGE frame previously sent by the endpoint, the endpoint MAY generate a connection error of type PROTOCOL_VIOLATION.</p>
 <h2 id="rfc.section.7.19">
 <a href="#rfc.section.7.19">7.19.</a> <a href="#frame-new-token" id="frame-new-token">NEW_TOKEN frame</a>
 </h2>
-<p id="rfc.section.7.19.p.1">A server sends a NEW_TOKEN frame (type=0x19) to provide the client a token to send in a the header of an Initial packet for a future connection.</p>
+<p id="rfc.section.7.19.p.1">A server sends a NEW_TOKEN frame (type=0x19) to provide the client a token to send in the header of an Initial packet for a future connection.</p>
 <p id="rfc.section.7.19.p.2">The NEW_TOKEN frame is as follows:</p>
 <pre>
  0                   1                   2                   3
@@ -2476,7 +2556,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </ul>
 <p id="rfc.section.7.20.p.3">An endpoint that receives a STREAM frame for a send-only stream MUST terminate the connection with error PROTOCOL_VIOLATION.</p>
 <p id="rfc.section.7.20.p.4">A STREAM frame is shown below.</p>
-<div id="rfc.figure.12"></div>
+<div id="rfc.figure.15"></div>
 <div id="stream-format"></div>
 <pre>
  0                   1                   2                   3
@@ -2491,7 +2571,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                        Stream Data (*)                      ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 12: STREAM Frame Format</p>
+<p class="figure">Figure 15: STREAM Frame Format</p>
 <p id="rfc.section.7.20.p.5">The STREAM frame contains the following fields:</p>
 <p></p>
 
@@ -2514,7 +2594,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.7.21.p.1">The CRYPTO frame (type=0x18) is used to transmit cryptographic handshake messages. It can be sent in all packet types. The CRYPTO frame offers the cryptographic protocol an in-order stream of bytes.  CRYPTO frames are functionally identical to STREAM frames, except that they do not bear a stream identifier; they are not flow controlled; and they do not carry markers for optional offset, optional length, and the end of the stream.</p>
 <p id="rfc.section.7.21.p.2">A CRYPTO frame is shown below.</p>
-<div id="rfc.figure.13"></div>
+<div id="rfc.figure.16"></div>
 <div id="crypto-format"></div>
 <pre>
  0                   1                   2                   3
@@ -2527,7 +2607,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 |                        Crypto Data (*)                      ...
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
-<p class="figure">Figure 13: CRYPTO Frame Format</p>
+<p class="figure">Figure 16: CRYPTO Frame Format</p>
 <p id="rfc.section.7.21.p.3">The CRYPTO frame contains the following fields:</p>
 <p></p>
 
@@ -2581,9 +2661,9 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.8.3">8.3.</a> <a href="#packet-size" id="packet-size">Packet Size</a>
 </h2>
 <p id="rfc.section.8.3.p.1">The QUIC packet size includes the QUIC header and integrity check, but not the UDP or IP header.</p>
-<p id="rfc.section.8.3.p.2">Clients MUST pad any Initial packet it sends to have a QUIC packet size of at least 1200 octets. Sending an Initial packet of this size ensures that the network path supports a reasonably sized packet, and helps reduce the amplitude of amplification attacks caused by server responses toward an unverified client address.</p>
-<p id="rfc.section.8.3.p.3">An Initial packet MAY exceed 1200 octets if the client knows that the Path Maximum Transmission Unit (PMTU) supports the size that it chooses.</p>
-<p id="rfc.section.8.3.p.4">A server MAY send a CONNECTION_CLOSE frame with error code PROTOCOL_VIOLATION in response to an Initial packet smaller than 1200 octets. It MUST NOT send any other frame type in response, or otherwise behave as if any part of the offending packet was processed as valid.</p>
+<p id="rfc.section.8.3.p.2">Clients MUST ensure that the first Initial packet it sends is sent in a UDP datagram that is at least 1200 octets. Padding the Initial packet or including a 0-RTT packet in the same datagram are ways to meet this requirement.  Sending a UDP datagram of this size ensures that the network path supports a reasonable Maximum Transmission Unit (MTU), and helps reduce the amplitude of amplification attacks caused by server responses toward an unverified client address.</p>
+<p id="rfc.section.8.3.p.3">The datagram containing the first Initial packet from a client MAY exceed 1200 octets if the client believes that the Path Maximum Transmission Unit (PMTU) supports the size that it chooses.</p>
+<p id="rfc.section.8.3.p.4">A server MAY send a CONNECTION_CLOSE frame with error code PROTOCOL_VIOLATION in response to the first Initial packet it receives from a client if the UDP datagram is smaller than 1200 octets. It MUST NOT send any other frame type in response, or otherwise behave as if any part of the offending packet was processed as valid.</p>
 <h2 id="rfc.section.8.4">
 <a href="#rfc.section.8.4">8.4.</a> <a href="#path-maximum-transmission-unit" id="path-maximum-transmission-unit">Path Maximum Transmission Unit</a>
 </h2>
@@ -2610,7 +2690,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h3>
 <p id="rfc.section.8.4.2.p.1">The PADDING frame provides a useful option for PMTU probe packets. PADDING frames generate acknowledgements, but they need not be delivered reliably. As a result, the loss of PADDING frames in probe packets does not require delay-inducing retransmission. However, PADDING frames do consume congestion window, which may delay the transmission of subsequent application data.</p>
 <p id="rfc.section.8.4.2.p.2">When implementing the algorithm in Section 7.2 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a>, the initial value of search_low SHOULD be consistent with the IPv6 minimum packet size.  Paths that do not support this size cannot deliver Initial packets, and therefore are not QUIC-compliant.</p>
-<p id="rfc.section.8.4.2.p.3">Section 7.3 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a> discusses tradeoffs between small and large increases in the size of probe packets. As QUIC probe packets need not contain application data, aggressive increases in probe size carry fewer consequences.</p>
+<p id="rfc.section.8.4.2.p.3">Section 7.3 of <a href="#PLPMTUD" class="xref">[PLPMTUD]</a> discusses trade-offs between small and large increases in the size of probe packets. As QUIC probe packets need not contain application data, aggressive increases in probe size carry fewer consequences.</p>
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#streams" id="streams">Streams: QUIC&#8217;s Data Structuring Abstraction</a>
 </h1>
@@ -2674,8 +2754,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.9.2.1">
 <a href="#rfc.section.9.2.1">9.2.1.</a> <a href="#stream-send-states" id="stream-send-states">Send Stream States</a>
 </h3>
-<p><a href="#fig-stream-send-states" class="xref">Figure 14</a> shows the states for the part of a stream that sends data to a peer.</p>
-<div id="rfc.figure.14"></div>
+<p><a href="#fig-stream-send-states" class="xref">Figure 17</a> shows the states for the part of a stream that sends data to a peer.</p>
+<div id="rfc.figure.17"></div>
 <div id="fig-stream-send-states"></div>
 <pre>
        o
@@ -2699,7 +2779,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
        v                           v
    +-------+                   +-------+
    | Data  | Send RST_STREAM   | Reset |
-   | Sent  +------------------&gt;| Sent  |
+   | Sent  |------------------&gt;| Sent  |
    +-------+                   +-------+
        |                           |
        | Recv All ACKs             | Recv ACK
@@ -2709,7 +2789,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
    | Recvd |                   | Recvd |
    +-------+                   +-------+
 </pre>
-<p class="figure">Figure 14: States for Send Streams</p>
+<p class="figure">Figure 17: States for Send Streams</p>
 <p id="rfc.section.9.2.1.p.2">The sending part of stream that the endpoint initiates (types 0 and 2 for clients, 1 and 3 for servers) is opened by the application or application protocol.  The &#8220;Ready&#8221; state represents a newly created stream that is able to accept data from the application.  Stream data might be buffered in this state in preparation for sending.</p>
 <p id="rfc.section.9.2.1.p.3">The sending part of a bidirectional stream initiated by a peer (type 0 for a server, type 1 for a client) enters the &#8220;Ready&#8221; state if the receiving part enters the &#8220;Recv&#8221; state.</p>
 <p id="rfc.section.9.2.1.p.4">Sending the first STREAM or STREAM_BLOCKED frame causes a send stream to enter the &#8220;Send&#8221; state.  An implementation might choose to defer allocating a Stream ID to a send stream until it sends the first frame and enters this state, which can allow for better stream prioritization.</p>
@@ -2722,8 +2802,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.9.2.2">
 <a href="#rfc.section.9.2.2">9.2.2.</a> <a href="#stream-recv-states" id="stream-recv-states">Receive Stream States</a>
 </h3>
-<p><a href="#fig-stream-recv-states" class="xref">Figure 15</a> shows the states for the part of a stream that receives data from a peer.  The states for a receive stream mirror only some of the states of the send stream at the peer.  A receive stream doesn&#8217;t track states on the send stream that cannot be observed, such as the &#8220;Ready&#8221; state; instead, receive streams track the delivery of data to the application or application protocol some of which cannot be observed by the sender.</p>
-<div id="rfc.figure.15"></div>
+<p><a href="#fig-stream-recv-states" class="xref">Figure 18</a> shows the states for the part of a stream that receives data from a peer.  The states for a receive stream mirror only some of the states of the send stream at the peer.  A receive stream doesn&#8217;t track states on the send stream that cannot be observed, such as the &#8220;Ready&#8221; state; instead, receive streams track the delivery of data to the application or application protocol some of which cannot be observed by the sender.</p>
+<div id="rfc.figure.18"></div>
 <div id="fig-stream-recv-states"></div>
 <pre>
        o
@@ -2741,14 +2821,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
        v                           |
    +-------+                       |
    | Size  | Recv RST_STREAM       |
-   | Known +----------------------&gt;|
+   | Known |----------------------&gt;|
    +-------+                       |
        |                           |
        | Recv All Data             |
        v                           v
    +-------+                   +-------+
    | Data  | Recv RST_STREAM   | Reset |
-   | Recvd +&lt;-- (optional) ---&gt;| Recvd |
+   | Recvd |&lt;-- (optional) ---&gt;| Recvd |
    +-------+                   +-------+
        |                           |
        | App Read All Data         | App Read RST
@@ -2758,7 +2838,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
    | Read  |                   | Read  |
    +-------+                   +-------+
 </pre>
-<p class="figure">Figure 15: States for Receive Streams</p>
+<p class="figure">Figure 18: States for Receive Streams</p>
 <p id="rfc.section.9.2.2.p.2">The receiving part of a stream initiated by a peer (types 1 and 3 for a client, or 0 and 2 for a server) are created when the first STREAM, STREAM_BLOCKED, RST_STREAM, or MAX_STREAM_DATA (bidirectional only, see below) is received for that stream.  The initial state for a receive stream is &#8220;Recv&#8221;.  Receiving a RST_STREAM frame causes the receive stream to immediately transition to the &#8220;Reset Recvd&#8221;.</p>
 <p id="rfc.section.9.2.2.p.3">The receive stream enters the &#8220;Recv&#8221; state when the sending part of a bidirectional stream initiated by the endpoint (type 0 for a client, type 1 for a server) enters the &#8220;Ready&#8221; state.</p>
 <p id="rfc.section.9.2.2.p.4">A bidirectional stream also opens when a MAX_STREAM_DATA frame is received.  Receiving a MAX_STREAM_DATA frame implies that the remote peer has opened the stream and is providing flow control credit.  A MAX_STREAM_DATA frame might arrive before a STREAM or STREAM_BLOCKED frame if packets are lost or reordered.</p>
@@ -2869,7 +2949,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.9.4.p.1">An endpoint limits the number of concurrently active incoming streams by adjusting the maximum stream ID.  An initial value is set in the transport parameters (see <a href="#transport-parameter-definitions" class="xref">Section 6.6.1</a>) and is subsequently increased by MAX_STREAM_ID frames (see <a href="#frame-max-stream-id" class="xref">Section 7.8</a>).</p>
 <p id="rfc.section.9.4.p.2">The maximum stream ID is specific to each endpoint and applies only to the peer that receives the setting. That is, clients specify the maximum stream ID the server can initiate, and servers specify the maximum stream ID the client can initiate.  Each endpoint may respond on streams initiated by the other peer, regardless of whether it is permitted to initiated new streams.</p>
 <p id="rfc.section.9.4.p.3">Endpoints MUST NOT exceed the limit set by their peer.  An endpoint that receives a STREAM frame with an ID greater than the limit it has sent MUST treat this as a stream error of type STREAM_ID_ERROR (<a href="#error-handling" class="xref">Section 11</a>), unless this is a result of a change in the initial limits (see <a href="#zerortt-parameters" class="xref">Section 6.6.2</a>).</p>
-<p id="rfc.section.9.4.p.4">A receiver MUST NOT renege on an advertisement; that is, once a receiver advertises a stream ID via a MAX_STREAM_ID frame, it MUST NOT subsequently advertise a smaller maximum ID.  A sender may receive MAX_STREAM_ID frames out of order; a sender MUST therefore ignore any MAX_STREAM_ID that does not increase the maximum.</p>
+<p id="rfc.section.9.4.p.4">A receiver cannot renege on an advertisement; that is, once a receiver advertises a stream ID via a MAX_STREAM_ID frame, advertising a smaller maximum ID has no effect.  A sender MUST ignore any MAX_STREAM_ID frame that does not increase the maximum stream ID.</p>
 <h2 id="rfc.section.9.5">
 <a href="#rfc.section.9.5">9.5.</a> <a href="#sending-and-receiving-data" id="sending-and-receiving-data">Sending and Receiving Data</a>
 </h2>
@@ -2895,7 +2975,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.10.p.1">It is necessary to limit the amount of data that a sender may have outstanding at any time, so as to prevent a fast sender from overwhelming a slow receiver, or to prevent a malicious sender from consuming significant resources at a receiver.  This section describes QUIC&#8217;s flow-control mechanisms.</p>
 <p id="rfc.section.10.p.2">QUIC employs a credit-based flow-control scheme similar to HTTP/2&#8217;s flow control <a href="#HTTP2" class="xref">[HTTP2]</a>.  A receiver advertises the number of octets it is prepared to receive on a given stream and for the entire connection.  This leads to two levels of flow control in QUIC: (i) Connection flow control, which prevents senders from exceeding a receiver&#8217;s buffer capacity for the connection, and (ii) Stream flow control, which prevents a single stream from consuming the entire receive buffer for a connection.</p>
 <p id="rfc.section.10.p.3">A data receiver sends MAX_STREAM_DATA or MAX_DATA frames to the sender to advertise additional credit. MAX_STREAM_DATA frames send the maximum absolute byte offset of a stream, while MAX_DATA sends the maximum of the sum of the absolute byte offsets of all streams.</p>
-<p id="rfc.section.10.p.4">A receiver MAY advertise a larger offset at any point by sending MAX_DATA or MAX_STREAM_DATA frames.  A receiver MUST NOT renege on an advertisement; that is, once a receiver advertises an offset, it MUST NOT subsequently advertise a smaller offset.  A sender could receive MAX_DATA or MAX_STREAM_DATA frames out of order; a sender MUST therefore ignore any flow control offset that does not move the window forward.</p>
+<p id="rfc.section.10.p.4">A receiver MAY advertise a larger offset at any point by sending MAX_DATA or MAX_STREAM_DATA frames.  A receiver cannot renege on an advertisement; that is, once a receiver advertises an offset, advertising a smaller offset has no effect.  A sender MUST therefore ignore any MAX_DATA or MAX_STREAM_DATA frames that do not increase flow control limits.</p>
 <p id="rfc.section.10.p.5">A receiver MUST close the connection with a FLOW_CONTROL_ERROR error (<a href="#error-handling" class="xref">Section 11</a>) if the peer violates the advertised connection or stream data limits.</p>
 <p id="rfc.section.10.p.6">A sender SHOULD send BLOCKED or STREAM_BLOCKED frames to indicate it has data to write but is blocked by flow control limits.  These frames are expected to be sent infrequently in common cases, but they are considered useful for debugging and monitoring purposes.</p>
 <p id="rfc.section.10.p.7">A receiver advertises credit for a stream by sending a MAX_STREAM_DATA frame with the Stream ID set appropriately. A receiver could use the current offset of data consumed to determine the flow control offset to be advertised.  A receiver MAY send MAX_STREAM_DATA frames in multiple packets in order to make sure that the sender receives an update before running out of flow control credit, even if one of the packets is lost.</p>
@@ -2914,7 +2994,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.10.1.2">
 <a href="#rfc.section.10.1.2">10.1.2.</a> <a href="#fc-credit" id="fc-credit">Data Limit Increments</a>
 </h3>
-<p id="rfc.section.10.1.2.p.1">This document leaves when and how many bytes to advertise in a MAX_DATA or MAX_STREAM_DATA to implementations, but offers a few considerations.  These frames contribute to connection overhead.  Therefore frequently sending frames with small changes is undesirable.  At the same time, infrequent updates require larger increments to limits if blocking is to be avoided.  Thus, larger updates require a receiver to commit to larger resource commitments.  Thus there is a tradeoff between resource commitment and overhead when determining how large a limit is advertised.</p>
+<p id="rfc.section.10.1.2.p.1">This document leaves when and how many bytes to advertise in a MAX_DATA or MAX_STREAM_DATA to implementations, but offers a few considerations.  These frames contribute to connection overhead.  Therefore frequently sending frames with small changes is undesirable.  At the same time, infrequent updates require larger increments to limits if blocking is to be avoided.  Thus, larger updates require a receiver to commit to larger resource commitments.  Thus there is a trade-off between resource commitment and overhead when determining how large a limit is advertised.</p>
 <p id="rfc.section.10.1.2.p.2">A receiver MAY use an autotuning mechanism to tune the frequency and amount that it increases data limits based on a round-trip time estimate and the rate at which the receiving application consumes data, similar to common TCP implementations.</p>
 <h2 id="rfc.section.10.2">
 <a href="#rfc.section.10.2">10.2.</a> <a href="#stream-limit-increment" id="stream-limit-increment">Stream Limit Increment</a>
@@ -2925,7 +3005,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.10.2.1">10.2.1.</a> <a href="#blocking" id="blocking">Blocking on Flow Control</a>
 </h3>
 <p id="rfc.section.10.2.1.p.1">If a sender does not receive a MAX_DATA or MAX_STREAM_DATA frame when it has run out of flow control credit, the sender will be blocked and SHOULD send a BLOCKED or STREAM_BLOCKED frame.  These frames are expected to be useful for debugging at the receiver; they do not require any other action.  A receiver SHOULD NOT wait for a BLOCKED or STREAM_BLOCKED frame before sending MAX_DATA or MAX_STREAM_DATA, since doing so will mean that a sender is unable to send for an entire round trip.</p>
-<p id="rfc.section.10.2.1.p.2">For smooth operation of the congestion controller, it is generally considered best to not let the sender go into quiescence if avoidable.  To avoid blocking a sender, and to reasonably account for the possibiity of loss, a receiver should send a MAX_DATA or MAX_STREAM_DATA frame at least two round trips before it expects the sender to get blocked.</p>
+<p id="rfc.section.10.2.1.p.2">For smooth operation of the congestion controller, it is generally considered best to not let the sender go into quiescence if avoidable.  To avoid blocking a sender, and to reasonably account for the possibility of loss, a receiver should send a MAX_DATA or MAX_STREAM_DATA frame at least two round trips before it expects the sender to get blocked.</p>
 <p id="rfc.section.10.2.1.p.3">A sender sends a single BLOCKED or STREAM_BLOCKED frame only once when it reaches a data limit.  A sender SHOULD NOT send multiple BLOCKED or STREAM_BLOCKED frames for the same data limit, unless the original frame is determined to be lost.  Another BLOCKED or STREAM_BLOCKED frame can be sent after the data limit is increased.</p>
 <h2 id="rfc.section.10.3">
 <a href="#rfc.section.10.3">10.3.</a> <a href="#final-offset" id="final-offset">Stream Final Offset</a>
@@ -2935,7 +3015,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <p id="rfc.section.10.3.p.3">An endpoint MUST NOT send data on a stream at or beyond the final offset.</p>
 <p id="rfc.section.10.3.p.4">Once a final offset for a stream is known, it cannot change.  If a RST_STREAM or STREAM frame causes the final offset to change for a stream, an endpoint SHOULD respond with a FINAL_OFFSET_ERROR error (see <a href="#error-handling" class="xref">Section 11</a>).  A receiver SHOULD treat receipt of data at or beyond the final offset as a FINAL_OFFSET_ERROR error, even after a stream is closed.  Generating these errors is not mandatory, but only because requiring that an endpoint generate these errors also means that the endpoint needs to maintain the final offset state for closed streams, which could mean a significant state commitment.</p>
 <h2 id="rfc.section.10.4">
-<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow Control for Crytographic Handshake</a>
+<a href="#rfc.section.10.4">10.4.</a> <a href="#flow-control-crypto" id="flow-control-crypto">Flow Control for Cryptographic Handshake</a>
 </h2>
 <p id="rfc.section.10.4.p.1">Data sent in CRYPTO frames is not flow controlled in the same way as STREAM frames.  QUIC relies on the cryptographic protocol implementation to avoid excessive buffering of data, see <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.  The implementation SHOULD provide an interface to QUIC to tell it about its buffering limits so that there is not excessive buffering at multiple layers.</p>
 <h1 id="rfc.section.11">
@@ -2987,12 +3067,10 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dd style="margin-left: 8">An endpoint received transport parameters that contained version negotiation parameters that disagreed with the version negotiation that it performed.  This error code indicates a potential version downgrade attack.</dd>
 <dt>PROTOCOL_VIOLATION (0xA):</dt>
 <dd style="margin-left: 8">An endpoint detected an error with protocol compliance that was not covered by more specific error codes.</dd>
-<dt>UNSOLICITED_PATH_RESPONSE (0xB):</dt>
-<dd style="margin-left: 8">An endpoint received a PATH_RESPONSE frame that did not correspond to any PATH_CHALLENGE frame that it previously sent.</dd>
 <dt>INVALID_MIGRATION (0xC):</dt>
 <dd style="margin-left: 8">A peer has migrated to a different network when the endpoint had disabled migration.</dd>
 <dt>CRYPTO_ERROR (0x1XX):</dt>
-<dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occuring when TLS is used for the crypto handshake are defined in Section 11 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
+<dd style="margin-left: 8">The cryptographic handshake failed.  A range of 256 values is reserved for carrying error codes specific to the cryptographic handshake that is used.  Codes for errors occurring when TLS is used for the crypto handshake are described in Section 4.8 of <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>.</dd>
 </dl>
 <p id="rfc.section.11.3.p.4">See <a href="#iana-error-codes" class="xref">Section 13.3</a> for details of registering new error codes.</p>
 <h2 id="rfc.section.11.4">
@@ -3039,12 +3117,18 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 </h2>
 <p id="rfc.section.12.6.p.1">An adversarial endpoint can open lots of streams, exhausting state on an endpoint.  The adversarial endpoint could repeat the process on a large number of connections, in a manner similar to SYN flooding attacks in TCP.</p>
 <p id="rfc.section.12.6.p.2">Normally, clients will open streams sequentially, as explained in <a href="#stream-id" class="xref">Section 9.1</a>.  However, when several streams are initiated at short intervals, transmission error may cause STREAM DATA frames opening streams to be received out of sequence.  A receiver is obligated to open intervening streams if a higher-numbered stream ID is received.  Thus, on a new connection, opening stream 2000001 opens 1 million streams, as required by the specification.</p>
-<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judisciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
+<p id="rfc.section.12.6.p.3">The number of active streams is limited by the concurrent stream limit transport parameter, as explained in <a href="#stream-concurrency" class="xref">Section 9.4</a>.  If chosen judiciously, this limit mitigates the effect of the stream commitment attack.  However, setting the limit too low could affect performance when applications expect to open large number of streams.</p>
 <h2 id="rfc.section.12.7">
 <a href="#rfc.section.12.7">12.7.</a> <a href="#security-ecn" id="security-ecn">Explicit Congestion Notification Attacks</a>
 </h2>
 <p id="rfc.section.12.7.p.1">An on-path attacker could manipulate the value of ECN codepoints in the IP header to influence the sender&#8217;s rate. <a href="#RFC3168" class="xref">[RFC3168]</a> discusses manipulations and their effects in more detail.</p>
 <p id="rfc.section.12.7.p.2">An on-the-side attacker can duplicate and send packets with modified ECN codepoints to affect the sender&#8217;s rate.  If duplicate packets are discarded by a receiver, an off-path attacker will need to race the duplicate packet against the original to be successful in this attack.  Therefore, QUIC receivers ignore ECN codepoints set in duplicate packets (see <a href="#using-ecn" class="xref">Section 6.8</a>).</p>
+<h2 id="rfc.section.12.8">
+<a href="#rfc.section.12.8">12.8.</a> <a href="#reset-oracle" id="reset-oracle">Stateless Reset Oracle</a>
+</h2>
+<p id="rfc.section.12.8.p.1">Stateless resets create a possible denial of service attack analogous to a TCP reset injection. This attack is possible if an attacker is able to cause a stateless reset token to be generated for a connection with a selected connection ID. An attacker that can cause this token to be generated can reset an active connection with the same connection ID.</p>
+<p id="rfc.section.12.8.p.2">If a packet can be routed to different instances that share a static key, for example by changing an IP address or port, then an attacker can cause the server to send a stateless reset.  To defend against this style of denial service, endpoints that share a static key for stateless reset (see <a href="#reset-token" class="xref">Section 6.13.4.2</a>) MUST be arranged so that packets with a given connection ID always arrive at an instance that has connection state, unless that connection is no longer active.</p>
+<p id="rfc.section.12.8.p.3">In the case of a cluster that uses dynamic load balancing, it&#8217;s possible that a change in load balancer configuration could happen while an active instance retains connection state; even if an instance retains connection state, the change in routing and resulting stateless reset will result in the connection being terminated.  If there is no chance in the packet being routed to the correct instance, it is better to send a stateless reset than wait for connections to time out.  However, this is acceptable only if the routing cannot be influenced by an attacker.</p>
 <h1 id="rfc.section.13">
 <a href="#rfc.section.13">13.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -3254,12 +3338,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
 </tr>
 <tr>
-<td class="left">0xB</td>
-<td class="left">UNSOLICITED_PATH_RESPONSE</td>
-<td class="left">Unsolicited PATH_RESPONSE frame</td>
-<td class="left"><a href="#error-codes" class="xref">Section 11.3</a></td>
-</tr>
-<tr>
 <td class="left">0xC</td>
 <td class="left">INVALID_MIGRATION</td>
 <td class="left">Violated disabled migration</td>
@@ -3272,11 +3350,6 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h2 id="rfc.references.1">
 <a href="#rfc.references.1">14.1.</a> Normative References</h2>
 <table><tbody>
-<tr>
-<td class="reference"><b id="I-D.ietf-tls-tls13">[I-D.ietf-tls-tls13]</b></td>
-<td class="top">
-<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-tls13-28">The Transport Layer Security (TLS) Protocol Version 1.3</a>", Internet-Draft draft-ietf-tls-tls13-28, March 2018.</td>
-</tr>
 <tr>
 <td class="reference"><b id="PLPMTUD">[PLPMTUD]</b></td>
 <td class="top">
@@ -3295,12 +3368,12 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-RECOVERY">[QUIC-RECOVERY]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, July 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Google">I. Swett</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-recovery">QUIC Loss Detection and Congestion Control</a>", Internet-Draft draft-ietf-quic-recovery, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="QUIC-TLS">[QUIC-TLS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, July 2018.</td>
+<a title="Mozilla">Thomson, M.</a> and <a title="sn3rd">S. Turner</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-tls">Using Transport Layer Security (TLS) to Secure QUIC</a>", Internet-Draft draft-ietf-quic-tls, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -3337,6 +3410,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="top">
 <a>Black, D.</a>, "<a href="https://tools.ietf.org/html/rfc8311">Relaxing Restrictions on Explicit Congestion Notification (ECN) Experimentation</a>", RFC 8311, DOI 10.17487/RFC8311, January 2018.</td>
 </tr>
+<tr>
+<td class="reference"><b id="TLS13">[TLS13]</b></td>
+<td class="top">
+<a>Rescorla, E.</a>, "<a href="https://tools.ietf.org/html/rfc8446">The Transport Layer Security (TLS) Protocol Version 1.3</a>", RFC 8446, DOI 10.17487/RFC8446, August 2018.</td>
+</tr>
 </tbody></table>
 <h2 id="rfc.references.2">
 <a href="#rfc.references.2">14.2.</a> Informative References</h2>
@@ -3354,7 +3432,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <tr>
 <td class="reference"><b id="QUIC-INVARIANTS">[QUIC-INVARIANTS]</b></td>
 <td class="top">
-<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, July 2018.</td>
+<a title="Mozilla">Thomson, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-invariants">Version-Independent Properties of QUIC</a>", Internet-Draft draft-ietf-quic-invariants, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2018">[RFC2018]</b></td>
@@ -3370,6 +3448,11 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <td class="reference"><b id="RFC2360">[RFC2360]</b></td>
 <td class="top">
 <a>Scott, G.</a>, "<a href="https://tools.ietf.org/html/rfc2360">Guide for Internet Standards Writers</a>", BCP 22, RFC 2360, DOI 10.17487/RFC2360, June 1998.</td>
+</tr>
+<tr>
+<td class="reference"><b id="RFC2406">[RFC2406]</b></td>
+<td class="top">
+<a>Kent, S.</a> and <a>R. Atkinson</a>, "<a href="https://tools.ietf.org/html/rfc2406">IP Encapsulating Security Payload (ESP)</a>", RFC 2406, DOI 10.17487/RFC2406, November 1998.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC4787">[RFC4787]</b></td>
@@ -3436,12 +3519,34 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <strong>RFC Editor&#8217;s Note:</strong> Please remove this section prior to publication of a final version of this document.</li></ul>
 <p id="rfc.section.B.p.2">Issue and pull request numbers are listed with a leading octothorp.</p>
 <h2 id="rfc.appendix.B.1">
-<a href="#rfc.appendix.B.1">B.1.</a> <a href="#since-draft-ietf-quic-transport-12" id="since-draft-ietf-quic-transport-12">Since draft-ietf-quic-transport-12</a>
+<a href="#rfc.appendix.B.1">B.1.</a> <a href="#since-draft-ietf-quic-transport-13" id="since-draft-ietf-quic-transport-13">Since draft-ietf-quic-transport-13</a>
 </h2>
 <p></p>
 
 <ul>
-<li>Changes to integration of the TLS handshake (#829, #1018, #1094, #1165, #1190, #1233, #1242, #1252, #1450) <ul>
+<li>Streams open when higher-numbered streams of the same type open (#1342, #1549)</li>
+<li>Split initial stream flow control limit into 3 transport parameters (#1016, #1542)</li>
+<li>All flow control transport parameters are optional (#1610)</li>
+<li>Removed UNSOLICITED_PATH_RESPONSE error code (#1265, #1539)</li>
+<li>Permit stateless reset in response to any packet (#1348, #1553)</li>
+<li>Recommended defense against stateless reset spoofing (#1386, #1554)</li>
+<li>Prevent infinite stateless reset exchanges (#1443, #1627)</li>
+<li>Forbid processing of the same packet number twice (#1405, #1624)</li>
+<li>Added a packet number decoding example (#1493)</li>
+<li>More precisely define idle timeout (#1429, #1614, #1652)</li>
+<li>Corrected format of Retry packet and prevented looping (#1492, #1451, #1448, #1498)</li>
+<li>Permit 0-RTT after receiving Version Negotiation or Retry (#1507, #1514, #1621)</li>
+<li>Permit Retry in response to 0-RTT (#1547, #1552)</li>
+<li>Looser verification of ECN counters to account for ACK loss (#1555, #1481, #1565)</li>
+<li>Remove frame type field from APPLICATION_CLOSE (#1508, #1528)</li>
+</ul>
+<h2 id="rfc.appendix.B.2">
+<a href="#rfc.appendix.B.2">B.2.</a> <a href="#since-draft-ietf-quic-transport-12" id="since-draft-ietf-quic-transport-12">Since draft-ietf-quic-transport-12</a>
+</h2>
+<p></p>
+
+<ul>
+<li>Changes to integration of the TLS handshake (#829, #1018, #1094, #1165, #1190, #1233, #1242, #1252, #1450, #1458) <ul>
 <li>The cryptographic handshake uses CRYPTO frames, not stream 0</li>
 <li>QUIC packet protection is used in place of TLS record protection</li>
 <li>Separate QUIC packet number spaces are used for the handshake</li>
@@ -3459,8 +3564,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Stateless Reset is now symmetric and subject to size constraints (#466, #1346)</li>
 <li>Added frame type extension mechanism (#58, #1473)</li>
 </ul>
-<h2 id="rfc.appendix.B.2">
-<a href="#rfc.appendix.B.2">B.2.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
+<h2 id="rfc.appendix.B.3">
+<a href="#rfc.appendix.B.3">B.3.</a> <a href="#since-draft-ietf-quic-transport-11" id="since-draft-ietf-quic-transport-11">Since draft-ietf-quic-transport-11</a>
 </h2>
 <p></p>
 
@@ -3470,8 +3575,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Packet numbers use a variable-length encoding (#989, #1334)</li>
 <li>STREAM frames can now be empty (#1350)</li>
 </ul>
-<h2 id="rfc.appendix.B.3">
-<a href="#rfc.appendix.B.3">B.3.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
+<h2 id="rfc.appendix.B.4">
+<a href="#rfc.appendix.B.4">B.4.</a> <a href="#since-draft-ietf-quic-transport-10" id="since-draft-ietf-quic-transport-10">Since draft-ietf-quic-transport-10</a>
 </h2>
 <p></p>
 
@@ -3491,8 +3596,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Endpoints now become closing after an idle timeout (#1178, #1179)</li>
 <li>Remove implication that Version Negotiation is sent when a packet of the wrong version is received (#1197)</li>
 </ul>
-<h2 id="rfc.appendix.B.4">
-<a href="#rfc.appendix.B.4">B.4.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
+<h2 id="rfc.appendix.B.5">
+<a href="#rfc.appendix.B.5">B.5.</a> <a href="#since-draft-ietf-quic-transport-09" id="since-draft-ietf-quic-transport-09">Since draft-ietf-quic-transport-09</a>
 </h2>
 <p></p>
 
@@ -3506,8 +3611,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Added an error code for server busy signals (#1137)</li>
 <li>Endpoints now set the connection ID that their peer uses.  Connection IDs are variable length.  Removed the omit_connection_id transport parameter and the corresponding short header flag. (#1089, #1052, #1146, #821, #745, #821, #1166, #1151)</li>
 </ul>
-<h2 id="rfc.appendix.B.5">
-<a href="#rfc.appendix.B.5">B.5.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
+<h2 id="rfc.appendix.B.6">
+<a href="#rfc.appendix.B.6">B.6.</a> <a href="#since-draft-ietf-quic-transport-08" id="since-draft-ietf-quic-transport-08">Since draft-ietf-quic-transport-08</a>
 </h2>
 <p></p>
 
@@ -3524,8 +3629,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Ack Delay assumes a default value during the handshake (#1007, #1009)</li>
 <li>Removed transport parameters from NewSessionTicket (#1015)</li>
 </ul>
-<h2 id="rfc.appendix.B.6">
-<a href="#rfc.appendix.B.6">B.6.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
+<h2 id="rfc.appendix.B.7">
+<a href="#rfc.appendix.B.7">B.7.</a> <a href="#since-draft-ietf-quic-transport-07" id="since-draft-ietf-quic-transport-07">Since draft-ietf-quic-transport-07</a>
 </h2>
 <p></p>
 
@@ -3535,7 +3640,7 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Packet types are assigned new codepoints and the Connection ID Flag is inverted (#426, #956)</li>
 <li>Removed type for Version Negotiation and use Version 0 (#963, #968)</li>
 <li>Streams are split into unidirectional and bidirectional (#643, #656, #720, #872, #175, #885) <ul>
-<li>Stream limits now have separate uni- and bi-directinal transport parameters (#909, #958)</li>
+<li>Stream limits now have separate uni- and bi-directional transport parameters (#909, #958)</li>
 <li>Stream limit transport parameters are now optional and default to 0 (#970, #971)</li>
 </ul>
 </li>
@@ -3552,8 +3657,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>negotiated_version is sent in server transport parameters (#710, #959)</li>
 <li>Increased the range over which packet numbers are randomized (#864, #850, #964)</li>
 </ul>
-<h2 id="rfc.appendix.B.7">
-<a href="#rfc.appendix.B.7">B.7.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
+<h2 id="rfc.appendix.B.8">
+<a href="#rfc.appendix.B.8">B.8.</a> <a href="#since-draft-ietf-quic-transport-06" id="since-draft-ietf-quic-transport-06">Since draft-ietf-quic-transport-06</a>
 </h2>
 <p></p>
 
@@ -3567,8 +3672,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Remove timestamps from the ACK frame (#841)</li>
 <li>Require transport parameters to only appear once (#792)</li>
 </ul>
-<h2 id="rfc.appendix.B.8">
-<a href="#rfc.appendix.B.8">B.8.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
+<h2 id="rfc.appendix.B.9">
+<a href="#rfc.appendix.B.9">B.9.</a> <a href="#since-draft-ietf-quic-transport-05" id="since-draft-ietf-quic-transport-05">Since draft-ietf-quic-transport-05</a>
 </h2>
 <p></p>
 
@@ -3580,8 +3685,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Renamed STREAM_ID_NEEDED to STREAM_ID_BLOCKED</li>
 <li>Clarify Keep-alive requirements (#729)</li>
 </ul>
-<h2 id="rfc.appendix.B.9">
-<a href="#rfc.appendix.B.9">B.9.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
+<h2 id="rfc.appendix.B.10">
+<a href="#rfc.appendix.B.10">B.10.</a> <a href="#since-draft-ietf-quic-transport-04" id="since-draft-ietf-quic-transport-04">Since draft-ietf-quic-transport-04</a>
 </h2>
 <p></p>
 
@@ -3600,8 +3705,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>CONNECTION_CLOSE terminates the connection like TCP RST (#330, #328)</li>
 <li>Update labels used in HKDF-Expand-Label to match TLS 1.3 (#642)</li>
 </ul>
-<h2 id="rfc.appendix.B.10">
-<a href="#rfc.appendix.B.10">B.10.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
+<h2 id="rfc.appendix.B.11">
+<a href="#rfc.appendix.B.11">B.11.</a> <a href="#since-draft-ietf-quic-transport-03" id="since-draft-ietf-quic-transport-03">Since draft-ietf-quic-transport-03</a>
 </h2>
 <p></p>
 
@@ -3609,8 +3714,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Change STREAM and RST_STREAM layout</li>
 <li>Add MAX_STREAM_ID settings</li>
 </ul>
-<h2 id="rfc.appendix.B.11">
-<a href="#rfc.appendix.B.11">B.11.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
+<h2 id="rfc.appendix.B.12">
+<a href="#rfc.appendix.B.12">B.12.</a> <a href="#since-draft-ietf-quic-transport-02" id="since-draft-ietf-quic-transport-02">Since draft-ietf-quic-transport-02</a>
 </h2>
 <p></p>
 
@@ -3635,8 +3740,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 </li>
 <li>Expanded security considerations (#440, #444, #445, #448)</li>
 </ul>
-<h2 id="rfc.appendix.B.12">
-<a href="#rfc.appendix.B.12">B.12.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
+<h2 id="rfc.appendix.B.13">
+<a href="#rfc.appendix.B.13">B.13.</a> <a href="#since-draft-ietf-quic-transport-01" id="since-draft-ietf-quic-transport-01">Since draft-ietf-quic-transport-01</a>
 </h2>
 <p></p>
 
@@ -3678,8 +3783,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Error codes for RST_STREAM and CONNECTION_CLOSE are now at a consistent offset (#249)</li>
 <li>Defined priority as the responsibility of the application protocol (#104, #303)</li>
 </ul>
-<h2 id="rfc.appendix.B.13">
-<a href="#rfc.appendix.B.13">B.13.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
+<h2 id="rfc.appendix.B.14">
+<a href="#rfc.appendix.B.14">B.14.</a> <a href="#since-draft-ietf-quic-transport-00" id="since-draft-ietf-quic-transport-00">Since draft-ietf-quic-transport-00</a>
 </h2>
 <p></p>
 
@@ -3690,8 +3795,8 @@ DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
 <li>Error code space is divided into regions for each component</li>
 <li>Use big endian for all numeric values</li>
 </ul>
-<h2 id="rfc.appendix.B.14">
-<a href="#rfc.appendix.B.14">B.14.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
+<h2 id="rfc.appendix.B.15">
+<a href="#rfc.appendix.B.15">B.15.</a> <a href="#since-draft-hamilton-quic-transport-protocol-01" id="since-draft-hamilton-quic-transport-protocol-01">Since draft-hamilton-quic-transport-protocol-01</a>
 </h2>
 <p></p>
 

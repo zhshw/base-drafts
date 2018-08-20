@@ -326,8 +326,9 @@ ul.toc li {
 <link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="10.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
-<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-qpack-00">
-<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-qcram-00">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-qpack-01">
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-qpack-00">
+<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-qcram-00">
 <link href="#rfc.acknowledgments" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -337,7 +338,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-19" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-20" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -361,7 +362,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: January 20, 2019</td>
+<td class="left">Expires: February 21, 2019</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -374,7 +375,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">July 19, 2018</td>
+<td class="right">August 20, 2018</td>
 </tr>
 
     	
@@ -393,7 +394,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 20, 2019.</p>
+<p>This Internet-Draft will expire on February 21, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -493,9 +494,11 @@ ul.toc li {
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
-<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-qpack-00</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-qpack-01</a>
 </li>
-<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-qcram-00</a>
+<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-qpack-00</a>
+</li>
+<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-qcram-00</a>
 </li>
 </ul><li><a href="#rfc.acknowledgments">Acknowledgments</a>
 </li>
@@ -523,7 +526,7 @@ ul.toc li {
 <h2 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#table-dynamic" id="table-dynamic">Dynamic Table</a>
 </h2>
-<p id="rfc.section.2.2.p.1">The dynamic table consists of a list of header fields maintained in first-in, first-out order.  The dynamic table is initially empty.  Entries are added by instructions on the Encoder Stream (see <a href="#encoder-stream" class="xref">Section 5.2</a>).</p>
+<p id="rfc.section.2.2.p.1">The dynamic table consists of a list of header fields maintained in first-in, first-out order.  The dynamic table is initially empty.  Entries are added by instructions on the encoder stream (see <a href="#encoder-stream" class="xref">Section 5.2</a>).</p>
 <p id="rfc.section.2.2.p.2">Before a new entry is added to the dynamic table, entries are evicted from the end of the dynamic table until the size of the dynamic table is less than or equal to (maximum size - new entry size) or until the table is empty.</p>
 <p id="rfc.section.2.2.p.3">If the size of the new entry is less than or equal to the maximum size, that entry is added to the table.  It is an error to attempt to add an entry that is larger than the maximum size; this MUST be treated as a connection error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.</p>
 <p id="rfc.section.2.2.p.4">A new entry can reference an entry in the dynamic table that will be evicted when adding this new entry into the dynamic table.  Implementations are cautioned to avoid deleting the referenced name if the referenced entry is evicted from the dynamic table prior to inserting the new entry.</p>
@@ -537,7 +540,7 @@ ul.toc li {
 </h3>
 <p id="rfc.section.2.2.1.p.1">Each entry possesses both an absolute index which is fixed for the lifetime of that entry and a relative index which changes over time based on the context of the reference. The first entry inserted has an absolute index of &#8220;1&#8221;; indices increase sequentially with each insertion.</p>
 <p id="rfc.section.2.2.1.p.2">The relative index begins at zero and increases in the opposite direction from the absolute index.  Determining which entry has a relative index of &#8220;0&#8221; depends on the context of the reference.</p>
-<p id="rfc.section.2.2.1.p.3">On the control stream, a relative index of &#8220;0&#8221; always refers to the most recently inserted value in the dynamic table.  Note that this means the entry referenced by a given relative index will change while interpreting instructions on the encoder stream.</p>
+<p id="rfc.section.2.2.1.p.3">On the encoder stream, a relative index of &#8220;0&#8221; always refers to the most recently inserted value in the dynamic table.  Note that this means the entry referenced by a given relative index will change while interpreting instructions on the encoder stream.</p>
 <pre>
     +---+---------------+-----------+
     | n |      ...      |   d + 1   |  Absolute Index
@@ -552,7 +555,7 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Example Dynamic Table Indexing - Control Stream</p>
-<p id="rfc.section.2.2.1.p.4">Because frames from request streams can be delivered out of order with instructions on the control stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 5.4.1</a>). The Base Index is an absolute index. When interpreting the rest of the frame, the entry identified by Base Index has a relative index of zero.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
+<p id="rfc.section.2.2.1.p.4">Because frames from request streams can be delivered out of order with instructions on the encoder stream, relative indices are relative to the Base Index at the beginning of the header block (see <a href="#absolute-index" class="xref">Section 5.4.1</a>). The Base Index is an absolute index. When interpreting the rest of the frame, the entry identified by Base Index has a relative index of zero.  The relative indices of entries do not change while interpreting headers on a request or push stream.</p>
 <pre>
              Base Index
                  |
@@ -585,7 +588,7 @@ n = count of entries inserted
 d = count of entries dropped
 </pre>
 <p class="figure">Dynamic Table Indexing - Post-Base References</p>
-<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the control stream, this MUST be treated as a session error.</p>
+<p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the encoder stream, this MUST be treated as a session error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#overview-hol-avoidance" id="overview-hol-avoidance">Avoiding Head-of-Line Blocking in HTTP/QUIC</a>
 </h2>
@@ -601,11 +604,11 @@ d = count of entries dropped
 <p></p>
 
 <ul>
-<li>Successful processing of a header block</li>
+<li>Complete processing of a header block</li>
 <li>Abandonment of a stream which might have remaining header blocks</li>
 <li>Receipt of new dynamic table entries</li>
 </ul>
-<p id="rfc.section.2.3.1.p.3">Regardless of whether a header block contained blocking references, the knowledge that it was processed successfully permits the encoder to avoid evicting entries while references remain outstanding; see <a href="#blocked-eviction" class="xref">Section 7.3.1</a>.  When a stream is reset or abandoned, the indication that these header blocks will never be processed serves a similar function; see <a href="#stream-cancellation" class="xref">Section 5.3.3</a>.</p>
+<p id="rfc.section.2.3.1.p.3">Regardless of whether a header block contained blocking references, the knowledge that it has been processed permits the encoder to evict entries to which no unacknowledged references remain; see <a href="#blocked-eviction" class="xref">Section 7.3.1</a>.  When a stream is reset or abandoned, the indication that these header blocks will never be processed serves a similar function; see <a href="#stream-cancellation" class="xref">Section 5.3.3</a>.</p>
 <p id="rfc.section.2.3.1.p.4">For the encoder to identify which dynamic table entries can be safely used without a stream becoming blocked, the encoder tracks the absolute index of the decoder&#8217;s Largest Known Received entry.</p>
 <p id="rfc.section.2.3.1.p.5">When blocking references are permitted, the encoder uses acknowledgement of header blocks to identify the Largest Known Received index, as described in <a href="#header-acknowledgement" class="xref">Section 5.3.2</a>.</p>
 <p id="rfc.section.2.3.1.p.6">To acknowledge dynamic table entries which are not referenced by header blocks, for example because the encoder or the decoder have chosen not to risk blocked streams, the decoder sends a Table State Synchronize instruction (see <a href="#table-state-synchronize" class="xref">Section 5.3.1</a>).</p>
@@ -773,7 +776,7 @@ d = count of entries dropped
 <h3 id="rfc.section.5.3.2">
 <a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#header-acknowledgement" id="header-acknowledgement">Header Acknowledgement</a>
 </h3>
-<p id="rfc.section.5.3.2.p.1">After processing a header block on a request or push stream, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;1&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
+<p id="rfc.section.5.3.2.p.1">After processing a header block whose declared Largest Reference is not zero, the decoder emits a Header Acknowledgement instruction on the decoder stream.  The instruction begins with the &#8216;1&#8217; one-bit pattern and includes the request stream&#8217;s stream ID, encoded as a 7-bit prefix integer.  It is used by the peer&#8217;s QPACK encoder to know when it is safe to evict an entry.</p>
 <p id="rfc.section.5.3.2.p.2">The same Stream ID can be identified multiple times, as multiple header blocks can be sent on a single stream in the case of intermediate responses, trailers, and pushed requests.  Since header frames on each stream are received and processed in order, this gives the encoder precise feedback on which header blocks within a stream have been fully processed.</p>
 <div id="rfc.figure.4"></div>
 <div id="fig-header-ack"></div>
@@ -851,7 +854,7 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.2">
 <a href="#rfc.section.5.4.2.2">5.4.2.2.</a> <a href="#indexed-header-field-with-post-base-index" id="indexed-header-field-with-post-base-index">Indexed Header Field With Post-Base Index</a>
 </h4>
-<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0001&#8217; 4-bit pattern, followed by the post-base index (see <a href="#indexing" class="xref">Section 2.2.1</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
+<p id="rfc.section.5.4.2.2.p.1">If the entry is in the dynamic table with an absolute index greater than Base Index, the representation starts with the &#8216;0001&#8217; 4-bit pattern, followed by the post-base index (see <a href="#post-base-indexing" class="xref">Section 2.2.2</a>) of the matching header field, represented as an integer with a 4-bit prefix (see Section 5.1 of <a href="#RFC7541" class="xref">[RFC7541]</a>).</p>
 <pre>
   0   1   2   3   4   5   6   7
 +---+---+---+---+---+---+---+---+
@@ -880,7 +883,7 @@ d = count of entries dropped
 <h4 id="rfc.section.5.4.2.4">
 <a href="#rfc.section.5.4.2.4">5.4.2.4.</a> <a href="#literal-header-field-with-post-base-name-reference" id="literal-header-field-with-post-base-name-reference">Literal Header Field With Post-Base Name Reference</a>
 </h4>
-<p id="rfc.section.5.4.2.4.p.1">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#indexing" class="xref">Section 2.2.1</a>) encoded as an integer with a 3-bit prefix.</p>
+<p id="rfc.section.5.4.2.4.p.1">For entries in the dynamic table with an absolute index greater than Base Index, the header field name is represented using the post-base index of that entry (see <a href="#post-base-indexing" class="xref">Section 2.2.2</a>) encoded as an integer with a 3-bit prefix.</p>
 <pre>
      0   1   2   3   4   5   6   7
    +---+---+---+---+---+---+---+---+
@@ -946,7 +949,7 @@ d = count of entries dropped
 <h3 id="rfc.section.7.3.2">
 <a href="#rfc.section.7.3.2">7.3.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
 </h3>
-<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 5.3</a>.  Since all table updates are processed in sequence on the control stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
+<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 5.3</a>.  Since all table updates are processed in sequence on the encoder stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
 <p id="rfc.section.7.3.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
 <h2 id="rfc.section.7.4">
 <a href="#rfc.section.7.4">7.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>
@@ -1083,12 +1086,12 @@ return controlBuffer, prefixBuffer + streamBuffer
 <tr>
 <td class="reference"><b id="QUIC-HTTP">[QUIC-HTTP]</b></td>
 <td class="top">
-<a title="Akamai Technologies">Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http, July 2018.</td>
+<a title="Akamai Technologies">Bishop, M.</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-http">Hypertext Transfer Protocol (HTTP) over QUIC</a>", Internet-Draft draft-ietf-quic-http, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, July 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC2119">[RFC2119]</b></td>
@@ -1128,7 +1131,13 @@ return controlBuffer, prefixBuffer + streamBuffer
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong> Please remove this section prior to publication of a final version of this document.</li></ul>
 <h2 id="rfc.appendix.A.1">
-<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-qpack-00" id="since-draft-ietf-quic-qpack-00">Since draft-ietf-quic-qpack-00</a>
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-qpack-01" id="since-draft-ietf-quic-qpack-01">Since draft-ietf-quic-qpack-01</a>
+</h2>
+<p></p>
+
+<ul><li>Only header blocks that reference the dynamic table are acknowledged (#1603, #1605)</li></ul>
+<h2 id="rfc.appendix.A.2">
+<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-qpack-00" id="since-draft-ietf-quic-qpack-00">Since draft-ietf-quic-qpack-00</a>
 </h2>
 <p></p>
 
@@ -1140,8 +1149,8 @@ return controlBuffer, prefixBuffer + streamBuffer
 <li>Removed framing from encoder stream (#1361,#1467)</li>
 <li>Control streams use typed unidirectional streams rather than fixed stream IDs (#910,#1359)</li>
 </ul>
-<h2 id="rfc.appendix.A.2">
-<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
+<h2 id="rfc.appendix.A.3">
+<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-qcram-00" id="since-draft-ietf-quic-qcram-00">Since draft-ietf-quic-qcram-00</a>
 </h2>
 <p></p>
 

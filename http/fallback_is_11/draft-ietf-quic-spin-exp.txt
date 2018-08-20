@@ -5,7 +5,7 @@
 QUIC                                                    B. Trammell, Ed.
 Internet-Draft                                             M. Kuehlewind
 Intended status: Experimental                                 ETH Zurich
-Expires: January 20, 2019                                  July 19, 2018
+Expires: February 21, 2019                               August 20, 2018
 
 
                        The QUIC Latency Spin Bit
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 1]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 1]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
    working documents as Internet-Drafts.  The list of current Internet-
@@ -66,7 +66,7 @@ Internet-Draft                QUIC Spin Bit                    July 2018
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 20, 2019.
+   This Internet-Draft will expire on February 21, 2019.
 
 Copyright Notice
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 2]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 2]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft                QUIC Spin Bit                    July 2018
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 3]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 3]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
    S: The Spin bit is set 0 or 1 depending on the stored spin value that
@@ -221,9 +221,9 @@ Internet-Draft                QUIC Spin Bit                    July 2018
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 4]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 4]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
    An observer can store the largest observed packet number per flow,
@@ -277,9 +277,9 @@ Internet-Draft                QUIC Spin Bit                    July 2018
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 5]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 5]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
 5.  Security and Privacy Considerations
@@ -333,9 +333,9 @@ Acknowledgments
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 6]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 6]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
 8.  References
@@ -345,7 +345,7 @@ Internet-Draft                QUIC Spin Bit                    July 2018
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), July 2018.
+              transport (work in progress), August 2018.
 
 8.2.  Informative References
 
@@ -365,8 +365,8 @@ Internet-Draft                QUIC Spin Bit                    July 2018
               progress), May 2018.
 
    [TLS]      Rescorla, E., "The Transport Layer Security (TLS) Protocol
-              Version 1.3", draft-ietf-tls-tls13-28 (work in progress),
-              March 2018.
+              Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
+              <https://www.rfc-editor.org/info/rfc8446>.
 
    [TMA-QOF]  Trammell, B., Gugelmann, D., and N. Brownlee, "Inline Data
               Integrity Signals for Passive Measurement (in Proc. TMA
@@ -389,9 +389,9 @@ Internet-Draft                QUIC Spin Bit                    July 2018
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 7]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 7]
 
-Internet-Draft                QUIC Spin Bit                    July 2018
+Internet-Draft                QUIC Spin Bit                  August 2018
 
 
 Authors' Addresses
@@ -445,4 +445,4 @@ Authors' Addresses
 
 
 
-Trammell & Kuehlewind   Expires January 20, 2019                [Page 8]
+Trammell & Kuehlewind   Expires February 21, 2019               [Page 8]
