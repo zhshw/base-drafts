@@ -1604,19 +1604,19 @@ Internet-Draft                    QPACK                      August 2018
    |      |                            |                               |
    | 97   | forwarded                  |                               |
    |      |                            |                               |
-   | 98   | host                       |                               |
+   | 98   | if-range                   |                               |
    |      |                            |                               |
-   | 99   | if-range                   |                               |
+   | 99   | origin                     |                               |
    |      |                            |                               |
-   | 100  | origin                     |                               |
+   | 100  | purpose                    | prefetch                      |
    |      |                            |                               |
-   | 101  | p3p                        |                               |
+   | 101  | timing-allow-origin        | *                             |
    |      |                            |                               |
-   | 102  | purpose                    | prefetch                      |
+   | 102  | upgrade-insecure-requests  | 1                             |
    |      |                            |                               |
-   | 103  | timing-allow-origin        | *                             |
+   | 103  | x-content-type-options     | nosniff                       |
    |      |                            |                               |
-   | 104  | upgrade-insecure-requests  | 1                             |
+   | 104  | x-forwarded-for            |                               |
    |      |                            |                               |
 
 
@@ -1626,19 +1626,13 @@ Krasic, et al.          Expires February 21, 2019              [Page 29]
 Internet-Draft                    QPACK                      August 2018
 
 
-   | 105  | via                        |                               |
+   | 105  | x-frame-options            | deny                          |
    |      |                            |                               |
-   | 106  | x-content-type-options     | nosniff                       |
+   | 106  | x-frame-options            | sameorigin                    |
    |      |                            |                               |
-   | 107  | x-forwarded-for            |                               |
+   | 107  | x-requested-with           | xmlhttprequest                |
    |      |                            |                               |
-   | 108  | x-frame-options            | deny                          |
-   |      |                            |                               |
-   | 109  | x-frame-options            | sameorigin                    |
-   |      |                            |                               |
-   | 110  | x-requested-with           | xmlhttprequest                |
-   |      |                            |                               |
-   | 111  | x-xss-protection           | 1; mode=block                 |
+   | 108  | x-xss-protection           | 1; mode=block                 |
    +------+----------------------------+-------------------------------+
 
 Appendix B.  Change Log
@@ -1675,17 +1669,18 @@ B.3.  Since draft-ietf-quic-qcram-00
    o  Reworked indexing scheme (#1176, #1145, #1136, #1130, #1125,
       #1314)
 
+   o  Added mechanisms that support one-pass encoding (#1138, #1320)
+
+   o  Added a setting to control the number of blocked decoders (#238,
+      #1140, #1143)
+
+
 
 
 Krasic, et al.          Expires February 21, 2019              [Page 30]
 
 Internet-Draft                    QPACK                      August 2018
 
-
-   o  Added mechanisms that support one-pass encoding (#1138, #1320)
-
-   o  Added a setting to control the number of blocked decoders (#238,
-      #1140, #1143)
 
    o  Moved table updates and acknowledgments to dedicated streams
       (#1121, #1122, #1238)
@@ -1728,16 +1723,6 @@ Authors' Addresses
    Email: mbishop@evequefou.be
 
 
-
-
-
-
-
-Krasic, et al.          Expires February 21, 2019              [Page 31]
-
-Internet-Draft                    QPACK                      August 2018
-
-
    Alan Frindell (editor)
    Facebook
 
@@ -1748,45 +1733,4 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Krasic, et al.          Expires February 21, 2019              [Page 32]
+Krasic, et al.          Expires February 21, 2019              [Page 31]
