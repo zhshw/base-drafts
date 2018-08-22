@@ -212,7 +212,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    supports X.509 [RFC5280] certificate-based authentication for both
    server and client.
 
-   The TLS key exchange is resistent to tampering by attackers and it
+   The TLS key exchange is resistant to tampering by attackers and it
    produces shared secrets that cannot be controlled by either
    participating peer.
 
@@ -677,7 +677,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 4.3.  ClientHello Size
 
    QUIC requires that the first Initial packet from a client contain an
-   entire crytographic handshake message, which for TLS is the
+   entire cryptographic handshake message, which for TLS is the
    ClientHello.  Though a packet larger than 1200 octets might be
    supported by the path, a client improves the likelihood that a packet
    is accepted if it ensures that the first ClientHello message is small
@@ -808,7 +808,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    Section 6).
 
    Packet protection keys are not discarded immediately when new keys
-   are availble.  If packets from a lower encryption level contain
+   are available.  If packets from a lower encryption level contain
    CRYPTO frames, frames that retransmit that data MUST be sent at the
    same encryption level.  Similarly, an endpoint generates
    acknowledgements for packets at the same encryption level as the
@@ -829,7 +829,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    acknowledgments have been received or sent, an endpoint starts a
    timer.  To limit the effect of packet loss around a change in keys,
    endpoints MUST retain packet protection keys for that encryption
-   level for at least three times the current Retramsmission Timeout
+   level for at least three times the current Retransmission Timeout
    (RTO) interval as defined in [QUIC-RECOVERY].  Retaining keys for
    this interval allows packets containing CRYPTO or ACK frames at that
    encryption level to be sent if packets are determined to be lost or
@@ -1387,7 +1387,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
 9.2.  Peer Denial of Service
 
-   QUIC, TLS and HTTP/2 all contain a messages that have legitimate uses
+   QUIC, TLS, and HTTP/2 all contain messages that have legitimate uses
    in some contexts, but that can be abused to cause a peer to expend
    processing resources without having any observable impact on the
    state of the connection.  If processing is disproportionately large
