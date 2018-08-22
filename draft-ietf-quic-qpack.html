@@ -601,7 +601,7 @@ d = count of entries dropped
 <h3 id="rfc.section.2.3.1">
 <a href="#rfc.section.2.3.1">2.3.1.</a> <a href="#state-synchronization" id="state-synchronization">State Synchronization</a>
 </h3>
-<p id="rfc.section.2.3.1.p.1">The decoder stream signals key events at the decoder that permit the encoder to track the decoder&#8217;s state.  These events are:</p>
+<p id="rfc.section.2.3.1.p.1">The decoder stream (<a href="#qpack-decoder-stream" class="xref">Section 5.3</a>) signals key events at the decoder that permit the encoder to track the decoder&#8217;s state.  These events are:</p>
 <p></p>
 
 <ul>
@@ -756,7 +756,7 @@ d = count of entries dropped
 <p id="rfc.section.5.2.4.p.2">The new maximum size MUST be lower than or equal to the limit determined by the protocol using QPACK.  A value that exceeds this limit MUST be treated as a decoding error.  In HTTP/QUIC, this limit is the value of the SETTINGS_HEADER_TABLE_SIZE parameter (see <a href="#configuration" class="xref">Section 4</a>) received from the decoder.</p>
 <p id="rfc.section.5.2.4.p.3">Reducing the maximum size of the dynamic table can cause entries to be evicted (see Section 4.3 of <a href="#RFC7541" class="xref">[RFC7541]</a>).  This MUST NOT cause the eviction of entries with outstanding references (see <a href="#reference-tracking" class="xref">Section 7.3</a>).  Changing the size of the dynamic table is not acknowledged as this instruction does not insert an entry.</p>
 <h2 id="rfc.section.5.3">
-<a href="#rfc.section.5.3">5.3.</a> <a href="#feedback" id="feedback">QPACK Decoder Stream</a>
+<a href="#rfc.section.5.3">5.3.</a> <a href="#qpack-decoder-stream" id="qpack-decoder-stream">QPACK Decoder Stream</a>
 </h2>
 <p id="rfc.section.5.3.p.1">The decoder stream carries information used to ensure consistency of the dynamic table. Information is sent from the QPACK decoder to the QPACK encoder; that is, the server informs the client about the processing of the client&#8217;s header blocks and table updates, and the client informs the server about the processing of the server&#8217;s header blocks and table updates.</p>
 <p id="rfc.section.5.3.p.2">The contents of the decoder stream are an unframed sequence of the following instructions.</p>
@@ -950,7 +950,7 @@ d = count of entries dropped
 <h3 id="rfc.section.7.3.2">
 <a href="#rfc.section.7.3.2">7.3.2.</a> <a href="#blocked-decoding" id="blocked-decoding">Blocked Decoding</a>
 </h3>
-<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged with <a href="#feedback" class="xref">Section 5.3</a>.  Since all table updates are processed in sequence on the encoder stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
+<p id="rfc.section.7.3.2.p.1">For header blocks encoded in non-blocking mode, the encoder needs to forego indexed representations that refer to table updates which have not yet been acknowledged (see <a href="#qpack-decoder-stream" class="xref">Section 5.3</a>).  Since all table updates are processed in sequence on the control stream, an index into the dynamic table is sufficient to track which entries have been acknowledged.</p>
 <p id="rfc.section.7.3.2.p.2">To track blocked streams, the necessary Base Index value for each stream can be used.  Whenever the decoder processes a table update, it can begin decoding any blocked streams that now have their dependencies satisfied.</p>
 <h2 id="rfc.section.7.4">
 <a href="#rfc.section.7.4">7.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>

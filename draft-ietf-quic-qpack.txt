@@ -411,8 +411,9 @@ Internet-Draft                    QPACK                      August 2018
 
 2.3.1.  State Synchronization
 
-   The decoder stream signals key events at the decoder that permit the
-   encoder to track the decoder's state.  These events are:
+   The decoder stream (Section 5.3) signals key events at the decoder
+   that permit the encoder to track the decoder's state.  These events
+   are:
 
    o  Complete processing of a header block
 
@@ -439,7 +440,6 @@ Internet-Draft                    QPACK                      August 2018
    header blocks, for example because the encoder or the decoder have
    chosen not to risk blocked streams, the decoder sends a Table State
    Synchronize instruction (see Section 5.3.1).
-
 
 
 
@@ -1132,8 +1132,8 @@ Internet-Draft                    QPACK                      August 2018
 
    For header blocks encoded in non-blocking mode, the encoder needs to
    forego indexed representations that refer to table updates which have
-   not yet been acknowledged with Section 5.3.  Since all table updates
-   are processed in sequence on the encoder stream, an index into the
+   not yet been acknowledged (see Section 5.3).  Since all table updates
+   are processed in sequence on the control stream, an index into the
    dynamic table is sufficient to track which entries have been
    acknowledged.
 
