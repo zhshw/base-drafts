@@ -1067,7 +1067,7 @@ Internet-Draft               HTTP over QUIC                  August 2018
 
 
    to avoid opening a stream.  If the push stream has been opened by the
-   server, the server SHOULD sent a QUIC RST_STREAM frame on those
+   server, the server SHOULD send a QUIC RST_STREAM frame on those
    streams and cease transmission of the response.
 
    A server can send this frame to indicate that it won't be sending a
