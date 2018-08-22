@@ -517,8 +517,8 @@ ul.toc li {
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#header-tables" id="header-tables">Header Tables</a>
 </h1>
-<p id="rfc.section.2.p.1">Like HPACK, QPACK uses two tables for associating header fields to indexes.  The static table (see <a href="#table-static" class="xref">Section 2.1</a>) is predefined and contains common header fields (some of them with an empty value).  The dynamic table (see <a href="#table-dynamic" class="xref">Section 2.2</a>) built up over the course of the connection and can be used by the encoder to index header fields repeated in the encoded header lists.</p>
-<p id="rfc.section.2.p.2">Unlike in HPACK, entries in the QPACK static and dynamic tables are addressed separately.  The following sections describe how entries in each table is addressed.</p>
+<p id="rfc.section.2.p.1">Like HPACK, QPACK uses two tables for associating header fields to indices.  The static table (see <a href="#table-static" class="xref">Section 2.1</a>) is predefined and contains common header fields (some of them with an empty value).  The dynamic table (see <a href="#table-dynamic" class="xref">Section 2.2</a>) is built up over the course of the connection and can be used by the encoder to index header fields repeated in the encoded header lists.</p>
+<p id="rfc.section.2.p.2">Unlike in HPACK, entries in the QPACK static and dynamic tables are addressed separately.  The following sections describe how entries in each table are addressed.</p>
 <h2 id="rfc.section.2.1">
 <a href="#rfc.section.2.1">2.1.</a> <a href="#table-static" id="table-static">Static Table</a>
 </h2>
@@ -548,8 +548,8 @@ ul.toc li {
     + - +---------------+ - - - - - +
     | 0 |      ...      | n - d - 1 |  Relative Index
     +---+---------------+-----------+
-      ^                     |
-      |                     V
+      ^                       |
+      |                       V
 Insertion Point         Dropping Point
 
 n = count of entries inserted
@@ -570,7 +570,7 @@ d = count of entries dropped
 n = count of entries inserted
 d = count of entries dropped
 </pre>
-<p class="figure">Example Dynamic Table Indexing - Request Stream</p>
+<p class="figure">Example Dynamic Table Indexing - Relative Index on Request Stream</p>
 <h3 id="rfc.section.2.2.2">
 <a href="#rfc.section.2.2.2">2.2.2.</a> <a href="#post-base-indexing" id="post-base-indexing">Post-Base Indexing</a>
 </h3>
@@ -588,13 +588,13 @@ d = count of entries dropped
 n = count of entries inserted
 d = count of entries dropped
 </pre>
-<p class="figure">Dynamic Table Indexing - Post-Base References</p>
+<p class="figure">Example Dynamic Table Indexing - Post-Base Index on Request Stream</p>
 <p id="rfc.section.2.2.2.p.2">If the decoder encounters a reference to an entry which has already been dropped from the table or which is greater than the declared Largest Reference (see <a href="#absolute-index" class="xref">Section 5.4.1</a>), this MUST be treated as a stream error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp> error code.  If this reference occurs on the encoder stream, this MUST be treated as a session error.</p>
 <h2 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#overview-hol-avoidance" id="overview-hol-avoidance">Avoiding Head-of-Line Blocking in HTTP/QUIC</a>
 </h2>
 <p id="rfc.section.2.3.p.1">Because QUIC does not guarantee order between data on different streams, a header block might reference an entry in the dynamic table that has not yet been received.</p>
-<p id="rfc.section.2.3.p.2">Each header block contains a Largest Reference which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately. A stream becomes unblocked when the greatest absolute index in the dynamic table becomes greater than or equal to the Largest Reference for all header blocks the decoder has started reading from the stream.  If a decoder encounters a header block where the actual largest reference is not equal to the largest reference declared in the prefix, it MAY treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.</p>
+<p id="rfc.section.2.3.p.2">Each header block contains a Largest Reference which identifies the table state necessary for decoding. If the greatest absolute index in the dynamic table is less than the value of the Largest Reference, the stream is considered &#8220;blocked.&#8221;  While blocked, header field data should remain in the blocked stream&#8217;s flow control window.  When the Largest Reference is zero, the frame contains no references to the dynamic table and can always be processed immediately. A stream becomes unblocked when the greatest absolute index in the dynamic table becomes greater than or equal to the Largest Reference for all header blocks the decoder has started reading from the stream.  If a decoder encounters a header block where the actual largest reference is not equal to the Largest Reference declared in the prefix, it MAY treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.</p>
 <p id="rfc.section.2.3.p.3">A decoder can permit the possibility of blocked streams by setting SETTINGS_QPACK_BLOCKED_STREAMS to a non-zero value (see <a href="#configuration" class="xref">Section 4</a>).  This setting specifies an upper bound on the number of streams which can be blocked.</p>
 <p id="rfc.section.2.3.p.4">An encoder can decide whether to risk having a stream become blocked. If permitted by the value of SETTINGS_QPACK_BLOCKED_STREAMS, compression efficiency can be improved by referencing dynamic table entries that are still in transit, but if there is loss or reordering the stream can become blocked at the decoder.  An encoder avoids the risk of blocking by only referencing dynamic table entries which have been acknowledged, but this means using literals. Since literals make the header block larger, this can result in the encoder becoming blocked on congestion or flow control limits.</p>
 <p id="rfc.section.2.3.p.5">An encoder MUST limit the number of streams which could become blocked to the value of SETTINGS_QPACK_BLOCKED_STREAMS at all times. Note that the decoder might not actually become blocked on every stream which risks becoming blocked.  If the decoder encounters more blocked streams than it promised to support, it SHOULD treat this as a stream error of type HTTP_QPACK_DECOMPRESSION_FAILED.</p>
@@ -955,7 +955,7 @@ d = count of entries dropped
 <h2 id="rfc.section.7.4">
 <a href="#rfc.section.7.4">7.4.</a> <a href="#speculative-updates" id="speculative-updates">Speculative table updates</a>
 </h2>
-<p id="rfc.section.7.4.p.1">Implementations can <em>speculatively</em> send header frames on the HTTP Control Streams which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Duplicate representations for popular header fields (<a href="#duplicate" class="xref">Section 5.2.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
+<p id="rfc.section.7.4.p.1">Implementations can <em>speculatively</em> send instructions on the encoder stream which are not needed for any current HTTP request or response.  Such headers could be used strategically to improve performance.  For instance, the encoder might decide to <em>refresh</em> by sending Duplicate representations for popular header fields (<a href="#duplicate" class="xref">Section 5.2.3</a>), ensuring they have small indices and hence minimal size on the wire.</p>
 <h2 id="rfc.section.7.5">
 <a href="#rfc.section.7.5">7.5.</a> <a href="#sample-one-pass-encoding-algorithm" id="sample-one-pass-encoding-algorithm">Sample One Pass Encoding Algorithm</a>
 </h2>
