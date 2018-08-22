@@ -659,7 +659,7 @@ ul.toc li {
 <li>CRYPTO frames MAY appear in packets of any encryption level.</li>
 <li>CONNECTION_CLOSE MAY appear in packets of any encryption level other than 0-RTT.</li>
 <li>PADDING and PING frames MAY appear in packets of any encryption level.</li>
-<li>ACK frames MAY appear in packets of any encryption level other than 0-RTT, but can only acknowledge packets which appeared in that encryption level.</li>
+<li>ACK frames MAY appear in packets of any encryption level other than 0-RTT, but can only acknowledge packets which appeared in that packet number space.</li>
 <li>STREAM frames MUST ONLY appear in the 0-RTT and 1-RTT levels.</li>
 <li>All other frame types MUST only appear at the 1-RTT levels.</li>
 </ul>
