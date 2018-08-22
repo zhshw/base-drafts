@@ -337,7 +337,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Krasic, C., Bishop, M., and A. Frindell, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-qpack-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-09" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-22" />
   <meta name="dct.abstract" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
   <meta name="description" content="This specification defines QPACK, a compression format for efficiently representing HTTP header fields, to be used in HTTP over QUIC. This is a variation of HPACK header compression that seeks to reduce head-of-line blocking." />
 
@@ -361,7 +361,7 @@ ul.toc li {
 <td class="right">M. Bishop</td>
 </tr>
 <tr>
-<td class="left">Expires: February 10, 2019</td>
+<td class="left">Expires: February 23, 2019</td>
 <td class="right">Akamai Technologies</td>
 </tr>
 <tr>
@@ -374,7 +374,7 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 09, 2018</td>
+<td class="right">August 22, 2018</td>
 </tr>
 
     	
@@ -393,7 +393,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 10, 2019.</p>
+<p>This Internet-Draft will expire on February 23, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -524,7 +524,7 @@ ul.toc li {
 <a href="#rfc.section.2.2">2.2.</a> <a href="#table-dynamic" id="table-dynamic">Dynamic Table</a>
 </h2>
 <p id="rfc.section.2.2.p.1">The dynamic table consists of a list of header fields maintained in first-in, first-out order.  The dynamic table is initially empty.  Entries are added by instructions on the encoder stream (see <a href="#encoder-stream" class="xref">Section 5.2</a>).</p>
-<p id="rfc.section.2.2.p.2">The maximum size of the dynamic table can be modified by the encoder, subject to a decoder-controlled limit (see <a href="#configuration" class="xref">Section 4</a> and <a href="#size-update" class="xref">Section 5.2.4</a>).  The initial maximum size is determined by the corresponding setting when HTTP requests or responses are first permitted to be sent. For clients using 0-RTT data in HTTP/QUIC, this means that the table size is the remembered value of the setting, even if the server later specifies a larger maximum in its SETTINGS frame.  For HTTP/QUIC servers and HTTP/QUIC clients when 0-RTT is not attempted or is rejected, this means that the initial maximum table size is the value of the setting in the peer&#8217;s SETTINGS frame.</p>
+<p id="rfc.section.2.2.p.2">The maximum size of the dynamic table can be modified by the encoder, subject to a decoder-controlled limit (see <a href="#configuration" class="xref">Section 4</a> and <a href="#size-update" class="xref">Section 5.2.4</a>).  The initial maximum size is determined by the corresponding setting when HTTP requests or responses are first permitted to be sent. For clients using 0-RTT data in HTTP/QUIC, the table size is the remembered value of the setting, even if the server later specifies a larger maximum in its SETTINGS frame.  For HTTP/QUIC servers and HTTP/QUIC clients when 0-RTT is not attempted or is rejected, the initial maximum table size is the value of the setting in the peer&#8217;s SETTINGS frame.</p>
 <p id="rfc.section.2.2.p.3">Before a new entry is added to the dynamic table, entries are evicted from the end of the dynamic table until the size of the dynamic table is less than or equal to (maximum size - new entry size) or until the table is empty.</p>
 <p id="rfc.section.2.2.p.4">If the size of the new entry is less than or equal to the maximum size, that entry is added to the table.  It is an error to attempt to add an entry that is larger than the maximum size; this MUST be treated as a connection error of type <samp>HTTP_QPACK_DECOMPRESSION_FAILED</samp>.</p>
 <p id="rfc.section.2.2.p.5">A new entry can reference an entry in the dynamic table that will be evicted when adding this new entry into the dynamic table.  Implementations are cautioned to avoid deleting the referenced name if the referenced entry is evicted from the dynamic table prior to inserting the new entry.</p>
