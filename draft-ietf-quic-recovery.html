@@ -366,7 +366,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and I. Swett, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-recovery-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-22" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-23" />
   <meta name="dct.abstract" content="This document describes loss detection and congestion control mechanisms for QUIC." />
   <meta name="description" content="This document describes loss detection and congestion control mechanisms for QUIC." />
 
@@ -390,12 +390,12 @@ ul.toc li {
 <td class="right">I. Swett, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 23, 2019</td>
+<td class="left">Expires: February 24, 2019</td>
 <td class="right">Google</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 22, 2018</td>
+<td class="right">August 23, 2018</td>
 </tr>
 
     	
@@ -414,7 +414,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 23, 2019.</p>
+<p>This Internet-Draft will expire on February 24, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -685,7 +685,7 @@ ul.toc li {
 <li>the latest RTT sample is lower than the SRTT, perhaps due to reordering where packet whose ack triggered the Early Retransit process encountered a shorter path;</li>
 <li>the latest RTT sample is higher than the SRTT, perhaps due to a sustained increase in the actual RTT, but the smoothed SRTT has not yet caught up.</li>
 </ul>
-<p id="rfc.section.4.2.2.p.6">The 1.125 multiplier increases reordering resilience. Implementers MAY experiment with using other multipliers, bearing in mind that a lower multiplier reduces reordering resilience and increases spurious retransmissions, and a higher multipler increases loss recovery delay.</p>
+<p id="rfc.section.4.2.2.p.6">The 1.125 multiplier increases reordering resilience. Implementers MAY experiment with using other multipliers, bearing in mind that a lower multiplier reduces reordering resilience and increases spurious retransmissions, and a higher multiplier increases loss recovery delay.</p>
 <p id="rfc.section.4.2.2.p.7">This mechanism is based on Early Retransmit for TCP <a href="#RFC5827" class="xref">[RFC5827]</a>. However, <a href="#RFC5827" class="xref">[RFC5827]</a> does not include the timer described above. Early Retransmit is prone to spurious retransmissions due to its reduced reordering resilence without the timer. This observation led Linux TCP implementers to implement a timer for TCP as well, and this document incorporates this advancement.</p>
 <h2 id="rfc.section.4.3">
 <a href="#rfc.section.4.3">4.3.</a> <a href="#timer-based-detection" id="timer-based-detection">Timer-based Detection</a>
@@ -699,7 +699,7 @@ ul.toc li {
 <p id="rfc.section.4.3.1.p.3">At the beginning, there are no prior RTT samples within a connection.  Resumed connections over the same network SHOULD use the previous connection&#8217;s final smoothed RTT value as the resumed connection&#8217;s initial RTT.</p>
 <p id="rfc.section.4.3.1.p.4">If no previous RTT is available, or if the network changes, the initial RTT SHOULD be set to 100ms.</p>
 <p id="rfc.section.4.3.1.p.5">When CRYPTO frames are sent, the sender SHOULD set a timer for the handshake timeout period.  Upon timeout, the sender MUST retransmit all unacknowledged CRYPTO data by calling RetransmitAllUnackedHandshakeData(). On each consecutive expiration of the handshake timer without receiving an acknowledgement for a new packet, the sender SHOULD double the handshake timeout and set a timer for this period.</p>
-<p id="rfc.section.4.3.1.p.6">When CRYPTO frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO frames were sent at 1RTT encryption.</p>
+<p id="rfc.section.4.3.1.p.6">When CRYPTO frames are outstanding, the TLP and RTO timers are not active unless the CRYPTO frames were sent at 1-RTT encryption.</p>
 <p id="rfc.section.4.3.1.p.7">When an acknowledgement is received for a handshake packet, the new RTT is computed and the timer SHOULD be set for twice the newly computed smoothed RTT.</p>
 <h4 id="rfc.section.4.3.1.1">
 <a href="#rfc.section.4.3.1.1">4.3.1.1.</a> <a href="#retry-and-version-negotiation" id="retry-and-version-negotiation">Retry and Version Negotiation</a>
@@ -744,7 +744,7 @@ ul.toc li {
 <h2 id="rfc.section.4.4">
 <a href="#rfc.section.4.4">4.4.</a> <a href="#generating-acknowledgements" id="generating-acknowledgements">Generating Acknowledgements</a>
 </h2>
-<p id="rfc.section.4.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing frames other than ACK or ACN_ECN.  Specifically, implementaions MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
+<p id="rfc.section.4.4.p.1">QUIC SHOULD delay sending acknowledgements in response to packets, but MUST NOT excessively delay acknowledgements of packets containing frames other than ACK or ACN_ECN.  Specifically, implementations MUST attempt to enforce a maximum ack delay to avoid causing the peer spurious timeouts.  The RECOMMENDED maximum ack delay in QUIC is 25ms.</p>
 <p id="rfc.section.4.4.p.2">An acknowledgement MAY be sent for every second full-sized packet, as TCP does <a href="#RFC5681" class="xref">[RFC5681]</a>, or may be sent less frequently, as long as the delay does not exceed the maximum ack delay.  QUIC recovery algorithms do not assume the peer generates an acknowledgement immediately when receiving a second full-sized packet.</p>
 <p id="rfc.section.4.4.p.3">Out-of-order packets SHOULD be acknowledged more quickly, in order to accelerate loss recovery.  The receiver SHOULD send an immediate ACK when it receives a new packet which is not one greater than the largest received packet number.</p>
 <p id="rfc.section.4.4.p.4">Similarly, packets marked with the ECN Congestion Experienced (CE) codepoint in the IP header SHOULD be acknowledged immediately, to reduce the peer&#8217;s response time to congestion events.</p>
@@ -805,7 +805,7 @@ ul.toc li {
 <dt>tlp_count:</dt>
 <dd style="margin-left: 8">The number of times a tail loss probe has been sent without receiving an ack.</dd>
 <dt>rto_count:</dt>
-<dd style="margin-left: 8">The number of times an rto has been sent without receiving an ack.</dd>
+<dd style="margin-left: 8">The number of times an RTO has been sent without receiving an ack.</dd>
 <dt>largest_sent_before_rto:</dt>
 <dd style="margin-left: 8">The last packet number sent prior to the first retransmission timeout.</dd>
 <dt>time_of_last_sent_retransmittable_packet:</dt>
@@ -971,8 +971,8 @@ ul.toc li {
 <h4 id="rfc.section.4.5.7.2">
 <a href="#rfc.section.4.5.7.2">4.5.7.2.</a> <a href="#tail-loss-probe-and-retransmission-timer" id="tail-loss-probe-and-retransmission-timer">Tail Loss Probe and Retransmission Timer</a>
 </h4>
-<p id="rfc.section.4.5.7.2.p.1">Tail loss probes <a href="#TLP" class="xref">[TLP]</a> and retransmission timeouts <a href="#RFC6298" class="xref">[RFC6298]</a> are a timer based mechanism to recover from cases when there are outstanding retransmittable packets, but an acknowledgement has not been received in a timely manner.</p>
-<p id="rfc.section.4.5.7.2.p.2">The TLP and RTO timers are armed when there is not unacknowledged handshake data.  The TLP timer is set until the max number of TLP packets have been sent, and then the RTO timer is set.</p>
+<p id="rfc.section.4.5.7.2.p.1">Tail loss probes <a href="#TLP" class="xref">[TLP]</a> and retransmission timeouts <a href="#RFC6298" class="xref">[RFC6298]</a> are timer based mechanisms to recover from cases when there are outstanding retransmittable packets, but an acknowledgement has not been received in a timely manner.</p>
+<p id="rfc.section.4.5.7.2.p.2">The TLP and RTO timers are armed when there is no unacknowledged handshake data.  The TLP timer is set until the max number of TLP packets have been sent, and then the RTO timer is set.</p>
 <h4 id="rfc.section.4.5.7.3">
 <a href="#rfc.section.4.5.7.3">4.5.7.3.</a> <a href="#early-retransmit-timer" id="early-retransmit-timer">Early Retransmit Timer</a>
 </h4>
