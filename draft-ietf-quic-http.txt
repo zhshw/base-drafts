@@ -138,7 +138,7 @@ Internet-Draft                  HTTP/QUIC                    August 2018
      11.3.  URIs . . . . . . . . . . . . . . . . . . . . . . . . . .  42
    Appendix A.  Change Log . . . . . . . . . . . . . . . . . . . . .  42
      A.1.  Since draft-ietf-quic-http-13 . . . . . . . . . . . . . .  42
-     A.2.  Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  42
+     A.2.  Since draft-ietf-quic-http-12 . . . . . . . . . . . . . .  43
      A.3.  Since draft-ietf-quic-http-11 . . . . . . . . . . . . . .  43
      A.4.  Since draft-ietf-quic-http-10 . . . . . . . . . . . . . .  43
      A.5.  Since draft-ietf-quic-http-09 . . . . . . . . . . . . . .  43
@@ -233,8 +233,8 @@ Internet-Draft                  HTTP/QUIC                    August 2018
 2.2.  Discovering an HTTP/QUIC Endpoint
 
    An HTTP origin advertises the availability of an equivalent HTTP/QUIC
-   endpoint via the Alt-Svc HTTP response header or the HTTP/2 ALTSVC
-   frame ([RFC7838]), using the ALPN token defined in Section 2.3.
+   endpoint via the Alt-Svc HTTP response header field or the HTTP/2
+   ALTSVC frame ([ALTSVC]), using the ALPN token defined in Section 2.3.
 
    For example, an origin could indicate in an HTTP/1.1 or HTTP/2
    response that HTTP/QUIC was available on UDP port 50781 at the same
@@ -1881,6 +1881,9 @@ Internet-Draft                  HTTP/QUIC                    August 2018
    QUIC can rely on QUIC's own PADDING frames or employ the reserved
    frame and stream types discussed in Section 4.2.1 and Section 3.3.1.
 
+   When HTTP Alternative Services is used for discovery for HTTP/QUIC
+   endpoints, the security considerations of [ALTSVC] also apply.
+
    The modified SETTINGS format contains nested length elements, which
    could pose a security risk to an incautious implementer.  A SETTINGS
    frame parser MUST ensure that the length of the frame exactly matches
@@ -1896,15 +1899,14 @@ Internet-Draft                  HTTP/QUIC                    August 2018
 
    The "hq" string identifies HTTP/QUIC:
 
-   Protocol:  HTTP/QUIC
-
-
 
 
 Bishop                  Expires February 28, 2019              [Page 34]
 
 Internet-Draft                  HTTP/QUIC                    August 2018
 
+
+   Protocol:  HTTP/QUIC
 
    Identification Sequence:  0x68 0x71 ("hq")
 
@@ -1946,8 +1948,6 @@ Internet-Draft                  HTTP/QUIC                    August 2018
       parts of the frame that are conditionally present.
 
    The entries in the following table are registered by this document.
-
-
 
 
 
@@ -2244,6 +2244,10 @@ Internet-Draft                  HTTP/QUIC                    August 2018
 
 11.1.  Normative References
 
+   [ALTSVC]   Nottingham, M., McManus, P., and J. Reschke, "HTTP
+              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
+              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
+
    [QPACK]    Krasic, C., Bishop, M., and A. Frindell, Ed., "QPACK:
               Header Compression for HTTP over QUIC", draft-ietf-quic-
               qpack (work in progress), August 2018.
@@ -2287,16 +2291,16 @@ Internet-Draft                  HTTP/QUIC                    August 2018
               DOI 10.17487/RFC7540, May 2015,
               <https://www.rfc-editor.org/info/rfc7540>.
 
-   [RFC7838]  Nottingham, M., McManus, P., and J. Reschke, "HTTP
-              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
-              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
-
 
 
 Bishop                  Expires February 28, 2019              [Page 41]
 
 Internet-Draft                  HTTP/QUIC                    August 2018
 
+
+   [RFC7838]  Nottingham, M., McManus, P., and J. Reschke, "HTTP
+              Alternative Services", RFC 7838, DOI 10.17487/RFC7838,
+              April 2016, <https://www.rfc-editor.org/info/rfc7838>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -2341,10 +2345,6 @@ A.1.  Since draft-ietf-quic-http-13
 
    o  Specify behavior for truncated requests (#1596, #1643)
 
-A.2.  Since draft-ietf-quic-http-12
-
-   o  TLS SNI extension isn't mandatory if an alternative method is used
-      (#1459, #1462, #1466)
 
 
 
@@ -2353,6 +2353,11 @@ Bishop                  Expires February 28, 2019              [Page 42]
 
 Internet-Draft                  HTTP/QUIC                    August 2018
 
+
+A.2.  Since draft-ietf-quic-http-12
+
+   o  TLS SNI extension isn't mandatory if an alternative method is used
+      (#1459, #1462, #1466)
 
    o  Removed flags from HTTP/QUIC frames (#1388, #1398)
 
@@ -2398,17 +2403,14 @@ A.7.  Since draft-ietf-quic-http-07
 
    o  Improvement to the description of GOAWAY (#604, #898)
 
-   o  Improve description of server push usage (#947, #950, #957)
-
-
-
-
 
 
 Bishop                  Expires February 28, 2019              [Page 43]
 
 Internet-Draft                  HTTP/QUIC                    August 2018
 
+
+   o  Improve description of server push usage (#947, #950, #957)
 
 A.8.  Since draft-ietf-quic-http-06
 
@@ -2457,14 +2459,14 @@ A.13.  Since draft-ietf-quic-http-01
 
       *  SETTINGS_ACK removed
 
-      *  Settings can only occur in the SETTINGS frame a single time
-
 
 
 Bishop                  Expires February 28, 2019              [Page 44]
 
 Internet-Draft                  HTTP/QUIC                    August 2018
 
+
+      *  Settings can only occur in the SETTINGS frame a single time
 
       *  Boolean format updated
 
@@ -2511,8 +2513,6 @@ Acknowledgements
    The original authors of this specification were Robbie Shade and Mike
    Warres.
 
-   A substantial portion of Mike's contribution was supported by
-   Microsoft during his employment there.
 
 
 
@@ -2522,15 +2522,15 @@ Bishop                  Expires February 28, 2019              [Page 45]
 Internet-Draft                  HTTP/QUIC                    August 2018
 
 
+   A substantial portion of Mike's contribution was supported by
+   Microsoft during his employment there.
+
 Author's Address
 
    Mike Bishop (editor)
    Akamai
 
    Email: mbishop@evequefou.be
-
-
-
 
 
 
