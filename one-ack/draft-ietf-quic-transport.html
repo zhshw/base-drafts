@@ -2392,8 +2392,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dd style="margin-left: 8">A gap describes a range of packets that are not acknowledged.  This does not mean that these packets were not received, but that this ACK frame does not include an acknowledgment for those packets.</dd>
 <dt>Unmarked (1):</dt>
 <dd style="margin-left: 8">Unmarked packets are those packets that are acknowledged, but for which the ECN marking is either not present, ECT(1), or unknown.</dd>
-<dt>ECT(0) Marked (2):</dt>
-<dd style="margin-left: 8">Packets that are ECT(0) marked are acknowledged using a type of 3.</dd>
+<dt>ECT Marked (2):</dt>
+<dd style="margin-left: 8">Packets that are ECT(0) marked are acknowledged using a type of 2.</dd>
 <dt>ECN-CE Marked (3):</dt>
 <dd style="margin-left: 8">Packets that are ECN-CE marked are acknowledged using a type of 3.</dd>
 </dl>

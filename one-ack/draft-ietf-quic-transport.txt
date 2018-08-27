@@ -4183,8 +4183,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
       acknowledged, but for which the ECN marking is either not present,
       ECT(1), or unknown.
 
-   ECT(0) Marked (2):  Packets that are ECT(0) marked are acknowledged
-      using a type of 3.
+   ECT Marked (2):  Packets that are ECT(0) marked are acknowledged
+      using a type of 2.
 
    ECN-CE Marked (3):  Packets that are ECN-CE marked are acknowledged
       using a type of 3.
