@@ -1202,7 +1202,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.8.4">8.4.</a> <a href="#http2-error-codes" id="http2-error-codes">HTTP/2 Error Codes</a>
 </h2>
 <p id="rfc.section.8.4.p.1">QUIC has the same concepts of &#8220;stream&#8221; and &#8220;connection&#8221; errors that HTTP/2 provides. However, because the error code space is shared between multiple components, there is no direct portability of HTTP/2 error codes.</p>
-<p id="rfc.section.8.4.p.2">The HTTP/2 error codes defined in Section 7 of <a href="#RFC7540" class="xref">[RFC7540]</a> map to the HTTP over QUIC error codes as follows:</p>
+<p id="rfc.section.8.4.p.2">The HTTP/2 error codes defined in Section 7 of <a href="#RFC7540" class="xref">[RFC7540]</a> map to the HTTP/QUIC error codes as follows:</p>
 <p></p>
 
 <dl>
@@ -1239,7 +1239,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.9.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING frames to make a connection more resistant to traffic analysis, HTTP/QUIC can rely on QUIC&#8217;s own PADDING frames or employ the reserved frame and stream types discussed in <a href="#frame-grease" class="xref">Section 4.2.1</a> and <a href="#stream-grease" class="xref">Section 3.3.1</a>.</p>
+<p id="rfc.section.9.p.1">The security considerations of HTTP/QUIC should be comparable to those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING frames to make a connection more resistant to traffic analysis, HTTP/QUIC can rely on QUIC&#8217;s own PADDING frames or employ the reserved frame and stream types discussed in <a href="#frame-grease" class="xref">Section 4.2.1</a> and <a href="#stream-grease" class="xref">Section 3.3.1</a>.</p>
 <p id="rfc.section.9.p.2">The modified SETTINGS format contains nested length elements, which could pose a security risk to an incautious implementer.  A SETTINGS frame parser MUST ensure that the length of the frame exactly matches the length of the settings it contains.</p>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
@@ -1253,7 +1253,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 
 <dl>
 <dt>Protocol:</dt>
-<dd style="margin-left: 8">HTTP over QUIC</dd>
+<dd style="margin-left: 8">HTTP/QUIC</dd>
 <dt>Identification Sequence:</dt>
 <dd style="margin-left: 8">0x68 0x71 (&#8220;hq&#8221;)</dd>
 <dt>Specification:</dt>

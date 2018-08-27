@@ -17,9 +17,9 @@ Expires: February 28, 2019                           Akamai Technologies
 Abstract
 
    This specification defines QPACK, a compression format for
-   efficiently representing HTTP header fields, to be used in HTTP over
-   QUIC.  This is a variation of HPACK header compression that seeks to
-   reduce head-of-line blocking.
+   efficiently representing HTTP header fields, to be used in HTTP/QUIC.
+   This is a variation of HPACK header compression that seeks to reduce
+   head-of-line blocking.
 
 Note to Readers
 
