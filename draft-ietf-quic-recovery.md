@@ -1032,6 +1032,19 @@ As an example of a well-known and publicly available implementation of a flow
 pacer, implementers are referred to the Fair Queue packet scheduler (fq qdisc)
 in Linux (3.11 onwards).
 
+## Rejection of 0-RTT
+
+If a server rejects 0-RTT, any 0-RTT packets will not be processed.  Rejected
+0-RTT packets can be declared lost as soon as the client learns they have been
+rejected, though they will eventually be marked lost by loss detection
+mechanisms.
+
+Treating rejected 0-RTT packets as lost might result in an inappropriately
+adverse congestion response.  A client that has 0-RTT rejected SHOULD reset its
+congestion state when it learns that 0-RTT has been rejected.  Retaining state
+for loss recovery will ensure that any data is retransmitted as necessary and
+RTT estimates can be used.
+
 ## Pseudocode
 
 ### Constants of interest
