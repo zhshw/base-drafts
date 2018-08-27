@@ -445,7 +445,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-24" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-27" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -469,12 +469,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 25, 2019</td>
+<td class="left">Expires: February 28, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 24, 2018</td>
+<td class="right">August 27, 2018</td>
 </tr>
 
     	
@@ -493,7 +493,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 25, 2019.</p>
+<p>This Internet-Draft will expire on February 28, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1741,14 +1741,14 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <a href="#rfc.section.6.8">6.8.</a> <a href="#using-ecn" id="using-ecn">Using Explicit Congestion Notification</a>
 </h2>
 <p id="rfc.section.6.8.p.1">QUIC endpoints use Explicit Congestion Notification (ECN) <a href="#RFC3168" class="xref">[RFC3168]</a> to detect and respond to network congestion.  ECN allows a network node to indicate congestion in the network by setting a codepoint in the IP header of a packet instead of dropping it.  Endpoints react to congestion by reducing their sending rate in response, as described in <a href="#QUIC-RECOVERY" class="xref">[QUIC-RECOVERY]</a>.</p>
-<p id="rfc.section.6.8.p.2">To use ECN, QUIC endpoints first determine whether a path and peer support ECN marking. Verifying the path occurs at the beginning of a connection and when the connection migrates to a new path (see <a href="#migration" class="xref">Section 6.11</a>).</p>
-<p id="rfc.section.6.8.p.3">Each endpoint independently verifies and enables ECN for the path from it to the peer.</p>
-<p id="rfc.section.6.8.p.4">To verify that both a path and the peer support ECN, an endpoint MUST set one of the ECN Capable Transport (ECT) codepoints &#8211; ECT(0) or ECT(1) &#8211; in the IP header <a href="#RFC8311" class="xref">[RFC8311]</a> of all outgoing packets.</p>
+<p id="rfc.section.6.8.p.2">To use ECN, QUIC endpoints first determine whether a path supports ECN marking and the peer is able to access the ECN codepoint in the IP header.  A network path does not support ECN if ECN marked packets get dropped or ECN markings are rewritten on the path. An endpoint verifies the path, both during connection establishment and when migrating to a new path (see <a href="#migration" class="xref">Section 6.11</a>).</p>
+<p id="rfc.section.6.8.p.3">Each endpoint independently verifies and enables use of ECN by setting the IP header ECN codepoint to ECN Capable Transport (ECT) for the path from it to the other peer. Even if ECN is not used on the path to the peer, the endpoint MUST provide feedback about ECN markings received (if accessible).</p>
+<p id="rfc.section.6.8.p.4">To verify both that a path supports ECN and the peer can provide ECN feedback, an endpoint MUST set the ECT(0) codepoint in the IP header of all outgoing packets <a href="#RFC8311" class="xref">[RFC8311]</a>.</p>
 <p id="rfc.section.6.8.p.5">If an ECT codepoint set in the IP header is not corrupted by a network device, then a received packet contains either the codepoint sent by the peer or the Congestion Experienced (CE) codepoint set by a network device that is experiencing congestion.</p>
-<p id="rfc.section.6.8.p.6">On receiving a packet with an ECT or CE codepoint, an endpoint that supports ECN increases the corresponding ECT(0), ECT(1), or CE count, and includes these counters in subsequent (see <a href="#processing-and-ack" class="xref">Section 8.1</a>) ACK_ECN frames (see <a href="#frame-ack-ecn" class="xref">Section 7.16</a>).</p>
+<p id="rfc.section.6.8.p.6">On receiving a packet with an ECT or CE codepoint, an endpoint that can access the IP ECN codepoints increases the corresponding ECT(0), ECT(1), or CE count, and includes these counters in subsequent (see <a href="#processing-and-ack" class="xref">Section 8.1</a>) ACK_ECN frames (see <a href="#frame-ack-ecn" class="xref">Section 7.16</a>).</p>
 <p id="rfc.section.6.8.p.7">A packet detected by a receiver as a duplicate does not affect the receiver&#8217;s local ECN codepoint counts; see (<a href="#security-ecn" class="xref">Section 12.7</a>) for relevant security concerns.</p>
 <p id="rfc.section.6.8.p.8">If an endpoint receives a packet without an ECT or CE codepoint, it responds per <a href="#processing-and-ack" class="xref">Section 8.1</a> with an ACK frame.</p>
-<p id="rfc.section.6.8.p.9">If an endpoint does not support ECN or does not have access to received ECN codepoints, it acknowledges received packets per <a href="#processing-and-ack" class="xref">Section 8.1</a> with an ACK frame.</p>
+<p id="rfc.section.6.8.p.9">If an endpoint does not have access to received ECN codepoints, it acknowledges received packets per <a href="#processing-and-ack" class="xref">Section 8.1</a> with an ACK frame.</p>
 <p id="rfc.section.6.8.p.10">If a packet sent with an ECT codepoint is newly acknowledged by the peer in an ACK frame, the endpoint stops setting ECT codepoints in subsequent packets, with the expectation that either the network or the peer no longer supports ECN.</p>
 <p id="rfc.section.6.8.p.11">To protect the connection from arbitrary corruption of ECN codepoints by the network, an endpoint verifies the following when an ACK_ECN frame is received:</p>
 <p></p>
@@ -2460,7 +2460,7 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h2 id="rfc.section.7.16">
 <a href="#rfc.section.7.16">7.16.</a> <a href="#frame-ack-ecn" id="frame-ack-ecn">ACK_ECN Frame</a>
 </h2>
-<p id="rfc.section.7.16.p.1">The ACK_ECN frame (type=0x1a) is used by an endpoint that supports ECN to acknowledge packets received with ECN codepoints of ECT(0), ECT(1), or CE in the packet&#8217;s IP header.</p>
+<p id="rfc.section.7.16.p.1">The ACK_ECN frame (type=0x1a) is used by an endpoint that provides ECN feedback for packets received with ECN codepoints of ECT(0), ECT(1), or CE in the packet&#8217;s IP header.</p>
 <div id="rfc.figure.14"></div>
 <div id="ACN_ECN_FRAME_FORMAT"></div>
 <pre>
