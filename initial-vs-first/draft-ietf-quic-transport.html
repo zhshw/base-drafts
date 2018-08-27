@@ -1502,12 +1502,12 @@ ul.toc li {
 <p id="rfc.section.6.2.2.p.5">If the packet is an Initial packet fully conforming with the specification, the server proceeds with the handshake (<a href="#handshake" class="xref">Section 6.4</a>). This commits the server to the version that the client selected.</p>
 <p id="rfc.section.6.2.2.p.6">If a server isn&#8217;t currently accepting any new connections, it SHOULD send a Handshake packet containing a CONNECTION_CLOSE frame with error code SERVER_BUSY.</p>
 <p id="rfc.section.6.2.2.p.7">If the packet is a 0-RTT packet, the server MAY buffer a limited number of these packets in anticipation of a late-arriving Initial Packet. Clients are forbidden from sending Handshake packets prior to receiving a server response, so servers SHOULD ignore any such packets.</p>
-<p id="rfc.section.6.2.2.p.8">Servers MUST drop incoming packets under all other circumstances.  They SHOULD send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) if a connection ID is present in the header.</p>
+<p id="rfc.section.6.2.2.p.8">Servers MUST drop incoming packets under all other circumstances.  They SHOULD send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) if they are able.</p>
 <h2 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#version-negotiation" id="version-negotiation">Version Negotiation</a>
 </h2>
 <p id="rfc.section.6.3.p.1">Version negotiation ensures that client and server agree to a QUIC version that is mutually supported. A server sends a Version Negotiation packet in response to each packet that might initiate a new connection, see <a href="#packet-handling" class="xref">Section 6.2</a> for details.</p>
-<p id="rfc.section.6.3.p.2">The size of the first packet sent by a client will determine whether a server sends a Version Negotiation packet. Clients that support multiple QUIC versions SHOULD pad the first packet they send to the largest of the minimum packet size across all versions they support. This ensures that the server responds if there is a mutually supported version.</p>
+<p id="rfc.section.6.3.p.2">The size of the first packet sent by a client will determine whether a server sends a Version Negotiation packet. Clients that support multiple QUIC versions SHOULD pad the first packet they send to the largest of the minimum packet sizes across all versions they support. This ensures that the server responds if there is a mutually supported version.</p>
 <h3 id="rfc.section.6.3.1">
 <a href="#rfc.section.6.3.1">6.3.1.</a> <a href="#send-vn" id="send-vn">Sending Version Negotiation Packets</a>
 </h3>
