@@ -1111,7 +1111,7 @@ ul.toc li {
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 4: Retry Packet</p>
-<p id="rfc.section.4.4.p.2">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 4</a>) only uses the invariant portion of the long packet header <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a>; that is, the fields up to and including the Destination and Source Connection ID fields.  A Retry packet does not include a Payload field.  Like Version Negotiation, a Retry packet contains the long header including the connection IDs, but omits the Length, Packet Number, and Payload fields.  These are replaced with:</p>
+<p id="rfc.section.4.4.p.2">A Retry packet (shown in <a href="#retry-format" class="xref">Figure 4</a>) only uses the invariant portion of the long packet header <a href="#QUIC-INVARIANTS" class="xref">[QUIC-INVARIANTS]</a>; that is, the fields up to and including the Destination and Source Connection ID fields.  A Retry packet does not contain any protected fields.  Like Version Negotiation, a Retry packet contains the long header including the connection IDs, but omits the Length, Packet Number, and Payload fields.  These are replaced with:</p>
 <p></p>
 
 <dl>

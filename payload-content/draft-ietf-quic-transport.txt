@@ -771,7 +771,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    A Retry packet (shown in Figure 4) only uses the invariant portion of
    the long packet header [QUIC-INVARIANTS]; that is, the fields up to
    and including the Destination and Source Connection ID fields.  A
-   Retry packet does not include a Payload field.  Like Version
+   Retry packet does not contain any protected fields.  Like Version
    Negotiation, a Retry packet contains the long header including the
    connection IDs, but omits the Length, Packet Number, and Payload
    fields.  These are replaced with:
