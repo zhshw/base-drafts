@@ -176,11 +176,11 @@ Internet-Draft           QUIC Transport Protocol             August 2018
        7.15.1.  ACK Block Section  . . . . . . . . . . . . . . . . .  76
        7.15.2.  Sending ACK Frames . . . . . . . . . . . . . . . . .  77
        7.15.3.  ACK Frames and Packet Protection . . . . . . . . . .  78
-     7.16. ACK_ECN Frame . . . . . . . . . . . . . . . . . . . . . .  78
+     7.16. ACK_ECN Frame . . . . . . . . . . . . . . . . . . . . . .  79
      7.17. PATH_CHALLENGE Frame  . . . . . . . . . . . . . . . . . .  79
      7.18. PATH_RESPONSE Frame . . . . . . . . . . . . . . . . . . .  80
      7.19. NEW_TOKEN frame . . . . . . . . . . . . . . . . . . . . .  80
-     7.20. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  80
+     7.20. STREAM Frames . . . . . . . . . . . . . . . . . . . . . .  81
      7.21. CRYPTO Frame  . . . . . . . . . . . . . . . . . . . . . .  82
    8.  Packetization and Reliability . . . . . . . . . . . . . . . .  83
      8.1.  Packet Processing and Acknowledgment  . . . . . . . . . .  84
@@ -4300,11 +4300,11 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    frames in response to packets which only contain ACK frames.
    However, they MUST acknowledge packets containing only ACK frames
    when sending ACK frames in response to other packets.
-   Implementations MUST NOT send more than one packet containing only
-   ACK frames per received packet that contains frames other than ACK
-   frames.  Packets containing non-ACK frames MUST be acknowledged
-   immediately or when a delayed ack timer expires.
-
+   Implementations MUST NOT send more than one packet containing only an
+   ACK frame per received packet that contains frames other than an ACK
+   frame.  Packets containing non-ACK frames MUST be acknowledged
+   immediately or when a delayed ack timer expires.  The delayed ack
+   timer MUST NOT delay an ACK for longer than an RTT, which ensures an
 
 
 
@@ -4313,6 +4313,9 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 77]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   ACK frame is sent at least once per RTT if new packets needing
+   acknowledgement were received.
 
    To limit ACK blocks to those that have not yet been received by the
    sender, the receiver SHOULD track which ACK frames have been
@@ -4355,11 +4358,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Endpoints SHOULD send acknowledgments for packets containing CRYPTO
    frames with a reduced delay; see Section 4.3.1 of [QUIC-RECOVERY].
 
-7.16.  ACK_ECN Frame
 
-   The ACK_ECN frame (type=0x1a) is used by an endpoint that provides
-   ECN feedback for packets received with ECN codepoints of ECT(0),
-   ECT(1), or CE in the packet's IP header.
+
 
 
 
@@ -4369,6 +4369,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 78]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+7.16.  ACK_ECN Frame
+
+   The ACK_ECN frame (type=0x1a) is used by an endpoint that provides
+   ECN feedback for packets received with ECN codepoints of ECT(0),
+   ECT(1), or CE in the packet's IP header.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -4411,13 +4417,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    PATH_CHALLENGE frames contain an 8-byte payload.
 
-    0                   1                   2                   3
-    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-   |                                                               |
-   +                            Data (8)                           +
-   |                                                               |
-   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
 
 
 
@@ -4425,6 +4425,14 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 79]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                                                               |
+   +                            Data (8)                           +
+   |                                                               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
    Data:  This 8-byte field contains arbitrary data.
 
@@ -4466,14 +4474,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Token Length:  A variable-length integer specifying the length of the
       token in bytes.
 
-   Token:  An opaque blob that the client may use with a future Initial
-      packet.
-
-7.20.  STREAM Frames
-
-   STREAM frames implicitly create a stream and carry stream data.  The
-   STREAM frame takes the form 0b00010XXX (or the set of values from
-
 
 
 
@@ -4482,6 +4482,13 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 80]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   Token:  An opaque blob that the client may use with a future Initial
+      packet.
+
+7.20.  STREAM Frames
+
+   STREAM frames implicitly create a stream and carry stream data.  The
+   STREAM frame takes the form 0b00010XXX (or the set of values from
    0x10 to 0x17).  The value of the three low-order bits of the frame
    type determine the fields that are present in the frame.
 
@@ -4522,13 +4529,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    The STREAM frame contains the following fields:
 
-   Stream ID:  A variable-length integer indicating the stream ID of the
-      stream (see Section 9.1).
-
-   Offset:  A variable-length integer specifying the byte offset in the
-      stream for the data in this STREAM frame.  This field is present
-      when the OFF bit is set to 1.  When the Offset field is absent,
-      the offset is 0.
 
 
 
@@ -4537,6 +4537,14 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 81]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Stream ID:  A variable-length integer indicating the stream ID of the
+      stream (see Section 9.1).
+
+   Offset:  A variable-length integer specifying the byte offset in the
+      stream for the data in this STREAM frame.  This field is present
+      when the OFF bit is set to 1.  When the Offset field is absent,
+      the offset is 0.
 
    Length:  A variable-length integer specifying the length of the
       Stream Data field in this STREAM frame.  This field is present
@@ -4577,14 +4585,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    optional length, and the end of the stream.
 
    A CRYPTO frame is shown below.
-
-
-
-
-
-
-
-
 
 
 
