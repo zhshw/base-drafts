@@ -89,14 +89,14 @@ Table of Contents
      4.9.  Discarding Unused Keys  . . . . . . . . . . . . . . . . .  15
    5.  QUIC Packet Protection  . . . . . . . . . . . . . . . . . . .  16
      5.1.  QUIC Packet Encryption Keys . . . . . . . . . . . . . . .  16
-       5.1.1.  Initial Secrets . . . . . . . . . . . . . . . . . . .  17
-     5.2.  QUIC AEAD Usage . . . . . . . . . . . . . . . . . . . . .  17
-     5.3.  Packet Number Protection  . . . . . . . . . . . . . . . .  18
-       5.3.1.  AES-Based Packet Number Protection  . . . . . . . . .  20
-       5.3.2.  ChaCha20-Based Packet Number Protection . . . . . . .  20
-     5.4.  Receiving Protected Packets . . . . . . . . . . . . . . .  20
-     5.5.  Use of 0-RTT Keys . . . . . . . . . . . . . . . . . . . .  21
-     5.6.  Receiving Out-of-Order Protected Frames . . . . . . . . .  21
+     5.2.  Initial Secrets . . . . . . . . . . . . . . . . . . . . .  17
+     5.3.  QUIC AEAD Usage . . . . . . . . . . . . . . . . . . . . .  17
+     5.4.  Packet Number Protection  . . . . . . . . . . . . . . . .  18
+       5.4.1.  AES-Based Packet Number Protection  . . . . . . . . .  20
+       5.4.2.  ChaCha20-Based Packet Number Protection . . . . . . .  20
+     5.5.  Receiving Protected Packets . . . . . . . . . . . . . . .  20
+     5.6.  Use of 0-RTT Keys . . . . . . . . . . . . . . . . . . . .  21
+     5.7.  Receiving Out-of-Order Protected Frames . . . . . . . . .  21
    6.  Key Update  . . . . . . . . . . . . . . . . . . . . . . . . .  22
    7.  Security of Initial Messages  . . . . . . . . . . . . . . . .  23
    8.  QUIC-Specific Additions to the TLS Handshake  . . . . . . . .  24
@@ -878,7 +878,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
    The keys for the Initial encryption level are computed based on the
    client's initial Destination Connection ID, as described in
-   Section 5.1.1.
+   Section 5.2.
 
    The keys for other encryption levels are computed in the same fashion
    as the corresponding TLS keys (see Section 7 of [TLS13]), except that
@@ -898,7 +898,7 @@ Thomson & Turner          Expires March 1, 2019                [Page 16]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-5.1.1.  Initial Secrets
+5.2.  Initial Secrets
 
    Initial packets are protected with a secret derived from the
    Destination Connection ID field from the client's first Initial
@@ -937,7 +937,7 @@ Internet-Draft                QUIC over TLS                  August 2018
       its packet; the client has to rely on the exchange that included
       the Retry packet for that property.
 
-5.2.  QUIC AEAD Usage
+5.3.  QUIC AEAD Usage
 
    The Authentication Encryption with Associated Data (AEAD) [AEAD]
    function used for QUIC packet protection is the AEAD that is
@@ -955,7 +955,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
 
    QUIC packets are protected prior to applying packet number encryption
-   (Section 5.3).  The unprotected packet number is part of the
+   (Section 5.4).  The unprotected packet number is part of the
    associated data (A).  When removing packet protection, an endpoint
    first removes the protection from the packet number.
 
@@ -963,7 +963,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    protected with an AEAD algorithm [AEAD].  Prior to establishing a
    shared secret, packets are protected with AEAD_AES_128_GCM and a key
    derived from the destination connection ID in the client's first
-   Initial packet (see Section 5.1.1).  This provides protection against
+   Initial packet (see Section 5.2).  This provides protection against
    off-path attackers and robustness against QUIC version unaware
    middleboxes, but not against on-path attackers.
 
@@ -993,7 +993,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    key update (Section 6) prior to exceeding any limit set for the AEAD
    that is in use.
 
-5.3.  Packet Number Protection
+5.4.  Packet Number Protection
 
    QUIC packet numbers are protected using a key that is derived from
    the current set of secrets.  The key derived using the "pn" label is
@@ -1011,7 +1011,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
 
    Packet number protection is applied after packet protection is
-   applied (see Section 5.2).  The ciphertext of the packet is sampled
+   applied (see Section 5.3).  The ciphertext of the packet is sampled
    and used as input to an encryption algorithm.
 
    In sampling the packet ciphertext, the packet number length is
@@ -1066,7 +1066,7 @@ Thomson & Turner          Expires March 1, 2019                [Page 19]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-5.3.1.  AES-Based Packet Number Protection
+5.4.1.  AES-Based Packet Number Protection
 
    This section defines the packet protection algorithm for
    AEAD_AES_128_GCM, AEAD_AES_128_CCM, AEAD_AES_256_GCM, and
@@ -1079,7 +1079,7 @@ Internet-Draft                QUIC over TLS                  August 2018
 
    encrypted_pn = AES-CTR(pn_key, sample, packet_number)
 
-5.3.2.  ChaCha20-Based Packet Number Protection
+5.4.2.  ChaCha20-Based Packet Number Protection
 
    When AEAD_CHACHA20_POLY1305 is in use, packet number protection uses
    the raw ChaCha20 function as defined in Section 2.4 of [CHACHA].
@@ -1098,7 +1098,7 @@ Internet-Draft                QUIC over TLS                  August 2018
    nonce = DecodeLE(sample[4..7], sample[8..11], sample[12..15])
    encrypted_pn = ChaCha20(pn_key, counter, nonce, packet_number)
 
-5.4.  Receiving Protected Packets
+5.5.  Receiving Protected Packets
 
    Once an endpoint successfully receives a packet with a given packet
    number, it MUST discard all packets in the same packet number space
@@ -1122,7 +1122,7 @@ Thomson & Turner          Expires March 1, 2019                [Page 20]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-5.5.  Use of 0-RTT Keys
+5.6.  Use of 0-RTT Keys
 
    If 0-RTT keys are available (see Section 4.5), the lack of replay
    protection means that restrictions on their use are necessary to
@@ -1151,7 +1151,7 @@ Internet-Draft                QUIC over TLS                  August 2018
       protection cannot be derived until the client receives all server
       handshake messages.
 
-5.6.  Receiving Out-of-Order Protected Frames
+5.7.  Receiving Out-of-Order Protected Frames
 
    Due to reordering and loss, protected packets might be received by an
    endpoint before the final TLS handshake messages are received.  A
