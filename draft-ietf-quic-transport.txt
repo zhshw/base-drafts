@@ -90,13 +90,13 @@ Table of Contents
        4.6.2.  Tokens  . . . . . . . . . . . . . . . . . . . . . . .  19
        4.6.3.  Starting Packet Numbers . . . . . . . . . . . . . . .  20
        4.6.4.  0-RTT Packet Numbers  . . . . . . . . . . . . . . . .  20
-       4.6.5.  Minimum Packet Size . . . . . . . . . . . . . . . . .  20
+       4.6.5.  Minimum Packet Size . . . . . . . . . . . . . . . . .  21
      4.7.  Handshake Packet  . . . . . . . . . . . . . . . . . . . .  21
      4.8.  Protected Packets . . . . . . . . . . . . . . . . . . . .  21
      4.9.  Coalescing Packets  . . . . . . . . . . . . . . . . . . .  22
      4.10. Connection ID Encoding  . . . . . . . . . . . . . . . . .  23
      4.11. Packet Numbers  . . . . . . . . . . . . . . . . . . . . .  24
-   5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  26
+   5.  Frames and Frame Types  . . . . . . . . . . . . . . . . . . .  27
      5.1.  Extension Frames  . . . . . . . . . . . . . . . . . . . .  29
    6.  Life of a Connection  . . . . . . . . . . . . . . . . . . . .  29
      6.1.  Connection ID . . . . . . . . . . . . . . . . . . . . . .  30
@@ -1056,8 +1056,8 @@ Internet-Draft           QUIC Transport Protocol             August 2018
       frames and Retry packets differently, and validate the latter more
       strictly.
 
-
-
+   In a stateless design, a server can use encrypted and authenticated
+   tokens to pass information to clients that the server can later
 
 
 
@@ -1065,6 +1065,13 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 19]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   recover and use to validate a client address.  Tokens are not
+   integrated into the cryptographic handshake and so they are not
+   authenticated.  For instance, a client might be able to reuse a
+   token.  To avoid attacks that exploit this property, a server can
+   limit its use of tokens to only the information needed validate
+   client addresses.
 
 4.6.3.  Starting Packet Numbers
 
@@ -1108,19 +1115,19 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    this also prevents 0-RTT packets from previous handshake attempts
    from being accepted as part of the connection.
 
-4.6.5.  Minimum Packet Size
-
-   The payload of a UDP datagram carrying the Initial packet MUST be
-   expanded to at least 1200 octets (see Section 8), by adding PADDING
-   frames to the Initial packet and/or by combining the Initial packet
-   with a 0-RTT packet (see Section 4.9).
-
 
 
 Iyengar & Thomson         Expires March 1, 2019                [Page 20]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+4.6.5.  Minimum Packet Size
+
+   The payload of a UDP datagram carrying the Initial packet MUST be
+   expanded to at least 1200 octets (see Section 8), by adding PADDING
+   frames to the Initial packet and/or by combining the Initial packet
+   with a 0-RTT packet (see Section 4.9).
 
 4.7.  Handshake Packet
 
@@ -1164,19 +1171,19 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    packet protection.  0-RTT and 1-RTT protected packets share a single
    packet number space.
 
-   Packets protected with handshake keys only use packet protection to
-   ensure that the sender of the packet is on the network path.  This
-   packet protection is not effective confidentiality protection; any
-   entity that receives the Initial packet from a client can recover the
-   keys necessary to remove packet protection or to generate packets
-   that will be successfully authenticated.
-
 
 
 Iyengar & Thomson         Expires March 1, 2019                [Page 21]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Packets protected with handshake keys only use packet protection to
+   ensure that the sender of the packet is on the network path.  This
+   packet protection is not effective confidentiality protection; any
+   entity that receives the Initial packet from a client can recover the
+   keys necessary to remove packet protection or to generate packets
+   that will be successfully authenticated.
 
    Packets protected with 0-RTT and 1-RTT keys are expected to have
    confidentiality and data origin authentication; the cryptographic
@@ -1219,13 +1226,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    Coalescing packets in order of increasing encryption levels (Initial,
    0-RTT, Handshake, 1-RTT) makes it more likely the receiver will be
-   able to process all the packets in a single pass.  A packet with a
-   short header does not include a length, so it will always be the last
-   packet included in a UDP datagram.
-
-   Senders MUST NOT coalesce QUIC packets with different Destination
-   Connection IDs into a single UDP datagram.  Receivers SHOULD ignore
-
 
 
 
@@ -1234,6 +1234,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 22]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   able to process all the packets in a single pass.  A packet with a
+   short header does not include a length, so it will always be the last
+   packet included in a UDP datagram.
+
+   Senders MUST NOT coalesce QUIC packets with different Destination
+   Connection IDs into a single UDP datagram.  Receivers SHOULD ignore
    any subsequent packets with a different Destination Connection ID
    than the first packet in the datagram.
 
@@ -1276,12 +1282,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    the value it sends in the Destination Connection ID in response to
    the first packet of each type it receives from the server (Retry or
    Initial); a server MUST set its value based on the Initial packet.
-   Any additional changes are not permitted; if subsequent packets of
-   those types include a different Source Connection ID, they MUST be
-   discarded.  This avoids problems that might arise from stateless
-   processing of multiple Initial packets producing different connection
-   IDs.
-
 
 
 
@@ -1289,6 +1289,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 23]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Any additional changes are not permitted; if subsequent packets of
+   those types include a different Source Connection ID, they MUST be
+   discarded.  This avoids problems that might arise from stateless
+   processing of multiple Initial packets producing different connection
+   IDs.
 
    Short headers only include the Destination Connection ID and omit the
    explicit length.  The length of the Destination Connection ID field
@@ -1332,12 +1338,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    o  Application data space: All 0-RTT and 1-RTT encrypted packets
       Section 4.8 are in this space.
 
-   As described in [QUIC-TLS], each packet type uses different
-   encryption keys.
-
-   Conceptually, a packet number space is the encryption context in
-   which a packet can be processed and ACKed.  Initial packets can only
-   be sent with Initial encryption keys and ACKed in packets which are
 
 
 
@@ -1346,6 +1346,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 24]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   As described in [QUIC-TLS], each packet type uses different
+   encryption keys.
+
+   Conceptually, a packet number space is the encryption context in
+   which a packet can be processed and ACKed.  Initial packets can only
+   be sent with Initial encryption keys and ACKed in packets which are
    also Initial packets.  Similarly, Handshake packets can only be sent
    and acknowledged in Handshake packets.
 
@@ -1388,12 +1394,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    The encoded packet number is protected as described in Section 5.3
    [QUIC-TLS].  Protection of the packet number is removed prior to
-   recovering the full packet number.  The full packet number is
-   reconstructed at the receiver based on the number of significant bits
-   present, the value of those bits, and the largest packet number
-   received on a successfully authenticated packet.  Recovering the full
-   packet number is necessary to successfully remove packet protection.
-
 
 
 
@@ -1401,6 +1401,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 25]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   recovering the full packet number.  The full packet number is
+   reconstructed at the receiver based on the number of significant bits
+   present, the value of those bits, and the largest packet number
+   received on a successfully authenticated packet.  Recovering the full
+   packet number is necessary to successfully remove packet protection.
 
    Once packet number protection is removed, the packet number is
    decoded by finding the packet number value that is closest to the
@@ -1442,12 +1448,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    number.  The Retry packet (Section 4.4) has special rules for
    populating the packet number field.
 
-5.  Frames and Frame Types
-
-   The payload of all packets, after removing packet protection,
-   consists of a sequence of frames, as shown in Figure 6.  Version
-   Negotiation and Stateless Reset do not contain frames.
-
 
 
 
@@ -1457,6 +1457,12 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 26]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+5.  Frames and Frame Types
+
+   The payload of all packets, after removing packet protection,
+   consists of a sequence of frames, as shown in Figure 6.  Version
+   Negotiation and Stateless Reset do not contain frames.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1494,12 +1500,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    flags.  For all other frames, the Frame Type field simply identifies
    the frame.  These frames are explained in more detail as they are
    referenced later in the document.
-
-
-
-
-
-
 
 
 

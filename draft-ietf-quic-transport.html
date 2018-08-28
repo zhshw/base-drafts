@@ -1202,6 +1202,7 @@ ul.toc li {
 <dt>Note:</dt>
 <dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.  A server MAY encode tokens provided with NEW_TOKEN frames and Retry packets differently, and validate the latter more strictly.</dd>
 </dl>
+<p id="rfc.section.4.6.2.p.7">In a stateless design, a server can use encrypted and authenticated tokens to pass information to clients that the server can later recover and use to validate a client address.  Tokens are not integrated into the cryptographic handshake and so they are not authenticated.  For instance, a client might be able to reuse a token.  To avoid attacks that exploit this property, a server can limit its use of tokens to only the information needed validate client addresses.</p>
 <h3 id="rfc.section.4.6.3">
 <a href="#rfc.section.4.6.3">4.6.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
 </h3>
