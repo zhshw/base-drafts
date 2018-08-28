@@ -445,7 +445,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-27" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-28" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -469,12 +469,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 28, 2019</td>
+<td class="left">Expires: March 1, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 27, 2018</td>
+<td class="right">August 28, 2018</td>
 </tr>
 
     	
@@ -493,7 +493,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 28, 2019.</p>
+<p>This Internet-Draft will expire on March 1, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1202,7 +1202,7 @@ ul.toc li {
 <dt>Note:</dt>
 <dd style="margin-left: 8">The rationale for treating the client as unvalidated rather than discarding the packet is that the client might have received the token in a previous connection using the NEW_TOKEN frame, and if the server has lost state, it might be unable to validate the token at all, leading to connection failure if the packet is discarded.  A server MAY encode tokens provided with NEW_TOKEN frames and Retry packets differently, and validate the latter more strictly.</dd>
 </dl>
-<p id="rfc.section.4.6.2.p.7">In a stateless design, a server can use encrypted and authenticated tokens to pass information to clients that the server can later recover and use to validate a client address.  Tokens are not integrated into the crypto graphic handshake and so they cannot be authenticated.  For instance, a client might be able to reuse a token.  To avoid attacks that exploit this property, a server can limit its use of tokens to only the information needed validate client addresses.</p>
+<p id="rfc.section.4.6.2.p.7">In a stateless design, a server can use encrypted and authenticated tokens to pass information to clients that the server can later recover and use to validate a client address.  Tokens are not integrated into the cryptographic handshake and so they are not authenticated.  For instance, a client might be able to reuse a token.  To avoid attacks that exploit this property, a server can limit its use of tokens to only the information needed validate client addresses.</p>
 <h3 id="rfc.section.4.6.3">
 <a href="#rfc.section.4.6.3">4.6.3.</a> <a href="#starting-packet-numbers" id="starting-packet-numbers">Starting Packet Numbers</a>
 </h3>
