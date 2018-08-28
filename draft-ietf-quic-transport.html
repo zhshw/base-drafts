@@ -1261,7 +1261,7 @@ ul.toc li {
 <h2 id="rfc.section.4.11">
 <a href="#rfc.section.4.11">4.11.</a> <a href="#packet-numbers" id="packet-numbers">Packet Numbers</a>
 </h2>
-<p id="rfc.section.4.11.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet encryption.  Each endpoint maintains a separate packet number for sending and receiving.</p>
+<p id="rfc.section.4.11.p.1">The packet number is an integer in the range 0 to 2^62-1. The value is used in determining the cryptographic nonce for packet protection.  Each endpoint maintains a separate packet number for sending and receiving.</p>
 <p id="rfc.section.4.11.p.2">Packet numbers are divided into 3 spaces in QUIC:</p>
 <p></p>
 
@@ -1270,8 +1270,8 @@ ul.toc li {
 <li>Handshake space: All Handshake packets <a href="#packet-handshake" class="xref">Section 4.7</a> are in this space.</li>
 <li>Application data space: All 0-RTT and 1-RTT encrypted packets <a href="#packet-protected" class="xref">Section 4.8</a> are in this space.</li>
 </ul>
-<p id="rfc.section.4.11.p.4">As described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, each packet type uses different encryption keys.</p>
-<p id="rfc.section.4.11.p.5">Conceptually, a packet number space is the encryption context in which a packet can be processed and ACKed.  Initial packets can only be sent with Initial encryption keys and ACKed in packets which are also Initial packets.  Similarly, Handshake packets can only be sent and acknowledged in Handshake packets.</p>
+<p id="rfc.section.4.11.p.4">As described in <a href="#QUIC-TLS" class="xref">[QUIC-TLS]</a>, each packet type uses different protection keys.</p>
+<p id="rfc.section.4.11.p.5">Conceptually, a packet number space is the context in which a packet can be processed and acknowledged.  Initial packets can only be sent with Initial packet protection keys and acknowledged in packets which are also Initial packets.  Similarly, Handshake packets are sent at the Handshake encryption level and can only be acknowledged in Handshake packets.</p>
 <p id="rfc.section.4.11.p.6">This enforces cryptographic separation between the data sent in the different packet sequence number spaces.  Each packet number space starts at packet number 0.  Subsequent packets sent in the same packet number space MUST increase the packet number by at least one.</p>
 <p id="rfc.section.4.11.p.7">0-RTT and 1-RTT data exist in the same packet number space to make loss recovery algorithms easier to implement between the two packet types.</p>
 <p id="rfc.section.4.11.p.8">A QUIC endpoint MUST NOT reuse a packet number within the same packet number space in one connection (that is, under the same cryptographic keys).  If the packet number for sending reaches 2^62 - 1, the sender MUST close the connection without sending a CONNECTION_CLOSE frame or any further packets; an endpoint MAY send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) in response to further packets that it receives.</p>

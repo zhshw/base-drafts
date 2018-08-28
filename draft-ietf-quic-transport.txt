@@ -1324,7 +1324,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 4.11.  Packet Numbers
 
    The packet number is an integer in the range 0 to 2^62-1.  The value
-   is used in determining the cryptographic nonce for packet encryption.
+   is used in determining the cryptographic nonce for packet protection.
    Each endpoint maintains a separate packet number for sending and
    receiving.
 
@@ -1347,13 +1347,14 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
    As described in [QUIC-TLS], each packet type uses different
-   encryption keys.
+   protection keys.
 
-   Conceptually, a packet number space is the encryption context in
-   which a packet can be processed and ACKed.  Initial packets can only
-   be sent with Initial encryption keys and ACKed in packets which are
-   also Initial packets.  Similarly, Handshake packets can only be sent
-   and acknowledged in Handshake packets.
+   Conceptually, a packet number space is the context in which a packet
+   can be processed and acknowledged.  Initial packets can only be sent
+   with Initial packet protection keys and acknowledged in packets which
+   are also Initial packets.  Similarly, Handshake packets are sent at
+   the Handshake encryption level and can only be acknowledged in
+   Handshake packets.
 
    This enforces cryptographic separation between the data sent in the
    different packet sequence number spaces.  Each packet number space
@@ -1392,8 +1393,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Note that these encodings are similar to those in Section 7.1, but
    use different values.
 
-   The encoded packet number is protected as described in Section 5.3
-   [QUIC-TLS].  Protection of the packet number is removed prior to
+
 
 
 
@@ -1402,6 +1402,8 @@ Iyengar & Thomson         Expires March 1, 2019                [Page 25]
 Internet-Draft           QUIC Transport Protocol             August 2018
 
 
+   The encoded packet number is protected as described in Section 5.3
+   [QUIC-TLS].  Protection of the packet number is removed prior to
    recovering the full packet number.  The full packet number is
    reconstructed at the receiver based on the number of significant bits
    present, the value of those bits, and the largest packet number
@@ -1447,8 +1449,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    A Version Negotiation packet (Section 4.3) does not include a packet
    number.  The Retry packet (Section 4.4) has special rules for
    populating the packet number field.
-
-
 
 
 
