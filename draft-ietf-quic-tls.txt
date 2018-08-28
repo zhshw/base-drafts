@@ -87,11 +87,11 @@ Table of Contents
      4.7.  HelloRetryRequest . . . . . . . . . . . . . . . . . . . .  14
      4.8.  TLS Errors  . . . . . . . . . . . . . . . . . . . . . . .  15
      4.9.  Discarding Unused Keys  . . . . . . . . . . . . . . . . .  15
-   5.  QUIC Packet Protection  . . . . . . . . . . . . . . . . . . .  16
-     5.1.  QUIC Packet Encryption Keys . . . . . . . . . . . . . . .  16
+   5.  Packet Protection . . . . . . . . . . . . . . . . . . . . . .  16
+     5.1.  Packet Protection Keys  . . . . . . . . . . . . . . . . .  16
      5.2.  Initial Secrets . . . . . . . . . . . . . . . . . . . . .  17
-     5.3.  QUIC AEAD Usage . . . . . . . . . . . . . . . . . . . . .  17
-     5.4.  Packet Number Protection  . . . . . . . . . . . . . . . .  18
+     5.3.  AEAD Usage  . . . . . . . . . . . . . . . . . . . . . . .  18
+     5.4.  Packet Number Protection  . . . . . . . . . . . . . . . .  19
        5.4.1.  AES-Based Packet Number Protection  . . . . . . . . .  20
        5.4.2.  ChaCha20-Based Packet Number Protection . . . . . . .  20
      5.5.  Receiving Protected Packets . . . . . . . . . . . . . . .  20
@@ -864,32 +864,32 @@ Internet-Draft                QUIC over TLS                  August 2018
    such packets will be marked as lost before this, as they leave a gap
    in the sequence of packet numbers.
 
-5.  QUIC Packet Protection
+5.  Packet Protection
 
-   As with TLS over TCP, QUIC encrypts packets with keys derived from
+   As with TLS over TCP, QUIC protects packets with keys derived from
    the TLS handshake, using the AEAD algorithm negotiated by TLS.
 
-5.1.  QUIC Packet Encryption Keys
+5.1.  Packet Protection Keys
 
-   QUIC derives packet encryption keys in the same way as TLS 1.3: Each
-   encryption level/direction pair has a secret value, which is then
-   used to derive the traffic keys using as described in Section 7.3 of
-   [TLS13]
+   QUIC derives packet protection keys in the same way that TLS derives
+   record protection keys.
 
-   The keys for the Initial encryption level are computed based on the
-   client's initial Destination Connection ID, as described in
-   Section 5.2.
+   Each encryption level has separate secret values for protection of
+   packets sent in each direction.  These traffic secrets are derived by
+   TLS (see Section 7.1 of [TLS13]) and are used by QUIC for all
+   encryption levels except the Initial encryption level.  The secrets
+   for the Initial encryption level are computed based on the client's
+   initial Destination Connection ID, as described in Section 5.2.
 
-   The keys for other encryption levels are computed in the same fashion
-   as the corresponding TLS keys (see Section 7 of [TLS13]), except that
+   The keys used for packet protection are computed from the TLS secrets
+   using the method described in Section 7.3 of [TLS13]), except that
    the label for HKDF-Expand-Label uses the prefix "quic " rather than
    "tls13 ".  A different label provides key separation between TLS and
    QUIC.
 
-
-
-
-
+   For example, where TLS might use a label of
+   0x002009746c733133206b657900 to derive a key, QUIC uses
+   0x00200871756963206b657900.
 
 
 
@@ -897,6 +897,10 @@ Thomson & Turner          Expires March 1, 2019                [Page 16]
 
 Internet-Draft                QUIC over TLS                  August 2018
 
+
+   The HKDF-Expand-Label function with a "quic " label is also used to
+   derive the initial secrets (see Section 5.2) and to derive a packet
+   number protection key (the "pn" label, see Section 5.4).
 
 5.2.  Initial Secrets
 
@@ -915,13 +919,14 @@ Internet-Draft                QUIC over TLS                  August 2018
                                              "server in", "",
                                              Hash.length)
 
-   Note that if the server sends a Retry, the client's Initial will
-   correspond to a new connection and thus use the server provided
-   Destination Connection ID.
-
    The hash function for HKDF when deriving initial secrets and keys is
-   SHA-256 [SHA].  The connection ID used with HKDF-Expand-Label is the
-   initial Destination Connection ID.
+   SHA-256 [SHA].
+
+   The connection ID used with HKDF-Expand-Label is the Destination
+   Connection ID in the Initial packet sent by the client.  This will be
+   a randomly-selected value unless the client creates the Initial
+   packet after reciving a Retry packet, where the Destination
+   Connection ID is selected by the server.
 
    The value of initial_salt is a 20 octet sequence shown in the figure
    in hexadecimal notation.  Future versions of QUIC SHOULD generate a
@@ -937,13 +942,8 @@ Internet-Draft                QUIC over TLS                  August 2018
       its packet; the client has to rely on the exchange that included
       the Retry packet for that property.
 
-5.3.  QUIC AEAD Usage
 
-   The Authentication Encryption with Associated Data (AEAD) [AEAD]
-   function used for QUIC packet protection is the AEAD that is
-   negotiated for use with the TLS connection.  For example, if TLS is
-   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
-   used.
+
 
 
 
@@ -954,7 +954,15 @@ Thomson & Turner          Expires March 1, 2019                [Page 17]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
-   QUIC packets are protected prior to applying packet number encryption
+5.3.  AEAD Usage
+
+   The Authentication Encryption with Associated Data (AEAD) [AEAD]
+   function used for QUIC packet protection is the AEAD that is
+   negotiated for use with the TLS connection.  For example, if TLS is
+   using the TLS_AES_128_GCM_SHA256, the AEAD_AES_128_GCM function is
+   used.
+
+   QUIC packets are protected prior to applying packet number protection
    (Section 5.4).  The unprotected packet number is part of the
    associated data (A).  When removing packet protection, an endpoint
    first removes the protection from the packet number.
@@ -993,14 +1001,6 @@ Internet-Draft                QUIC over TLS                  August 2018
    key update (Section 6) prior to exceeding any limit set for the AEAD
    that is in use.
 
-5.4.  Packet Number Protection
-
-   QUIC packet numbers are protected using a key that is derived from
-   the current set of secrets.  The key derived using the "pn" label is
-   used to protect the packet number from casual observation.  The
-   packet number protection algorithm depends on the negotiated AEAD.
-
-
 
 
 
@@ -1009,6 +1009,13 @@ Thomson & Turner          Expires March 1, 2019                [Page 18]
 
 Internet-Draft                QUIC over TLS                  August 2018
 
+
+5.4.  Packet Number Protection
+
+   QUIC packet numbers are protected using a key that is derived from
+   the current set of secrets.  The key derived using the "pn" label is
+   used to protect the packet number from casual observation.  The
+   packet number protection algorithm depends on the negotiated AEAD.
 
    Packet number protection is applied after packet protection is
    applied (see Section 5.3).  The ciphertext of the packet is sampled
@@ -1052,19 +1059,18 @@ Internet-Draft                QUIC over TLS                  August 2018
    number, it may be necessary to progressively decrypt the packet
    number.
 
-   Before a TLS ciphersuite can be used with QUIC, a packet protection
-   algorithm MUST be specifed for the AEAD used with that ciphersuite.
-   This document defines algorithms for AEAD_AES_128_GCM,
-   AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs
-   are defined in [AEAD]), and AEAD_CHACHA20_POLY1305 ([CHACHA]).
-
-
 
 
 Thomson & Turner          Expires March 1, 2019                [Page 19]
 
 Internet-Draft                QUIC over TLS                  August 2018
 
+
+   Before a TLS ciphersuite can be used with QUIC, a packet protection
+   algorithm MUST be specifed for the AEAD used with that ciphersuite.
+   This document defines algorithms for AEAD_AES_128_GCM,
+   AEAD_AES_128_CCM, AEAD_AES_256_GCM, AEAD_AES_256_CCM (all AES AEADs
+   are defined in [AEAD]), and AEAD_CHACHA20_POLY1305 ([CHACHA]).
 
 5.4.1.  AES-Based Packet Number Protection
 
@@ -1108,12 +1114,6 @@ Internet-Draft                QUIC over TLS                  August 2018
    appears to trigger a key update, but cannot be unprotected
    successfully MUST be discarded.
 
-   Failure to unprotect a packet does not necessarily indicate the
-   existence of a protocol error in a peer or an attack.  The truncated
-   packet number encoding used in QUIC can cause packet numbers to be
-   decoded incorrectly if they are delayed significantly.
-
-
 
 
 
@@ -1121,6 +1121,11 @@ Thomson & Turner          Expires March 1, 2019                [Page 20]
 
 Internet-Draft                QUIC over TLS                  August 2018
 
+
+   Failure to unprotect a packet does not necessarily indicate the
+   existence of a protocol error in a peer or an attack.  The truncated
+   packet number encoding used in QUIC can cause packet numbers to be
+   decoded incorrectly if they are delayed significantly.
 
 5.6.  Use of 0-RTT Keys
 
@@ -1165,11 +1170,6 @@ Internet-Draft                QUIC over TLS                  August 2018
    pre-shared key binder (see Section 4.2.11 of [TLS13]).  Verifying
    these values provides the server with an assurance that the
    ClientHello has not been modified.  Packets protected with 1-RTT keys
-   MAY be stored and later decrypted and used once the handshake is
-   complete.
-
-
-
 
 
 
@@ -1177,6 +1177,9 @@ Thomson & Turner          Expires March 1, 2019                [Page 21]
 
 Internet-Draft                QUIC over TLS                  August 2018
 
+
+   MAY be stored and later decrypted and used once the handshake is
+   complete.
 
    A server could receive packets protected with 0-RTT keys prior to
    receiving a TLS ClientHello.  The server MAY retain these packets for
@@ -1222,9 +1225,6 @@ Internet-Draft                QUIC over TLS                  August 2018
    higher packet numbers always use the updated keys and MUST NOT be
    decrypted with old keys.
 
-   Keys and their corresponding secrets SHOULD be discarded when an
-   endpoint has received all packets with packet numbers lower than the
-   lowest packet number used for the new key.  An endpoint might discard
 
 
 
@@ -1234,6 +1234,9 @@ Thomson & Turner          Expires March 1, 2019                [Page 22]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
+   Keys and their corresponding secrets SHOULD be discarded when an
+   endpoint has received all packets with packet numbers lower than the
+   lowest packet number used for the new key.  An endpoint might discard
    keys if it determines that the length of the delay to affected
    packets is excessive.
 
@@ -1280,9 +1283,6 @@ Internet-Draft                QUIC over TLS                  August 2018
    SHOULD use caution in relying on any data which is contained in
    Initial packets that is not otherwise authenticated.
 
-   It is also possible for the attacker to tamper with data that is
-   carried in Handshake packets, but because that tampering requires
-
 
 
 Thomson & Turner          Expires March 1, 2019                [Page 23]
@@ -1290,6 +1290,8 @@ Thomson & Turner          Expires March 1, 2019                [Page 23]
 Internet-Draft                QUIC over TLS                  August 2018
 
 
+   It is also possible for the attacker to tamper with data that is
+   carried in Handshake packets, but because that tampering requires
    modifying TLS handshake messages, that tampering will cause the TLS
    handshake to fail.
 
@@ -1336,8 +1338,6 @@ Internet-Draft                QUIC over TLS                  August 2018
       enum {
          quic_transport_parameters(0xffa5), (65535)
       } ExtensionType;
-
-
 
 
 
