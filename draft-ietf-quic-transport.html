@@ -445,7 +445,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-27" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-28" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -469,12 +469,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: February 28, 2019</td>
+<td class="left">Expires: March 1, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 27, 2018</td>
+<td class="right">August 28, 2018</td>
 </tr>
 
     	
@@ -493,7 +493,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 28, 2019.</p>
+<p>This Internet-Draft will expire on March 1, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -1495,19 +1495,19 @@ ul.toc li {
 <h3 id="rfc.section.6.2.2">
 <a href="#rfc.section.6.2.2">6.2.2.</a> <a href="#server-pkt-handling" id="server-pkt-handling">Server Packet Handling</a>
 </h3>
-<p id="rfc.section.6.2.2.p.1">If a server receives a packet that has an unsupported version and sufficient length to be an Initial packet for some version supported by the server, it SHOULD send a Version Negotiation packet as described in <a href="#send-vn" class="xref">Section 6.3.1</a>. Servers MAY rate control these packets to avoid storms of Version Negotiation packets.</p>
+<p id="rfc.section.6.2.2.p.1">If a server receives a packet that has an unsupported version, but the packet is sufficiently large to initiate a new connection for any version supported by the server, it SHOULD send a Version Negotiation packet as described in <a href="#send-vn" class="xref">Section 6.3.1</a>. Servers MAY rate control these packets to avoid storms of Version Negotiation packets.</p>
 <p id="rfc.section.6.2.2.p.2">The first packet for an unsupported version can use different semantics and encodings for any version-specific field.  In particular, different packet protection keys might be used for different versions.  Servers that do not support a particular version are unlikely to be able to decrypt the content of the packet.  Servers SHOULD NOT attempt to decode or decrypt a packet from an unknown version, but instead send a Version Negotiation packet, provided that the packet is sufficiently long.</p>
 <p id="rfc.section.6.2.2.p.3">Servers MUST drop other packets that contain unsupported versions.</p>
 <p id="rfc.section.6.2.2.p.4">Packets with a supported version, or no version field, are matched to a connection as described in <a href="#packet-handling" class="xref">Section 6.2</a>. If not matched, the server continues below.</p>
 <p id="rfc.section.6.2.2.p.5">If the packet is an Initial packet fully conforming with the specification, the server proceeds with the handshake (<a href="#handshake" class="xref">Section 6.4</a>). This commits the server to the version that the client selected.</p>
 <p id="rfc.section.6.2.2.p.6">If a server isn&#8217;t currently accepting any new connections, it SHOULD send a Handshake packet containing a CONNECTION_CLOSE frame with error code SERVER_BUSY.</p>
 <p id="rfc.section.6.2.2.p.7">If the packet is a 0-RTT packet, the server MAY buffer a limited number of these packets in anticipation of a late-arriving Initial Packet. Clients are forbidden from sending Handshake packets prior to receiving a server response, so servers SHOULD ignore any such packets.</p>
-<p id="rfc.section.6.2.2.p.8">Servers MUST drop incoming packets under all other circumstances. They SHOULD send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) if a connection ID is present in the header.</p>
+<p id="rfc.section.6.2.2.p.8">Servers MUST drop incoming packets under all other circumstances.  They SHOULD send a Stateless Reset (<a href="#stateless-reset" class="xref">Section 6.13.4</a>) if they are able.</p>
 <h2 id="rfc.section.6.3">
 <a href="#rfc.section.6.3">6.3.</a> <a href="#version-negotiation" id="version-negotiation">Version Negotiation</a>
 </h2>
 <p id="rfc.section.6.3.p.1">Version negotiation ensures that client and server agree to a QUIC version that is mutually supported. A server sends a Version Negotiation packet in response to each packet that might initiate a new connection, see <a href="#packet-handling" class="xref">Section 6.2</a> for details.</p>
-<p id="rfc.section.6.3.p.2">The size of the first packet sent by a client will determine whether a server sends a Version Negotiation packet. Clients that support multiple QUIC versions SHOULD pad their Initial packets to reflect the largest minimum Initial packet size of all their versions. This ensures that the server responds if there are any mutually supported versions.</p>
+<p id="rfc.section.6.3.p.2">The size of the first packet sent by a client will determine whether a server sends a Version Negotiation packet. Clients that support multiple QUIC versions SHOULD pad the first packet they send to the largest of the minimum packet sizes across all versions they support. This ensures that the server responds if there is a mutually supported version.</p>
 <h3 id="rfc.section.6.3.1">
 <a href="#rfc.section.6.3.1">6.3.1.</a> <a href="#send-vn" id="send-vn">Sending Version Negotiation Packets</a>
 </h3>
@@ -1550,7 +1550,7 @@ ul.toc li {
 <li>authenticated negotiation of an application protocol (TLS uses ALPN <a href="#RFC7301" class="xref">[RFC7301]</a> for this purpose)</li>
 <li>for the server, the ability to carry data that provides assurance that the client can receive packets that are addressed with the transport address that is claimed by the client (see <a href="#address-validation" class="xref">Section 6.9</a>)</li>
 </ul>
-<p id="rfc.section.6.4.p.4">The initial CRYPTO frame MUST be sent in a single packet.  Any second attempt that is triggered by address validation MUST also be sent within a single packet. This avoids having to reassemble a message from multiple packets.</p>
+<p id="rfc.section.6.4.p.4">The first CRYPTO frame MUST be sent in a single packet.  Any second attempt that is triggered by address validation MUST also be sent within a single packet. This avoids having to reassemble a message from multiple packets.</p>
 <p id="rfc.section.6.4.p.5">The first client packet of the cryptographic handshake protocol MUST fit within a 1232 octet QUIC packet payload.  This includes overheads that reduce the space available to the cryptographic handshake protocol.</p>
 <p id="rfc.section.6.4.p.6">The CRYPTO frame can be sent in different packet number spaces.  CRYPTO frames in each packet number space carry a separate sequence of handshake data starting from an offset of 0.</p>
 <h2 id="rfc.section.6.5">
