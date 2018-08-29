@@ -444,7 +444,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Iyengar, J., Ed. and M. Thomson, Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-transport-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-08-28" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-29" />
   <meta name="dct.abstract" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
   <meta name="description" content="This document defines the core of the QUIC transport protocol.  This document describes connection establishment, packet format, multiplexing, and reliability.  Accompanying documents describe the cryptographic handshake and loss detection." />
 
@@ -468,12 +468,12 @@ ul.toc li {
 <td class="right">M. Thomson, Ed.</td>
 </tr>
 <tr>
-<td class="left">Expires: March 1, 2019</td>
+<td class="left">Expires: March 2, 2019</td>
 <td class="right">Mozilla</td>
 </tr>
 <tr>
 <td class="left"></td>
-<td class="right">August 28, 2018</td>
+<td class="right">August 29, 2018</td>
 </tr>
 
     	
@@ -492,7 +492,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on March 1, 2019.</p>
+<p>This Internet-Draft will expire on March 2, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -2381,8 +2381,8 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <h3 id="rfc.section.7.15.1">
 <a href="#rfc.section.7.15.1">7.15.1.</a> <a href="#ack-blocks" id="ack-blocks">ACK Blocks</a>
 </h3>
-<p id="rfc.section.7.15.1.p.1">Each ACK Block in an ACK frame describes a contiguous range of packets, as well as the observed type of the packets in that range.  Each range of packets is attributed a type, which is encoded into the two least significant bits of the decoded variable-length integer value.  The size of the range is encoded into the remainder of the value.</p>
-<p id="rfc.section.7.15.1.p.2">The two least significant bits of the decoded value of the ACK Block describe the type.  That is, the type of an ACK block is found by:</p>
+<p id="rfc.section.7.15.1.p.1">Each ACK Block in an ACK frame describes a contiguous range of packets.  Each ACK Block includes the size of the block and whether the range represents unacknowledged packets (a gap), or the type of ECN marking the recipient observed for packets that are acknowledged.</p>
+<p id="rfc.section.7.15.1.p.2">The acknowledgment type and size of the range are packed into a single variable-length integer.  The two least significant bits of the decoded value encode the acknowledgment type.  The size of the range is found by right-shifting the value by two bits.  That is, an ACK block is decoded by decoding the integer and splitting it into a type and size:</p>
 <p><samp>ack_block_i = decode_varint() ack_type_i = ack_block_i &amp; 3 ack_size_i = ack_block_i &gt;&gt; 2 </samp></p>
 <p id="rfc.section.7.15.1.p.4">The four types of ACK Block are:</p>
 <p></p>
@@ -2397,9 +2397,10 @@ Handshake[0]: CRYPTO[FIN], ACK[0]
 <dt>ECN-CE Marked (3):</dt>
 <dd style="margin-left: 8">Packets that are ECN-CE marked are acknowledged using a type of 3.</dd>
 </dl>
-<p id="rfc.section.7.15.1.p.6">The range of acknowledged packet numbers in each ACK Block is inclusive of its largest packet number and is described in numerically decreasing order.  Each ACK Block includes at least one value; a encoded value of 0 indicates that the range contains one packet number.  Each range is described starts at one lower than the minimum value from the previous range.  The first ACK Block starts with the Largest Acknowledged packet number and describes a range up and including that packet number.  Thus, ranges of packet numbers covered by each ACK Block can found with:</p>
+<p id="rfc.section.7.15.1.p.6">The range of acknowledged packet numbers in each ACK Block is inclusive of its largest packet number and is described in numerically decreasing order.  Each ACK Block includes at least one value; a encoded value of 0 indicates that the range contains one packet number.  Each range is described starts at one lower than the minimum value from the previous range.  The first ACK Block starts with the Largest Acknowledged packet number and describes a range up and including that packet number.</p>
+<p id="rfc.section.7.15.1.p.7">Thus, ranges of packet numbers covered by each ACK Block can found with:</p>
 <p><samp>ack_range_i = { low: largest_i - ack_size_i, high: largest_i } ack_largest_i+1 = ack_range_i[low] - 1 </samp></p>
-<p id="rfc.section.7.15.1.p.8">For example, the hex sequence 0x00 indicates a gap of one packet, the sequence 0x05 indicates two unmarked packets, the sequence 0x4037 indicates that there are 53 packets with ECN-CE markings, and the sequence 0x80b1d34a indicates that there are 5826980 packets that are ECT(1) marked.</p>
+<p id="rfc.section.7.15.1.p.9">For example, the hex sequence 0x00 indicates a gap of one packet, the sequence 0x05 indicates two unmarked packets, the sequence 0x4037 indicates that there are 14 packets with ECN-CE markings, and the sequence 0x80b1d34a indicates that there are 2913491 packets that are ECT(1) marked.</p>
 <h3 id="rfc.section.7.15.2">
 <a href="#rfc.section.7.15.2">7.15.2.</a> <a href="#sending-ack-frames" id="sending-ack-frames">Sending ACK Frames</a>
 </h3>
