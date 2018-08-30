@@ -4318,9 +4318,11 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    acknowledgement were received.
 
    If the max_bytes_before_ack transport parameter has been received,
-   the receiver SHOULD send an ACK frame immediately once that many
-   octets of packets containing frames besides ACK or PADDING have been
-   received.
+   the receiver SHOULD send an ACK frame immediately when at least that
+   many octets of packets containing frames besides ACK or PADDING have
+   been received since sending the previous ACK frame.  If a receiver
+   sends ACK frames less frequently, it risks causing the sender to send
+   more slowly, which may lower the delivery rate at the receiver.
 
    To limit ACK blocks to those that have not yet been received by the
    sender, the receiver SHOULD track which ACK frames have been
@@ -4360,8 +4362,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    Note that the same limitation applies to other data sent by the
    server protected by the 1-RTT keys.
 
-   Endpoints SHOULD send acknowledgments for packets containing CRYPTO
-   frames with a reduced delay; see Section 4.3.1 of [QUIC-RECOVERY].
 
 
 
@@ -4369,6 +4369,9 @@ Iyengar & Thomson         Expires March 3, 2019                [Page 78]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Endpoints SHOULD send acknowledgments for packets containing CRYPTO
+   frames with a reduced delay; see Section 4.3.1 of [QUIC-RECOVERY].
 
 7.16.  ACK_ECN Frame
 
@@ -4415,9 +4418,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    reachability to the peer and for path validation during connection
    migration.
 
-   PATH_CHALLENGE frames contain an 8-byte payload.
-
-
 
 
 
@@ -4425,6 +4425,8 @@ Iyengar & Thomson         Expires March 3, 2019                [Page 79]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   PATH_CHALLENGE frames contain an 8-byte payload.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -4471,8 +4473,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    The fields of a NEW_TOKEN frame are as follows:
 
-   Token Length:  A variable-length integer specifying the length of the
-      token in bytes.
 
 
 
@@ -4481,6 +4481,9 @@ Iyengar & Thomson         Expires March 3, 2019                [Page 80]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   Token Length:  A variable-length integer specifying the length of the
+      token in bytes.
 
    Token:  An opaque blob that the client may use with a future Initial
       packet.
@@ -4527,9 +4530,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
                       Figure 15: STREAM Frame Format
 
-   The STREAM frame contains the following fields:
-
-
 
 
 
@@ -4537,6 +4537,8 @@ Iyengar & Thomson         Expires March 3, 2019                [Page 81]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   The STREAM frame contains the following fields:
 
    Stream ID:  A variable-length integer indicating the stream ID of the
       stream (see Section 9.1).
@@ -4584,8 +4586,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    controlled; and they do not carry markers for optional offset,
    optional length, and the end of the stream.
 
-   A CRYPTO frame is shown below.
-
 
 
 
@@ -4593,6 +4593,8 @@ Iyengar & Thomson         Expires March 3, 2019                [Page 82]
 
 Internet-Draft           QUIC Transport Protocol             August 2018
 
+
+   A CRYPTO frame is shown below.
 
     0                   1                   2                   3
     0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -4640,8 +4642,6 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    an implementation decision, and an implementation should be careful
    to delay conservatively, since any delay is likely to increase
    application-visible latency.
-
-
 
 
 
