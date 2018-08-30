@@ -334,20 +334,21 @@ ul.toc li {
 <link href="#rfc.references.1" rel="Chapter" title="11.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="11.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Change Log">
-<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-http-12">
-<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-http-11">
-<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-http-10">
-<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Since draft-ietf-quic-http-09">
-<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 Since draft-ietf-quic-http-08">
-<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 Since draft-ietf-quic-http-07">
-<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 Since draft-ietf-quic-http-06">
-<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 Since draft-ietf-quic-http-05">
-<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 Since draft-ietf-quic-http-04">
-<link href="#rfc.appendix.A.10" rel="Chapter" title="A.10 Since draft-ietf-quic-http-03">
-<link href="#rfc.appendix.A.11" rel="Chapter" title="A.11 Since draft-ietf-quic-http-02">
-<link href="#rfc.appendix.A.12" rel="Chapter" title="A.12 Since draft-ietf-quic-http-01">
-<link href="#rfc.appendix.A.13" rel="Chapter" title="A.13 Since draft-ietf-quic-http-00">
-<link href="#rfc.appendix.A.14" rel="Chapter" title="A.14 Since draft-shade-quic-http2-mapping-00">
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 Since draft-ietf-quic-http-13">
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 Since draft-ietf-quic-http-12">
+<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 Since draft-ietf-quic-http-11">
+<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Since draft-ietf-quic-http-10">
+<link href="#rfc.appendix.A.5" rel="Chapter" title="A.5 Since draft-ietf-quic-http-09">
+<link href="#rfc.appendix.A.6" rel="Chapter" title="A.6 Since draft-ietf-quic-http-08">
+<link href="#rfc.appendix.A.7" rel="Chapter" title="A.7 Since draft-ietf-quic-http-07">
+<link href="#rfc.appendix.A.8" rel="Chapter" title="A.8 Since draft-ietf-quic-http-06">
+<link href="#rfc.appendix.A.9" rel="Chapter" title="A.9 Since draft-ietf-quic-http-05">
+<link href="#rfc.appendix.A.10" rel="Chapter" title="A.10 Since draft-ietf-quic-http-04">
+<link href="#rfc.appendix.A.11" rel="Chapter" title="A.11 Since draft-ietf-quic-http-03">
+<link href="#rfc.appendix.A.12" rel="Chapter" title="A.12 Since draft-ietf-quic-http-02">
+<link href="#rfc.appendix.A.13" rel="Chapter" title="A.13 Since draft-ietf-quic-http-01">
+<link href="#rfc.appendix.A.14" rel="Chapter" title="A.14 Since draft-ietf-quic-http-00">
+<link href="#rfc.appendix.A.15" rel="Chapter" title="A.15 Since draft-shade-quic-http2-mapping-00">
 <link href="#rfc.acknowledgements" rel="Chapter">
 <link href="#rfc.authors" rel="Chapter">
 
@@ -357,7 +358,7 @@ ul.toc li {
 
   <meta name="dct.creator" content="Bishop, M., Ed." />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-quic-http-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2018-07-31" />
+  <meta name="dct.issued" scheme="ISO8601" content="2018-08-30" />
   <meta name="dct.abstract" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
   <meta name="description" content="The QUIC transport protocol has several features that are desirable in a transport for HTTP, such as stream multiplexing, per-stream flow control, and low-latency connection establishment.  This document describes a mapping of HTTP semantics over QUIC.  This document also identifies HTTP/2 features that are subsumed by QUIC, and describes how HTTP/2 extensions can be ported to QUIC." />
 
@@ -378,10 +379,10 @@ ul.toc li {
 </tr>
 <tr>
 <td class="left">Intended status: Standards Track</td>
-<td class="right">July 31, 2018</td>
+<td class="right">August 30, 2018</td>
 </tr>
 <tr>
-<td class="left">Expires: February 1, 2019</td>
+<td class="left">Expires: March 3, 2019</td>
 <td class="right"></td>
 </tr>
 
@@ -401,7 +402,7 @@ ul.toc li {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on February 1, 2019.</p>
+<p>This Internet-Draft will expire on March 3, 2019.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2018 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -517,33 +518,35 @@ ul.toc li {
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Change Log</a>
 </li>
-<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-http-12</a>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">Since draft-ietf-quic-http-13</a>
 </li>
-<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-http-11</a>
+<li>A.2.   <a href="#rfc.appendix.A.2">Since draft-ietf-quic-http-12</a>
 </li>
-<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-http-10</a>
+<li>A.3.   <a href="#rfc.appendix.A.3">Since draft-ietf-quic-http-11</a>
 </li>
-<li>A.4.   <a href="#rfc.appendix.A.4">Since draft-ietf-quic-http-09</a>
+<li>A.4.   <a href="#rfc.appendix.A.4">Since draft-ietf-quic-http-10</a>
 </li>
-<li>A.5.   <a href="#rfc.appendix.A.5">Since draft-ietf-quic-http-08</a>
+<li>A.5.   <a href="#rfc.appendix.A.5">Since draft-ietf-quic-http-09</a>
 </li>
-<li>A.6.   <a href="#rfc.appendix.A.6">Since draft-ietf-quic-http-07</a>
+<li>A.6.   <a href="#rfc.appendix.A.6">Since draft-ietf-quic-http-08</a>
 </li>
-<li>A.7.   <a href="#rfc.appendix.A.7">Since draft-ietf-quic-http-06</a>
+<li>A.7.   <a href="#rfc.appendix.A.7">Since draft-ietf-quic-http-07</a>
 </li>
-<li>A.8.   <a href="#rfc.appendix.A.8">Since draft-ietf-quic-http-05</a>
+<li>A.8.   <a href="#rfc.appendix.A.8">Since draft-ietf-quic-http-06</a>
 </li>
-<li>A.9.   <a href="#rfc.appendix.A.9">Since draft-ietf-quic-http-04</a>
+<li>A.9.   <a href="#rfc.appendix.A.9">Since draft-ietf-quic-http-05</a>
 </li>
-<li>A.10.   <a href="#rfc.appendix.A.10">Since draft-ietf-quic-http-03</a>
+<li>A.10.   <a href="#rfc.appendix.A.10">Since draft-ietf-quic-http-04</a>
 </li>
-<li>A.11.   <a href="#rfc.appendix.A.11">Since draft-ietf-quic-http-02</a>
+<li>A.11.   <a href="#rfc.appendix.A.11">Since draft-ietf-quic-http-03</a>
 </li>
-<li>A.12.   <a href="#rfc.appendix.A.12">Since draft-ietf-quic-http-01</a>
+<li>A.12.   <a href="#rfc.appendix.A.12">Since draft-ietf-quic-http-02</a>
 </li>
-<li>A.13.   <a href="#rfc.appendix.A.13">Since draft-ietf-quic-http-00</a>
+<li>A.13.   <a href="#rfc.appendix.A.13">Since draft-ietf-quic-http-01</a>
 </li>
-<li>A.14.   <a href="#rfc.appendix.A.14">Since draft-shade-quic-http2-mapping-00</a>
+<li>A.14.   <a href="#rfc.appendix.A.14">Since draft-ietf-quic-http-00</a>
+</li>
+<li>A.15.   <a href="#rfc.appendix.A.15">Since draft-shade-quic-http2-mapping-00</a>
 </li>
 </ul><li><a href="#rfc.acknowledgements">Acknowledgements</a>
 </li>
@@ -581,7 +584,7 @@ ul.toc li {
 <h2 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#discovering-an-httpquic-endpoint" id="discovering-an-httpquic-endpoint">Discovering an HTTP/QUIC Endpoint</a>
 </h2>
-<p id="rfc.section.2.2.p.1">An HTTP origin advertises the availability of an equivalent HTTP/QUIC endpoint via the Alt-Svc HTTP response header or the HTTP/2 ALTSVC frame (<a href="#RFC7838" class="xref">[RFC7838]</a>), using the ALPN token defined in <a href="#connection-establishment" class="xref">Section 2.3</a>.</p>
+<p id="rfc.section.2.2.p.1">An HTTP origin advertises the availability of an equivalent HTTP/QUIC endpoint via the Alt-Svc HTTP response header field or the HTTP/2 ALTSVC frame (<a href="#ALTSVC" class="xref">[ALTSVC]</a>), using the ALPN token defined in <a href="#connection-establishment" class="xref">Section 2.3</a>.</p>
 <p id="rfc.section.2.2.p.2">For example, an origin could indicate in an HTTP/1.1 or HTTP/2 response that HTTP/QUIC was available on UDP port 50781 at the same hostname by including the following header in any response:</p>
 <pre>
 Alt-Svc: hq=":50781"
@@ -641,8 +644,9 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.3.1.p.5">PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) MAY be interleaved with the frames of a response message indicating a pushed resource related to the response. These PUSH_PROMISE frames are not part of the response, but carry the headers of a separate HTTP request message.  See <a href="#server-push" class="xref">Section 3.3.3</a> for more details.</p>
 <p id="rfc.section.3.1.p.6">The &#8220;chunked&#8221; transfer encoding defined in Section 4.1 of <a href="#RFC7230" class="xref">[RFC7230]</a> MUST NOT be used.</p>
 <p id="rfc.section.3.1.p.7">Trailing header fields are carried in an additional header block following the body. Senders MUST send only one header block in the trailers section; receivers MUST discard any subsequent header blocks.</p>
-<p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a QUIC stream. After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
-<p id="rfc.section.3.1.p.9">A server can send a complete response prior to the client sending an entire request if the response does not depend on any portion of the request that has not been sent and received. When this is true, a server MAY request that the client abort transmission of a request without error by triggering a QUIC STOP_SENDING with error code HTTP_EARLY_RESPONSE, sending a complete response, and cleanly closing its streams. Clients MUST NOT discard complete responses as a result of having their request terminated abruptly, though clients can always discard responses at their discretion for other reasons.  Servers MUST NOT abort a response in progress as a result of receiving a solicited RST_STREAM.</p>
+<p id="rfc.section.3.1.p.8">An HTTP request/response exchange fully consumes a bidirectional QUIC stream.  After sending a request, a client closes the stream for sending; after sending a response, the server closes the stream for sending and the QUIC stream is fully closed.</p>
+<p id="rfc.section.3.1.p.9">A server can send a complete response prior to the client sending an entire request if the response does not depend on any portion of the request that has not been sent and received. When this is true, a server MAY request that the client abort transmission of a request without error by triggering a QUIC STOP_SENDING with error code HTTP_EARLY_RESPONSE, sending a complete response, and cleanly closing its streams. Clients MUST NOT discard complete responses as a result of having their request terminated abruptly, though clients can always discard responses at their discretion for other reasons.</p>
+<p id="rfc.section.3.1.p.10">Changes to the state of a request stream, including receiving a RST_STREAM with any error code, do not affect the state of the server&#8217;s response. Servers do not abort a response in progress solely due to a state change on the request stream.  However, if the request stream terminates without containing a usable HTTP request, the server SHOULD abort its response with the error code HTTP_INCOMPLETE_REQUEST.</p>
 <h3 id="rfc.section.3.1.1">
 <a href="#rfc.section.3.1.1">3.1.1.</a> <a href="#header-formatting-and-compression" id="header-formatting-and-compression">Header Formatting and Compression</a>
 </h3>
@@ -657,13 +661,13 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.3.1.2.p.2">A CONNECT request in HTTP/QUIC functions in the same manner as in HTTP/2. The request MUST be formatted as described in <a href="#RFC7540" class="xref">[RFC7540]</a>, Section 8.3. A CONNECT request that does not conform to these restrictions is malformed. The request stream MUST NOT be half-closed at the end of the request.</p>
 <p id="rfc.section.3.1.2.p.3">A proxy that supports CONNECT establishes a TCP connection (<a href="#RFC0793" class="xref">[RFC0793]</a>) to the server identified in the &#8220;:authority&#8221; pseudo-header field. Once this connection is successfully established, the proxy sends a HEADERS frame containing a 2xx series status code to the client, as defined in <a href="#RFC7231" class="xref">[RFC7231]</a>, Section 4.3.6.</p>
 <p id="rfc.section.3.1.2.p.4">All DATA frames on the request stream correspond to data sent on the TCP connection. Any DATA frame sent by the client is transmitted by the proxy to the TCP server; data received from the TCP server is packaged into DATA frames by the proxy. Note that the size and number of TCP segments is not guaranteed to map predictably to the size and number of HTTP DATA or QUIC STREAM frames.</p>
-<p id="rfc.section.3.1.2.p.5">The TCP connection can be closed by either peer. When the client ends the request stream (that is, the receive stream at the proxy enters the &#8220;Data Recvd&#8221; state), the proxy will set the FIN bit on its connection to the TCP server. When the proxy receives a packet with the FIN bit set, it will terminate the send stream that it sends to client. TCP connections which remain half-closed in a single direction are not invalid, but are often handled poorly by servers, so clients SHOULD NOT cause send a STREAM frame with a FIN bit for connections on which they are still expecting data.</p>
+<p id="rfc.section.3.1.2.p.5">The TCP connection can be closed by either peer. When the client ends the request stream (that is, the receive stream at the proxy enters the &#8220;Data Recvd&#8221; state), the proxy will set the FIN bit on its connection to the TCP server. When the proxy receives a packet with the FIN bit set, it will terminate the send stream that it sends to client. TCP connections which remain half-closed in a single direction are not invalid, but are often handled poorly by servers, so clients SHOULD NOT close a stream for sending while they still expect to receive data from the target of the CONNECT.</p>
 <p id="rfc.section.3.1.2.p.6">A TCP connection error is signaled with RST_STREAM. A proxy treats any error in the TCP connection, which includes receiving a TCP segment with the RST bit set, as a stream error of type HTTP_CONNECT_ERROR (<a href="#http-error-codes" class="xref">Section 6.1</a>).  Correspondingly, a proxy MUST send a TCP segment with the RST bit set if it detects an error with the stream or the QUIC connection.</p>
 <h3 id="rfc.section.3.1.3">
 <a href="#rfc.section.3.1.3">3.1.3.</a> <a href="#request-cancellation" id="request-cancellation">Request Cancellation</a>
 </h3>
-<p id="rfc.section.3.1.3.p.1">Either client or server can cancel requests by closing the stream (QUIC RST_STREAM or STOP_SENDING frames, as appropriate) with an error type of HTTP_REQUEST_CANCELLED (<a href="#http-error-codes" class="xref">Section 6.1</a>).  When the client cancels a request or response, it indicates that the response is no longer of interest.</p>
-<p id="rfc.section.3.1.3.p.2">When the server cancels either direction of the request stream using HTTP_REQUEST_CANCELLED, it indicates that no application processing was performed.  The client can treat requests cancelled by the server as though they had never been sent at all, thereby allowing them to be retried later on a new connection.  Servers MUST NOT use the HTTP_REQUEST_CANCELLED status for requests which were partially or fully processed.</p>
+<p id="rfc.section.3.1.3.p.1">Either client or server can cancel requests by aborting the stream (QUIC RST_STREAM or STOP_SENDING frames, as appropriate) with an error code of HTTP_REQUEST_CANCELLED (<a href="#http-error-codes" class="xref">Section 6.1</a>).  When the client cancels a response, it indicates that this response is no longer of interest. Clients SHOULD cancel requests by aborting both directions of a stream.</p>
+<p id="rfc.section.3.1.3.p.2">When the server cancels its response stream using HTTP_REQUEST_CANCELLED, it indicates that no application processing was performed.  The client can treat requests cancelled by the server as though they had never been sent at all, thereby allowing them to be retried later on a new connection.  Servers MUST NOT use the HTTP_REQUEST_CANCELLED status for requests which were partially or fully processed.</p>
 <p></p>
 
 <dl>
@@ -751,7 +755,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.3.3.3.p.1">HTTP/QUIC server push is similar to what is described in HTTP/2 <a href="#RFC7540" class="xref">[RFC7540]</a>, but uses different mechanisms.</p>
 <p id="rfc.section.3.3.3.p.2">The PUSH_PROMISE frame (<a href="#frame-push-promise" class="xref">Section 4.2.7</a>) is sent on the client-initiated bidirectional stream that carried the request that generated the push. This allows the server push to be associated with a request. Ordering of a PUSH_PROMISE in relation to certain parts of the response is important (see Section 8.2.1 of <a href="#RFC7540" class="xref">[RFC7540]</a>).</p>
 <p id="rfc.section.3.3.3.p.3">The PUSH_PROMISE frame does not reference a stream; it contains a Push ID that uniquely identifies a server push. This allows a server to fulfill promises in the order that best suits its needs. The same Push ID can be used in multiple PUSH_PROMISE frames (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>). When a server later fulfills a promise, the server push response is conveyed on a push stream.</p>
-<p id="rfc.section.3.3.3.p.4">A push stream is indicated by a stream type of <samp>0x50</samp> (ASCII &#8216;P&#8217;), followed by the Push ID of the promise that it fulfills, encoded as a variable-length integer. The remaining data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>, and carries the response side of an HTTP message exchange asdescribed in <a href="#request-response" class="xref">Section 3.1</a>. The request headers of the exchange are carried by a PUSH_PROMISE frame (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) on the request stream which generated the push. Promised requests MUST conform to the requirements in Section 8.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>.</p>
+<p id="rfc.section.3.3.3.p.4">A push stream is indicated by a stream type of <samp>0x50</samp> (ASCII &#8216;P&#8217;), followed by the Push ID of the promise that it fulfills, encoded as a variable-length integer. The remaining data on this stream consists of HTTP/QUIC frames, as defined in <a href="#frames" class="xref">Section 4.2</a>, and carries the response side of an HTTP message exchange as described in <a href="#request-response" class="xref">Section 3.1</a>. The request headers of the exchange are carried by a PUSH_PROMISE frame (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) on the request stream which generated the push. Promised requests MUST conform to the requirements in Section 8.2 of <a href="#RFC7540" class="xref">[RFC7540]</a>.</p>
 <p id="rfc.section.3.3.3.p.5">Only servers can push; if a server receives a client-initiated push stream, this MUST be treated as a stream error of type HTTP_WRONG_STREAM_DIRECTION.</p>
 <div id="rfc.figure.3"></div>
 <div id="fig-push-stream-header"></div>
@@ -763,7 +767,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 </pre>
 <p class="figure">Figure 3: Push Stream Header</p>
-<p id="rfc.section.3.3.3.p.6">Server push is only enabled on a connection when a client sends a MAX_PUSH_ID frame (see <a href="#frame-max-push-id" class="xref">Section 4.2.9</a>). A server cannot use server push until it receives a MAX_PUSH_ID frame. A client sends additional MAX_PUSH_ID frames to control the number of pushes that a server can promise. A server SHOULD use Push IDs sequentially, starting at 0. A client MUST treat receipt of a pushstream with a Push ID that is greater than the maximum Push ID as a connection error of type HTTP_PUSH_LIMIT_EXCEEDED.</p>
+<p id="rfc.section.3.3.3.p.6">Server push is only enabled on a connection when a client sends a MAX_PUSH_ID frame (see <a href="#frame-max-push-id" class="xref">Section 4.2.9</a>). A server cannot use server push until it receives a MAX_PUSH_ID frame. A client sends additional MAX_PUSH_ID frames to control the number of pushes that a server can promise. A server SHOULD use Push IDs sequentially, starting at 0. A client MUST treat receipt of a push stream with a Push ID that is greater than the maximum Push ID as a connection error of type HTTP_PUSH_LIMIT_EXCEEDED.</p>
 <p id="rfc.section.3.3.3.p.7">Each Push ID MUST only be used once in a push stream header. If a push stream header includes a Push ID that was used in another push stream header, the client MUST treat this as a connection error of type HTTP_DUPLICATE_PUSH.</p>
 <p id="rfc.section.3.3.3.p.8">If a promised server push is not needed by the client, the client SHOULD send a CANCEL_PUSH frame. If the push stream is already open, a QUIC STOP_SENDING frame with an appropriate error code can be used instead (e.g., HTTP_PUSH_REFUSED, HTTP_PUSH_ALREADY_IN_CACHE; see <a href="#errors" class="xref">Section 6</a>). This asks the server not to transfer the data and indicates that it will be discarded upon receipt.</p>
 <h1 id="rfc.section.4">
@@ -915,7 +919,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.4.2.5">4.2.5.</a> <a href="#frame-cancel-push" id="frame-cancel-push">CANCEL_PUSH</a>
 </h3>
 <p id="rfc.section.4.2.5.p.1">The CANCEL_PUSH frame (type=0x3) is used to request cancellation of server push prior to the push stream being created.  The CANCEL_PUSH frame identifies a server push request by Push ID (see <a href="#frame-push-promise" class="xref">Section 4.2.7</a>) using a variable-length integer.</p>
-<p id="rfc.section.4.2.5.p.2">When a server receives this frame, it aborts sending the response for the identified server push.  If the server has not yet started to send the server push, it can use the receipt of a CANCEL_PUSH frame to avoid opening a stream.  If the push stream has been opened by the server, the server SHOULD sent a QUIC RST_STREAM frame on those streams and cease transmission of the response.</p>
+<p id="rfc.section.4.2.5.p.2">When a server receives this frame, it aborts sending the response for the identified server push.  If the server has not yet started to send the server push, it can use the receipt of a CANCEL_PUSH frame to avoid opening a stream.  If the push stream has been opened by the server, the server SHOULD send a QUIC RST_STREAM frame on those streams and cease transmission of the response.</p>
 <p id="rfc.section.4.2.5.p.3">A server can send this frame to indicate that it won&#8217;t be sending a response prior to creation of a push stream.  Once the push stream has been created, sending CANCEL_PUSH has no effect on the state of the push stream.  A QUIC RST_STREAM frame SHOULD be used instead to cancel transmission of the server push response.</p>
 <p id="rfc.section.4.2.5.p.4">A CANCEL_PUSH frame is sent on the control stream.  Sending a CANCEL_PUSH frame on a stream other than the control stream MUST be treated as a stream error of type HTTP_WRONG_STREAM.</p>
 <div id="rfc.figure.8"></div>
@@ -954,7 +958,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <p id="rfc.section.4.2.6.p.6">A zero-length content indicates that the setting value is a Boolean and true.  False is indicated by the absence of the setting.</p>
 <p id="rfc.section.4.2.6.p.7">Non-zero-length values MUST be compared against the remaining length of the SETTINGS frame.  Any value which purports to cross the end of the frame MUST cause the SETTINGS frame to be considered malformed and trigger a connection error of type HTTP_MALFORMED_FRAME.</p>
 <p id="rfc.section.4.2.6.p.8">An implementation MUST ignore the contents for any SETTINGS identifier it does not understand.</p>
-<p id="rfc.section.4.2.6.p.9">SETTINGS frames always apply to a connection, never a single stream.  A SETTINGS frame MUST be sent as the first frame of either control stream (see <a href="#stream-mapping" class="xref">Section 3</a>) by each peer, and MUST NOT be sent subsequently or on any other stream. If an endpoint receives an SETTINGS frame on a different stream, the endpoint MUST respond with a connection error of type HTTP_WRONG_STREAM.  If an endpoint receives a second SETTINGS frame, the endpoint MUST respond with a connection error of type HTTP_MALFORMED_FRAME.</p>
+<p id="rfc.section.4.2.6.p.9">SETTINGS frames always apply to a connection, never a single stream.  A SETTINGS frame MUST be sent as the first frame of either control stream (see <a href="#stream-mapping" class="xref">Section 3</a>) by each peer, and MUST NOT be sent subsequently or on any other stream. If an endpoint receives a SETTINGS frame on a different stream, the endpoint MUST respond with a connection error of type HTTP_WRONG_STREAM.  If an endpoint receives a second SETTINGS frame, the endpoint MUST respond with a connection error of type HTTP_MALFORMED_FRAME.</p>
 <p id="rfc.section.4.2.6.p.10">The SETTINGS frame affects connection state. A badly formed or incomplete SETTINGS frame MUST be treated as a connection error (<a href="#errors" class="xref">Section 6</a>) of type HTTP_MALFORMED_FRAME.</p>
 <h4 id="rfc.section.4.2.6.1">
 <a href="#rfc.section.4.2.6.1">4.2.6.1.</a> <a href="#integer-encoding" id="integer-encoding">Integer encoding</a>
@@ -978,9 +982,10 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h4 id="rfc.section.4.2.6.3">
 <a href="#rfc.section.4.2.6.3">4.2.6.3.</a> <a href="#initial-settings-values" id="initial-settings-values">Initial SETTINGS Values</a>
 </h4>
-<p id="rfc.section.4.2.6.3.p.1">When a 0-RTT QUIC connection is being used, the client&#8217;s initial requests will be sent before the arrival of the server&#8217;s SETTINGS frame.  Clients MUST store the settings the server provided in the session being resumed and MUST comply with stored settings until the server&#8217;s current settings are received.</p>
-<p id="rfc.section.4.2.6.3.p.2">Servers MAY continue processing data from clients which exceed its current configuration during the initial flight.  In this case, the client MUST apply the new settings immediately upon receipt.</p>
-<p id="rfc.section.4.2.6.3.p.3">When a 1-RTT QUIC connection is being used, the client MUST NOT send requests prior to receiving and processing the server&#8217;s SETTINGS frame.</p>
+<p id="rfc.section.4.2.6.3.p.1">When a 0-RTT QUIC connection is being used, the client&#8217;s initial requests will be sent before the arrival of the server&#8217;s SETTINGS frame.  Clients MUST store the settings the server provided in the session being resumed and MUST comply with stored settings until the server&#8217;s current settings are received.  Remembered settings apply to the new connection until the server&#8217;s SETTINGS frame is received.</p>
+<p id="rfc.section.4.2.6.3.p.2">A server can remember the settings that it advertised, or store an integrity-protected copy of the values in the ticket and recover the information when accepting 0-RTT data. A server uses the HTTP/QUIC settings values in determining whether to accept 0-RTT data.</p>
+<p id="rfc.section.4.2.6.3.p.3">A server MAY accept 0-RTT and subsequently provide different settings in its SETTINGS frame. If 0-RTT data is accepted by the server, its SETTINGS frame MUST NOT reduce any limits or alter any values that might be violated by the client with its 0-RTT data.</p>
+<p id="rfc.section.4.2.6.3.p.4">When a 1-RTT QUIC connection is being used, the client MUST NOT send requests prior to receiving and processing the server&#8217;s SETTINGS frame.</p>
 <h3 id="rfc.section.4.2.7">
 <a href="#rfc.section.4.2.7">4.2.7.</a> <a href="#frame-push-promise" id="frame-push-promise">PUSH_PROMISE</a>
 </h3>
@@ -1085,12 +1090,14 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">The server has attempted to push content which the client has cached.</dd>
 <dt>HTTP_REQUEST_CANCELLED (0x05):</dt>
 <dd style="margin-left: 8">The client no longer needs the requested data.</dd>
+<dt>HTTP_INCOMPLETE_REQUEST (0x06):</dt>
+<dd style="margin-left: 8">The client&#8217;s stream terminated without containing a fully-formed request.</dd>
 <dt>HTTP_CONNECT_ERROR (0x07):</dt>
 <dd style="margin-left: 8">The connection established in response to a CONNECT request was reset or abnormally closed.</dd>
 <dt>HTTP_EXCESSIVE_LOAD (0x08):</dt>
 <dd style="margin-left: 8">The endpoint detected that its peer is exhibiting a behavior that might be generating excessive load.</dd>
 <dt>HTTP_VERSION_FALLBACK (0x09):</dt>
-<dd style="margin-left: 8">The requested operation cannot be served over HTTP/QUIC.  The peer should retry over HTTP/2.</dd>
+<dd style="margin-left: 8">The requested operation cannot be served over HTTP/QUIC.  The peer should retry over HTTP/1.1.</dd>
 <dt>HTTP_WRONG_STREAM (0x0A):</dt>
 <dd style="margin-left: 8">A frame was received on a stream where it is not permitted.</dd>
 <dt>HTTP_PUSH_LIMIT_EXCEEDED (0x0B):</dt>
@@ -1105,6 +1112,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <dd style="margin-left: 8">A stream required by the connection was closed or reset.</dd>
 <dt>HTTP_WRONG_STREAM_DIRECTION (0x0010):</dt>
 <dd style="margin-left: 8">A unidirectional stream type was used by a peer which is not permitted to do so.</dd>
+<dt>HTTP_EARLY_RESPONSE (0x0011):</dt>
+<dd style="margin-left: 8">The remainder of the client&#8217;s request is not needed to produce a response.  For use in STOP_SENDING only.</dd>
 <dt>HTTP_GENERAL_PROTOCOL_ERROR (0x00FF):</dt>
 <dd style="margin-left: 8">Peer violated protocol requirements in a way which doesn&#8217;t match a more specific error code, or endpoint declines to use the more specific error code.</dd>
 <dt>HTTP_MALFORMED_FRAME (0x01XX):</dt>
@@ -1193,7 +1202,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.section.8.4">8.4.</a> <a href="#http2-error-codes" id="http2-error-codes">HTTP/2 Error Codes</a>
 </h2>
 <p id="rfc.section.8.4.p.1">QUIC has the same concepts of &#8220;stream&#8221; and &#8220;connection&#8221; errors that HTTP/2 provides. However, because the error code space is shared between multiple components, there is no direct portability of HTTP/2 error codes.</p>
-<p id="rfc.section.8.4.p.2">The HTTP/2 error codes defined in Section 7 of <a href="#RFC7540" class="xref">[RFC7540]</a> map to the HTTP over QUIC error codes as follows:</p>
+<p id="rfc.section.8.4.p.2">The HTTP/2 error codes defined in Section 7 of <a href="#RFC7540" class="xref">[RFC7540]</a> map to the HTTP/QUIC error codes as follows:</p>
 <p></p>
 
 <dl>
@@ -1230,8 +1239,9 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <h1 id="rfc.section.9">
 <a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.9.p.1">The security considerations of HTTP over QUIC should be comparable to those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING frames to make a connection more resistant to traffic analysis, HTTP/QUIC can rely on QUIC&#8217;s own PADDING frames or employ the reserved frame and stream types discussed in <a href="#frame-grease" class="xref">Section 4.2.1</a> and <a href="#stream-grease" class="xref">Section 3.3.1</a>.</p>
-<p id="rfc.section.9.p.2">The modified SETTINGS format contains nested length elements, which could pose a security risk to an uncautious implementer.  A SETTINGS frame parser MUST ensure that the length of the frame exactly matches the length of the settings it contains.</p>
+<p id="rfc.section.9.p.1">The security considerations of HTTP/QUIC should be comparable to those of HTTP/2 with TLS.  Note that where HTTP/2 employs PADDING frames to make a connection more resistant to traffic analysis, HTTP/QUIC can rely on QUIC&#8217;s own PADDING frames or employ the reserved frame and stream types discussed in <a href="#frame-grease" class="xref">Section 4.2.1</a> and <a href="#stream-grease" class="xref">Section 3.3.1</a>.</p>
+<p id="rfc.section.9.p.2">When HTTP Alternative Services is used for discovery for HTTP/QUIC endpoints, the security considerations of <a href="#ALTSVC" class="xref">[ALTSVC]</a> also apply.</p>
+<p id="rfc.section.9.p.3">The modified SETTINGS format contains nested length elements, which could pose a security risk to an incautious implementer.  A SETTINGS frame parser MUST ensure that the length of the frame exactly matches the length of the settings it contains.</p>
 <h1 id="rfc.section.10">
 <a href="#rfc.section.10">10.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a>
 </h1>
@@ -1244,7 +1254,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 
 <dl>
 <dt>Protocol:</dt>
-<dd style="margin-left: 8">HTTP over QUIC</dd>
+<dd style="margin-left: 8">HTTP/QUIC</dd>
 <dt>Identification Sequence:</dt>
 <dd style="margin-left: 8">0x68 0x71 (&#8220;hq&#8221;)</dd>
 <dt>Specification:</dt>
@@ -1477,6 +1487,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
 </tr>
 <tr>
+<td class="left">HTTP_INCOMPLETE_REQUEST</td>
+<td class="left">0x0006</td>
+<td class="left">Stream terminated early</td>
+<td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
+</tr>
+<tr>
 <td class="left">HTTP_CONNECT_ERROR</td>
 <td class="left">0x0007</td>
 <td class="left">TCP reset or error on CONNECT request</td>
@@ -1491,7 +1507,7 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <tr>
 <td class="left">HTTP_VERSION_FALLBACK</td>
 <td class="left">0x0009</td>
-<td class="left">Retry over HTTP/2</td>
+<td class="left">Retry over HTTP/1.1</td>
 <td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
 </tr>
 <tr>
@@ -1534,6 +1550,12 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <td class="left">HTTP_WRONG_STREAM_DIRECTION</td>
 <td class="left">0x0010</td>
 <td class="left">Unidirectional stream in wrong direction</td>
+<td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
+</tr>
+<tr>
+<td class="left">HTTP_EARLY_RESPONSE</td>
+<td class="left">0x0011</td>
+<td class="left">Remainder of request not needed</td>
 <td class="left"><a href="#http-error-codes" class="xref">Section 6.1</a></td>
 </tr>
 <tr>
@@ -1601,14 +1623,19 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <a href="#rfc.references.1">11.1.</a> Normative References</h2>
 <table><tbody>
 <tr>
+<td class="reference"><b id="ALTSVC">[ALTSVC]</b></td>
+<td class="top">
+<a>Nottingham, M.</a>, <a>McManus, P.</a> and <a>J. Reschke</a>, "<a href="https://tools.ietf.org/html/rfc7838">HTTP Alternative Services</a>", RFC 7838, DOI 10.17487/RFC7838, April 2016.</td>
+</tr>
+<tr>
 <td class="reference"><b id="QPACK">[QPACK]</b></td>
 <td class="top">
-<a title="Google, Inc">Krasic, C.</a>, <a title="Akamai Technologies">Bishop, M.</a> and <a title="Facebook">A. Frindell</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-qpack">QPACK: Header Compression for HTTP over QUIC</a>", Internet-Draft draft-ietf-quic-qpack, July 2018.</td>
+<a title="Google, Inc">Krasic, C.</a>, <a title="Akamai Technologies">Bishop, M.</a> and <a title="Facebook">A. Frindell</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-qpack">QPACK: Header Compression for HTTP over QUIC</a>", Internet-Draft draft-ietf-quic-qpack, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="QUIC-TRANSPORT">[QUIC-TRANSPORT]</b></td>
 <td class="top">
-<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, July 2018.</td>
+<a title="Fastly">Iyengar, J.</a> and <a title="Mozilla">M. Thomson</a>, "<a href="https://tools.ietf.org/html/draft-ietf-quic-transport">QUIC: A UDP-Based Multiplexed and Secure Transport</a>", Internet-Draft draft-ietf-quic-transport, August 2018.</td>
 </tr>
 <tr>
 <td class="reference"><b id="RFC0793">[RFC0793]</b></td>
@@ -1678,7 +1705,18 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <ul class="empty"><li>
 <strong>RFC Editor&#8217;s Note:</strong>  Please remove this section prior to publication of a final version of this document.</li></ul>
 <h2 id="rfc.appendix.A.1">
-<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-http-12" id="since-draft-ietf-quic-http-12">Since draft-ietf-quic-http-12</a>
+<a href="#rfc.appendix.A.1">A.1.</a> <a href="#since-draft-ietf-quic-http-13" id="since-draft-ietf-quic-http-13">Since draft-ietf-quic-http-13</a>
+</h2>
+<p></p>
+
+<ul>
+<li>Reserved some frame types for grease (#1333, #1446)</li>
+<li>Unknown unidirectional stream types are tolerated, not errors; some reserved for grease (#1490, #1525)</li>
+<li>Require settings to be remembered for 0-RTT, prohibit reductions (#1541, #1641)</li>
+<li>Specify behavior for truncated requests (#1596, #1643)</li>
+</ul>
+<h2 id="rfc.appendix.A.2">
+<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-http-12" id="since-draft-ietf-quic-http-12">Since draft-ietf-quic-http-12</a>
 </h2>
 <p></p>
 
@@ -1690,20 +1728,20 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>Unidirectional streams carry a type byte and are extensible (#910,#1359)</li>
 <li>Priority mechanism now uses explicit placeholders to enable persistent structure in the tree (#441,#1421,#1422)</li>
 </ul>
-<h2 id="rfc.appendix.A.2">
-<a href="#rfc.appendix.A.2">A.2.</a> <a href="#since-draft-ietf-quic-http-11" id="since-draft-ietf-quic-http-11">Since draft-ietf-quic-http-11</a>
+<h2 id="rfc.appendix.A.3">
+<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-http-11" id="since-draft-ietf-quic-http-11">Since draft-ietf-quic-http-11</a>
 </h2>
 <p></p>
 
 <ul><li>Moved QPACK table updates and acknowledgments to dedicated streams (#1121, #1122, #1238)</li></ul>
-<h2 id="rfc.appendix.A.3">
-<a href="#rfc.appendix.A.3">A.3.</a> <a href="#since-draft-ietf-quic-http-10" id="since-draft-ietf-quic-http-10">Since draft-ietf-quic-http-10</a>
+<h2 id="rfc.appendix.A.4">
+<a href="#rfc.appendix.A.4">A.4.</a> <a href="#since-draft-ietf-quic-http-10" id="since-draft-ietf-quic-http-10">Since draft-ietf-quic-http-10</a>
 </h2>
 <p></p>
 
 <ul><li>Settings need to be remembered when attempting and accepting 0-RTT (#1157, #1207)</li></ul>
-<h2 id="rfc.appendix.A.4">
-<a href="#rfc.appendix.A.4">A.4.</a> <a href="#since-draft-ietf-quic-http-09" id="since-draft-ietf-quic-http-09">Since draft-ietf-quic-http-09</a>
+<h2 id="rfc.appendix.A.5">
+<a href="#rfc.appendix.A.5">A.5.</a> <a href="#since-draft-ietf-quic-http-09" id="since-draft-ietf-quic-http-09">Since draft-ietf-quic-http-09</a>
 </h2>
 <p></p>
 
@@ -1712,14 +1750,14 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>The server_name TLS extension is now mandatory (#296, #495)</li>
 <li>Specified handling of unsupported versions in Alt-Svc (#1093, #1097)</li>
 </ul>
-<h2 id="rfc.appendix.A.5">
-<a href="#rfc.appendix.A.5">A.5.</a> <a href="#since-draft-ietf-quic-http-08" id="since-draft-ietf-quic-http-08">Since draft-ietf-quic-http-08</a>
+<h2 id="rfc.appendix.A.6">
+<a href="#rfc.appendix.A.6">A.6.</a> <a href="#since-draft-ietf-quic-http-08" id="since-draft-ietf-quic-http-08">Since draft-ietf-quic-http-08</a>
 </h2>
 <p></p>
 
 <ul><li>Clarified connection coalescing rules (#940, #1024)</li></ul>
-<h2 id="rfc.appendix.A.6">
-<a href="#rfc.appendix.A.6">A.6.</a> <a href="#since-draft-ietf-quic-http-07" id="since-draft-ietf-quic-http-07">Since draft-ietf-quic-http-07</a>
+<h2 id="rfc.appendix.A.7">
+<a href="#rfc.appendix.A.7">A.7.</a> <a href="#since-draft-ietf-quic-http-07" id="since-draft-ietf-quic-http-07">Since draft-ietf-quic-http-07</a>
 </h2>
 <p></p>
 
@@ -1729,14 +1767,14 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>Improvement to the description of GOAWAY (#604, #898)</li>
 <li>Improve description of server push usage (#947, #950, #957)</li>
 </ul>
-<h2 id="rfc.appendix.A.7">
-<a href="#rfc.appendix.A.7">A.7.</a> <a href="#since-draft-ietf-quic-http-06" id="since-draft-ietf-quic-http-06">Since draft-ietf-quic-http-06</a>
+<h2 id="rfc.appendix.A.8">
+<a href="#rfc.appendix.A.8">A.8.</a> <a href="#since-draft-ietf-quic-http-06" id="since-draft-ietf-quic-http-06">Since draft-ietf-quic-http-06</a>
 </h2>
 <p></p>
 
 <ul><li>Track changes in QUIC error code usage (#485)</li></ul>
-<h2 id="rfc.appendix.A.8">
-<a href="#rfc.appendix.A.8">A.8.</a> <a href="#since-draft-ietf-quic-http-05" id="since-draft-ietf-quic-http-05">Since draft-ietf-quic-http-05</a>
+<h2 id="rfc.appendix.A.9">
+<a href="#rfc.appendix.A.9">A.9.</a> <a href="#since-draft-ietf-quic-http-05" id="since-draft-ietf-quic-http-05">Since draft-ietf-quic-http-05</a>
 </h2>
 <p></p>
 
@@ -1745,8 +1783,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>Guidance about keep-alive and QUIC PINGs (#729)</li>
 <li>Expanded text on GOAWAY and cancellation (#757)</li>
 </ul>
-<h2 id="rfc.appendix.A.9">
-<a href="#rfc.appendix.A.9">A.9.</a> <a href="#since-draft-ietf-quic-http-04" id="since-draft-ietf-quic-http-04">Since draft-ietf-quic-http-04</a>
+<h2 id="rfc.appendix.A.10">
+<a href="#rfc.appendix.A.10">A.10.</a> <a href="#since-draft-ietf-quic-http-04" id="since-draft-ietf-quic-http-04">Since draft-ietf-quic-http-04</a>
 </h2>
 <p></p>
 
@@ -1759,18 +1797,18 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>Identify server push using Push ID rather than a stream ID (#702,#281)</li>
 <li>DATA frames cannot be empty (#700)</li>
 </ul>
-<h2 id="rfc.appendix.A.10">
-<a href="#rfc.appendix.A.10">A.10.</a> <a href="#since-draft-ietf-quic-http-03" id="since-draft-ietf-quic-http-03">Since draft-ietf-quic-http-03</a>
-</h2>
-<p id="rfc.section.A.10.p.1">None.</p>
 <h2 id="rfc.appendix.A.11">
-<a href="#rfc.appendix.A.11">A.11.</a> <a href="#since-draft-ietf-quic-http-02" id="since-draft-ietf-quic-http-02">Since draft-ietf-quic-http-02</a>
+<a href="#rfc.appendix.A.11">A.11.</a> <a href="#since-draft-ietf-quic-http-03" id="since-draft-ietf-quic-http-03">Since draft-ietf-quic-http-03</a>
+</h2>
+<p id="rfc.section.A.11.p.1">None.</p>
+<h2 id="rfc.appendix.A.12">
+<a href="#rfc.appendix.A.12">A.12.</a> <a href="#since-draft-ietf-quic-http-02" id="since-draft-ietf-quic-http-02">Since draft-ietf-quic-http-02</a>
 </h2>
 <p></p>
 
 <ul><li>Track changes in transport draft</li></ul>
-<h2 id="rfc.appendix.A.12">
-<a href="#rfc.appendix.A.12">A.12.</a> <a href="#since-draft-ietf-quic-http-01" id="since-draft-ietf-quic-http-01">Since draft-ietf-quic-http-01</a>
+<h2 id="rfc.appendix.A.13">
+<a href="#rfc.appendix.A.13">A.13.</a> <a href="#since-draft-ietf-quic-http-01" id="since-draft-ietf-quic-http-01">Since draft-ietf-quic-http-01</a>
 </h2>
 <p></p>
 
@@ -1788,8 +1826,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>0-RTT guidance added</li>
 <li>Guide to differences from HTTP/2 and porting HTTP/2 extensions added (#127,#242)</li>
 </ul>
-<h2 id="rfc.appendix.A.13">
-<a href="#rfc.appendix.A.13">A.13.</a> <a href="#since-draft-ietf-quic-http-00" id="since-draft-ietf-quic-http-00">Since draft-ietf-quic-http-00</a>
+<h2 id="rfc.appendix.A.14">
+<a href="#rfc.appendix.A.14">A.14.</a> <a href="#since-draft-ietf-quic-http-00" id="since-draft-ietf-quic-http-00">Since draft-ietf-quic-http-00</a>
 </h2>
 <p></p>
 
@@ -1802,8 +1840,8 @@ Alt-Svc: hq=":49288";quic="1,1abadaba,51303334,0"
 <li>Updated ALPN token and Alt-Svc guidance (#13,#87)</li>
 <li>Application-layer-defined error codes (#19,#74)</li>
 </ul>
-<h2 id="rfc.appendix.A.14">
-<a href="#rfc.appendix.A.14">A.14.</a> <a href="#since-draft-shade-quic-http2-mapping-00" id="since-draft-shade-quic-http2-mapping-00">Since draft-shade-quic-http2-mapping-00</a>
+<h2 id="rfc.appendix.A.15">
+<a href="#rfc.appendix.A.15">A.15.</a> <a href="#since-draft-shade-quic-http2-mapping-00" id="since-draft-shade-quic-http2-mapping-00">Since draft-shade-quic-http2-mapping-00</a>
 </h2>
 <p></p>
 
