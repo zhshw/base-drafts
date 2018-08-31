@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: March 2, 2019                               Akamai Technologies
+Expires: March 4, 2019                               Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                         August 29, 2018
+                                                         August 31, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,14 +46,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 2, 2019.
+   This Internet-Draft will expire on March 4, 2019.
 
 
 
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 1]
+Krasic, et al.            Expires March 4, 2019                 [Page 1]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 2]
+Krasic, et al.            Expires March 4, 2019                 [Page 2]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -165,7 +165,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 3]
+Krasic, et al.            Expires March 4, 2019                 [Page 3]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -221,7 +221,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 4]
+Krasic, et al.            Expires March 4, 2019                 [Page 4]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -277,7 +277,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 5]
+Krasic, et al.            Expires March 4, 2019                 [Page 5]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -333,7 +333,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 6]
+Krasic, et al.            Expires March 4, 2019                 [Page 6]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -389,7 +389,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 7]
+Krasic, et al.            Expires March 4, 2019                 [Page 7]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -445,7 +445,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 8]
+Krasic, et al.            Expires March 4, 2019                 [Page 8]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -501,7 +501,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                 [Page 9]
+Krasic, et al.            Expires March 4, 2019                 [Page 9]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -557,7 +557,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 10]
+Krasic, et al.            Expires March 4, 2019                [Page 10]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -613,7 +613,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 11]
+Krasic, et al.            Expires March 4, 2019                [Page 11]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -669,7 +669,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 12]
+Krasic, et al.            Expires March 4, 2019                [Page 12]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -725,7 +725,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 13]
+Krasic, et al.            Expires March 4, 2019                [Page 13]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -781,7 +781,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 14]
+Krasic, et al.            Expires March 4, 2019                [Page 14]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -837,7 +837,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 15]
+Krasic, et al.            Expires March 4, 2019                [Page 15]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -893,7 +893,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 16]
+Krasic, et al.            Expires March 4, 2019                [Page 16]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -949,7 +949,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 17]
+Krasic, et al.            Expires March 4, 2019                [Page 17]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1005,7 +1005,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 18]
+Krasic, et al.            Expires March 4, 2019                [Page 18]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1061,7 +1061,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 19]
+Krasic, et al.            Expires March 4, 2019                [Page 19]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1117,7 +1117,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 20]
+Krasic, et al.            Expires March 4, 2019                [Page 20]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1173,7 +1173,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 21]
+Krasic, et al.            Expires March 4, 2019                [Page 21]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 22]
+Krasic, et al.            Expires March 4, 2019                [Page 22]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1285,7 +1285,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 23]
+Krasic, et al.            Expires March 4, 2019                [Page 23]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1341,7 +1341,7 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 24]
+Krasic, et al.            Expires March 4, 2019                [Page 24]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1397,7 +1397,7 @@ Acknowledgments
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 25]
+Krasic, et al.            Expires March 4, 2019                [Page 25]
 
 Internet-Draft                    QPACK                      August 2018
 
@@ -1453,4 +1453,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.            Expires March 2, 2019                [Page 26]
+Krasic, et al.            Expires March 4, 2019                [Page 26]
