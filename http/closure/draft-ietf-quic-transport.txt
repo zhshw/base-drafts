@@ -5,8 +5,8 @@
 QUIC                                                     J. Iyengar, Ed.
 Internet-Draft                                                    Fastly
 Intended status: Standards Track                         M. Thomson, Ed.
-Expires: March 1, 2019                                           Mozilla
-                                                         August 28, 2018
+Expires: March 10, 2019                                          Mozilla
+                                                      September 06, 2018
 
 
            QUIC: A UDP-Based Multiplexed and Secure Transport
@@ -44,7 +44,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 1, 2019.
+   This Internet-Draft will expire on March 10, 2019.
 
 
 
@@ -53,9 +53,9 @@ Status of This Memo
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 1]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 1]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 2]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 2]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
        6.3.3.  Using Reserved Versions . . . . . . . . . . . . . . .  34
@@ -165,9 +165,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 3]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 3]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
      7.13. NEW_CONNECTION_ID Frame . . . . . . . . . . . . . . . . .  72
@@ -221,9 +221,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 4]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 4]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
      12.4.  Slowloris Attacks  . . . . . . . . . . . . . . . . . . . 109
@@ -277,9 +277,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 5]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 5]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Stream and connection-level flow control
@@ -333,9 +333,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 6]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 6]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    QUIC packet:  The smallest unit of data that can be exchanged by QUIC
@@ -389,9 +389,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 7]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 7]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    expectation that the server will initiate version negotiation; a
@@ -445,9 +445,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 8]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 8]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -501,9 +501,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                 [Page 9]
+Iyengar & Thomson        Expires March 10, 2019                 [Page 9]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       encoded lengths are increased by 3 to get the full length of the
@@ -557,9 +557,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 10]
+Iyengar & Thomson        Expires March 10, 2019                [Page 10]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    details on how packets from different versions of QUIC are
@@ -613,9 +613,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 11]
+Iyengar & Thomson        Expires March 10, 2019                [Page 11]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    [[Editor's Note: this section should be removed and the bit
@@ -669,9 +669,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 12]
+Iyengar & Thomson        Expires March 10, 2019                [Page 12]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The Version Negotiation packet is a response to a client packet that
@@ -725,9 +725,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 13]
+Iyengar & Thomson        Expires March 10, 2019                [Page 13]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    A Version Negotiation packet cannot be explicitly acknowledged in an
@@ -781,9 +781,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 14]
+Iyengar & Thomson        Expires March 10, 2019                [Page 14]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       octet, using the same encoding as the DCIL and SCIL fields.  The
@@ -837,9 +837,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 15]
+Iyengar & Thomson        Expires March 10, 2019                [Page 15]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    always have an Original Destination Connection ID that is at least 8
@@ -893,9 +893,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 16]
+Iyengar & Thomson        Expires March 10, 2019                [Page 16]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    +-+-+-+-+-+-+-+-+
@@ -949,9 +949,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 17]
+Iyengar & Thomson        Expires March 10, 2019                [Page 17]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The payload of an Initial packet includes a CRYPTO frame (or frames)
@@ -1005,9 +1005,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 18]
+Iyengar & Thomson        Expires March 10, 2019                [Page 18]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 4.6.2.  Tokens
@@ -1061,9 +1061,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 19]
+Iyengar & Thomson        Expires March 10, 2019                [Page 19]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    recover and use to validate a client address.  Tokens are not
@@ -1117,9 +1117,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 20]
+Iyengar & Thomson        Expires March 10, 2019                [Page 20]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 4.6.5.  Minimum Packet Size
@@ -1173,9 +1173,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 21]
+Iyengar & Thomson        Expires March 10, 2019                [Page 21]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Packets protected with handshake keys only use packet protection to
@@ -1229,9 +1229,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 22]
+Iyengar & Thomson        Expires March 10, 2019                [Page 22]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    able to process all the packets in a single pass.  A packet with a
@@ -1285,9 +1285,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 23]
+Iyengar & Thomson        Expires March 10, 2019                [Page 23]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Any additional changes are not permitted; if subsequent packets of
@@ -1341,9 +1341,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 24]
+Iyengar & Thomson        Expires March 10, 2019                [Page 24]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    As described in [QUIC-TLS], each packet type uses different
@@ -1397,9 +1397,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 25]
+Iyengar & Thomson        Expires March 10, 2019                [Page 25]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    recovering the full packet number.  The full packet number is
@@ -1453,9 +1453,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 26]
+Iyengar & Thomson        Expires March 10, 2019                [Page 26]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 5.  Frames and Frame Types
@@ -1509,9 +1509,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 27]
+Iyengar & Thomson        Expires March 10, 2019                [Page 27]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
             +-------------+-------------------+--------------+
@@ -1565,9 +1565,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 28]
+Iyengar & Thomson        Expires March 10, 2019                [Page 28]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    All QUIC frames are idempotent.  That is, a valid frame does not
@@ -1621,9 +1621,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 29]
+Iyengar & Thomson        Expires March 10, 2019                [Page 29]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 6.1.  Connection ID
@@ -1677,9 +1677,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 30]
+Iyengar & Thomson        Expires March 10, 2019                [Page 30]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    ID.  An implementation could do this by always supplying a
@@ -1733,9 +1733,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 31]
+Iyengar & Thomson        Expires March 10, 2019                [Page 31]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 6.2.2.  Server Packet Handling
@@ -1789,9 +1789,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 32]
+Iyengar & Thomson        Expires March 10, 2019                [Page 32]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The size of the first packet sent by a client will determine whether
@@ -1845,9 +1845,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 33]
+Iyengar & Thomson        Expires March 10, 2019                [Page 33]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    A client MUST ignore a Version Negotiation packet that lists the
@@ -1901,9 +1901,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 34]
+Iyengar & Thomson        Expires March 10, 2019                [Page 34]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       *  every connection produces distinct and unrelated keys,
@@ -1957,9 +1957,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 35]
+Iyengar & Thomson        Expires March 10, 2019                [Page 35]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    so this handshake may consist of as few as 4 UDP datagrams, or any
@@ -2013,9 +2013,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 36]
+Iyengar & Thomson        Expires March 10, 2019                [Page 36]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 6.6.  Transport Parameters
@@ -2069,9 +2069,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 37]
+Iyengar & Thomson        Expires March 10, 2019                [Page 37]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       uint32 QuicVersion;
@@ -2125,9 +2125,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 38]
+Iyengar & Thomson        Expires March 10, 2019                [Page 38]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    QUIC encodes transport parameters into a sequence of octets, which
@@ -2181,9 +2181,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 39]
+Iyengar & Thomson        Expires March 10, 2019                [Page 39]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       unsigned 16-bit integer.  If this parameter is absent or zero,
@@ -2237,9 +2237,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 40]
+Iyengar & Thomson        Expires March 10, 2019                [Page 40]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       to streams with an identifier ending in 0x1; in server transport
@@ -2293,9 +2293,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 41]
+Iyengar & Thomson        Expires March 10, 2019                [Page 41]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    data is accepted by the server, the server MUST NOT reduce any limits
@@ -2349,9 +2349,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 42]
+Iyengar & Thomson        Expires March 10, 2019                [Page 42]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The client includes the initial_version field in its transport
@@ -2405,9 +2405,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 43]
+Iyengar & Thomson        Expires March 10, 2019                [Page 43]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    When an endpoint accepts multiple QUIC versions, it can potentially
@@ -2461,9 +2461,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 44]
+Iyengar & Thomson        Expires March 10, 2019                [Page 44]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    If an ECT codepoint set in the IP header is not corrupted by a
@@ -2517,9 +2517,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 45]
+Iyengar & Thomson        Expires March 10, 2019                [Page 45]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    If verification fails, then the endpoint ceases setting ECT
@@ -2573,9 +2573,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 46]
+Iyengar & Thomson        Expires March 10, 2019                [Page 46]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Source address validation is therefore performed by the core
@@ -2629,9 +2629,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 47]
+Iyengar & Thomson        Expires March 10, 2019                [Page 47]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 6.9.2.  Address Validation for Future Connections
@@ -2685,9 +2685,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 48]
+Iyengar & Thomson        Expires March 10, 2019                [Page 48]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    a peer from a new local address.  Path validation is also used by the
@@ -2741,9 +2741,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 49]
+Iyengar & Thomson        Expires March 10, 2019                [Page 49]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    To ensure that packets can be both sent to and received from the
@@ -2797,9 +2797,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 50]
+Iyengar & Thomson        Expires March 10, 2019                [Page 50]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    A path validation might be abandoned for other reasons besides
@@ -2853,9 +2853,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 51]
+Iyengar & Thomson        Expires March 10, 2019                [Page 51]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    An endpoint uses a new connection ID for probes sent from a new local
@@ -2909,9 +2909,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 52]
+Iyengar & Thomson        Expires March 10, 2019                [Page 52]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    An endpoint MAY send data to an unvalidated peer address, but it MUST
@@ -2965,9 +2965,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 53]
+Iyengar & Thomson        Expires March 10, 2019                [Page 53]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    original packet will be seen as a duplicate and dropped.  After a
@@ -3021,9 +3021,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 54]
+Iyengar & Thomson        Expires March 10, 2019                [Page 54]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    While multiple paths might be used during connection migration, a
@@ -3077,9 +3077,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 55]
+Iyengar & Thomson        Expires March 10, 2019                [Page 55]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    stability.  This section describes the protocol for migrating a
@@ -3133,9 +3133,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 56]
+Iyengar & Thomson        Expires March 10, 2019                [Page 56]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 6.12.3.  Interaction of Client Migration and Preferred Address
@@ -3189,9 +3189,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 57]
+Iyengar & Thomson        Expires March 10, 2019                [Page 57]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    packets unless they contain a CONNECTION_CLOSE or APPLICATION_CLOSE
@@ -3245,9 +3245,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 58]
+Iyengar & Thomson        Expires March 10, 2019                [Page 58]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    closing period.  An endpoint in the closing state MUST strictly limit
@@ -3301,9 +3301,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 59]
+Iyengar & Thomson        Expires March 10, 2019                [Page 59]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Note:  Allowing retransmission of a packet contradicts other advice
@@ -3357,9 +3357,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 60]
+Iyengar & Thomson        Expires March 10, 2019                [Page 60]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -3413,9 +3413,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 61]
+Iyengar & Thomson        Expires March 10, 2019                [Page 61]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    An endpoint cannot determine the Source Connection ID from a packet
@@ -3469,9 +3469,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 62]
+Iyengar & Thomson        Expires March 10, 2019                [Page 62]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    period and not send any further packets on this connection.  If the
@@ -3525,9 +3525,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 63]
+Iyengar & Thomson        Expires March 10, 2019                [Page 63]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Note that Stateless Reset packets do not have any cryptographic
@@ -3581,9 +3581,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 64]
+Iyengar & Thomson        Expires March 10, 2019                [Page 64]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    the integer encoding length in octets.  The integer value is encoded
@@ -3637,9 +3637,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 65]
+Iyengar & Thomson        Expires March 10, 2019                [Page 65]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    of RST_STREAM can discard any data that it already received on that
@@ -3693,9 +3693,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 66]
+Iyengar & Thomson        Expires March 10, 2019                [Page 66]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -3749,9 +3749,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 67]
+Iyengar & Thomson        Expires March 10, 2019                [Page 67]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -3805,9 +3805,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 68]
+Iyengar & Thomson        Expires March 10, 2019                [Page 68]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    All data sent in STREAM frames counts toward this limit.  The sum of
@@ -3861,9 +3861,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 69]
+Iyengar & Thomson        Expires March 10, 2019                [Page 69]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    that stream.  Receiving STREAM frames might not increase the largest
@@ -3917,9 +3917,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 70]
+Iyengar & Thomson        Expires March 10, 2019                [Page 70]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The receiver of a PING frame simply needs to acknowledge the packet
@@ -3973,9 +3973,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 71]
+Iyengar & Thomson        Expires March 10, 2019                [Page 71]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The STREAM_BLOCKED frame is as follows:
@@ -4029,9 +4029,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 72]
+Iyengar & Thomson        Expires March 10, 2019                [Page 72]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -4085,9 +4085,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 73]
+Iyengar & Thomson        Expires March 10, 2019                [Page 73]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 7.14.  STOP_SENDING Frame
@@ -4141,9 +4141,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 74]
+Iyengar & Thomson        Expires March 10, 2019                [Page 74]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    A client MUST NOT acknowledge Retry packets.  Retry packets include
@@ -4197,9 +4197,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 75]
+Iyengar & Thomson        Expires March 10, 2019                [Page 75]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 7.15.1.  ACK Block Section
@@ -4253,9 +4253,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 76]
+Iyengar & Thomson        Expires March 10, 2019                [Page 76]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The range of packets that are acknowledged by the ACK block include
@@ -4309,9 +4309,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 77]
+Iyengar & Thomson        Expires March 10, 2019                [Page 77]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    To limit ACK blocks to those that have not yet been received by the
@@ -4365,9 +4365,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 78]
+Iyengar & Thomson        Expires March 10, 2019                [Page 78]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -4421,9 +4421,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 79]
+Iyengar & Thomson        Expires March 10, 2019                [Page 79]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Data:  This 8-byte field contains arbitrary data.
@@ -4477,9 +4477,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 80]
+Iyengar & Thomson        Expires March 10, 2019                [Page 80]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    0x10 to 0x17).  The value of the three low-order bits of the frame
@@ -4533,9 +4533,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 81]
+Iyengar & Thomson        Expires March 10, 2019                [Page 81]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Length:  A variable-length integer specifying the length of the
@@ -4589,9 +4589,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 82]
+Iyengar & Thomson        Expires March 10, 2019                [Page 82]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
     0                   1                   2                   3
@@ -4645,9 +4645,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 83]
+Iyengar & Thomson        Expires March 10, 2019                [Page 83]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 8.1.  Packet Processing and Acknowledgment
@@ -4701,9 +4701,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 84]
+Iyengar & Thomson        Expires March 10, 2019                [Page 84]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Application data sent in STREAM frames is retransmitted in new
@@ -4757,9 +4757,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 85]
+Iyengar & Thomson        Expires March 10, 2019                [Page 85]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       frames are scoped to a specific stream type.  New frames are sent
@@ -4813,9 +4813,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 86]
+Iyengar & Thomson        Expires March 10, 2019                [Page 86]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    otherwise behave as if any part of the offending packet was processed
@@ -4869,9 +4869,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 87]
+Iyengar & Thomson        Expires March 10, 2019                [Page 87]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    the TCP sequence number as valid for the current connection.
@@ -4925,9 +4925,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 88]
+Iyengar & Thomson        Expires March 10, 2019                [Page 88]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    used to distinguish between unidirectional and bidirectional streams,
@@ -4981,9 +4981,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 89]
+Iyengar & Thomson        Expires March 10, 2019                [Page 89]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The second least significant bit (0x2) of the Stream ID
@@ -5037,9 +5037,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 90]
+Iyengar & Thomson        Expires March 10, 2019                [Page 90]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    An endpoint can open streams up to its maximum stream limit in any
@@ -5093,9 +5093,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 91]
+Iyengar & Thomson        Expires March 10, 2019                [Page 91]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
           o
@@ -5149,9 +5149,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 92]
+Iyengar & Thomson        Expires March 10, 2019                [Page 92]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    In the "Send" state, an endpoint transmits - and retransmits as
@@ -5205,9 +5205,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 93]
+Iyengar & Thomson        Expires March 10, 2019                [Page 93]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
           o
@@ -5261,9 +5261,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 94]
+Iyengar & Thomson        Expires March 10, 2019                [Page 94]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    MAX_STREAM_DATA frame might arrive before a STREAM or STREAM_BLOCKED
@@ -5317,9 +5317,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 95]
+Iyengar & Thomson        Expires March 10, 2019                [Page 95]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    completely received.  In the latter case, the receive stream
@@ -5373,9 +5373,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 96]
+Iyengar & Thomson        Expires March 10, 2019                [Page 96]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    +-----------------------+---------------------+---------------------+
@@ -5429,9 +5429,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 97]
+Iyengar & Thomson        Expires March 10, 2019                [Page 97]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    STREAM frames received after sending STOP_SENDING are still counted
@@ -5485,9 +5485,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 98]
+Iyengar & Thomson        Expires March 10, 2019                [Page 98]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 9.5.  Sending and Receiving Data
@@ -5541,9 +5541,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019                [Page 99]
+Iyengar & Thomson        Expires March 10, 2019                [Page 99]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    allow an endpoint to determine priority based on context; or it could
@@ -5597,9 +5597,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 100]
+Iyengar & Thomson        Expires March 10, 2019               [Page 100]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    A data receiver sends MAX_STREAM_DATA or MAX_DATA frames to the
@@ -5653,9 +5653,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 101]
+Iyengar & Thomson        Expires March 10, 2019               [Page 101]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    deadlock, with the sender waiting for a MAX_DATA or MAX_STREAM_DATA
@@ -5709,9 +5709,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 102]
+Iyengar & Thomson        Expires March 10, 2019               [Page 102]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 10.2.  Stream Limit Increment
@@ -5765,9 +5765,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 103]
+Iyengar & Thomson        Expires March 10, 2019               [Page 103]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    An endpoint MUST NOT send data on a stream at or beyond the final
@@ -5821,9 +5821,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 104]
+Iyengar & Thomson        Expires March 10, 2019               [Page 104]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Application protocols can signal application-specific protocol errors
@@ -5877,9 +5877,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 105]
+Iyengar & Thomson        Expires March 10, 2019               [Page 105]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    INTERNAL_ERROR (0x1):  The endpoint encountered an internal error and
@@ -5933,9 +5933,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 106]
+Iyengar & Thomson        Expires March 10, 2019               [Page 106]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
       cryptographic handshake that is used.  Codes for errors occurring
@@ -5989,9 +5989,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 107]
+Iyengar & Thomson        Expires March 10, 2019               [Page 107]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    packets that carry the cryptographic handshake are protected with a
@@ -6045,9 +6045,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 108]
+Iyengar & Thomson        Expires March 10, 2019               [Page 108]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    connection.  If a packet sent is protected with a forward-secure key,
@@ -6101,9 +6101,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 109]
+Iyengar & Thomson        Expires March 10, 2019               [Page 109]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    QUIC deployments SHOULD provide mitigations against the stream
@@ -6157,9 +6157,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 110]
+Iyengar & Thomson        Expires March 10, 2019               [Page 110]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    If a packet can be routed to different instances that share a static
@@ -6213,9 +6213,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 111]
+Iyengar & Thomson        Expires March 10, 2019               [Page 111]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    The initial contents of this registry are shown in Table 7.
@@ -6269,9 +6269,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 112]
+Iyengar & Thomson        Expires March 10, 2019               [Page 112]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    Frame Name:  A short mnemonic for the frame type.
@@ -6325,9 +6325,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 113]
+Iyengar & Thomson        Expires March 10, 2019               [Page 113]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    +------+---------------------------+----------------+---------------+
@@ -6381,9 +6381,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 114]
+Iyengar & Thomson        Expires March 10, 2019               [Page 114]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 14.  References
@@ -6406,12 +6406,12 @@ Internet-Draft           QUIC Transport Protocol             August 2018
    [QUIC-RECOVERY]
               Iyengar, J., Ed. and I. Swett, Ed., "QUIC Loss Detection
               and Congestion Control", draft-ietf-quic-recovery (work in
-              progress), August 2018.
+              progress), September 2018.
 
    [QUIC-TLS]
               Thomson, M., Ed. and S. Turner, Ed., "Using Transport
               Layer Security (TLS) to Secure QUIC", draft-ietf-quic-tls
-              (work in progress), August 2018.
+              (work in progress), September 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -6437,9 +6437,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 115]
+Iyengar & Thomson        Expires March 10, 2019               [Page 115]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
@@ -6473,7 +6473,7 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
    [QUIC-INVARIANTS]
               Thomson, M., "Version-Independent Properties of QUIC",
-              draft-ietf-quic-invariants (work in progress), August
+              draft-ietf-quic-invariants (work in progress), September
               2018.
 
    [RFC2018]  Mathis, M., Mahdavi, J., Floyd, S., and A. Romanow, "TCP
@@ -6493,9 +6493,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 116]
+Iyengar & Thomson        Expires March 10, 2019               [Page 116]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    [RFC2406]  Kent, S. and R. Atkinson, "IP Encapsulating Security
@@ -6549,9 +6549,9 @@ Appendix A.  Sample Packet Number Decoding Algorithm
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 117]
+Iyengar & Thomson        Expires March 10, 2019               [Page 117]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    DecodePacketNumber(largest_pn, truncated_pn, pn_nbits):
@@ -6605,9 +6605,9 @@ B.1.  Since draft-ietf-quic-transport-13
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 118]
+Iyengar & Thomson        Expires March 10, 2019               [Page 118]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Prevent infinite stateless reset exchanges (#1443, #1627)
@@ -6661,9 +6661,9 @@ B.2.  Since draft-ietf-quic-transport-12
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 119]
+Iyengar & Thomson        Expires March 10, 2019               [Page 119]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Added a transport parameter to disable intentional connection
@@ -6717,9 +6717,9 @@ B.4.  Since draft-ietf-quic-transport-10
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 120]
+Iyengar & Thomson        Expires March 10, 2019               [Page 120]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  An empty STREAM frame can be used to open a stream without sending
@@ -6773,9 +6773,9 @@ B.6.  Since draft-ietf-quic-transport-08
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 121]
+Iyengar & Thomson        Expires March 10, 2019               [Page 121]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  BLOCKED frame now includes reason for blocking (#452, #924, #927,
@@ -6829,9 +6829,9 @@ B.7.  Since draft-ietf-quic-transport-07
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 122]
+Iyengar & Thomson        Expires March 10, 2019               [Page 122]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Employ variable-length integer encodings throughout (#595)
@@ -6885,9 +6885,9 @@ B.9.  Since draft-ietf-quic-transport-05
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 123]
+Iyengar & Thomson        Expires March 10, 2019               [Page 123]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Renamed STREAM_ID_NEEDED to STREAM_ID_BLOCKED
@@ -6941,9 +6941,9 @@ B.11.  Since draft-ietf-quic-transport-03
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 124]
+Iyengar & Thomson        Expires March 10, 2019               [Page 124]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 B.12.  Since draft-ietf-quic-transport-02
@@ -6997,9 +6997,9 @@ B.12.  Since draft-ietf-quic-transport-02
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 125]
+Iyengar & Thomson        Expires March 10, 2019               [Page 125]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 B.13.  Since draft-ietf-quic-transport-01
@@ -7053,9 +7053,9 @@ B.13.  Since draft-ietf-quic-transport-01
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 126]
+Iyengar & Thomson        Expires March 10, 2019               [Page 126]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
    o  Clarified that frames are not retransmitted, but the information
@@ -7109,9 +7109,9 @@ Internet-Draft           QUIC Transport Protocol             August 2018
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 127]
+Iyengar & Thomson        Expires March 10, 2019               [Page 127]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 B.14.  Since draft-ietf-quic-transport-00
@@ -7165,9 +7165,9 @@ Contributors
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 128]
+Iyengar & Thomson        Expires March 10, 2019               [Page 128]
 
-Internet-Draft           QUIC Transport Protocol             August 2018
+Internet-Draft           QUIC Transport Protocol          September 2018
 
 
 Authors' Addresses
@@ -7221,4 +7221,4 @@ Authors' Addresses
 
 
 
-Iyengar & Thomson         Expires March 1, 2019               [Page 129]
+Iyengar & Thomson        Expires March 10, 2019               [Page 129]

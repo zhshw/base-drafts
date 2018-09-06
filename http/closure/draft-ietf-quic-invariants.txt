@@ -4,8 +4,8 @@
 
 QUIC                                                          M. Thomson
 Internet-Draft                                                   Mozilla
-Intended status: Standards Track                         August 28, 2018
-Expires: March 1, 2019
+Intended status: Standards Track                      September 06, 2018
+Expires: March 10, 2019
 
 
                  Version-Independent Properties of QUIC
@@ -42,7 +42,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 1, 2019.
+   This Internet-Draft will expire on March 10, 2019.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 1]
+Thomson                  Expires March 10, 2019                 [Page 1]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 2]
+Thomson                  Expires March 10, 2019                 [Page 2]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    Appendix A is a non-exhaustive list of some incorrect assumptions
@@ -165,9 +165,9 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 3]
+Thomson                  Expires March 10, 2019                 [Page 3]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
     0                   1                   2                   3
@@ -221,9 +221,9 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 4]
+Thomson                  Expires March 10, 2019                 [Page 4]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
     0                   1                   2                   3
@@ -277,9 +277,9 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 5]
+Thomson                  Expires March 10, 2019                 [Page 5]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    additional properties which apply to a specific QUIC version, or to a
@@ -333,9 +333,9 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 6]
+Thomson                  Expires March 10, 2019                 [Page 6]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    Version Negotiation packets do not use integrity or confidentiality
@@ -389,9 +389,9 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 7]
+Thomson                  Expires March 10, 2019                 [Page 7]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
 8.  References
@@ -401,7 +401,7 @@ Internet-Draft               QUIC Invariants                 August 2018
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), August 2018.
+              transport (work in progress), September 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -417,7 +417,7 @@ Internet-Draft               QUIC Invariants                 August 2018
    [QUIC-TLS]
               Thomson, M., Ed. and S. Turner, Ed., "Using Transport
               Layer Security (TLS) to Secure QUIC", draft-ietf-quic-tls
-              (work in progress), August 2018.
+              (work in progress), September 2018.
 
    [RFC5116]  McGrew, D., "An Interface and Algorithms for Authenticated
               Encryption", RFC 5116, DOI 10.17487/RFC5116, January 2008,
@@ -445,9 +445,9 @@ Appendix A.  Incorrect Assumptions
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 8]
+Thomson                  Expires March 10, 2019                 [Page 8]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    The following statements are NOT guaranteed to be true for every QUIC
@@ -501,9 +501,9 @@ Author's Address
 
 
 
-Thomson                   Expires March 1, 2019                 [Page 9]
+Thomson                  Expires March 10, 2019                 [Page 9]
 
-Internet-Draft               QUIC Invariants                 August 2018
+Internet-Draft               QUIC Invariants              September 2018
 
 
    Martin Thomson
@@ -557,4 +557,4 @@ Internet-Draft               QUIC Invariants                 August 2018
 
 
 
-Thomson                   Expires March 1, 2019                [Page 10]
+Thomson                  Expires March 10, 2019                [Page 10]
