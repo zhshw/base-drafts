@@ -5,10 +5,10 @@
 QUIC                                                           C. Krasic
 Internet-Draft                                                   Netflix
 Intended status: Standards Track                               M. Bishop
-Expires: March 1, 2019                               Akamai Technologies
+Expires: March 10, 2019                              Akamai Technologies
                                                         A. Frindell, Ed.
                                                                 Facebook
-                                                         August 28, 2018
+                                                      September 06, 2018
 
 
               QPACK: Header Compression for HTTP over QUIC
@@ -46,16 +46,16 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on March 1, 2019.
+   This Internet-Draft will expire on March 10, 2019.
 
 
 
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 1]
+Krasic, et al.           Expires March 10, 2019                 [Page 1]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 2]
+Krasic, et al.           Expires March 10, 2019                 [Page 2]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
      7.3.  Reference Tracking  . . . . . . . . . . . . . . . . . . .  20
@@ -165,9 +165,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 3]
+Krasic, et al.           Expires March 10, 2019                 [Page 3]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 2.  Header Tables
@@ -221,9 +221,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 4]
+Krasic, et al.           Expires March 10, 2019                 [Page 4]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    treated as a connection error of type
@@ -277,9 +277,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 5]
+Krasic, et al.           Expires March 10, 2019                 [Page 5]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    means the entry referenced by a given relative index will change
@@ -333,9 +333,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 6]
+Krasic, et al.           Expires March 10, 2019                 [Page 6]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
                 Base Index
@@ -389,9 +389,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 7]
+Krasic, et al.           Expires March 10, 2019                 [Page 7]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    compression efficiency can be improved by referencing dynamic table
@@ -445,9 +445,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 8]
+Krasic, et al.           Expires March 10, 2019                 [Page 8]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 3.  Conventions and Definitions
@@ -501,9 +501,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                 [Page 9]
+Krasic, et al.           Expires March 10, 2019                 [Page 9]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    SETTINGS_QPACK_BLOCKED_STREAMS (0x7):  An integer with a maximum
@@ -557,9 +557,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 10]
+Krasic, et al.           Expires March 10, 2019                [Page 10]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    coded), followed by the Length encoded as a 7-bit prefix integer, and
@@ -613,9 +613,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 11]
+Krasic, et al.           Expires March 10, 2019                [Page 11]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
         0   1   2   3   4   5   6   7
@@ -669,9 +669,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 12]
+Krasic, et al.           Expires March 10, 2019                [Page 12]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    the eviction of older entries which are frequently referenced, both
@@ -725,9 +725,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 13]
+Krasic, et al.           Expires March 10, 2019                [Page 13]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    dynamic table entry.  This is encoded as a 6-bit prefix integer.  The
@@ -781,9 +781,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 14]
+Krasic, et al.           Expires March 10, 2019                [Page 14]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    table state necessary to process the header block.  If the Largest
@@ -837,9 +837,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 15]
+Krasic, et al.           Expires March 10, 2019                [Page 15]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
      0   1   2   3   4   5   6   7
@@ -893,9 +893,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 16]
+Krasic, et al.           Expires March 10, 2019                [Page 16]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    A header block that does not reference the dynamic table can use any
@@ -949,9 +949,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 17]
+Krasic, et al.           Expires March 10, 2019                [Page 17]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    If the entry is in the static table, or in the dynamic table with an
@@ -1005,9 +1005,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 18]
+Krasic, et al.           Expires March 10, 2019                [Page 18]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
         0   1   2   3   4   5   6   7
@@ -1061,9 +1061,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 19]
+Krasic, et al.           Expires March 10, 2019                [Page 19]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    HTTP_QPACK_DECOMPRESSION_FAILED (0x06):  QPACK failed to decompress a
@@ -1117,9 +1117,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 20]
+Krasic, et al.           Expires March 10, 2019                [Page 20]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    To ensure that the blocked eviction case is rare, references to the
@@ -1173,9 +1173,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 21]
+Krasic, et al.           Expires March 10, 2019                [Page 21]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    baseIndex = dynamicTable.baseIndex
@@ -1229,9 +1229,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 22]
+Krasic, et al.           Expires March 10, 2019                [Page 22]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 8.  Security Considerations
@@ -1285,9 +1285,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 23]
+Krasic, et al.           Expires March 10, 2019                [Page 23]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 10.  References
@@ -1296,13 +1296,13 @@ Internet-Draft                    QPACK                      August 2018
 
    [QUIC-HTTP]
               Bishop, M., Ed., "Hypertext Transfer Protocol (HTTP) over
-              QUIC", draft-ietf-quic-http (work in progress), August
+              QUIC", draft-ietf-quic-http (work in progress), September
               2018.
 
    [QUIC-TRANSPORT]
               Iyengar, J., Ed. and M. Thomson, Ed., "QUIC: A UDP-Based
               Multiplexed and Secure Transport", draft-ietf-quic-
-              transport (work in progress), August 2018.
+              transport (work in progress), September 2018.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1341,9 +1341,9 @@ Internet-Draft                    QPACK                      August 2018
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 24]
+Krasic, et al.           Expires March 10, 2019                [Page 24]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
 Appendix A.  Change Log
@@ -1397,9 +1397,9 @@ Acknowledgments
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 25]
+Krasic, et al.           Expires March 10, 2019                [Page 25]
 
-Internet-Draft                    QPACK                      August 2018
+Internet-Draft                    QPACK                   September 2018
 
 
    o  Ryan Hamilton
@@ -1453,4 +1453,4 @@ Authors' Addresses
 
 
 
-Krasic, et al.            Expires March 1, 2019                [Page 26]
+Krasic, et al.           Expires March 10, 2019                [Page 26]
